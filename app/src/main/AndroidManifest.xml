@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nineworldsdeep.gauntlet" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:label="@string/title_activity_display_message"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PdfActivity"
+            android:label="@string/title_activity_pdf"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".EPubActivity"
+            android:label="@string/title_activity_epub"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".MusicActivity"
+            android:label="@string/title_activity_music" >
+        </activity>
+        <activity
+            android:name=".VidsActivity"
+            android:label="@string/title_activity_vids" >
+        </activity>
+        <activity
+            android:name=".SimpleToDoActivity"
+            android:label="@string/title_activity_simple_to_do" >
+        </activity>
+        <activity
+            android:name=".SynergyActivity"
+            android:label="@string/title_activity_synergy" >
+        </activity>
+        <activity
+            android:name=".GrowthAreasActivity"
+            android:label="@string/title_activity_growth_areas" >
+        </activity>
+    </application>
+
+</manifest>

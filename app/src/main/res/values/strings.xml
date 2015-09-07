@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Gauntlet</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_display_message">DisplayMessageActivity</string>
+    <string name="title_activity_pdf">PdfActivity</string>
+    <string name="title_activity_epub">EPubActivity</string>
+    <string name="title_activity_music">MusicActivity</string>
+    <string name="title_activity_vids">VidsActivity</string>
+    <string name="title_activity_simple_to_do">SimpleToDoActivity</string>
+    <string name="title_activity_synergy">SynergyActivity</string>
+    <string name="title_activity_growth_areas">GrowthAreasActivity</string>
+</resources>

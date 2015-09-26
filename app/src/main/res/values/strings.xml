@@ -12,4 +12,5 @@
     <string name="title_activity_simple_to_do">SimpleToDoActivity</string>
     <string name="title_activity_synergy">SynergyActivity</string>
     <string name="title_activity_growth_areas">GrowthAreasActivity</string>
+    <string name="menu_complete">Complete</string>
 </resources>

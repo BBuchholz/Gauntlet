@@ -50,26 +50,6 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void launchPdf(View view){
-
-        startActivity(new Intent(this, PdfActivity.class));
-    }
-
-    public void launchEPub(View view){
-
-        startActivity(new Intent(this, EPubActivity.class));
-
-    }
-    public void launchMusic(View view){
-
-        startActivity(new Intent(this, MusicActivity.class));
-
-    }
-    public void launchVids(View view){
-
-        startActivity(new Intent(this, VidsActivity.class));
-
-    }
     public void launchSimpleToDo(View view){
 
         startActivity(new Intent(this, SimpleToDoActivity.class));
@@ -78,6 +58,11 @@ public class MainActivity extends ActionBarActivity {
     public void launchSynergy(View view){
 
         startActivity(new Intent(this, SynergyActivity.class));
+
+    }
+    public void launchSynergyMasterList(View view){
+
+        startActivity(new Intent(this, SynergyMasterListActivity.class));
 
     }
     public void launchGrowthAreas(View view){

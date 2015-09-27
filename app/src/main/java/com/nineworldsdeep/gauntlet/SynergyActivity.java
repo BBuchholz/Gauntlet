@@ -95,6 +95,10 @@ public class SynergyActivity extends ActionBarActivity {
                             completeSelectedItems();
                             mode.finish(); // Action picked, so close the CAB
                             return true;
+                        case R.id.menu_move:
+                            Toast.makeText(getApplicationContext(), "menu move selected", Toast.LENGTH_LONG).show();
+                            mode.finish();
+                            return true;
                         default:
                             return false;
                     }

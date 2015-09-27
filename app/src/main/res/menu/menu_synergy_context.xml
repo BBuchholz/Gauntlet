@@ -5,4 +5,7 @@
     <item android:id="@+id/menu_complete"
           android:title="@string/menu_complete"
           app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_move"
+        android:title="@string/menu_move"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

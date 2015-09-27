@@ -16,33 +16,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PDF"
-        android:onClick="launchPdf"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ePub"
-        android:onClick="launchEPub"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Music"
-        android:onClick="launchMusic"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vids"
-        android:onClick="launchVids"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="ToDo"
         android:onClick="launchSimpleToDo"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Synergy"
+        android:text="Synergy v0.1"
         android:onClick="launchSynergy"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Synergy Master List"
+        android:onClick="launchSynergyMasterList"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -13,4 +13,7 @@
     <string name="title_activity_synergy">SynergyActivity</string>
     <string name="title_activity_growth_areas">GrowthAreasActivity</string>
     <string name="menu_complete">Complete</string>
+    <string name="menu_move">Move</string>
+    <string name="title_activity_synergy_master_list">SynergyMasterListActivity</string>
+    <string name="title_activity_synergy_list">SynergyListActivity</string>
 </resources>

@@ -24,11 +24,11 @@
     </style>
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">#fff</item>
     </style>
     <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">@color/color_action_mode_bg</item>
     </style>
-    <color name="color_action_mode_bg">#ffffff</color>
-    <color name="color_action_mode_text">#000000</color>
+    <color name="color_action_mode_bg">#000</color>
+    <color name="color_action_mode_text">#fff</color>
 </resources>

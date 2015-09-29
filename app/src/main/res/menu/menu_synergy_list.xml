@@ -4,4 +4,7 @@
     tools:context="com.nineworldsdeep.gauntlet.SynergyListActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_archive"
+        android:title="@string/menu_archive"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

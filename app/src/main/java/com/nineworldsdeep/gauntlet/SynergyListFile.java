@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.content.Context;
 import android.os.Environment;
 
 import org.apache.commons.io.FileUtils;
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class SynergyListFile {
 
-    private String listName;
-    private ArrayList<String> items;
+    protected String listName;
+    protected ArrayList<String> items;
 
     public SynergyListFile(String name){
         listName = name;
@@ -64,5 +65,50 @@ public class SynergyListFile {
 
         File filesDir = getSynergyDirectory();
         return new File(filesDir, listName + ".txt");
+    }
+
+    public static void archive(String listName) {
+
+        SynergyListFile slf = new SynergyListFile(listName);
+        slf.loadItems();
+
+        SynergyArchiveFile saf = new SynergyArchiveFile(listName);
+        saf.loadItems();
+
+        List<String> toBeRemoved = new ArrayList<>();
+
+        for(String itm : slf.items){
+            if(ListItem.isCompleted(itm)){
+                toBeRemoved.add(itm);
+            }
+        }
+
+        for(String itm : toBeRemoved){
+            slf.items.remove(itm);
+            saf.items.add(itm);
+        }
+
+        saf.save();
+
+        if(slf.items.size() > 0){
+            slf.save();
+        }else{
+            slf.save(); //this can be removed once delete is implemented
+            slf.delete();
+        }
+    }
+
+    public void delete(){
+        getSynergyFile().delete();
+    }
+
+    public void save(){
+
+        File toDoFile = getSynergyFile();
+        try{
+            FileUtils.writeLines(toDoFile, items);
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
     }
 }

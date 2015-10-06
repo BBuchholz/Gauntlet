@@ -70,4 +70,14 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, GrowthAreasActivity.class));
 
     }
+    public void launchSynergyMasterArchive(View view){
+
+        startActivity(new Intent(this, SynergyMasterArchiveActivity.class));
+
+    }
+    public void launchSynergyMasterTemplate(View view){
+
+        startActivity(new Intent(this, SynergyMasterTemplateActivity.class));
+
+    }
 }

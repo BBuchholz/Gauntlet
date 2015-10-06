@@ -78,6 +78,42 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.SynergyMasterListActivity" />
         </activity>
+        <activity
+            android:name=".SynergyMasterArchiveActivity"
+            android:label="@string/title_activity_synergy_master_archive"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SynergyMasterTemplateActivity"
+            android:label="@string/title_activity_synergy_master_template"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SynergyTemplateActivity"
+            android:label="@string/title_activity_synergy_template"
+            android:parentActivityName=".SynergyMasterTemplateActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.SynergyMasterTemplateActivity" />
+        </activity>
+        <activity
+            android:name=".SynergyArchiveActivity"
+            android:label="@string/title_activity_synergy_archive"
+            android:parentActivityName=".SynergyMasterArchiveActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.SynergyMasterArchiveActivity" />
+        </activity>
     </application>
 
 </manifest>

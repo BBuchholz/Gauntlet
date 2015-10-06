@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Environment;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Brent on 9/28/2015.
@@ -52,5 +55,21 @@ public class SynergyArchiveFile extends SynergyListFile {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+    }
+
+    public static List<String> getAllArchiveNames() {
+
+        String[] exts = {"txt"};
+        List<String> lst = new ArrayList<>();
+
+        for (File f : FileUtils.listFiles(getSynergyArchiveDirectory(),
+                                          exts, false)){
+
+            lst.add(FilenameUtils.removeExtension(f.getName()));
+        }
+
+        Collections.sort(lst);
+
+        return lst;
     }
 }

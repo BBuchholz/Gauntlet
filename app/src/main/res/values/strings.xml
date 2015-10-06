@@ -17,4 +17,8 @@
     <string name="menu_archive">Archive</string>
     <string name="title_activity_synergy_master_list">SynergyMasterListActivity</string>
     <string name="title_activity_synergy_list">SynergyListActivity</string>
+    <string name="title_activity_synergy_master_archive">SynergyMasterArchiveActivity</string>
+    <string name="title_activity_synergy_master_template">SynergyMasterTemplateActivity</string>
+    <string name="title_activity_synergy_template">SynergyTemplateActivity</string>
+    <string name="title_activity_synergy_archive">SynergyArchiveActivity</string>
 </resources>

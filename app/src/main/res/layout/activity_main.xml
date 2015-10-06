@@ -31,6 +31,16 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Synergy Master Template"
+        android:onClick="launchSynergyMasterTemplate"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Synergy Master Archive"
+        android:onClick="launchSynergyMasterArchive"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Growth Areas"
         android:onClick="launchGrowthAreas"/>
 

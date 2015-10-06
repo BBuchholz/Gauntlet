@@ -15,7 +15,8 @@ import java.util.List;
 
 public class SynergyMasterArchiveActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ARCHIVENAME = "com.nineworldsdeep.gauntlet.SYNERGY_ARCHIVENAME";
+    public static final String EXTRA_ARCHIVENAME =
+            "com.nineworldsdeep.gauntlet.SYNERGY_ARCHIVENAME";
     private List<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;

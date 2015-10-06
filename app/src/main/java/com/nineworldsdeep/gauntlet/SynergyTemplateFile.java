@@ -7,9 +7,12 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by brent on 10/6/15.
@@ -70,5 +73,11 @@ public class SynergyTemplateFile extends SynergyListFile {
         Collections.sort(lst);
 
         return lst;
+    }
+
+    public static String getTimeStampedListName(String templateName) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        return templateName + "-" + sdf.format(new Date());
     }
 }

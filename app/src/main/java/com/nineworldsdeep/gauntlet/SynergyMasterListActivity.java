@@ -74,31 +74,26 @@ public class SynergyMasterListActivity extends ActionBarActivity {
         itemsAdapter.notifyDataSetChanged();
     }
 
-    //attached a long click listener to the listview
     private void setupListViewListener(){
 
-        lvItems.setOnItemLongClickListener(
-            new AdapterView.OnItemLongClickListener() {
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView,
-                                               View view,
-                                               int idx,
-                                               long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int idx,
+                                    long id) {
 
-                    //get selected list name
-                    String selectedList = items.get(idx);
+                //get selected list name
+                String selectedList = items.get(idx);
 
-                    Intent intent = new Intent(view.getContext(),
-                                               SynergyListActivity.class);
-                    intent.putExtra(EXTRA_LISTNAME, selectedList);
-                    startActivity(intent);
+                Intent intent = new Intent(view.getContext(),
+                        SynergyListActivity.class);
+                intent.putExtra(EXTRA_LISTNAME, selectedList);
+                startActivity(intent);
 
-                    //return true consumes the long click event (marks it handled)
-                    return true;
-                }
             }
-        );
+        });
 
     }
 }

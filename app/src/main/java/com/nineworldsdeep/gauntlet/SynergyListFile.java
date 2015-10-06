@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,6 +43,8 @@ public class SynergyListFile {
             lst.add(FilenameUtils.removeExtension(f.getName()));
         }
 
+        Collections.sort(lst);
+
         return lst;
     }
 
@@ -65,6 +68,21 @@ public class SynergyListFile {
 
         File filesDir = getSynergyDirectory();
         return new File(filesDir, listName + ".txt");
+    }
+
+    public static void generateFromTemplate(String templateName, String timeStampedListName){
+
+        SynergyListFile slf = new SynergyListFile(timeStampedListName);
+        slf.loadItems();
+
+        SynergyTemplateFile stf = new SynergyTemplateFile(templateName);
+        stf.loadItems();
+
+        for(String itm : stf.items){
+            slf.items.add(itm);
+        }
+
+        slf.save();
     }
 
     public static void archive(String listName) {

@@ -85,6 +85,21 @@ public class SynergyListFile {
         slf.save();
     }
 
+    public static void push(Context c, String listName){
+
+        if(Utils.containsTimeStamp(listName)){
+
+            Utils.toast(c, "has timestamp in name");
+
+        }else{
+
+            Utils.toast(c, "does not have timestamp in name");
+
+        }
+
+
+    }
+
     public static void archive(String listName) {
 
         SynergyListFile slf = new SynergyListFile(listName);

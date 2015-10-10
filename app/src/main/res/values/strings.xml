@@ -15,6 +15,7 @@
     <string name="menu_complete">Complete</string>
     <string name="menu_move">Move</string>
     <string name="menu_archive">Archive</string>
+    <string name="menu_push">Push</string>
     <string name="title_activity_synergy_master_list">SynergyMasterListActivity</string>
     <string name="title_activity_synergy_list">SynergyListActivity</string>
     <string name="title_activity_synergy_master_archive">SynergyMasterArchiveActivity</string>

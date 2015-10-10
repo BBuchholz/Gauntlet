@@ -72,6 +72,12 @@ public class SynergyListActivity extends ActionBarActivity {
             return true;
         }
 
+        if (id == R.id.action_push){
+            SynergyListFile.push(getApplicationContext(), listName);
+            readItems();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

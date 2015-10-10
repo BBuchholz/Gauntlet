@@ -3,6 +3,9 @@ package com.nineworldsdeep.gauntlet;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,9 +18,32 @@ public class Utils {
         Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static boolean containsTimeStamp(String s) {
+    public static Date extractTimeStamp_yyyyMMdd(String s){
+
         Pattern p = Pattern.compile("\\d{8}");
         Matcher m = p.matcher(s);
-        return m.find();
+
+        //validate by parsing date?
+        if(m.find()){
+
+            String dateStr = m.group();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+            try {
+                Date d = sdf.parse(dateStr);
+                return d;
+            }
+            catch(ParseException pe) {
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean containsTimeStamp(String s) {
+
+        return extractTimeStamp_yyyyMMdd(s) != null;
     }
 }

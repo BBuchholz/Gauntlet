@@ -64,4 +64,17 @@ public class Utils {
 
         return listName.replace(oldTimeStamp, newTimeStamp);
     }
+
+    public static boolean isTimeStampExpired_yyyyMMdd(String listName) {
+
+        if(!containsTimeStamp(listName)){
+            return false;
+        }
+
+        Calendar now = Calendar.getInstance();
+        Calendar listDate = Calendar.getInstance();
+        listDate.setTime(Utils.extractTimeStamp_yyyyMMdd(listName));
+
+        return now.get(Calendar.DATE) - listDate.get(Calendar.DATE) > 0;
+    }
 }

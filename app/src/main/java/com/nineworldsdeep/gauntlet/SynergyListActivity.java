@@ -69,15 +69,12 @@ public class SynergyListActivity extends ActionBarActivity {
         }
 
         if (id == R.id.action_archive){
-            SynergyListFile.archive(listName);
-            readItems();
+            promptConfirmArchive();
             return true;
         }
 
         if (id == R.id.action_push){
-            //SynergyListFile.push(listName);
             promptConfirmPush();
-            //readItems();
             return true;
         }
 
@@ -111,6 +108,35 @@ public class SynergyListActivity extends ActionBarActivity {
            Utils.toast(getApplicationContext(),
                    "push only affects timestamped lists");
        }
+    }
+
+    private void promptConfirmArchive(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(listName);
+        String msg;
+
+        if(expired){
+
+            msg = "Archive all tasks?";
+
+        }else{
+
+            msg = "Archive completed tasks?";
+        }
+
+        builder.setTitle("Archive Tasks")
+                .setMessage(msg)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SynergyListFile.archive(listName, expired);
+                        Utils.toast(getApplicationContext(), "tasks archived");
+                        readItems();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     public void onAddItem(View view) {

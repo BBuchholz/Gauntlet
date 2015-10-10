@@ -116,6 +116,10 @@ public class SynergyListFile {
     }
 
     public static void archive(String listName) {
+        archive(listName, false);
+    }
+
+    public static void archive(String listName, boolean expired) {
 
         SynergyListFile slf = new SynergyListFile(listName);
         slf.loadItems();
@@ -126,7 +130,7 @@ public class SynergyListFile {
         List<String> toBeRemoved = new ArrayList<>();
 
         for(String itm : slf.items){
-            if(ListItem.isCompleted(itm)){
+            if(expired || ListItem.isCompleted(itm)){
                 toBeRemoved.add(itm);
             }
         }
@@ -159,4 +163,5 @@ public class SynergyListFile {
             ex.printStackTrace();
         }
     }
+
 }

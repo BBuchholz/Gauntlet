@@ -9,7 +9,9 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,19 +87,32 @@ public class SynergyListFile {
         slf.save();
     }
 
-    public static void push(Context c, String listName){
+    public static String push(String listName){
 
         if(Utils.containsTimeStamp(listName)){
 
-            Utils.toast(c, "has timestamp in name");
+            String pushToName =
+                    Utils.incrementTimeStampInString_yyyyMMdd(listName);
 
-        }else{
+            SynergyListFile currentFile =
+                    new SynergyListFile(listName);
+            currentFile.loadItems();
 
-            Utils.toast(c, "does not have timestamp in name");
+            SynergyListFile pushToFile =
+                    new SynergyListFile(pushToName);
+            pushToFile.loadItems();
 
+            for(String itm : currentFile.items){
+                pushToFile.items.add(itm);
+            }
+
+            pushToFile.save();
+            currentFile.delete();
+
+            return pushToName;
         }
 
-
+        return null;
     }
 
     public static void archive(String listName) {

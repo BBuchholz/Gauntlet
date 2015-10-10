@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,5 +46,22 @@ public class Utils {
     public static boolean containsTimeStamp(String s) {
 
         return extractTimeStamp_yyyyMMdd(s) != null;
+    }
+
+    public static String incrementTimeStampInString_yyyyMMdd(String listName) {
+
+        Date pushFrom = Utils.extractTimeStamp_yyyyMMdd(listName);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(pushFrom);
+        cal.add(Calendar.DATE, 1);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+
+        String newTimeStamp = sdf.format(cal.getTime());
+        String oldTimeStamp = sdf2.format(pushFrom);
+
+        return listName.replace(oldTimeStamp, newTimeStamp);
     }
 }

@@ -1,8 +1,10 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,12 +75,42 @@ public class SynergyListActivity extends ActionBarActivity {
         }
 
         if (id == R.id.action_push){
-            SynergyListFile.push(getApplicationContext(), listName);
-            readItems();
+            //SynergyListFile.push(listName);
+            promptConfirmPush();
+            //readItems();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void promptConfirmPush(){
+
+       if(Utils.containsTimeStamp(listName)){
+
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+           final String pushToName =
+                   Utils.incrementTimeStampInString_yyyyMMdd(listName);
+
+           builder.setTitle("Push Tasks")
+                   .setMessage("Push tasks to " + pushToName + "?")
+                   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int which) {
+                           String pushed = SynergyListFile.push(listName);
+                           Utils.toast(getApplicationContext(),
+                                   "tasks pushed to " + pushed);
+                           readItems();
+                       }
+                   })
+                   .setNegativeButton("No", null)
+                   .show();
+
+       }else{
+
+           Utils.toast(getApplicationContext(),
+                   "push only affects timestamped lists");
+       }
     }
 
     public void onAddItem(View view) {

@@ -1,21 +1,20 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
 

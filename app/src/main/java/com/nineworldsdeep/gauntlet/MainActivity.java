@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.nineworldsdeep.gauntlet.synergy.SynergyActivity;
+import com.nineworldsdeep.gauntlet.synergy.SynergyMasterArchiveActivity;
+import com.nineworldsdeep.gauntlet.synergy.SynergyMasterListActivity;
+import com.nineworldsdeep.gauntlet.synergy.SynergyMasterTemplateActivity;
+
 
 public class MainActivity extends ActionBarActivity {
 

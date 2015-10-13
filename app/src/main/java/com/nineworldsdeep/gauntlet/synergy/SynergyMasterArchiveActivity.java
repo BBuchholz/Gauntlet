@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.nineworldsdeep.gauntlet.R;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
-import android.content.Context;
 import android.os.Environment;
+
+import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -9,9 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
 /**
  * Created by Brent on 9/28/2015.

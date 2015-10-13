@@ -1,15 +1,16 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -78,7 +79,7 @@ public class SynergyTemplateActivity extends AppCompatActivity {
             items.add(items.size(), itemText); //add to end of list
             itemsAdapter.notifyDataSetChanged();
         }else{
-            Utils.toast(getApplicationContext(),"cannot add empty item");
+            Utils.toast(getApplicationContext(), "cannot add empty item");
         }
     }
 

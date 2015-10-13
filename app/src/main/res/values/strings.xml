@@ -22,4 +22,8 @@
     <string name="title_activity_synergy_master_template">SynergyMasterTemplateActivity</string>
     <string name="title_activity_synergy_template">SynergyTemplateActivity</string>
     <string name="title_activity_synergy_archive">SynergyArchiveActivity</string>
+    <string name="title_activity_muse_main">MuseMainActivity</string>
+    <string name="title_activity_muse_clef">MuseClefActivity</string>
+    <string name="title_activity_guitar">GuitarActivity</string>
+    <string name="title_activity_muse_keyboard">MuseKeyboardActivity</string>
 </resources>

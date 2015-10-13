@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.nineworldsdeep.gauntlet.R;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;

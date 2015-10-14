@@ -150,6 +150,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
         </activity>
+        <activity android:name=".muse.legacy.LegacyClefActivity" >
+        </activity>
+        <activity android:name=".muse.legacy.LegacyGuitarActivity" >
+        </activity>
+        <activity android:name=".muse.legacy.LegacyKeyboardActivity" >
+        </activity>
     </application>
 
 </manifest>

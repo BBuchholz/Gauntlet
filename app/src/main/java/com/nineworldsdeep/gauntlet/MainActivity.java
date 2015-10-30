@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterArchiveActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterListActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterTemplateActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterTemplateActivity;
 
 
 public class MainActivity extends ActionBarActivity {

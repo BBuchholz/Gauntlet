@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.os.Environment;
 
@@ -17,6 +17,7 @@ import java.util.Locale;
 /**
  * Created by brent on 10/6/15.
  */
+//TODO: refactor into package v2
 public class SynergyTemplateFile extends SynergyListFile {
 
     public SynergyTemplateFile(String listName){

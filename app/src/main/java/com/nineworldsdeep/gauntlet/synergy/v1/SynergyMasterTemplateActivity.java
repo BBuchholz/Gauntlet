@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import java.io.File;
 import java.util.List;
 
+//TODO: refactor into package v2
 public class SynergyMasterTemplateActivity extends AppCompatActivity {
 
     public static final String EXTRA_TEMPLATENAME =

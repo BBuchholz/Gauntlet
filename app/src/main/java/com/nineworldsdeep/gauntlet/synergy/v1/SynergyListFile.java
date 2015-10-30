@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.os.Environment;
 

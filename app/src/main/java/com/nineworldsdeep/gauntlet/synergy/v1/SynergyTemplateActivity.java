@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//TODO: refactor into package v2
 public class SynergyTemplateActivity extends AppCompatActivity {
 
     private ArrayList<String> items;

@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.os.Environment;
 
@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by Brent on 9/28/2015.
  */
+//TODO: refactor into package v2
 public class SynergyArchiveFile extends SynergyListFile {
 
     public SynergyArchiveFile(String listName){

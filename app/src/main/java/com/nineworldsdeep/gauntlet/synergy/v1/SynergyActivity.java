@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+//TODO: refactor into package v2
 public class SynergyActivity extends ActionBarActivity {
 
     private ArrayList<String> items;

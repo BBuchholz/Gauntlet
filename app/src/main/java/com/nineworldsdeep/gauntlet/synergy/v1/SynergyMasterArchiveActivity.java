@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.nineworldsdeep.gauntlet.R;
 
 import java.util.List;
 
+//TODO: refactor into package v2
 public class SynergyMasterArchiveActivity extends AppCompatActivity {
 
     public static final String EXTRA_ARCHIVENAME =

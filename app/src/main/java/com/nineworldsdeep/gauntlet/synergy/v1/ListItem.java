@@ -3,7 +3,6 @@ package com.nineworldsdeep.gauntlet.synergy.v1;
 /**
  * Created by Brent on 9/28/2015.
  */
-//TODO: refactor into package v2
 public class ListItem {
 
     public static boolean isCompleted(String itm) {

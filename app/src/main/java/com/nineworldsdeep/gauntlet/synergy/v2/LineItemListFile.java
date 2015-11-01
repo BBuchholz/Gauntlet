@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by brent on 10/30/15.
@@ -26,6 +27,22 @@ public class LineItemListFile {
     public File getSynergyFile(){
 
         return synergyFile;
+    }
+
+    public int size(){
+        return items.size();
+    }
+
+    public List<String> getItems(){
+        return items;
+    }
+
+    public void addItem(String item){
+        items.add(item);
+    }
+
+    public void removeItem(String item){
+        items.remove(item);
     }
 
     public void loadItems(){

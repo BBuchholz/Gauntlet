@@ -15,27 +15,60 @@ import java.util.List;
  */
 public class Configuration {
 
-    public File getSynergyDirectory(){
+    public static File getSynergyDirectory(){
 
-        File root = Environment.getExternalStorageDirectory();
-        File synergyDir = new File(root.getAbsolutePath() + "/NWD/synergy");
-        if(!synergyDir.exists()){
-            synergyDir.mkdirs();
-        }
-        return synergyDir;
+        return getDirectoryStoragePath("/NWD/synergy");
     }
 
-    public List<String> getAllSynergyListNames(){
+    public static File getArchiveDirectory() {
+
+        return getDirectoryStoragePath("/NWD/synergy/archived");
+    }
+
+    public static File getTemplateDirectory() {
+
+        return getDirectoryStoragePath("/NWD/synergy/templates");
+    }
+
+    public static List<String> getAllSynergyListNames(){
+
+        File dir = getSynergyDirectory();
+        return getAllListNamesForDirectory(dir);
+    }
+
+    public static List<String> getAllTemplateListNames(){
+
+        File dir = getTemplateDirectory();
+        return getAllListNamesForDirectory(dir);
+    }
+
+    public static List<String> getAllArchiveListNames(){
+
+        File dir = getArchiveDirectory();
+        return getAllListNamesForDirectory(dir);
+    }
+
+    private static List<String> getAllListNamesForDirectory(File dir){
 
         String[] exts = {"txt"};
         List<String> lst = new ArrayList<String>();
 
-        for (File f : FileUtils.listFiles(getSynergyDirectory(), exts, false)){
+        for (File f : FileUtils.listFiles(dir, exts, false)){
             lst.add(FilenameUtils.removeExtension(f.getName()));
         }
 
         Collections.sort(lst);
 
         return lst;
+    }
+
+    private static File getDirectoryStoragePath(String path){
+
+        File root = Environment.getExternalStorageDirectory();
+        File dir = new File(root.getAbsolutePath() + path);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        return dir;
     }
 }

@@ -7,9 +7,8 @@ import java.io.File;
 /**
  * Created by brent on 10/31/15.
  */
-public class SynergyListFile extends LineItemListFile {
-
-    public SynergyListFile(String name) {
-        super(name, Configuration.getSynergyDirectory());
+public class SynergyTemplateFile extends LineItemListFile {
+    public SynergyTemplateFile(String name) {
+        super(name, Configuration.getTemplateDirectory());
     }
 }

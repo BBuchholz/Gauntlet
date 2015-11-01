@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy.v1;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;

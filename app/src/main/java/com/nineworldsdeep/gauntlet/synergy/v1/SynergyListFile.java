@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by Brent on 9/27/2015.
  */
+@Deprecated
 public class SynergyListFile {
 
     protected String listName;

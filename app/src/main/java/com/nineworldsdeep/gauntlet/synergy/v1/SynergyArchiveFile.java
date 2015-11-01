@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by Brent on 9/28/2015.
  */
+@Deprecated
 public class SynergyArchiveFile extends SynergyListFile {
 
     public SynergyArchiveFile(String listName){

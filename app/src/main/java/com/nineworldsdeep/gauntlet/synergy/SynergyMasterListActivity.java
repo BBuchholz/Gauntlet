@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy.v1;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyListFile;
 
 import java.util.List;
 

@@ -17,6 +17,7 @@ import java.util.Locale;
 /**
  * Created by brent on 10/6/15.
  */
+@Deprecated
 public class SynergyTemplateFile extends SynergyListFile {
 
     public SynergyTemplateFile(String listName){

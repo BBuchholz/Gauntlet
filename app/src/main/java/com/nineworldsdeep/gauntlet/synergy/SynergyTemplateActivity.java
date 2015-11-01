@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy.v1;
+package com.nineworldsdeep.gauntlet.synergy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyTemplateFile;
 
 import org.apache.commons.io.FileUtils;
 

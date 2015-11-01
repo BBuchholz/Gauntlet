@@ -57,6 +57,7 @@ public class SynergyTemplateActivity extends AppCompatActivity {
     }
 
     private void readItems(){
+        //TODO: refactor to use v2
         File archiveFile = SynergyTemplateFile.getSynergyTemplateFile(templateName);
         try{
             items = new ArrayList<String>(FileUtils.readLines(archiveFile));
@@ -86,6 +87,7 @@ public class SynergyTemplateActivity extends AppCompatActivity {
     }
 
     private void writeItems(){
+        //TODO: refactor to use v2
         File toDoFile = SynergyTemplateFile.getSynergyTemplateFile(templateName);
         try{
             FileUtils.writeLines(toDoFile, items);

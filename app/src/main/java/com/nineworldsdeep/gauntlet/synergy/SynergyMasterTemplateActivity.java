@@ -30,6 +30,7 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
 
     private void readItems(){
 
+        //TODO: refactor to use v2
         items = SynergyTemplateFile.getAllTemplateNames();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);
@@ -103,6 +104,7 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        //TODO: refactor to use v2
         final String timestampedListName =
                 SynergyTemplateFile.getTimeStampedListName(templateName);
 
@@ -122,6 +124,7 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
     private void createTimeStampedList(String templateName,
                                        String timestampedListName){
 
+        //TODO: refactor to use v2
         File f = SynergyListFile.getSynergyFile(timestampedListName);
 
         if(f.exists()){
@@ -131,6 +134,7 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
 
         }else{
 
+            //TODO: refactor to use v2
             SynergyListFile.generateFromTemplate(templateName, timestampedListName);
             Utils.toast(getApplicationContext(), timestampedListName + " created");
         }

@@ -9,6 +9,6 @@ import java.io.File;
  */
 public class SynergyArchiveFile extends LineItemListFile {
     public SynergyArchiveFile(String name) {
-        super(name, Configuration.getSynergyArchiveDirectory());
+        super(name, Configuration.getArchiveDirectory());
     }
 }

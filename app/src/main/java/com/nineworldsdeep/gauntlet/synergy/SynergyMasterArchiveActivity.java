@@ -27,6 +27,7 @@ public class SynergyMasterArchiveActivity extends AppCompatActivity {
 
     private void readItems(){
 
+        //TODO: refactor to use v2
         items = SynergyArchiveFile.getAllArchiveNames();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);

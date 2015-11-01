@@ -55,6 +55,17 @@ public class LineItemListFile {
         }
     }
 
+    public void loadItems(List<String> itemsList){
+
+        if(items == null){
+            items = new ArrayList<>();
+        }
+
+        for(String item : itemsList){
+            items.add(item);
+        }
+    }
+
     public void delete(){
         getSynergyFile().delete();
     }

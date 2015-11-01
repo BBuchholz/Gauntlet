@@ -15,18 +15,20 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-//TODO: refactor into package v2
 public class SynergyListActivity extends ActionBarActivity {
 
-    private ArrayList<String> items;
+    //TODO: items and listName should be replaced with SynergyListFile
+    private List<String> items;
     private String listName;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
@@ -95,7 +97,7 @@ public class SynergyListActivity extends ActionBarActivity {
                    .setMessage("Push tasks to " + pushToName + "?")
                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                        public void onClick(DialogInterface dialog, int which) {
-                           String pushed = SynergyListFile.push(listName);
+                           String pushed = SynergyUtils.push(listName);
                            Utils.toast(getApplicationContext(),
                                    "tasks pushed to " + pushed);
                            readItems();
@@ -131,7 +133,7 @@ public class SynergyListActivity extends ActionBarActivity {
                 .setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SynergyListFile.archive(listName, expired);
+                        SynergyUtils.archive(listName, expired);
                         Utils.toast(getApplicationContext(), "tasks archived");
                         readItems();
                     }
@@ -164,12 +166,11 @@ public class SynergyListActivity extends ActionBarActivity {
     }
 
     private void readItems(){
-        File toDoFile = SynergyListFile.getSynergyFile(listName);
-        try{
-            items = new ArrayList<String>(FileUtils.readLines(toDoFile));
-        }catch(IOException ex){
-            items = new ArrayList<>();
-        }
+        SynergyListFile slf = new SynergyListFile(listName);
+
+        slf.loadItems();
+
+        items = slf.getItems();
 
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
@@ -219,12 +220,12 @@ public class SynergyListActivity extends ActionBarActivity {
     }
 
     private void writeItems(){
-        File toDoFile = SynergyListFile.getSynergyFile(listName);
-        try{
-            FileUtils.writeLines(toDoFile, items);
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
+
+        SynergyListFile slf = new SynergyListFile(listName);
+
+        slf.loadItems(items);
+
+        slf.save();
     }
 
 }

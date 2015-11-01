@@ -26,6 +26,7 @@ public class SynergyMasterListActivity extends ActionBarActivity {
 
     private void readItems(){
 
+        //TODO: refactor to use v2
         items = SynergyListFile.getAllListNames();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);

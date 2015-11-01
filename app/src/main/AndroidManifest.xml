@@ -27,30 +27,6 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity" />
         </activity>
         <activity
-            android:name=".PdfActivity"
-            android:label="@string/title_activity_pdf"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
-        </activity>
-        <activity
-            android:name=".EPubActivity"
-            android:label="@string/title_activity_epub"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
-        </activity>
-        <activity
-            android:name=".MusicActivity"
-            android:label="@string/title_activity_music" >
-        </activity>
-        <activity
-            android:name=".VidsActivity"
-            android:label="@string/title_activity_vids" >
-        </activity>
-        <activity
             android:name=".SimpleToDoActivity"
             android:label="@string/title_activity_simple_to_do" >
         </activity>

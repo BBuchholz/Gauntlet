@@ -41,6 +41,16 @@ public class LineItemListFile {
         items.add(item);
     }
 
+    public String remove(int idx){
+        return items.remove(idx);
+    }
+
+    public void add(int idx, String item){
+        items.add(idx,item);
+    }
+
+    public void add(String item) { items.add(item); }
+
     public void removeItem(String item){
         items.remove(item);
     }

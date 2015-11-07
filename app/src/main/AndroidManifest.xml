@@ -31,15 +31,11 @@
             android:label="@string/title_activity_simple_to_do" >
         </activity>
         <activity
-            android:name=".synergy.SynergyActivity"
-            android:label="@string/title_activity_synergy" >
-        </activity>
-        <activity
             android:name=".GrowthAreasActivity"
             android:label="@string/title_activity_growth_areas" >
         </activity>
         <activity
-            android:name=".synergy.SynergyMasterListActivity"
+            android:name=".synergy.v1.SynergyMasterListActivity"
             android:label="@string/title_activity_synergy_master_list"
             android:parentActivityName=".MainActivity" >
             <meta-data
@@ -47,15 +43,15 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity" />
         </activity>
         <activity
-            android:name=".synergy.SynergyListActivity"
+            android:name=".synergy.v1.SynergyListActivity"
             android:label="@string/title_activity_synergy_list"
-            android:parentActivityName=".synergy.SynergyMasterListActivity" >
+            android:parentActivityName=".synergy.v1.SynergyMasterListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.SynergyMasterListActivity" />
+                android:value=".synergy.v1.SynergyMasterListActivity" />
         </activity>
         <activity
-            android:name=".synergy.SynergyMasterArchiveActivity"
+            android:name=".synergy.v1.SynergyMasterArchiveActivity"
             android:label="@string/title_activity_synergy_master_archive"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -64,7 +60,7 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity" />
         </activity>
         <activity
-            android:name=".synergy.SynergyMasterTemplateActivity"
+            android:name=".synergy.v1.SynergyMasterTemplateActivity"
             android:label="@string/title_activity_synergy_master_template"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -73,22 +69,22 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity" />
         </activity>
         <activity
-            android:name=".synergy.SynergyTemplateActivity"
+            android:name=".synergy.v1.SynergyTemplateActivity"
             android:label="@string/title_activity_synergy_template"
-            android:parentActivityName=".synergy.SynergyMasterTemplateActivity"
+            android:parentActivityName=".synergy.v1.SynergyMasterTemplateActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.SynergyMasterTemplateActivity" />
+                android:value=".synergy.v1.SynergyMasterTemplateActivity" />
         </activity>
         <activity
-            android:name=".synergy.SynergyArchiveActivity"
+            android:name=".synergy.v1.SynergyArchiveActivity"
             android:label="@string/title_activity_synergy_archive"
-            android:parentActivityName=".synergy.SynergyMasterArchiveActivity"
+            android:parentActivityName=".synergy.v1.SynergyMasterArchiveActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.SynergyMasterArchiveActivity" />
+                android:value=".synergy.v1.SynergyMasterArchiveActivity" />
         </activity>
         <activity
             android:name=".muse.MuseMainActivity"
@@ -131,6 +127,17 @@
         <activity android:name=".muse.legacy.LegacyGuitarActivity" >
         </activity>
         <activity android:name=".muse.legacy.LegacyKeyboardActivity" >
+        </activity>
+        <activity
+            android:name=".synergy.v2.SynergyMainActivity"
+            android:label="@string/title_activity_synergy_main"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity android:name=".synergy.v2.SynergyListActivity" >
         </activity>
     </application>
 

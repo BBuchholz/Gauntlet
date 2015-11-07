@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy;
+package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -12,11 +12,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyListFile;
 
 import java.util.List;
 
-//TODO: refactor into package v2
+//TODO: refactor into package v2.SynergyMainActivity, then deprecate this
 public class SynergyMasterListActivity extends ActionBarActivity {
 
     public static final String EXTRA_LISTNAME = "com.nineworldsdeep.gauntlet.SYNERGY_LISTNAME";
@@ -26,7 +25,6 @@ public class SynergyMasterListActivity extends ActionBarActivity {
 
     private void readItems(){
 
-        //TODO: refactor to use v2
         items = SynergyListFile.getAllListNames();
         itemsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, items);

@@ -8,9 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterArchiveActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterListActivity;
-import com.nineworldsdeep.gauntlet.synergy.SynergyMasterTemplateActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
+import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterTemplateActivity;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -44,26 +45,6 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-//    public void sendMessage(View view) {
-//        // Do something in response to button
-//        Intent intent = new Intent(this, DisplayMessageActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-//    }
-//
-//    public void launchSimpleToDo(View view){
-//
-//        startActivity(new Intent(this, SimpleToDoActivity.class));
-//
-//    }
-//    public void launchSynergy(View view){
-//
-//        startActivity(new Intent(this, SynergyActivity.class));
-//
-//    }
     public void launchSynergyMasterList(View view){
 
         startActivity(new Intent(this, SynergyMasterListActivity.class));
@@ -87,5 +68,10 @@ public class MainActivity extends ActionBarActivity {
     public void launchMuse(View view){
 
         startActivity(new Intent(this, MuseMainActivity.class));
+    }
+
+    public void launchSynergyV2(View view) {
+
+        startActivity(new Intent(this, SynergyMainActivity.class));
     }
 }

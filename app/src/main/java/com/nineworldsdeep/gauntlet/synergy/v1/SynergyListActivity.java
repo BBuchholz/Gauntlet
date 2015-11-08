@@ -21,6 +21,10 @@ import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @deprecated use v2.SynergyListActivity
+ */
+@Deprecated
 public class SynergyListActivity extends ActionBarActivity {
 
     private List<String> items;

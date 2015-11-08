@@ -23,7 +23,6 @@ import java.util.List;
 
 public class SynergyListActivity extends ActionBarActivity {
 
-    //TODO: items and listName should be replaced with SynergyListFile
     private List<String> items;
     private String listName;
     private ArrayAdapter<String> itemsAdapter;
@@ -48,7 +47,6 @@ public class SynergyListActivity extends ActionBarActivity {
         setupListViewListener();
     }
 
-    //TODO: still needed for v2 refactor
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -56,7 +54,6 @@ public class SynergyListActivity extends ActionBarActivity {
         return true;
     }
 
-    //TODO: still needed for v2 refactor
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -82,7 +79,6 @@ public class SynergyListActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: still needed for v2 refactor
     private void promptConfirmPush(){
 
        if(Utils.containsTimeStamp(listName)){
@@ -112,7 +108,6 @@ public class SynergyListActivity extends ActionBarActivity {
        }
     }
 
-    //TODO: still needed for v2 refactor
     private void promptConfirmArchive(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -142,7 +137,6 @@ public class SynergyListActivity extends ActionBarActivity {
                 .show();
     }
 
-    //TODO: still needed for v2 refactor
     public void onAddItem(View view) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
@@ -151,13 +145,11 @@ public class SynergyListActivity extends ActionBarActivity {
         writeItems();
     }
 
-    //TODO: still needed for v2 refactor
     private void addItem(String itemText){
         items.add(getAddItemIndex(), itemText);
         itemsAdapter.notifyDataSetChanged();
     }
 
-    //TODO: still needed for v2 refactor
     private int getAddItemIndex(){
         //this method is used to add new items above completed items, but still at bottom of list
         int idx = items.size();

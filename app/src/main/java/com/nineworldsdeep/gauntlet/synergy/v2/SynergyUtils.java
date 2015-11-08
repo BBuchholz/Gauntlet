@@ -1,5 +1,9 @@
 package com.nineworldsdeep.gauntlet.synergy.v2;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 

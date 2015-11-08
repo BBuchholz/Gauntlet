@@ -51,6 +51,10 @@ public class LineItemListFile {
 
     public void add(String item) { items.add(item); }
 
+    public String get(int idx){
+        return items.get(idx);
+    }
+
     public void removeItem(String item){
         items.remove(item);
     }
@@ -88,5 +92,9 @@ public class LineItemListFile {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+    }
+
+    public String getListName() {
+        return listName;
     }
 }

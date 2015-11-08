@@ -30,6 +30,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD/synergy/templates");
     }
 
+    public static File getConfigDirectory() {
+
+        return getDirectoryStoragePath("/NWD/config");
+    }
+
     public static List<String> getAllSynergyListNames(){
 
         File dir = getSynergyDirectory();
@@ -71,4 +76,5 @@ public class Configuration {
         }
         return dir;
     }
+
 }

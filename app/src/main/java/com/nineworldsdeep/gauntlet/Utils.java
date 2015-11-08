@@ -77,4 +77,17 @@ public class Utils {
 
         return now.get(Calendar.DATE) - listDate.get(Calendar.DATE) > 0;
     }
+
+    public static boolean stringIsNullOrWhitespace(String s) {
+
+        if(s == null){
+            return true;
+        }
+
+        if(s.trim().isEmpty()){
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -30,4 +30,7 @@
     <string name="title_activity_guitar">GuitarActivity</string>
     <string name="title_activity_muse_keyboard">MuseKeyboardActivity</string>
     <string name="title_activity_synergy_main">SynergyMainActivity</string>
+    <string name="title_activity_alias_list">Alias List</string>
+    <string name="title_activity_book_segments">Book Segments</string>
+    <string name="title_activity_alias_input">Input Alias</string>
 </resources>

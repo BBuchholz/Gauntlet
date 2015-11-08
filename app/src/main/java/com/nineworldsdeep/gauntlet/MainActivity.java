@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
+import com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
 import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
@@ -73,5 +75,15 @@ public class MainActivity extends ActionBarActivity {
     public void launchSynergyV2(View view) {
 
         startActivity(new Intent(this, SynergyMainActivity.class));
+    }
+
+    public void launchAliasList(View view) {
+
+        startActivity(new Intent(this, AliasListActivity.class));
+    }
+
+    public void launchBookSegments(View view) {
+
+        startActivity(new Intent(this, BookSegmentsActivity.class));
     }
 }

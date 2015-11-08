@@ -139,6 +139,33 @@
         </activity>
         <activity android:name=".synergy.v2.SynergyListActivity" >
         </activity>
+        <activity
+            android:name=".bookSegments.AliasListActivity"
+            android:label="@string/title_activity_alias_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".bookSegments.BookSegmentsActivity"
+            android:label="@string/title_activity_book_segments"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".bookSegments.AliasInputActivity"
+            android:label="@string/title_activity_alias_input"
+            android:parentActivityName=".bookSegments.AliasListActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity" />
+        </activity>
     </application>
 
 </manifest>

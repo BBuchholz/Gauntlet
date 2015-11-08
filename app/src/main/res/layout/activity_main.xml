@@ -19,6 +19,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Alias List"
+        android:onClick="launchAliasList"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Segments"
+        android:onClick="launchBookSegments"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Synergy Master List"
         android:onClick="launchSynergyMasterList"/>
 

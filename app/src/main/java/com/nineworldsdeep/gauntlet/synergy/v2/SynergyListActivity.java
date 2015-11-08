@@ -21,8 +21,7 @@ import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
 import java.util.ArrayList;
 
 public class SynergyListActivity
-        extends AppCompatActivity
-        implements IReadItemsCallback {
+        extends AppCompatActivity{
 
     private SynergyListFile slf;
 
@@ -212,7 +211,7 @@ public class SynergyListActivity
         setListViewAdapter(getLvItems());
     }
 
-    public void onAddItem(View view) {
+    public void onAddItemClick(View view) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         slf.add(getAddItemIndex(), itemText);

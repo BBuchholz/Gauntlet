@@ -141,7 +141,7 @@ public class SynergyListActivity extends ActionBarActivity {
                 .show();
     }
 
-    public void onAddItem(View view) {
+    public void onAddItemClick(View view) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         addItem(itemText);

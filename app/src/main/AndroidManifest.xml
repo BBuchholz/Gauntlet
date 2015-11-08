@@ -166,6 +166,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity" />
         </activity>
+        <activity
+            android:name=".bookSegments.BookSegmentsInputActivity"
+            android:label="@string/title_activity_book_segments_input"
+            android:parentActivityName=".bookSegments.BookSegmentsActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity" />
+        </activity>
     </application>
 
 </manifest>

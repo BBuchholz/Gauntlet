@@ -34,4 +34,9 @@ public class Alias extends Fragment {
 
         return output;
     }
+
+    public String getAlias() {
+
+        return get("alias");
+    }
 }

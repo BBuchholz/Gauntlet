@@ -33,4 +33,5 @@
     <string name="title_activity_alias_list">Alias List</string>
     <string name="title_activity_book_segments">Book Segments</string>
     <string name="title_activity_alias_input">Input Alias</string>
+    <string name="title_activity_book_segments_input">Book Segments Input</string>
 </resources>

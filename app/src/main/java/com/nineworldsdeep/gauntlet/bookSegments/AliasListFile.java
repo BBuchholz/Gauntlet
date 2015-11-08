@@ -11,6 +11,7 @@ import java.util.List;
  * Created by brent on 11/8/15.
  */
 public class AliasListFile extends LineItemListFile {
+
     public AliasListFile() {
         super("AliasList", Configuration.getConfigDirectory());
     }

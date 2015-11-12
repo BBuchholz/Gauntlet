@@ -25,26 +25,27 @@ public class SynergyUtils {
 
     public static List<String> getAllListNames(){
 
-        String[] exts = {"txt"};
-        List<String> lst = new ArrayList<String>();
-        File synergyDir = Configuration.getSynergyDirectory();
-
-        for (File f : FileUtils.listFiles(synergyDir, exts, false)){
-            lst.add(FilenameUtils.removeExtension(f.getName()));
-        }
-
-        Collections.sort(lst);
-
-        return lst;
+        return getAllTextFileNamesWithoutExt(
+                Configuration.getSynergyDirectory());
     }
 
     public static List<String> getAllArchiveNames() {
 
-        String[] exts = {"txt"};
-        List<String> lst = new ArrayList<>();
-        File archiveDir = Configuration.getArchiveDirectory();
+        return getAllTextFileNamesWithoutExt(
+                Configuration.getArchiveDirectory());
+    }
 
-        for (File f : FileUtils.listFiles(archiveDir, exts, false)){
+    public static List<String> getAllTemplateNames() {
+        return getAllTextFileNamesWithoutExt(
+                Configuration.getTemplateDirectory());
+    }
+
+    private static List<String> getAllTextFileNamesWithoutExt(File directory){
+
+        String[] exts = {"txt"};
+        List<String> lst = new ArrayList<>();;
+
+        for (File f : FileUtils.listFiles(directory, exts, false)){
 
             lst.add(FilenameUtils.removeExtension(f.getName()));
         }
@@ -54,7 +55,7 @@ public class SynergyUtils {
         return lst;
     }
 
-    public SynergyListFile generateFromTemplate(String templateName,
+    public static SynergyListFile generateFromTemplate(String templateName,
                                                 String timeStampedListName){
 
         SynergyListFile slf = new SynergyListFile(timeStampedListName);
@@ -143,4 +144,5 @@ public class SynergyUtils {
             slf.delete();
         }
     }
+
 }

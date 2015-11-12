@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TODO: refactor into package v2
+@Deprecated
 public class SynergyTemplateActivity extends AppCompatActivity {
 
     private ArrayList<String> items;

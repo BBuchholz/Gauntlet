@@ -15,7 +15,7 @@ import com.nineworldsdeep.gauntlet.R;
 
 import java.util.List;
 
-//TODO: refactor into package v2.SynergyMainActivity, then deprecate this
+@Deprecated
 public class SynergyMasterListActivity extends ActionBarActivity {
 
     public static final String EXTRA_LISTNAME = "com.nineworldsdeep.gauntlet.SYNERGY_LISTNAME";

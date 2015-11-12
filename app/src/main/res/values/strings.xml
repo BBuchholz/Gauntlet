@@ -16,6 +16,8 @@
     <string name="menu_move">Move</string>
     <string name="menu_archive">Archive</string>
     <string name="menu_push">Push</string>
+    <string name="menu_show_templates">Show Templates</string>
+    <string name="menu_show_archives">Show Archives</string>
     <string name="change_tuning">Change Tuning</string>
     <string name="set_num_strings">Set Number of Strings</string>
     <string name="set_fret_range">Set Fret Range</string>
@@ -34,4 +36,5 @@
     <string name="title_activity_book_segments">Book Segments</string>
     <string name="title_activity_alias_input">Input Alias</string>
     <string name="title_activity_book_segments_input">Book Segments Input</string>
+    <string name="title_activity_synergy_templates">SynergyTemplatesActivity</string>
 </resources>

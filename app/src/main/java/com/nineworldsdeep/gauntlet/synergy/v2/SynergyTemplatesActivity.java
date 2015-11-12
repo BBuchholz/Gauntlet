@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy.v1;
+package com.nineworldsdeep.gauntlet.synergy.v2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,41 +15,28 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.File;
-import java.util.List;
 
-@Deprecated
-public class SynergyMasterTemplateActivity extends AppCompatActivity {
+public class SynergyTemplatesActivity extends AppCompatActivity {
 
     public static final String EXTRA_TEMPLATENAME =
             "com.nineworldsdeep.gauntlet.SYNERGY_TEMPLATENAME";
-    private List<String> items;
-    private ArrayAdapter<String> itemsAdapter;
-    private ListView lvItems;
-
-    private void readItems(){
-
-        //TODO: refactor to use v2
-        items = SynergyTemplateFile.getAllTemplateNames();
-        itemsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_synergy_master_template);
+        setContentView(R.layout.activity_synergy_templates);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        lvItems = (ListView)findViewById(R.id.lvItems);
         readItems();
-
         setupListViewListeners();
     }
 
-    private void setupListViewListeners(){
+    private void setupListViewListeners() {
+
+        final ListView lvItems =
+                (ListView)findViewById(R.id.lvItems);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -60,7 +47,8 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
                                     long id) {
 
                 //get selected template name
-                String selectedTemplate = items.get(idx);
+                String selectedTemplate =
+                        (String)lvItems.getItemAtPosition(idx);
 
                 Intent intent = new Intent(view.getContext(),
                         SynergyTemplateActivity.class);
@@ -79,23 +67,33 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
                                            long id) {
 
                 //get selected template name
-                String selectedTemplate = items.get(idx);
+                String selectedTemplate =
+                        (String)lvItems.getItemAtPosition(idx);
 
                 promptConfirmGenFromTemplate(selectedTemplate);
 
                 return true;
             }
         });
+    }
 
+    private void readItems() {
+
+        ListView lvItems =
+                (ListView)findViewById(R.id.lvItems);
+
+        lvItems.setAdapter(
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_list_item_1,
+                        SynergyUtils.getAllTemplateNames()));
     }
 
     private void promptConfirmGenFromTemplate(String templateName){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        //TODO: refactor to use v2
         final String timestampedListName =
-                SynergyTemplateFile.getTimeStampedListName(templateName);
+                SynergyUtils.getTimeStampedListName(templateName);
 
         final String tName = templateName;
 
@@ -113,8 +111,8 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
     private void createTimeStampedList(String templateName,
                                        String timestampedListName){
 
-        //TODO: refactor to use v2
-        File f = SynergyListFile.getSynergyFile(timestampedListName);
+        SynergyListFile slf = new SynergyListFile(timestampedListName);
+        File f = slf.getSynergyFile();
 
         if(f.exists()){
 
@@ -123,10 +121,13 @@ public class SynergyMasterTemplateActivity extends AppCompatActivity {
 
         }else{
 
-            //TODO: refactor to use v2
-            SynergyListFile.generateFromTemplate(templateName, timestampedListName);
+            SynergyListFile newSlf =
+                    SynergyUtils.generateFromTemplate(templateName,
+                            timestampedListName);
+            newSlf.save();
             Utils.toast(getApplicationContext(), timestampedListName + " created");
         }
 
     }
+
 }

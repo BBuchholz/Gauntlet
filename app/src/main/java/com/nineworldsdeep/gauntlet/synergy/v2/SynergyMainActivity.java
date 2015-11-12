@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 public class SynergyMainActivity extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class SynergyMainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_show_archive){
+            startActivity(new Intent(this, SynergyArchivesActivity.class));
             return true;
         }
 
@@ -63,6 +66,20 @@ public class SynergyMainActivity extends AppCompatActivity {
         setupListViewListener(lvItems);
     }
 
+    public void onAddItemClick(View view) {
+        EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
+        String itemText = etNewItem.getText().toString();
+        itemText = itemText.trim();
+        if(!Utils.stringIsNullOrWhitespace(itemText)){
+            SynergyListFile slf =
+                    new SynergyListFile(itemText);
+            slf.loadItems(); //just in case it already exists
+            slf.save();
+            etNewItem.setText("");
+            readItems();
+        }
+    }
+
     private void setupListViewListener(final ListView lvItems) {
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +91,7 @@ public class SynergyMainActivity extends AppCompatActivity {
                                     long id) {
 
                 //get selected list name
-                String selectedList = (String)lvItems.getItemAtPosition(idx);
+                String selectedList = (String) lvItems.getItemAtPosition(idx);
 
                 Intent intent = new Intent(view.getContext(),
                         SynergyListActivity.class);
@@ -83,6 +100,10 @@ public class SynergyMainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void readItems(){
+        readItems((ListView)findViewById(R.id.lvItems));
     }
 
     private void readItems(ListView lvItems) {

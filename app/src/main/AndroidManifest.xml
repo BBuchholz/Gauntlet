@@ -193,6 +193,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyTemplatesActivity" />
         </activity>
+        <activity
+            android:name=".synergy.v2.SynergyArchivesActivity"
+            android:label="@string/title_activity_synergy_archives"
+            android:parentActivityName=".synergy.v2.SynergyMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity" />
+        </activity>
+        <activity
+            android:name=".synergy.v2.SynergyArchiveActivity"
+            android:label="@string/title_activity_synergy_archive"
+            android:parentActivityName=".synergy.v2.SynergyArchivesActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity" />
+        </activity>
     </application>
 
 </manifest>

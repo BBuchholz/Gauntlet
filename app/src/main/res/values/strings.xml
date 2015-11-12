@@ -37,4 +37,5 @@
     <string name="title_activity_alias_input">Input Alias</string>
     <string name="title_activity_book_segments_input">Book Segments Input</string>
     <string name="title_activity_synergy_templates">SynergyTemplatesActivity</string>
+    <string name="title_activity_synergy_archives">SynergyArchivesActivity</string>
 </resources>

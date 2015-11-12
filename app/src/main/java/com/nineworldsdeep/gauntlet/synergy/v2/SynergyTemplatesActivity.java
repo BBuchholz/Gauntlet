@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
@@ -48,7 +49,7 @@ public class SynergyTemplatesActivity extends AppCompatActivity {
 
                 //get selected template name
                 String selectedTemplate =
-                        (String)lvItems.getItemAtPosition(idx);
+                        (String) lvItems.getItemAtPosition(idx);
 
                 Intent intent = new Intent(view.getContext(),
                         SynergyTemplateActivity.class);
@@ -68,7 +69,7 @@ public class SynergyTemplatesActivity extends AppCompatActivity {
 
                 //get selected template name
                 String selectedTemplate =
-                        (String)lvItems.getItemAtPosition(idx);
+                        (String) lvItems.getItemAtPosition(idx);
 
                 promptConfirmGenFromTemplate(selectedTemplate);
 
@@ -130,4 +131,17 @@ public class SynergyTemplatesActivity extends AppCompatActivity {
 
     }
 
+    public void onAddItemClick(View view) {
+        EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
+        String itemText = etNewItem.getText().toString();
+        itemText = itemText.trim();
+        if(!Utils.stringIsNullOrWhitespace(itemText)){
+            SynergyTemplateFile stf =
+                    new SynergyTemplateFile(itemText);
+            stf.loadItems(); //just in case it already exists
+            stf.save();
+            etNewItem.setText("");
+            readItems();
+        }
+    }
 }

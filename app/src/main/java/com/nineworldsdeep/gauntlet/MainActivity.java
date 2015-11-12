@@ -47,26 +47,26 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void launchSynergyMasterList(View view){
-
-        startActivity(new Intent(this, SynergyMasterListActivity.class));
-
-    }
+//    public void launchSynergyMasterList(View view){
+//
+//        startActivity(new Intent(this, SynergyMasterListActivity.class));
+//
+//    }
     public void launchGrowthAreas(View view){
 
         startActivity(new Intent(this, GrowthAreasActivity.class));
 
     }
-    public void launchSynergyMasterArchive(View view){
-
-        startActivity(new Intent(this, SynergyMasterArchiveActivity.class));
-
-    }
-    public void launchSynergyMasterTemplate(View view){
-
-        startActivity(new Intent(this, SynergyMasterTemplateActivity.class));
-
-    }
+//    public void launchSynergyMasterArchive(View view){
+//
+//        startActivity(new Intent(this, SynergyMasterArchiveActivity.class));
+//
+//    }
+//    public void launchSynergyMasterTemplate(View view){
+//
+//        startActivity(new Intent(this, SynergyMasterTemplateActivity.class));
+//
+//    }
     public void launchMuse(View view){
 
         startActivity(new Intent(this, MuseMainActivity.class));

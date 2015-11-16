@@ -42,4 +42,28 @@ public class BookSegment extends Fragment {
 
         return output;
     }
+
+    public String getAlias() {
+        return get("alias");
+    }
+
+    public String getPageRange(){
+        return get("pR");
+    }
+
+    public String getSegment(){
+        return get("seg");
+    }
+
+    public String getKeyWords(){
+        return get("kW");
+    }
+
+    public String getConferre(){
+        return get("cf");
+    }
+
+    public String getNotes(){
+        return get("notes");
+    }
 }

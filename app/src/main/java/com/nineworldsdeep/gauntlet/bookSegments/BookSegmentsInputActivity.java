@@ -7,12 +7,28 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
+import com.nineworldsdeep.gauntlet.DisplayMode;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 public class BookSegmentsInputActivity extends AppCompatActivity {
+
+    public static final String EXTRA_INPUT_MODE =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_INPUT_MODE";
+
+    public static final String EXTRA_PR =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_PR";
+    public static final String EXTRA_SEG =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_SEG";
+    public static final String EXTRA_KW =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_KW";
+    public static final String EXTRA_CF =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_CF";
+    public static final String EXTRA_NOTES =
+            "com.nineworldsdeep.gauntlet.bookSegments.BOOKSEGMENTS_NOTES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +43,32 @@ public class BookSegmentsInputActivity extends AppCompatActivity {
                 intent.getStringExtra(
                         AliasListActivity.EXTRA_ALIASLIST_ALIAS);
 
+        DisplayMode mode =
+                (DisplayMode) intent.getSerializableExtra(
+                        EXTRA_INPUT_MODE);
+
+        Utils.toast(this, mode.toString());
+
+        //set in all modes
         setTextByViewId(R.id.etAlias, aliasStr);
+
+        if(mode == DisplayMode.View){
+            Button btn = (Button)findViewById(R.id.btnAdd);
+            btn.setVisibility(View.GONE);
+
+            String prStr = intent.getStringExtra(EXTRA_PR);
+            String segStr = intent.getStringExtra(EXTRA_SEG);
+            String kwStr = intent.getStringExtra(EXTRA_KW);
+            String cfStr = intent.getStringExtra(EXTRA_CF);
+            String notesStr = intent.getStringExtra(EXTRA_NOTES);
+
+            setTextByViewId(R.id.etPageRange, prStr);
+            setTextByViewId(R.id.etSegment, segStr);
+            setTextByViewId(R.id.etKeywords, kwStr);
+            setTextByViewId(R.id.etConferre, cfStr);
+            setTextByViewId(R.id.etNotes, notesStr);
+        }
+
     }
 
     public void onAddItem(View view) {

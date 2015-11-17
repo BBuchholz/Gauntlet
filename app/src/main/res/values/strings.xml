@@ -38,4 +38,6 @@
     <string name="title_activity_book_segments_input">Book Segments Input</string>
     <string name="title_activity_synergy_templates">SynergyTemplatesActivity</string>
     <string name="title_activity_synergy_archives">SynergyArchivesActivity</string>
+    <string name="title_activity_image_list">ImageListActivity</string>
+    <string name="title_activity_image_display">ImageDisplayActivity</string>
 </resources>

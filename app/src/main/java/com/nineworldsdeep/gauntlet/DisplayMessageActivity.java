@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public class DisplayMessageActivity extends ActionBarActivity {
 
+    public final static String EXTRA_MESSAGE = "com.nineworldsdeep.gauntlet.MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +19,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
 
-        String msg = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String msg = intent.getStringExtra(EXTRA_MESSAGE);
 
         TextView tVw = new TextView(this);
 

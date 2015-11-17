@@ -211,6 +211,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity" />
         </activity>
+        <activity
+            android:name=".mnemosyne.ImageListActivity"
+            android:label="@string/title_activity_image_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".mnemosyne.ImageDisplayActivity"
+            android:label="@string/title_activity_image_display"
+            android:parentActivityName=".mnemosyne.ImageListActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity" />
+        </activity>
     </application>
 
 </manifest>

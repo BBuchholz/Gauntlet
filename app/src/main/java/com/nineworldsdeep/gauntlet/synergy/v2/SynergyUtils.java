@@ -43,16 +43,7 @@ public class SynergyUtils {
     private static List<String> getAllTextFileNamesWithoutExt(File directory){
 
         String[] exts = {"txt"};
-        List<String> lst = new ArrayList<>();;
-
-        for (File f : FileUtils.listFiles(directory, exts, false)){
-
-            lst.add(FilenameUtils.removeExtension(f.getName()));
-        }
-
-        Collections.sort(lst);
-
-        return lst;
+        return Utils.getAllFileNamesMinusExt(directory, exts);
     }
 
     public static SynergyListFile generateFromTemplate(String templateName,

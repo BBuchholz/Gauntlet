@@ -40,6 +40,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD/config");
     }
 
+    public static File getImagesDirectory() {
+
+        return getDirectoryStoragePath("/NWD-MEDIA/images");
+    }
+
     public static List<String> getAllSynergyListNames(){
 
         File dir = getSynergyDirectory();

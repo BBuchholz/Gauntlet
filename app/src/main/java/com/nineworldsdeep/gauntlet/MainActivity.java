@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
 import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
@@ -17,8 +18,6 @@ import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 
 
 public class MainActivity extends ActionBarActivity {
-
-    public final static String EXTRA_MESSAGE = "com.nineworldsdeep.gauntlet.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,26 +46,13 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-//    public void launchSynergyMasterList(View view){
-//
-//        startActivity(new Intent(this, SynergyMasterListActivity.class));
-//
-//    }
+
     public void launchGrowthAreas(View view){
 
         startActivity(new Intent(this, GrowthAreasActivity.class));
 
     }
-//    public void launchSynergyMasterArchive(View view){
-//
-//        startActivity(new Intent(this, SynergyMasterArchiveActivity.class));
-//
-//    }
-//    public void launchSynergyMasterTemplate(View view){
-//
-//        startActivity(new Intent(this, SynergyMasterTemplateActivity.class));
-//
-//    }
+
     public void launchMuse(View view){
 
         startActivity(new Intent(this, MuseMainActivity.class));
@@ -82,8 +68,14 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, AliasListActivity.class));
     }
 
-    public void launchBookSegments(View view) {
+    public void launchImageList(View view) {
 
-        startActivity(new Intent(this, BookSegmentsActivity.class));
+        startActivity(new Intent(this, ImageListActivity.class));
     }
+
+//
+//    public void launchBookSegments(View view) {
+//
+//        startActivity(new Intent(this, BookSegmentsActivity.class));
+//    }
 }

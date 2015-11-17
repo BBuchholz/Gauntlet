@@ -3,10 +3,20 @@ package com.nineworldsdeep.gauntlet;
 import android.content.Context;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+
+import java.io.File;
+import java.io.FileFilter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +27,46 @@ public class Utils {
 
     public static void toast(Context c, String msg){
         Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static List<String> getAllFileNamesWithExt(File dir, String[] exts) {
+        List<String> lst = new ArrayList<>();;
+
+        for (File f : FileUtils.listFiles(dir, exts, false)){
+
+            lst.add(f.getName());
+        }
+
+        Collections.sort(lst);
+
+        return lst;
+    }
+
+    public static List<String> getAllDirectoryNames(File dir) {
+
+        List<String> lst = new ArrayList<>();;
+
+        for (File d : dir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY)){
+
+            lst.add(d.getName());
+        }
+
+        Collections.sort(lst);
+
+        return lst;
+    }
+
+    public static List<String> getAllFileNamesMinusExt(File dir, String[] exts){
+        List<String> lst = new ArrayList<>();;
+
+        for (File f : FileUtils.listFiles(dir, exts, false)){
+
+            lst.add(FilenameUtils.removeExtension(f.getName()));
+        }
+
+        Collections.sort(lst);
+
+        return lst;
     }
 
     public static Date extractTimeStamp_yyyyMMdd(String s){
@@ -90,4 +140,5 @@ public class Utils {
 
         return false;
     }
+
 }

@@ -42,6 +42,20 @@ public class Utils {
         return lst;
     }
 
+    public static List<String> getAllFilePathsWithExt(File dir, String[] exts) {
+
+        List<String> lst = new ArrayList<>();;
+
+        for (File f : FileUtils.listFiles(dir, exts, false)){
+
+            lst.add(f.getAbsolutePath());
+        }
+
+        Collections.sort(lst);
+
+        return lst;
+    }
+
     public static List<String> getAllDirectoryNames(File dir) {
 
         List<String> lst = new ArrayList<>();;
@@ -49,6 +63,20 @@ public class Utils {
         for (File d : dir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY)){
 
             lst.add(d.getName());
+        }
+
+        Collections.sort(lst);
+
+        return lst;
+    }
+
+    public static List<String> getAllDirectoryPaths(File dir) {
+
+        List<String> lst = new ArrayList<>();;
+
+        for (File d : dir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY)){
+
+            lst.add(d.getAbsolutePath());
         }
 
         Collections.sort(lst);

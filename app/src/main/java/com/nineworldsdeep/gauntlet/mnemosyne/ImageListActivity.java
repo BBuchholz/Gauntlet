@@ -70,8 +70,11 @@ public class ImageListActivity extends AppCompatActivity {
                                     long id) {
 
                 //get selected list name
-                String selectedName = (String)lvItems.getItemAtPosition(idx);
-                File f = new File(currentDir, selectedName);
+//                String selectedName = (String)lvItems.getItemAtPosition(idx);
+//                File f = new File(currentDir, selectedName);
+
+                ImageListItem ili = (ImageListItem) lvItems.getItemAtPosition(idx);
+                File f = ili.getFile();
 
                 if(f.exists() && f.isFile()){
 
@@ -92,6 +95,9 @@ public class ImageListActivity extends AppCompatActivity {
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
+                }else{
+                    
+                    Utils.toast(view.getContext(), f.getAbsolutePath());
                 }
             }
         });
@@ -104,7 +110,7 @@ public class ImageListActivity extends AppCompatActivity {
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getImages(currentDir))
+                        MnemoSyneUtils.getImageListItems(currentDir))
         );
     }
 

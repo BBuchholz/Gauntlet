@@ -21,6 +21,7 @@ public class LineItemListFile {
     public LineItemListFile(String name, File filesDir){
 
         listName = name;
+        items = new ArrayList<>();
         synergyFile = new File(filesDir, listName + ".txt");
     }
 

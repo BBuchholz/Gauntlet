@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity">
+    <item android:id="@+id/action_set_display_name"
+        android:title="@string/menu_set_display_name"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

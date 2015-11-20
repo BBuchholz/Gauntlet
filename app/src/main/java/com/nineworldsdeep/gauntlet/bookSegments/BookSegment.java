@@ -38,7 +38,15 @@ public class BookSegment extends Fragment {
             output += get("seg") + "; ";
         }
 
-        output += get("kW");
+        if(!Utils.stringIsNullOrWhitespace(get("kW"))) {
+
+            output += get("kW") + "; ";
+        }
+
+        if(!Utils.stringIsNullOrWhitespace(get("cf"))) {
+
+            output += get("cf") + "; ";
+        }
 
         return output;
     }

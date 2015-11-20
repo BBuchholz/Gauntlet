@@ -71,6 +71,32 @@ public class BookSegmentsInputActivity extends AppCompatActivity {
 
     }
 
+    private boolean validateInput(String strAlias,
+                                  String strPageRange,
+                                  String strSegment,
+                                  String strKeywords,
+                                  String strConferre,
+                                  String strNotes){
+
+        if(Utils.stringIsNullOrWhitespace(strAlias) ||
+                Utils.stringIsNullOrWhitespace(strPageRange)){
+
+            Utils.toast(this, "Alias and PageRange are required fields");
+            return false;
+        }
+
+        if(Utils.stringIsNullOrWhitespace(strSegment) &&
+                Utils.stringIsNullOrWhitespace(strKeywords) &&
+                Utils.stringIsNullOrWhitespace(strConferre) &&
+                Utils.stringIsNullOrWhitespace(strNotes)){
+
+            Utils.toast(this, "At least one more field must be entered");
+            return false;
+        }
+
+        return true;
+    }
+
     public void onAddItem(View view) {
 
         String strAlias = getTextByViewId(R.id.etAlias);
@@ -80,13 +106,8 @@ public class BookSegmentsInputActivity extends AppCompatActivity {
         String strConferre = getTextByViewId(R.id.etConferre);
         String strNotes = getTextByViewId(R.id.etNotes);
 
-        if(Utils.stringIsNullOrWhitespace(strPageRange) ||
-                Utils.stringIsNullOrWhitespace(strAlias) ||
-                Utils.stringIsNullOrWhitespace(strKeywords)){
-
-            Utils.toast(this, "PageRange, Alias and Keywords are required fields");
-
-        }else{
+        if(validateInput(strAlias, strPageRange, strSegment,
+                strKeywords, strConferre, strNotes)){
 
             BookSegmentsFile bsf = new BookSegmentsFile(strAlias);
             bsf.loadItems();

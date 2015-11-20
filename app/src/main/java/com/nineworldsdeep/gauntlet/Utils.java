@@ -3,6 +3,8 @@ package com.nineworldsdeep.gauntlet;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -116,6 +118,14 @@ public class Utils {
 
                 return null;
             }
+            catch(Exception e) {
+
+                SynergyListFile slf = new SynergyListFile("Utils-Log");
+                slf.add(e.getMessage());
+                slf.save();
+
+                return null;
+            }
         }
 
         return null;
@@ -153,7 +163,26 @@ public class Utils {
         Calendar listDate = Calendar.getInstance();
         listDate.setTime(Utils.extractTimeStamp_yyyyMMdd(listName));
 
-        return now.get(Calendar.DATE) - listDate.get(Calendar.DATE) > 0;
+        if(now.get(Calendar.YEAR) > listDate.get(Calendar.YEAR)){
+
+            return true;
+
+        }
+
+        if(now.get(Calendar.YEAR) == listDate.get(Calendar.YEAR) &&
+                now.get(Calendar.MONTH) > listDate.get(Calendar.MONTH)){
+
+            return true;
+        }
+
+        if(now.get(Calendar.YEAR) == listDate.get(Calendar.YEAR) &&
+                now.get(Calendar.MONTH) == listDate.get(Calendar.MONTH) &&
+                now.get(Calendar.DATE) > listDate.get(Calendar.DATE)){
+
+            return true;
+        }
+
+        return false;
     }
 
     public static boolean stringIsNullOrWhitespace(String s) {

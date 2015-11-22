@@ -136,4 +136,90 @@ public class SynergyUtils {
         }
     }
 
+    public static void queue(SynergyListFile slf, int position) {
+
+        SynergyListFile currentDailyToDo =
+                new SynergyListFile(getTimeStampedListName("DailyToDo"));
+
+        currentDailyToDo.loadItems();
+
+        String categorizedItem =
+                "::" + slf.getListName() + ":: - " + slf.remove(position);
+
+        currentDailyToDo.add(0, categorizedItem);
+
+        currentDailyToDo.save();
+        slf.save();
+    }
+
+    public static String trimCategory(String synergyListItem){
+
+        if(isCategorizedItem(synergyListItem)){
+
+            int startIdx = synergyListItem.indexOf(":: - ") + 5;
+
+            return synergyListItem.substring(startIdx);
+
+        }else{
+
+            return synergyListItem;
+        }
+    }
+
+    public static String parseCategory(String synergyListItem) {
+
+        if(isCategorizedItem(synergyListItem)){
+
+            int endIdx = synergyListItem.indexOf(":: - ");
+
+            return synergyListItem.substring(2, endIdx);
+
+        }else{
+
+            return null;
+        }
+    }
+
+    public static boolean isCategorizedItem(String synergyListItem){
+
+        return synergyListItem.startsWith("::") &&
+                synergyListItem.contains(":: - ");
+    }
+
+    public static String markCompleted(String item){
+
+        return "completed={" + item + "}";
+    }
+
+    public static void completeCategorizedItem(String item){
+
+        String category = parseCategory(item);
+
+        SynergyListFile slf = new SynergyListFile(category);
+        slf.loadItems();
+        slf.add(markCompleted(trimCategory(item)));
+        slf.save();
+    }
+
+    public static void shelve(SynergyListFile shelveFromFile,
+                              int position,
+                              String category) {
+
+        SynergyListFile shelveToFile = new SynergyListFile(category);
+        shelveToFile.loadItems();
+
+        //remove category if exists
+        String itemToShelve = shelveFromFile.remove(position);
+
+        if(isCategorizedItem(itemToShelve)){
+
+            itemToShelve = trimCategory(itemToShelve);
+        }
+
+        //add to top of list
+        shelveToFile.add(0, itemToShelve);
+
+        shelveToFile.save();
+        shelveFromFile.save();
+    }
 }

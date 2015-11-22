@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.DisplayNameIndex;
 
 public class SynergyListActivity
         extends AppCompatActivity{
@@ -58,7 +61,7 @@ public class SynergyListActivity
 
         menu.setHeaderTitle(title);
 
-        menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Complete");
+        menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
         if(Utils.containsTimeStamp(slf.getListName())){
 
@@ -191,41 +194,96 @@ public class SynergyListActivity
         }
     }
 
-    private void setupListViewListener(final ListView lvItems) {
-
-        lvItems.setOnItemLongClickListener(
-                new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent,
-                                                   View view,
-                                                   int position,
-                                                   long id) {
-
-                        toggleCompletionStatusAtPosition(position);
-                        //setListViewAdapter(lvItems);
-
-                        //return true consumes the long click event (marks it handled)
-                        return true;
-                    }
-                });
-    }
+//    private void setupListViewListener(final ListView lvItems) {
+//
+//        lvItems.setOnItemLongClickListener(
+//                new AdapterView.OnItemLongClickListener() {
+//                    @Override
+//                    public boolean onItemLongClick(AdapterView<?> parent,
+//                                                   View view,
+//                                                   int position,
+//                                                   long id) {
+//
+//                        toggleCompletionStatusAtPosition(position);
+//                        //setListViewAdapter(lvItems);
+//
+//                        //return true consumes the long click event (marks it handled)
+//                        return true;
+//                    }
+//                });
+//    }
 
     private void queuePosition(int position) {
 
         if(!Utils.containsTimeStamp(slf.getListName())){
 
             Utils.toast(this, "queue position " + position);
+            SynergyUtils.queue(slf, position);
+            refreshListItems();
 
         }else{
             Utils.toast(this, "Queue only applies to non-timestamped lists");
         }
     }
 
-    private void shelvePosition(int position) {
+    private void shelvePosition(final int position) {
 
         if(Utils.containsTimeStamp(slf.getListName())){
 
             Utils.toast(this, "shelve position " + position);
+            String category = SynergyUtils.parseCategory(slf.get(position));
+
+            if(Utils.stringIsNullOrWhitespace(category)){
+
+                //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("Enter category: ");
+
+                android.app.AlertDialog.Builder alertDialogBuilder =
+                        new android.app.AlertDialog.Builder(this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                        // get category from userInput and shelve
+                                        SynergyUtils.shelve(slf, position, userInput.getText().toString());
+                                        Utils.toast(getApplicationContext(), "shelved");
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+            }else {
+
+                SynergyUtils.shelve(slf, position, category);
+                Utils.toast(this, "shelved");
+            }
+
+            refreshListItems();
 
         }else{
             Utils.toast(this, "Shelve only applies to timestamped lists");
@@ -246,8 +304,15 @@ public class SynergyListActivity
             slf.add(0, removedItem);
         } else {
             //incomplete item being changed to complete
-            removedItem = "completed={" + removedItem + "}";
-            slf.add(removedItem);
+            if(SynergyUtils.isCategorizedItem(removedItem)){
+
+                SynergyUtils.completeCategorizedItem(removedItem);
+
+            }else {
+
+                removedItem = "completed={" + removedItem + "}";
+                slf.add(removedItem);
+            }
         }
 
         writeItems();

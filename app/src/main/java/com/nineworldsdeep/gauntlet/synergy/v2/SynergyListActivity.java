@@ -5,23 +5,24 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
-
-import java.util.ArrayList;
 
 public class SynergyListActivity
         extends AppCompatActivity{
+
+    private static final int MENU_CONTEXT_COMPLETION_STATUS_ID = 1;
+    private static final int MENU_CONTEXT_SHELVE_ID = 2;
+    private static final int MENU_CONTEXT_QUEUE_ID = 3;
 
     private SynergyListFile slf;
 
@@ -41,7 +42,62 @@ public class SynergyListActivity
                 (ListView)findViewById(R.id.lvItems);
 
         readItems(lvItems, listName);
-        setupListViewListener(lvItems);
+        //setupListViewListener(lvItems);
+        registerForContextMenu(lvItems);
+    }
+
+    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String title = slf.get(info.position);
+
+        menu.setHeaderTitle(title);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Complete");
+
+        if(Utils.containsTimeStamp(slf.getListName())){
+
+            menu.add(Menu.NONE, MENU_CONTEXT_SHELVE_ID, Menu.NONE, "Shelve");
+
+        }else{
+
+            menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
+        }
+    }
+
+    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case MENU_CONTEXT_COMPLETION_STATUS_ID:
+
+                toggleCompletionStatusAtPosition(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_SHELVE_ID:
+
+                shelvePosition(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_QUEUE_ID:
+
+                queuePosition(info.position);
+
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -145,31 +201,58 @@ public class SynergyListActivity
                                                    int position,
                                                    long id) {
 
+                        toggleCompletionStatusAtPosition(position);
+                        //setListViewAdapter(lvItems);
 
-                        //move to bottom of list
-                        String removedItem = slf.remove(position);
-
-                        if (removedItem.startsWith("completed={") && removedItem.endsWith("}")) {
-                            //completed item being changed to incomplete
-                            //removedItem = removedItem.replace("completed={", "");
-                            //removedItem = removedItem.replace("}", "");
-                            int beginIndex = removedItem.indexOf("{") + 1;
-                            int endIndex = removedItem.lastIndexOf("}");
-                            removedItem = removedItem.substring(beginIndex, endIndex);
-                            slf.add(0, removedItem);
-                        } else {
-                            //incomplete item being changed to complete
-                            removedItem = "completed={" + removedItem + "}";
-                            slf.add(removedItem);
-                        }
-
-                        setListViewAdapter(lvItems);
-
-                        writeItems();
                         //return true consumes the long click event (marks it handled)
                         return true;
                     }
                 });
+    }
+
+    private void queuePosition(int position) {
+
+        if(!Utils.containsTimeStamp(slf.getListName())){
+
+            Utils.toast(this, "queue position " + position);
+
+        }else{
+            Utils.toast(this, "Queue only applies to non-timestamped lists");
+        }
+    }
+
+    private void shelvePosition(int position) {
+
+        if(Utils.containsTimeStamp(slf.getListName())){
+
+            Utils.toast(this, "shelve position " + position);
+
+        }else{
+            Utils.toast(this, "Shelve only applies to timestamped lists");
+        }
+    }
+
+    private void toggleCompletionStatusAtPosition(int position){
+
+        //move to bottom of list
+        String removedItem = slf.remove(position);
+
+        //if (removedItem.startsWith("completed={") && removedItem.endsWith("}")) {
+        if (SynergyUtils.listItemIsCompleted(removedItem)) {
+            //completed item being changed to incomplete
+            int beginIndex = removedItem.indexOf("{") + 1;
+            int endIndex = removedItem.lastIndexOf("}");
+            removedItem = removedItem.substring(beginIndex, endIndex);
+            slf.add(0, removedItem);
+        } else {
+            //incomplete item being changed to complete
+            removedItem = "completed={" + removedItem + "}";
+            slf.add(removedItem);
+        }
+
+        writeItems();
+
+        refreshListItems();
     }
 
     private void writeItems() {

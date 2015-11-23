@@ -65,7 +65,8 @@ public class SynergyUtils {
     public static String getTimeStampedListName(String templateName) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
-        return templateName + "-" + sdf.format(new Date());
+//        return templateName + "-" + sdf.format(new Date());
+        return sdf.format(new Date()) + "-" + templateName;
     }
 
     public static String push(String listName){

@@ -41,4 +41,6 @@
     <string name="title_activity_image_list">ImageListActivity</string>
     <string name="title_activity_image_display">ImageDisplayActivity</string>
     <string name="menu_set_display_name">Set Display Name</string>
+    <string name="title_activity_audio_list">AudioListActivity</string>
+    <string name="title_activity_audio_display">AudioDisplayActivity</string>
 </resources>

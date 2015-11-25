@@ -15,20 +15,21 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.File;
 
-public class ImageListActivity extends AppCompatActivity {
+public class AudioListActivity extends AppCompatActivity {
 
     private File currentDir;
 
     public static final String EXTRA_CURRENTPATH =
-            "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
+            "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_list);
+        setContentView(R.layout.activity_audio_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENTPATH);
@@ -46,7 +47,7 @@ public class ImageListActivity extends AppCompatActivity {
 
         if(currentDir == null){
 
-            currentDir = Configuration.getImagesDirectory();
+            currentDir = Configuration.getAudioDirectory();
         }
 
         Utils.toast(this, currentDir.getAbsolutePath());
@@ -71,9 +72,9 @@ public class ImageListActivity extends AppCompatActivity {
                 if(f.exists() && f.isFile()){
 
                     Intent intent = new Intent(view.getContext(),
-                            ImageDisplayActivity.class);
+                            AudioDisplayActivity.class);
                     intent.putExtra(
-                            ImageDisplayActivity.EXTRA_IMAGEPATH,
+                            AudioDisplayActivity.EXTRA_AUDIOPATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
@@ -81,14 +82,14 @@ public class ImageListActivity extends AppCompatActivity {
                 }else if(f.exists() && f.isDirectory()){
 
                     Intent intent = new Intent(view.getContext(),
-                            ImageListActivity.class);
+                            AudioListActivity.class);
                     intent.putExtra(
-                            ImageListActivity.EXTRA_CURRENTPATH,
+                            AudioListActivity.EXTRA_CURRENTPATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
                 }else{
-                    
+
                     Utils.toast(view.getContext(), f.getAbsolutePath());
                 }
             }
@@ -102,8 +103,7 @@ public class ImageListActivity extends AppCompatActivity {
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getImageListItems(currentDir))
+                        MnemoSyneUtils.getAudioListItems(currentDir))
         );
     }
-
 }

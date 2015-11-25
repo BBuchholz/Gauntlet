@@ -45,6 +45,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/images");
     }
 
+    public static File getAudioDirectory() {
+
+        return getDirectoryStoragePath("/NWD-MEDIA/audio");
+    }
+
     public static List<String> getAllSynergyListNames(){
 
         File dir = getSynergyDirectory();

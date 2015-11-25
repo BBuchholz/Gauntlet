@@ -12,6 +12,7 @@
         <item name="actionModeStyle">@style/LStyled.ActionMode</item>
         <item name="actionMenuTextColor">@color/color_action_mode_text</item>
     </style>
+
     <style name="ActionBarThemeOverlay" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">#fff</item>
         <item name="colorControlNormal">#fff</item>
@@ -26,15 +27,20 @@
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">#fff</item>
     </style>
+
     <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">@color/color_action_mode_bg</item>
     </style>
+
     <color name="color_action_mode_bg">#000</color>
     <color name="color_action_mode_text">#fff</color>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

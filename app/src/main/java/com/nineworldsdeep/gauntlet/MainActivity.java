@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
@@ -73,9 +74,8 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, ImageListActivity.class));
     }
 
-//
-//    public void launchBookSegments(View view) {
-//
-//        startActivity(new Intent(this, BookSegmentsActivity.class));
-//    }
+    public void launchAudioList(View view) {
+
+        startActivity(new Intent(this, AudioListActivity.class));
+    }
 }

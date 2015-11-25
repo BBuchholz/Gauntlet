@@ -7,12 +7,12 @@ import java.io.File;
 /**
  * Created by brent on 11/17/15.
  */
-public class ImageListItem {
+public class FileListItem {
 
     private File file;
     private String displayName = null;
 
-    public ImageListItem(String filePath) {
+    public FileListItem(String filePath) {
 
         file = new File(filePath);
 
@@ -24,7 +24,7 @@ public class ImageListItem {
         }
     }
 
-    public ImageListItem(String path, String displayName) {
+    public FileListItem(String path, String displayName) {
 
         this.file = new File(path);
         this.displayName = displayName;

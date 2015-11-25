@@ -26,9 +26,9 @@ public class DisplayNameIndexFile extends LineItemListFile{
         add(entry);
     }
 
-    public List<ImageListItem> getImageListItems() {
+    public List<FileListItem> getImageListItems() {
 
-        ArrayList<ImageListItem> lst = new ArrayList<>();
+        ArrayList<FileListItem> lst = new ArrayList<>();
 
         for(String item : getItems()){
             lst.add(getImageListItemFromLineItem(item));
@@ -37,10 +37,10 @@ public class DisplayNameIndexFile extends LineItemListFile{
         return lst;
     }
 
-    private ImageListItem getImageListItemFromLineItem(String item) {
+    private FileListItem getImageListItemFromLineItem(String item) {
 
-        ImageListItem ili =
-                new ImageListItem(Utils.processExtract(item, "path"),
+        FileListItem ili =
+                new FileListItem(Utils.processExtract(item, "path"),
                         Utils.processExtract(item, "displayName"));
 
         return ili;

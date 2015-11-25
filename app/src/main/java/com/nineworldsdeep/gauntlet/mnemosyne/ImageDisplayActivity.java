@@ -20,7 +20,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 public class ImageDisplayActivity extends AppCompatActivity {
 
-    private ImageListItem ili;
+    private FileListItem ili;
 
     public static final String EXTRA_IMAGEPATH =
             "com.nineworldsdeep.gauntlet.IMAGEDISPLAY_IMAGE_PATH";
@@ -105,7 +105,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         if(s != null){
 
-            ili = new ImageListItem(s);
+            ili = new FileListItem(s);
             Bitmap bmp = BitmapFactory.decodeFile(s);
             ImageView img = (ImageView) findViewById(R.id.ivImage);
             img.setImageBitmap(bmp);

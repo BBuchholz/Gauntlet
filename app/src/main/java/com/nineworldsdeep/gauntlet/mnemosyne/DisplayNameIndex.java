@@ -1,9 +1,5 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
-import android.content.Context;
-
-import com.nineworldsdeep.gauntlet.Utils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +61,7 @@ public class DisplayNameIndex {
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
         dnif.loadItems();
 
-        for(ImageListItem ili : dnif.getImageListItems()){
+        for(FileListItem ili : dnif.getImageListItems()){
 
             pathToName.put(ili.getFile().getAbsolutePath(), ili.getDisplayName());
         }

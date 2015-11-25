@@ -12,6 +12,7 @@ import java.util.List;
 public class MnemoSyneUtils {
 
     private static String[] imageExts = {"png", "jpg", "gif"}; //TODO: add more formats here
+    private static String[] audioExts = {"mp3", "wav"};
 
     public static List<String> getImages(File dir) {
 
@@ -24,25 +25,35 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    public static List<ImageListItem> getImageListItems(File dir){
+    public static List<FileListItem> getImageListItems(File dir){
 
-        List<ImageListItem> lst = new ArrayList<>();
+        return getFileListItems(dir, imageExts);
+    }
 
-        lst.addAll(getImageListItemsFromPaths(Utils.getAllDirectoryPaths(dir)));
+    private static List<FileListItem> getFileListItems(File dir, String[] exts){
 
-        lst.addAll(getImageListItemsFromPaths(Utils.getAllFilePathsWithExt(dir, imageExts)));
+        List<FileListItem> lst = new ArrayList<>();
+
+        lst.addAll(getFileListItemsFromPaths(Utils.getAllDirectoryPaths(dir)));
+
+        lst.addAll(getFileListItemsFromPaths(Utils.getAllFilePathsWithExt(dir, exts)));
 
         return lst;
     }
 
-    private static List<ImageListItem> getImageListItemsFromPaths(List<String> lst) {
+    private static List<FileListItem> getFileListItemsFromPaths(List<String> lst) {
 
-        List<ImageListItem> newList = new ArrayList<>();
+        List<FileListItem> newList = new ArrayList<>();
 
         for(String filePath : lst){
-            newList.add(new ImageListItem(filePath));
+            newList.add(new FileListItem(filePath));
         }
 
         return newList;
+    }
+
+    public static List<FileListItem> getAudioListItems(File dir) {
+
+        return getFileListItems(dir, audioExts);
     }
 }

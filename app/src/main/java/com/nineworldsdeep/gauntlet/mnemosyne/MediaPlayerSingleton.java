@@ -33,12 +33,12 @@ public class MediaPlayerSingleton {
 
         if(mp.isPlaying()){
             mp.stop();
-
-            //TODO: this is a hack
-            //it keeps crashing when I try to change
-            //sources, so I'm just creating a new one
-            mp = new MediaPlayer();
         }
+
+        //TODO: this is a hack
+        //it keeps crashing when I try to change
+        //sources, so I'm just creating a new one
+        mp = new MediaPlayer();
 
         mp.setDataSource(path);
         mp.prepare();

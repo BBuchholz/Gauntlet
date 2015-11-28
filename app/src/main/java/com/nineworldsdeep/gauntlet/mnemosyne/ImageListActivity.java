@@ -99,10 +99,13 @@ public class ImageListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
+        boolean isTopFolder =
+                currentDir.equals(Configuration.getImagesDirectory());
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getImageListItems(currentDir))
+                        MnemoSyneUtils.getImageListItems(currentDir, isTopFolder))
         );
     }
 

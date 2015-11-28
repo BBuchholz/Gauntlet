@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.File;
@@ -28,6 +29,31 @@ public class MnemoSyneUtils {
     public static List<FileListItem> getImageListItems(File dir){
 
         return getFileListItems(dir, imageExts);
+    }
+
+    public static List<FileListItem> getImageListItems(File dir, boolean includeSyncFolders){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(includeSyncFolders){
+
+            lst.addAll(getFileListItemsFromPaths(getImageSyncFolders()));
+        }
+
+        lst.addAll(getFileListItems(dir, imageExts));
+
+        return lst;
+    }
+
+    public static List<String> getImageSyncFolders() {
+
+        List<String> lst = new ArrayList<>();
+
+        lst.add(Configuration.getCameraDirectory().getAbsolutePath());
+        lst.add(Configuration.getScreenshotDirectory().getAbsolutePath());
+        lst.add(Configuration.getSkitchDirectory().getAbsolutePath());
+
+        return lst;
     }
 
     private static List<FileListItem> getFileListItems(File dir, String[] exts){

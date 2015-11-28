@@ -97,4 +97,18 @@ public class Configuration {
         return dir;
     }
 
+    public static File getCameraDirectory() {
+
+        return getDirectoryStoragePath("/DCIM/Camera");
+    }
+
+    public static File getScreenshotDirectory() {
+
+        return getDirectoryStoragePath("/Pictures/Screenshots");
+    }
+
+    public static File getSkitchDirectory() {
+
+        return getDirectoryStoragePath("/Pictures/Skitch");
+    }
 }

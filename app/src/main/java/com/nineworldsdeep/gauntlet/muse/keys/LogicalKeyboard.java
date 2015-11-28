@@ -13,6 +13,10 @@ public class LogicalKeyboard {
         }
     }
 
+    public boolean[] getNoteArray(){
+        return keys;
+    }
+
     public boolean get(int keyIndex){
         return keys[keyIndex];
     }

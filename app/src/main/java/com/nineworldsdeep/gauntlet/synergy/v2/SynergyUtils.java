@@ -62,11 +62,33 @@ public class SynergyUtils {
         return slf;
     }
 
-    public static String getTimeStampedListName(String templateName) {
+    public static String getCurrentTimeStamp_yyyyMMdd() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
-//        return templateName + "-" + sdf.format(new Date());
-        return sdf.format(new Date()) + "-" + templateName;
+        return sdf.format(new Date());
+    }
+
+    public static String getCurrentTimeStamp_yyyyMMddHHmmss(boolean asFragmentEntry) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
+
+        String output = sdf.format(new Date());;
+
+        if(asFragmentEntry){
+
+            output = "timeStamp={" + output + "}";
+        }
+
+        return output;
+    }
+
+    public static String getTimeStampedListName(String templateName) {
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+////        return templateName + "-" + sdf.format(new Date());
+//        return sdf.format(new Date()) + "-" + templateName;
+
+        return getCurrentTimeStamp_yyyyMMdd() + "-" + templateName;
     }
 
     public static String push(String listName){
@@ -223,4 +245,5 @@ public class SynergyUtils {
         shelveToFile.save();
         shelveFromFile.save();
     }
+
 }

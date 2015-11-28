@@ -27,6 +27,8 @@ public class DynamicHeightKeyboard extends Keyboard {
         super(context);
     }
 
+
+
     public void setHeightRatio(float ratio) {
         if (ratio != mHeightRatio) {
             mHeightRatio = ratio;

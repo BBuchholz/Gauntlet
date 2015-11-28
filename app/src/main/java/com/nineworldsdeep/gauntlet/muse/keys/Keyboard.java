@@ -43,6 +43,11 @@ public class Keyboard extends View {
         Initialize();
     }
 
+    public boolean[] getNoteArray(){
+
+        return _logicalBoard.getNoteArray();
+    }
+
     private void Initialize(){
 
         this._paint = new Paint();

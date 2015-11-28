@@ -194,25 +194,6 @@ public class SynergyListActivity
         }
     }
 
-//    private void setupListViewListener(final ListView lvItems) {
-//
-//        lvItems.setOnItemLongClickListener(
-//                new AdapterView.OnItemLongClickListener() {
-//                    @Override
-//                    public boolean onItemLongClick(AdapterView<?> parent,
-//                                                   View view,
-//                                                   int position,
-//                                                   long id) {
-//
-//                        toggleCompletionStatusAtPosition(position);
-//                        //setListViewAdapter(lvItems);
-//
-//                        //return true consumes the long click event (marks it handled)
-//                        return true;
-//                    }
-//                });
-//    }
-
     private void queuePosition(int position) {
 
         if(!Utils.containsTimeStamp(slf.getListName())){

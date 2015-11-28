@@ -241,6 +241,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity" />
         </activity>
+        <activity
+            android:name=".muse.SessionListActivity"
+            android:label="@string/title_activity_session_list"
+            android:parentActivityName=".muse.MuseMainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
+        </activity>
+        <activity
+            android:name=".muse.SessionDisplayActivity"
+            android:label="@string/title_activity_session_display"
+            android:parentActivityName=".muse.SessionListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.muse.SessionListActivity" />
+        </activity>
     </application>
 
 </manifest>

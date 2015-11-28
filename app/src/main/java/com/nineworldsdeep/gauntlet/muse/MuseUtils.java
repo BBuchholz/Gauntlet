@@ -1,7 +1,12 @@
 package com.nineworldsdeep.gauntlet.muse;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by brent on 11/28/15.
@@ -44,5 +49,12 @@ public class MuseUtils {
         String sessionName = "Session-" + currentTimestamp;
 
         return sessionName;
+    }
+
+    public static List<String> getSessionNames() {
+
+        File dir = Configuration.getMuseSessionNotesDirectory();
+        String[] ext = {"txt"};
+        return Utils.getAllFileNamesMinusExt(dir, ext);
     }
 }

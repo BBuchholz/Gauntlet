@@ -44,4 +44,6 @@
     <string name="title_activity_audio_list">AudioListActivity</string>
     <string name="title_activity_audio_display">AudioDisplayActivity</string>
     <string name="menu_add_keyboard_session_notes">Add Session Note</string>
+    <string name="title_activity_session_list">SessionListActivity</string>
+    <string name="title_activity_session_display">SessionDisplayActivity</string>
 </resources>

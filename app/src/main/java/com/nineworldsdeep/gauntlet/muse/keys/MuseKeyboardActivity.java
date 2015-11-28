@@ -15,6 +15,7 @@ import android.view.View;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.muse.MuseUtils;
+import com.nineworldsdeep.gauntlet.muse.SessionListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
@@ -74,7 +75,7 @@ public class MuseKeyboardActivity extends AppCompatActivity {
                 .setMessage("Add [" + sessionNote + "] to " + currentSession + "?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SynergyListFile slf = new SynergyListFile(currentSession);
+                        SessionListFile slf = new SessionListFile(currentSession);
                         slf.loadItems();
                         slf.add(sessionNote);
                         slf.save();

@@ -30,6 +30,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD/synergy/templates");
     }
 
+    public static File getMuseSessionNotesDirectory() {
+
+        return getDirectoryStoragePath("/NWD/muse/sessions");
+    }
+
     public static File getBookSegmentsDirectory() {
 
         return getDirectoryStoragePath("/NWD/bookSegments");

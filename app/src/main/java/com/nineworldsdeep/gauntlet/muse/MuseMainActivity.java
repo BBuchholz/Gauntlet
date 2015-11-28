@@ -24,7 +24,6 @@ public class MuseMainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_muse_main);
-
     }
 
     public void launchClef(View view){
@@ -55,5 +54,10 @@ public class MuseMainActivity extends ActionBarActivity {
     public void launchLegacyFrets(View view){
 
         startActivity(new Intent(this, LegacyGuitarActivity.class));
+    }
+
+    public void launchSessionList(View view) {
+
+        startActivity(new Intent(this, SessionListActivity.class));
     }
 }

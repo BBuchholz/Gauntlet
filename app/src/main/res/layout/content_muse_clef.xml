@@ -11,10 +11,10 @@
     tools:showIn="@layout/activity_muse_clef"
     tools:context="com.nineworldsdeep.gauntlet.muse.clef.MuseClefActivity">
 
-    <custom:com.nineworldsdeep.gauntlet.muse.keys.Keyboard
+    <custom:com.nineworldsdeep.gauntlet.muse.keys.DynamicHeightKeyboard
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        custom:heightRatio="0.6"/>
+        custom:heightRatio="0.35"/>
 
 </RelativeLayout>

@@ -41,10 +41,12 @@ public class DynamicHeightKeyboard extends Keyboard {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mHeightRatio > 0.0f) {
-            // set the image views size
+
             int width = MeasureSpec.getSize(widthMeasureSpec);
             int height = (int) (width * mHeightRatio);
-            setMeasuredDimension(width, height);
+
+            //setMeasuredDimension(width, height);
+            super.onMeasure(width, height);
         }
         else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);

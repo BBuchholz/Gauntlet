@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -30,6 +31,19 @@ public class Keyboard extends View {
 
     public Keyboard(Context context) {
         super(context);
+        Initialize();
+//
+//        this._paint = new Paint();
+//        this._paint.setColor(Color.BLACK);
+//        this._paint.setStyle(Paint.Style.STROKE);
+    }
+
+    public Keyboard(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        Initialize();
+    }
+
+    private void Initialize(){
 
         this._paint = new Paint();
         this._paint.setColor(Color.BLACK);

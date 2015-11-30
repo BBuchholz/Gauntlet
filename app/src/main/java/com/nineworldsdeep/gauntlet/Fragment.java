@@ -23,23 +23,31 @@ public class Fragment {
 
     protected void processExtract(String key){
 
-        String openTag = key + "={";
+        Parser p = new Parser();
 
-        if(originalLineItem.contains(openTag)){
-
-            int startIdx =
-                    originalLineItem.indexOf(openTag)
-                    + openTag.length();
-            int endIdx = originalLineItem.indexOf("}", startIdx);
-
-            String val = originalLineItem.substring(startIdx, endIdx);
-
-            if(val.trim().length() > 0){
-
-                meta.put(key, val);
-            }
-        }
+        meta.put(key, p.extract(key, originalLineItem));
     }
+
+//    @Deprecated
+//    protected void processExtractOld(String key){
+//
+//        String openTag = key + "={";
+//
+//        if(originalLineItem.contains(openTag)){
+//
+//            int startIdx =
+//                    originalLineItem.indexOf(openTag)
+//                    + openTag.length();
+//            int endIdx = originalLineItem.indexOf("}", startIdx);
+//
+//            String val = originalLineItem.substring(startIdx, endIdx);
+//
+//            if(val.trim().length() > 0){
+//
+//                meta.put(key, val);
+//            }
+//        }
+//    }
 
     protected String get(String key){
         return meta.get(key);

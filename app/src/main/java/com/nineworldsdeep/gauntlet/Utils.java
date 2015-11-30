@@ -204,25 +204,33 @@ public class Utils {
         return false;
     }
 
-    public static String processExtract(String originalLineItem, String key) {
+    public static String processExtract(String input, String key){
+        Parser p = new Parser();
 
-        String openTag = key + "={";
-
-        if(originalLineItem.contains(openTag)){
-
-            int startIdx =
-                    originalLineItem.indexOf(openTag)
-                            + openTag.length();
-            int endIdx = originalLineItem.indexOf("}", startIdx);
-
-            String val = originalLineItem.substring(startIdx, endIdx);
-
-            if(val.trim().length() > 0){
-
-                return val;
-            }
-        }
-
-        return null;
+        return p.extract(key, input);
     }
+
+//    @Deprecated
+//    public static String processExtractOld(String originalLineItem, String key) {
+//
+//        String openTag = key + "={";
+//
+//        if(originalLineItem.contains(openTag)){
+//
+//            int startIdx =
+//                    originalLineItem.indexOf(openTag)
+//                            + openTag.length();
+//            int endIdx = originalLineItem.indexOf("}", startIdx);
+//
+//            String val = originalLineItem.substring(startIdx, endIdx);
+//
+//            if(val.trim().length() > 0){
+//
+//                return val;
+//            }
+//        }
+//
+//        return null;
+//    }
+
 }

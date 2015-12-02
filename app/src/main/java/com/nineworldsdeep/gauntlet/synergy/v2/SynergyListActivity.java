@@ -51,7 +51,9 @@ public class SynergyListActivity
 
     //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterView.AdapterContextMenuInfo info =

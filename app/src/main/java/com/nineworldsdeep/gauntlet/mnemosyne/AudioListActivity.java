@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,10 +16,13 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 
 public class AudioListActivity extends AppCompatActivity {
 
+    private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
     private File currentDir;
 
     public static final String EXTRA_CURRENTPATH =
@@ -52,8 +58,60 @@ public class AudioListActivity extends AppCompatActivity {
 
         Utils.toast(this, currentDir.getAbsolutePath());
 
+        ListView lvItems =
+                (ListView) findViewById(R.id.lvItems);
+
         loadItems();
         setupListViewListener();
+        registerForContextMenu(lvItems);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String name =
+                getItemAtPosition(info.position).getFile().getName();
+
+        menu.setHeaderTitle(name);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case MENU_CONTEXT_SHA1_HASH_ID:
+
+                computeSHA1Hash(info.position);
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void computeSHA1Hash(int position) {
+        Utils.toast(this, "SHA1 here");
+    }
+
+    private FileListItem getItemAtPosition(int position){
+
+        ListView lvItems =
+                (ListView) findViewById(R.id.lvItems);
+
+        return (FileListItem) lvItems.getItemAtPosition(position);
     }
 
     private void setupListViewListener() {

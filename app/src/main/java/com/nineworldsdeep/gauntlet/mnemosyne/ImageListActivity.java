@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +21,8 @@ import java.io.File;
 public class ImageListActivity extends AppCompatActivity {
 
     private File currentDir;
+
+    private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
 
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -51,8 +56,108 @@ public class ImageListActivity extends AppCompatActivity {
 
         Utils.toast(this, currentDir.getAbsolutePath());
 
+        ListView lvItems =
+                (ListView) findViewById(R.id.lvItems);
+
         loadItems();
         setupListViewListener();
+        registerForContextMenu(lvItems);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String name =
+                getItemAtPosition(info.position).getFile().getName();
+
+        menu.setHeaderTitle(name);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case MENU_CONTEXT_SHA1_HASH_ID:
+
+                computSHA1Hash(info.position);
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void computSHA1Hash(int position) {
+
+        FileListItem fli = getItemAtPosition(position);
+        File f = fli.getFile();
+
+        if(f.exists() && f.isDirectory()){
+
+            int count = 0;
+
+            FileHashIndex fhi = FileHashIndex.getInstance();
+
+            try {
+
+                for (File f2 : f.listFiles()) {
+
+                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
+                    fhi.storeHash(f2.getAbsolutePath(), hash);
+                    count++;
+                }
+
+                fhi.save();
+                String msg = count + " file hashes stored";
+
+                Utils.toast(this, msg);
+
+            }catch(Exception ex){
+
+                Utils.toast(this, ex.getMessage());
+            }
+
+        }else if(f.exists() && f.isFile()){
+
+            try {
+
+                String hash = Utils.computeSHA1(f.getAbsolutePath());
+                FileHashIndex fhi = FileHashIndex.getInstance();
+                fhi.storeHash(f.getAbsolutePath(), hash);
+                fhi.save();
+
+                Utils.toast(this, "hash stored for file");
+
+            } catch (Exception e) {
+
+                Utils.toast(this, e.getMessage());
+            }
+
+        }else{
+
+            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
+        }
+    }
+
+    private FileListItem getItemAtPosition(int position){
+
+        ListView lvItems =
+                (ListView) findViewById(R.id.lvItems);
+
+        return (FileListItem) lvItems.getItemAtPosition(position);
     }
 
     private void setupListViewListener() {

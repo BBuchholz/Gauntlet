@@ -55,6 +55,16 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/audio");
     }
 
+    public static File getVoicememosDirectory(){
+
+        return getDirectoryStoragePath("/NWD-AUX/voicememos");
+    }
+
+    public static File getSdCardMediaMusicDirectory(){
+
+        return getSdDirectoryStoragePath("/NWD-MEDIA");
+    }
+
     public static List<String> getAllSynergyListNames(){
 
         File dir = getSynergyDirectory();
@@ -85,6 +95,17 @@ public class Configuration {
         Collections.sort(lst);
 
         return lst;
+    }
+
+    private static File getSdDirectoryStoragePath(String path){
+
+        File root = new File("/storage/external_SD");
+        File dir = new File(root.getAbsolutePath() + path);
+        if(!dir.exists()){
+            //dir.mkdirs();
+            return null;
+        }
+        return dir;
     }
 
     private static File getDirectoryStoragePath(String path){

@@ -103,7 +103,55 @@ public class AudioListActivity extends AppCompatActivity {
     }
 
     private void computeSHA1Hash(int position) {
-        Utils.toast(this, "SHA1 here");
+
+        FileListItem fli = getItemAtPosition(position);
+        File f = fli.getFile();
+
+        if(f.exists() && f.isDirectory()){
+
+            int count = 0;
+
+            FileHashIndex fhi = FileHashIndex.getInstance();
+
+            try {
+
+                for (File f2 : f.listFiles()) {
+
+                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
+                    fhi.storeHash(f2.getAbsolutePath(), hash);
+                    count++;
+                }
+
+                fhi.save();
+                String msg = count + " file hashes stored";
+
+                Utils.toast(this, msg);
+
+            }catch(Exception ex){
+
+                Utils.toast(this, ex.getMessage());
+            }
+
+        }else if(f.exists() && f.isFile()){
+
+            try {
+
+                String hash = Utils.computeSHA1(f.getAbsolutePath());
+                FileHashIndex fhi = FileHashIndex.getInstance();
+                fhi.storeHash(f.getAbsolutePath(), hash);
+                fhi.save();
+
+                Utils.toast(this, "hash stored for file");
+
+            } catch (Exception e) {
+
+                Utils.toast(this, e.getMessage());
+            }
+
+        }else{
+
+            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
+        }
     }
 
     private FileListItem getItemAtPosition(int position){
@@ -158,10 +206,13 @@ public class AudioListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
+        boolean isTopFolder =
+                currentDir.equals(Configuration.getAudioDirectory());
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getAudioListItems(currentDir))
+                        MnemoSyneUtils.getAudioListItems(currentDir, isTopFolder))
         );
     }
 }

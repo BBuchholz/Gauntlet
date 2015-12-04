@@ -31,7 +31,13 @@ public class MnemoSyneUtils {
         return getFileListItems(dir, imageExts);
     }
 
-    public static List<FileListItem> getImageListItems(File dir, boolean includeSyncFolders){
+    public static List<FileListItem> getAudioListItems(File dir) {
+
+        return getFileListItems(dir, audioExts);
+    }
+
+    public static List<FileListItem> getImageListItems(File dir,
+                                                       boolean includeSyncFolders){
 
         List<FileListItem> lst = new ArrayList<>();
 
@@ -41,6 +47,37 @@ public class MnemoSyneUtils {
         }
 
         lst.addAll(getFileListItems(dir, imageExts));
+
+        return lst;
+    }
+
+    public static List<FileListItem> getAudioListItems(File dir,
+                                                       boolean includeTopFolders){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(includeTopFolders){
+
+            lst.addAll(getFileListItemsFromPaths(getAudioTopFolders()));
+        }
+
+        lst.addAll(getFileListItems(dir, audioExts));
+
+        return lst;
+    }
+
+    public static List<String> getAudioTopFolders() {
+
+        List<String> lst = new ArrayList<>();
+
+        lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
+
+        File externalMusic = Configuration.getSdCardMediaMusicDirectory();
+
+        if(externalMusic != null) {
+
+            lst.add(externalMusic.getAbsolutePath());
+        }
 
         return lst;
     }
@@ -78,8 +115,4 @@ public class MnemoSyneUtils {
         return newList;
     }
 
-    public static List<FileListItem> getAudioListItems(File dir) {
-
-        return getFileListItems(dir, audioExts);
-    }
 }

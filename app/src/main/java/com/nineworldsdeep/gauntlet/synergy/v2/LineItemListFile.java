@@ -98,4 +98,9 @@ public class LineItemListFile {
     public String getListName() {
         return listName;
     }
+
+    public void move(int moveFromPosition, int moveToPosition) {
+
+        items.add(moveToPosition, items.remove(moveFromPosition));
+    }
 }

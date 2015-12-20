@@ -25,6 +25,8 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_COMPLETION_STATUS_ID = 1;
     private static final int MENU_CONTEXT_SHELVE_ID = 2;
     private static final int MENU_CONTEXT_QUEUE_ID = 3;
+    private static final int MENU_CONTEXT_MOVE_TO_TOP_ID = 4;
+    private static final int MENU_CONTEXT_MOVE_TO_BOTTOM_ID = 5;
 
     private SynergyListFile slf;
 
@@ -72,6 +74,12 @@ public class SynergyListActivity
 
             menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
         }
+
+        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_TOP_ID,
+                Menu.NONE, "Move To Top");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
+                Menu.NONE, "Move To Bottom");
     }
 
     //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
@@ -99,9 +107,53 @@ public class SynergyListActivity
                 queuePosition(info.position);
 
                 return true;
+
+            case MENU_CONTEXT_MOVE_TO_TOP_ID:
+
+                moveToTop(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_BOTTOM_ID:
+
+                moveToBottom(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToBottom(int pos) {
+
+        int moveTo = getAddItemIndex() - 1;
+
+        if(SynergyUtils.listItemIsCompleted(slf.get(pos))){
+
+            moveTo = slf.size() - 1;
+        }
+
+        slf.move(pos, moveTo);
+        slf.save();
+
+        refreshListItems();
+
+    }
+
+    private void moveToTop(int pos) {
+
+        int moveTo = 0;
+
+        if(SynergyUtils.listItemIsCompleted(slf.get(pos))){
+
+            moveTo = getAddItemIndex();
+        }
+
+        slf.move(pos, moveTo);
+        slf.save();
+
+        refreshListItems();
     }
 
     @Override
@@ -278,7 +330,6 @@ public class SynergyListActivity
         //move to bottom of list
         String removedItem = slf.remove(position);
 
-        //if (removedItem.startsWith("completed={") && removedItem.endsWith("}")) {
         if (SynergyUtils.listItemIsCompleted(removedItem)) {
             //completed item being changed to incomplete
             int beginIndex = removedItem.indexOf("{") + 1;
@@ -330,7 +381,7 @@ public class SynergyListActivity
         setListViewAdapter(lvItems);
     }
 
-    private void setListViewAdapter(ListView lvItems){
+    private void setListViewAdapter(ListView lvItems) {
 
         lvItems.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,

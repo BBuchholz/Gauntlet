@@ -185,7 +185,34 @@ public class SynergyListActivity
             return true;
         }
 
+        if (id == R.id.action_shelveAll){
+            promptShelveAll();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void promptShelveAll() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Shelve All")
+                .setMessage("Shelve All Categorized Items?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        while(SynergyUtils.hasCategorizedItems(slf)){
+
+                            int pos =
+                                    SynergyUtils.getFirstCategorizedItemPosition(slf);
+                            shelvePosition(pos);
+                        }
+
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void promptConfirmArchive(){

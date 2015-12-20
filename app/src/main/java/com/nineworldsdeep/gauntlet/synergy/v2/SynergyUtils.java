@@ -271,4 +271,21 @@ public class SynergyUtils {
         shelveFromFile.save();
     }
 
+    public static boolean hasCategorizedItems(SynergyListFile slf) {
+
+        return getFirstCategorizedItemPosition(slf) > -1;
+    }
+
+    public static int getFirstCategorizedItemPosition(SynergyListFile slf) {
+
+        for(int i = 0; i < slf.size(); i++){
+
+            if(isCategorizedItem(slf.get(i))){
+
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

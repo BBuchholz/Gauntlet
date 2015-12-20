@@ -159,20 +159,45 @@ public class SynergyUtils {
         }
     }
 
-    public static void queue(SynergyListFile slf, int position) {
+    public static void queue(LineItemListFile lf,
+                             int position,
+                             boolean keepOriginal,
+                             String queueToName) {
 
         SynergyListFile currentDailyToDo =
-                new SynergyListFile(getTimeStampedListName("DailyToDo"));
+                new SynergyListFile(getTimeStampedListName(queueToName));
 
         currentDailyToDo.loadItems();
 
-        String categorizedItem =
-                "::" + slf.getListName() + ":: - " + slf.remove(position);
+//        String categorizedItem =
+//                "::" + lf.getListName() + ":: - ";
+
+        String categorizedItem;
+
+        if(keepOriginal){
+
+            categorizedItem = lf.get(position);
+
+        }else{
+
+            categorizedItem =
+                    "::" + lf.getListName() + ":: - " + lf.remove(position);
+        }
 
         currentDailyToDo.add(0, categorizedItem);
 
         currentDailyToDo.save();
-        slf.save();
+        lf.save();
+    }
+
+    public static void queueToDailyToDo(SynergyListFile slf, int position){
+
+        queue(slf, position, false, "DailyToDo");
+    }
+
+    public static void queueFromTemplate(SynergyTemplateFile stf, int position){
+
+        queue(stf, position, true, stf.getListName());
     }
 
     public static String trimCategory(String synergyListItem){

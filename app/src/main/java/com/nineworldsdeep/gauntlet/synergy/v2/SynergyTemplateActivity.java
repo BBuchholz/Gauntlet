@@ -2,11 +2,13 @@ package com.nineworldsdeep.gauntlet.synergy.v2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -14,12 +16,9 @@ import android.widget.ListView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-
 public class SynergyTemplateActivity extends AppCompatActivity {
+
+    private static final int MENU_CONTEXT_QUEUE_ID = 3;
 
     private SynergyTemplateFile stf;
 
@@ -38,6 +37,55 @@ public class SynergyTemplateActivity extends AppCompatActivity {
                         SynergyTemplatesActivity.EXTRA_TEMPLATENAME);
 
         readItems(templateName);
+
+        ListView lvItems =
+                (ListView) findViewById(R.id.lvItems);
+
+        registerForContextMenu(lvItems);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String title = stf.get(info.position);
+
+        menu.setHeaderTitle(title);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+
+            case MENU_CONTEXT_QUEUE_ID:
+
+                queuePosition(info.position);
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void queuePosition(int position) {
+
+        SynergyUtils.queueFromTemplate(stf, position);
+        Utils.toast(this, "queued");
+        refreshListItems();
+
     }
 
     private void readItems(String templateName) {

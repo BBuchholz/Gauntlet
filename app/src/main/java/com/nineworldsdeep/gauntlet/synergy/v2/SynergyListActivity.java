@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.mnemosyne.DisplayNameIndex;
 
 public class SynergyListActivity
         extends AppCompatActivity{
@@ -200,8 +199,9 @@ public class SynergyListActivity
 
         if(!Utils.containsTimeStamp(slf.getListName())){
 
-            Utils.toast(this, "queue position " + position);
-            SynergyUtils.queue(slf, position);
+            //Utils.toast(this, "queueToDailyToDo position " + position);
+            SynergyUtils.queueToDailyToDo(slf, position);
+            Utils.toast(this, "queued");
             refreshListItems();
 
         }else{

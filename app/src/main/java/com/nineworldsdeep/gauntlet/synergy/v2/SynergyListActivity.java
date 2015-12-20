@@ -345,10 +345,18 @@ public class SynergyListActivity
     public void onAddItemClick(View view) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        slf.add(getAddItemIndex(), itemText);
-        etNewItem.setText("");
-        writeItems();
-        refreshListItems();
+
+        if(!Utils.stringIsNullOrWhitespace(itemText)){
+
+            slf.add(getAddItemIndex(), itemText);
+            etNewItem.setText("");
+            writeItems();
+            refreshListItems();
+
+        }else{
+
+            Utils.toast(this, "item cannot be empty or whitespace");
+        }
     }
 
     private int getAddItemIndex(){

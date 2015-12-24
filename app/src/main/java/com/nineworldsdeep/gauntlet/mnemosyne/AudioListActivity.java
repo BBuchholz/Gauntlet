@@ -93,7 +93,8 @@ public class AudioListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case MENU_CONTEXT_SHA1_HASH_ID:
 
-                computeSHA1Hash(info.position);
+                //computeSHA1Hash(info.position);
+                computeSHA1HashNew(info.position);
 
                 return true;
 
@@ -102,6 +103,57 @@ public class AudioListActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Computes and stores SHA1 hash for selected item if item is a file.
+     * If item is a directory, computes and stores hashes for
+     * all files within selected directory and all subfolders of the selected directory
+     * @param position
+     */
+    private void computeSHA1HashNew(int position) {
+
+        FileListItem fli = getItemAtPosition(position);
+        File f = fli.getFile();
+
+        String msg = "";
+
+        if(f.exists()){
+
+            FileHashIndex fhi = FileHashIndex.getInstance();
+
+            try{
+
+                int count = fhi.countAndStoreSHA1Hashes(f, 0);
+
+                fhi.save();
+
+                if(count != 1){
+
+                    msg = count + " hashes stored";
+
+                }else{
+
+                    msg = count + " hash stored";
+                }
+
+            }catch(Exception ex){
+
+                msg = ex.getMessage();
+            }
+
+        }else{
+
+            msg = "NonExistantPath: " + f.getAbsolutePath();
+        }
+
+        Utils.toast(this, msg);
+    }
+
+    /**
+     * Computes and stores SHA1 hash for selected item if item is a file.
+     * If item is a directory, computes and stores hashes for
+     * all files within selected directory and all subfolders of the selected directory
+     * @param position
+     */
     private void computeSHA1Hash(int position) {
 
         FileListItem fli = getItemAtPosition(position);

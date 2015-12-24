@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
+import com.nineworldsdeep.gauntlet.Utils;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,5 +69,43 @@ public class FileHashIndex {
         }
 
     }
+    /**
+     * Computes and stores SHA1 hash for selected item if item is a file.
+     * If item is a directory, computes and stores hashes for
+     * all files within selected directory and all subfolders of the selected directory
+     * @param f
+     * @return count of files hashed and stored
+     */
+    public int countAndStoreSHA1Hashes(File f, int currentCount) throws Exception {
 
+        if(f.exists()){
+
+            if(f.isDirectory()){
+
+                for (File f2 : f.listFiles()) {
+
+                    currentCount = countAndStoreSHA1Hashes(f2, currentCount);
+
+                }
+
+            }else if(f.isFile()){
+
+                //ignore if already indexed
+                //TODO: add way to clear index
+                //will ignore any files already in index, for efficiency
+                //but need a way to explicity flush the index for old hashes
+                //maybe timestamp them so an expiration date can be determined?
+                if(!pathToHash.containsKey(f.getAbsolutePath())) {
+
+                    String hash = Utils.computeSHA1(f.getAbsolutePath());
+                    storeHash(f.getAbsolutePath(), hash);
+                    currentCount++;
+                }
+            }
+
+        }
+
+        return currentCount;
+
+    }
 }

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class AudioDisplayActivity extends AppCompatActivity {
 
     private FileListItem ili;
-    //private MediaPlayer mp;
+    private MediaPlayerSingleton mps;
 
     public static final String EXTRA_AUDIOPATH =
             "com.nineworldsdeep.gauntlet.AUDIODISPLAY_AUDIO_PATH";
@@ -44,7 +44,7 @@ public class AudioDisplayActivity extends AppCompatActivity {
             //mp = MediaPlayer.create(this, Uri.parse(ili.getFile().getPath()));
             //mp.start();
 
-            MediaPlayerSingleton mps = MediaPlayerSingleton.getInstance();
+            mps = MediaPlayerSingleton.getInstance();
 
             try {
                 mps.play(ili.getFile().getPath());
@@ -60,4 +60,8 @@ public class AudioDisplayActivity extends AppCompatActivity {
         }
     }
 
+    public void stopPlayback(View view) {
+
+        mps.stop();
+    }
 }

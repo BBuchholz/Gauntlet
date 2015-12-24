@@ -13,6 +13,7 @@ public class MediaPlayerSingleton {
     private static MediaPlayerSingleton singleton = null;
 
     private MediaPlayer mp;
+    private String nowPlayingPath;
 
     private MediaPlayerSingleton(){
         //singleton constructor
@@ -31,6 +32,8 @@ public class MediaPlayerSingleton {
 
     public void play(String path) throws IOException {
 
+        nowPlayingPath = path;
+
         if(mp.isPlaying()){
             mp.stop();
         }
@@ -40,8 +43,14 @@ public class MediaPlayerSingleton {
         //sources, so I'm just creating a new one
         mp = new MediaPlayer();
 
-        mp.setDataSource(path);
+        mp.setDataSource(nowPlayingPath);
         mp.prepare();
         mp.start();
+    }
+
+    public void stop(){
+        if(mp.isPlaying()){
+            mp.stop();
+        }
     }
 }

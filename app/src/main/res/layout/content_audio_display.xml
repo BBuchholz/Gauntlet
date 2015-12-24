@@ -47,8 +47,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".25"
-            android:text="||"
-            android:id="@+id/btnPause"/>
+            android:text="[]"
+            android:id="@+id/btnStop"
+            android:onClick="stopPlayback"/>
 
         <Button
             android:layout_width="0dp"

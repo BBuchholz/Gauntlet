@@ -52,6 +52,18 @@ public class BookSegmentsInputActivity extends AppCompatActivity {
         //set in all modes
         setTextByViewId(R.id.etAlias, aliasStr);
 
+        if(mode == DisplayMode.Create){
+            //if there is a previous book segment for this alias, pre-populate previous page range
+            BookSegmentsFile bsf = new BookSegmentsFile(aliasStr);
+            bsf.loadItems();
+
+            if(bsf.size() > 0){
+
+                String pR = bsf.getBookSegment(bsf.size() - 1).getPageRange();
+                setTextByViewId(R.id.etPageRange, pR);
+            }
+        }
+
         if(mode == DisplayMode.View){
             Button btn = (Button)findViewById(R.id.btnAdd);
             btn.setVisibility(View.GONE);

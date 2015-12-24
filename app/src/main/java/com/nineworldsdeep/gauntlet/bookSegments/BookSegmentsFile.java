@@ -46,4 +46,8 @@ public class BookSegmentsFile extends LineItemListFile {
 
         add(entry);
     }
+
+    public BookSegment getBookSegment(int position) {
+        return new BookSegment(get(position));
+    }
 }

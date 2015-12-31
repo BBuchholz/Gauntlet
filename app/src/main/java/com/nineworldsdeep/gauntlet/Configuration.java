@@ -15,6 +15,16 @@ import java.util.List;
  */
 public class Configuration {
 
+    private static boolean _testMode = false;
+
+    public static boolean isInTestMode() {
+        return _testMode;
+    }
+
+    public static void setTestMode(boolean testMode) {
+        _testMode = testMode;
+    }
+
     public static File getSynergyDirectory(){
 
         return getDirectoryStoragePath("/NWD/synergy");
@@ -99,16 +109,39 @@ public class Configuration {
 
     private static File getSdDirectoryStoragePath(String path){
 
+        if(_testMode){
+            path = "/NWD-SNDBX" + path;
+        }
+
         File root = new File("/storage/external_SD");
         File dir = new File(root.getAbsolutePath() + path);
         if(!dir.exists()){
-            //dir.mkdirs();
+
+            try{
+
+                dir.mkdirs();
+
+            }catch(Exception ex){
+
+                return null;
+            }
+        }
+
+        if(dir.exists()){
+
+            return dir;
+
+        }else{
+
             return null;
         }
-        return dir;
     }
 
     private static File getDirectoryStoragePath(String path){
+
+        if(_testMode){
+            path = "/NWD-SNDBX" + path;
+        }
 
         File root = Environment.getExternalStorageDirectory();
         File dir = new File(root.getAbsolutePath() + path);

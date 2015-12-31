@@ -37,7 +37,37 @@ public class ConfigurationTest {
     }
 
     @Test
+    public void testGetMuseSessionNotesDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetBookSegmentsDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
     public void testGetConfigDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetImagesDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetAudioDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetVoicememosDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetSdCardMediaMusicDirectory() throws Exception {
         fail("prototype");
     }
 
@@ -56,4 +86,18 @@ public class ConfigurationTest {
         fail("prototype");
     }
 
+    @Test
+    public void testGetCameraDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetScreenshotDirectory() throws Exception {
+        fail("prototype");
+    }
+
+    @Test
+    public void testGetSkitchDirectory() throws Exception {
+        fail("prototype");
+    }
 }

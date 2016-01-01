@@ -97,8 +97,17 @@ public class ConfigurationTest extends TestCase {
 
         Configuration.setTestMode(false);
 
-        assertEquals(new File("/storage/external_SD/NWD-MEDIA"),
+        File externalSD = new File("/storage/external_SD");
+
+        if(externalSD.exists()){
+
+            assertEquals(new File("/storage/external_SD/NWD-MEDIA"),
                 Configuration.getSdCardMediaMusicDirectory());
+
+        }else{
+
+            assertNull(Configuration.getSdCardMediaMusicDirectory());
+        }
     }
 
     public void testGetAllSynergyListNames() throws Exception {
@@ -192,8 +201,16 @@ public class ConfigurationTest extends TestCase {
     }
 
     public void testGetSdCardMediaMusicDirectoryTestMode() throws Exception {
-        assertEquals(new File("/storage/external_SD/NWD-SNDBX/NWD-MEDIA"),
-                Configuration.getSdCardMediaMusicDirectory());
+        File externalSD = new File("/storage/external_SD");
+
+        if(externalSD.exists()){
+
+            assertEquals(new File("/storage/external_SD/NWD-SNDBX/NWD-MEDIA"),
+                    Configuration.getSdCardMediaMusicDirectory());
+        }else{
+
+            assertNull(Configuration.getSdCardMediaMusicDirectory());
+        }
     }
 
     public void testGetAllSynergyListNamesTestMode() throws Exception {

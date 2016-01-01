@@ -40,4 +40,10 @@
         android:text="Growth Areas"
         android:onClick="launchGrowthAreas"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TestMode"
+        android:onClick="launchTestModeActivity"/>
+
 </LinearLayout>

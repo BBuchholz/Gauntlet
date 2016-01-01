@@ -259,6 +259,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.muse.SessionListActivity" />
         </activity>
+        <activity
+            android:name=".TestModeActivity"
+            android:label="@string/title_activity_test_mode"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

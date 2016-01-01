@@ -78,4 +78,9 @@ public class MainActivity extends ActionBarActivity {
 
         startActivity(new Intent(this, AudioListActivity.class));
     }
+
+    public void launchTestModeActivity(View view) {
+
+        startActivity(new Intent(this, TestModeActivity.class));
+    }
 }

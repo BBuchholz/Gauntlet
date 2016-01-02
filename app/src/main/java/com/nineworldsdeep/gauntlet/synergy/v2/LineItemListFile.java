@@ -60,6 +60,11 @@ public class LineItemListFile {
         items.remove(item);
     }
 
+    /**
+     * loads line items from the associated file. any previous entries are cleared,
+     * after loading, the items member of this object will only contain entries
+     * from the associated file (ie. unsaved changes will be lost when this is called)
+     */
     public void loadItems(){
 
         File toDoFile = getSynergyFile();

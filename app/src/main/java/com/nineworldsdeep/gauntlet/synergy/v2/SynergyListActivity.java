@@ -27,6 +27,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_QUEUE_ID = 3;
     private static final int MENU_CONTEXT_MOVE_TO_TOP_ID = 4;
     private static final int MENU_CONTEXT_MOVE_TO_BOTTOM_ID = 5;
+    private static final int MENU_CONTEXT_SPLIT_ITEM_ID = 6;
 
     private SynergyListFile slf;
 
@@ -46,7 +47,6 @@ public class SynergyListActivity
                 (ListView)findViewById(R.id.lvItems);
 
         readItems(lvItems, listName);
-        //setupListViewListener(lvItems);
         registerForContextMenu(lvItems);
     }
 
@@ -80,6 +80,9 @@ public class SynergyListActivity
 
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
                 Menu.NONE, "Move To Bottom");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
+                Menu.NONE, "Split Item");
     }
 
     //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
@@ -120,9 +123,21 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_SPLIT_ITEM_ID:
+
+                splitItem(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void splitItem(int position) {
+        Intent intent = new Intent(this, SplitItemActivity.class);
+        Utils.toast(this, "need to pass item text and list name to SplitItemActivity (setExtra())");
+        startActivity(intent);
     }
 
     private void moveToBottom(int pos) {

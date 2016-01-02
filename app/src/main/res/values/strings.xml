@@ -48,4 +48,7 @@
     <string name="title_activity_session_display">SessionDisplayActivity</string>
     <string name="menu_shelveAll">Shelve All Categorized</string>
     <string name="title_activity_test_mode">TestModeActivity</string>
+    <string name="title_activity_split_item">SplitItemActivity</string>
+    <string name="previousButtonString"><![CDATA[<<]]></string>
+    <string name="nextButtonString"><![CDATA[>>]]></string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -28,6 +29,18 @@ import java.util.regex.Pattern;
  * Created by Brent on 9/28/2015.
  */
 public class Utils {
+
+    /**
+     * appends string msg to synergy list log file "yyyyMMdd-utils-log"
+     * @param msg
+     */
+    public static void log(String msg){
+        String logName = SynergyUtils.getTimeStampedListName("utils-log");
+        SynergyListFile slf = new SynergyListFile(logName);
+        slf.loadItems();
+        slf.add(msg);
+        slf.save();
+    }
 
     public static void toast(Context c, String msg){
         Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();

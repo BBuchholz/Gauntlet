@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -58,10 +59,6 @@ public class SplitItemActivity extends AppCompatActivity {
         Utils.toast(this, "move next");
     }
 
-    public void moveWordPrev(View view) {
-        Utils.toast(this, "move prev");
-    }
-
     public void addSplit(View view) {
 
         int lastPos = splitItems.size() - 1;
@@ -83,6 +80,40 @@ public class SplitItemActivity extends AppCompatActivity {
                     splitItems.add(restOfText);
                     refreshListItems();
                 }
+            }
+        }
+    }
+
+    public void moveWordPrev(View view) {
+
+        int lastPos = splitItems.size() - 1;
+        int prevPos = lastPos - 1;
+
+        if(lastPos > 0){
+
+            String prev = splitItems.get(prevPos);
+            String last = splitItems.get(lastPos);
+
+            String[] lastArr = last.split("\\s+");
+
+            if(lastArr.length > 1){
+
+                String newPrev = prev + " " + lastArr[0];
+
+                String newLast = "";
+
+                for(int i = 1; i < lastArr.length; i++){
+
+                    if(i > 1){
+                        newLast += " ";
+                    }
+
+                    newLast += lastArr[i];
+                }
+
+                splitItems.set(prevPos, newPrev);
+                splitItems.set(lastPos, newLast);
+                refreshListItems();
             }
         }
     }

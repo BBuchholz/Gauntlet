@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by brent on 10/30/15.
@@ -107,5 +108,30 @@ public class LineItemListFile {
     public void move(int moveFromPosition, int moveToPosition) {
 
         items.add(moveToPosition, items.remove(moveFromPosition));
+    }
+
+    /**
+     * replaces item at position with items in list. original item is removed,
+     * new items inserted at same position, in list order
+     * @param pos - position of item to replace
+     * @param list - ordered list to replace item with
+     */
+    public String replace(int pos, ArrayList<String> list) {
+
+        String removed = items.remove(pos);
+
+        Stack<String> reversedStack = new Stack<>();
+
+        for(String item : list){
+
+            reversedStack.push(item);
+        }
+
+        while(!reversedStack.empty()){
+
+            items.add(pos, reversedStack.pop());
+        }
+
+        return removed;
     }
 }

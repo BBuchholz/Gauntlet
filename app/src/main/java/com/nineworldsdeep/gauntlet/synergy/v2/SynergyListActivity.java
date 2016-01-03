@@ -161,8 +161,14 @@ public class SynergyListActivity
                         data.getSerializableExtra(Extras.ARRAYLIST_STRING_LIST_ITEMS);
 
                 if(lst != null) {
-                    for (String itm : lst)
-                        Utils.toast(this, itm);
+
+                    SynergyUtils.archiveOne(slf.getListName(),
+                            slf.replace(pos, lst));
+                    slf.save();
+                    refreshListItems();
+
+//                    for (String itm : lst)
+//                        Utils.toast(this, itm);
                 }
             }
         }

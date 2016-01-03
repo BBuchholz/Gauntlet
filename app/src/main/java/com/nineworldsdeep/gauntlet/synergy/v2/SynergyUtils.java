@@ -129,6 +129,22 @@ public class SynergyUtils {
         archive(listName, false);
     }
 
+    /**
+     * archives a single list item, for the given list name.
+     * any associated Synergy file is left alone, and if the
+     * desire is to remove the item from another list, that
+     * must be handled seperately.
+     * @param listName
+     * @param item
+     */
+    public static void archiveOne(String listName, String item){
+
+        SynergyArchiveFile saf = new SynergyArchiveFile(listName);
+        saf.loadItems();
+        saf.add(item);
+        saf.save();
+    }
+
     public static void archive(String listName, boolean expired) {
 
         SynergyListFile slf = new SynergyListFile(listName);

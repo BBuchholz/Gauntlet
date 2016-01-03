@@ -8,4 +8,6 @@ public class Extras {
             "com.nineworldsdeep.gauntlet.EXTRA_INT_SYNERGY_LIST_ITEM_POS";
     public static final String STRING_SYNERGY_LIST_ITEM_TEXT =
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_SYNERGY_LIST_ITEM_TEXT";
+    public static final String ARRAYLIST_STRING_LIST_ITEMS =
+            "com.nineworldsdeep.gauntlet.EXTRA_ARRAYLIST_STRING_LIST_ITEMS";
 }

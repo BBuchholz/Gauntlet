@@ -151,20 +151,24 @@ public class SynergyListActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode== REQUEST_RESULT_SPLIT_ITEM)
+        if(requestCode== REQUEST_RESULT_SPLIT_ITEM && data != null)
         {
             int pos = data.getIntExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, -1);
 
             if(pos > -1) {
 
                 ArrayList<String> lst = (ArrayList<String>)
-                        data.getSerializableExtra(SplitItemActivity.TEST_LIST);
+                        data.getSerializableExtra(Extras.ARRAYLIST_STRING_LIST_ITEMS);
 
                 if(lst != null) {
                     for (String itm : lst)
                         Utils.toast(this, itm);
                 }
             }
+        }
+        if(requestCode== RESULT_CANCELED){
+            //it crashes on back button without this, see:
+            //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }
     }
 

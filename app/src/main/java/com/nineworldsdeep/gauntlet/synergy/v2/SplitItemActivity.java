@@ -18,9 +18,6 @@ import java.util.ArrayList;
 
 public class SplitItemActivity extends AppCompatActivity {
 
-    public static final String TEST_LIST =
-            "com.nineworldsdeep.gauntlet.EXTRA_TEST_LIST";
-
     private int itemPosition;
     private String itemText;
     private ArrayList<String> splitItems = new ArrayList<>();
@@ -91,7 +88,20 @@ public class SplitItemActivity extends AppCompatActivity {
     }
 
     public void removeSplit(View view) {
-        Utils.toast(this, "remove split");
+
+        int lastPos = splitItems.size() - 1;
+        int secondToLastPos = lastPos - 1;
+
+        if(lastPos > 0){
+
+            String cat =
+                    splitItems.get(secondToLastPos)
+                            + " " + splitItems.get(lastPos);
+
+            splitItems.set(secondToLastPos, cat);
+            splitItems.remove(lastPos);
+            refreshListItems();
+        }
     }
 
     public void performSplit(View view) {
@@ -100,13 +110,13 @@ public class SplitItemActivity extends AppCompatActivity {
 
         Intent intent=new Intent();
 
-        ArrayList<String> lst = new ArrayList<>();
+//        ArrayList<String> lst = new ArrayList<>();
+//
+//        lst.add("test 1");
+//        lst.add("test 2");
+//        lst.add("test 3");
 
-        lst.add("test 1");
-        lst.add("test 2");
-        lst.add("test 3");
-
-        intent.putExtra(TEST_LIST, lst);
+        intent.putExtra(Extras.ARRAYLIST_STRING_LIST_ITEMS, splitItems);
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, itemPosition);
 
         setResult(SynergyListActivity.REQUEST_RESULT_SPLIT_ITEM, intent);

@@ -16,8 +16,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+
+import java.util.ArrayList;
 
 public class SynergyListActivity
         extends AppCompatActivity{
@@ -28,6 +31,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_MOVE_TO_TOP_ID = 4;
     private static final int MENU_CONTEXT_MOVE_TO_BOTTOM_ID = 5;
     private static final int MENU_CONTEXT_SPLIT_ITEM_ID = 6;
+    public static final int REQUEST_RESULT_SPLIT_ITEM = 7;
 
     private SynergyListFile slf;
 
@@ -136,8 +140,32 @@ public class SynergyListActivity
 
     private void splitItem(int position) {
         Intent intent = new Intent(this, SplitItemActivity.class);
-        Utils.toast(this, "need to pass item text and list name to SplitItemActivity (setExtra())");
-        startActivity(intent);
+
+        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
+        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT, slf.get(position));
+
+        startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode== REQUEST_RESULT_SPLIT_ITEM)
+        {
+            int pos = data.getIntExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, -1);
+
+            if(pos > -1) {
+
+                ArrayList<String> lst = (ArrayList<String>)
+                        data.getSerializableExtra(SplitItemActivity.TEST_LIST);
+
+                if(lst != null) {
+                    for (String itm : lst)
+                        Utils.toast(this, itm);
+                }
+            }
+        }
     }
 
     private void moveToBottom(int pos) {

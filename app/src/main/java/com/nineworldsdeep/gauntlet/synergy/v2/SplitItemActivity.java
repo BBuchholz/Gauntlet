@@ -55,10 +55,6 @@ public class SplitItemActivity extends AppCompatActivity {
                 splitItems));
     }
 
-    public void moveWordNext(View view) {
-        Utils.toast(this, "move next");
-    }
-
     public void addSplit(View view) {
 
         int lastPos = splitItems.size() - 1;
@@ -110,6 +106,41 @@ public class SplitItemActivity extends AppCompatActivity {
 
                     newLast += lastArr[i];
                 }
+
+                splitItems.set(prevPos, newPrev);
+                splitItems.set(lastPos, newLast);
+                refreshListItems();
+            }
+        }
+    }
+
+    public void moveWordNext(View view) {
+
+        int lastPos = splitItems.size() - 1;
+        int prevPos = lastPos - 1;
+
+        if(lastPos > 0){
+
+            String prev = splitItems.get(prevPos);
+            String last = splitItems.get(lastPos);
+
+            String[] prevArr = prev.split("\\s+");
+
+            if(prevArr.length > 1){
+
+                String newPrev = "";
+                int lastWordPos = prevArr.length - 1;
+
+                for(int i = 0; i < lastWordPos; i++){
+
+                    if(i > 0){
+                        newPrev += " ";
+                    }
+
+                    newPrev += prevArr[i];
+                }
+
+                String newLast = prevArr[lastWordPos] + " " + last;
 
                 splitItems.set(prevPos, newPrev);
                 splitItems.set(lastPos, newLast);

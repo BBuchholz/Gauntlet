@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
@@ -21,6 +23,7 @@ public class SplitItemActivity extends AppCompatActivity {
 
     private int itemPosition;
     private String itemText;
+    private ArrayList<String> splitItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,19 @@ public class SplitItemActivity extends AppCompatActivity {
                 Extras.STRING_SYNERGY_LIST_ITEM_TEXT);
 
         if(itemPosition > -1 && !Utils.stringIsNullOrWhitespace(itemText)){
-            Utils.toast(this, "insert [" + itemText + "] here for split");
+
+            splitItems.add(itemText);
+            refreshListItems();
         }
+    }
+
+    private void refreshListItems(){
+
+        ListView lvItems = (ListView) findViewById(R.id.lvItems);
+
+        lvItems.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                splitItems));
     }
 
     public void moveWordNext(View view) {
@@ -52,7 +66,28 @@ public class SplitItemActivity extends AppCompatActivity {
     }
 
     public void addSplit(View view) {
-        Utils.toast(this, "add split");
+
+        int lastPos = splitItems.size() - 1;
+
+        if(lastPos > -1){
+
+            String currentText = splitItems.get(lastPos);
+            String[] split = currentText.split("\\s+", 2);
+            String firstWord = split[0];
+            String restOfText = "";
+
+            //this should be true unless it is a single word, in which case no split
+            if(split.length == 2){
+                restOfText = split[1];
+
+                if(!Utils.stringIsNullOrWhitespace(restOfText)){
+
+                    splitItems.set(lastPos, firstWord);
+                    splitItems.add(restOfText);
+                    refreshListItems();
+                }
+            }
+        }
     }
 
     public void removeSplit(View view) {

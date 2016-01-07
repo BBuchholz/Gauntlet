@@ -59,6 +59,26 @@ public class Utils {
         return lst;
     }
 
+    public static List<String> getToBeRemovedPlaylists(){
+
+        String[] exts = {"m3u8"};
+
+        List<String> playlists =
+                getAllFileNamesWithExt(Configuration.getPlaylistsDirectory(), exts);
+
+        List<String> toBeRemoved = new ArrayList<>();
+
+        for(String playlistName : playlists){
+
+            if(playlistName.startsWith("to be removed")){
+
+                toBeRemoved.add(playlistName);
+            }
+        }
+
+        return toBeRemoved;
+    }
+
     public static List<String> getAllFilePathsWithExt(File dir, String[] exts) {
 
         List<String> lst = new ArrayList<>();;

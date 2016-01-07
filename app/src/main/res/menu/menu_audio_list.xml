@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity">
+    <item android:id="@+id/action_remove_marked_audio"
+        android:title="@string/menu_remove_marked_audio"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

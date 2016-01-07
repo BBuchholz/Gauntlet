@@ -165,4 +165,15 @@ public class Configuration {
 
         return getDirectoryStoragePath("/Pictures/Skitch");
     }
+
+    public static File getPlaylistsDirectory() {
+
+        return getDirectoryStoragePath("/Playlists");
+    }
+
+    public static File getPlaylistFile(String playlistNameWithExt) {
+
+        File f = new File(getPlaylistsDirectory() + "/" + playlistNameWithExt);
+        return f;
+    }
 }

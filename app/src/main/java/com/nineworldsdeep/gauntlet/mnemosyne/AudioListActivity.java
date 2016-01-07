@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +18,12 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AudioListActivity extends AppCompatActivity {
 
@@ -27,6 +32,88 @@ public class AudioListActivity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_audio_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_remove_marked_audio){
+            //need to look into storage access framework maybe?
+            Utils.toast(this, "this feature disabled until further development");
+            //promptRemoveMarkedAudio();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void promptRemoveMarkedAudio() {
+
+        //find any lists in playlists folder that begin with "to be removed"
+        List<String> playlistNamesToBeRemoved = Utils.getToBeRemovedPlaylists();
+
+        final List<String> entriesToBeRemoved = new ArrayList<>();
+
+        for(String playlistName : playlistNamesToBeRemoved){
+
+            File playlistFile = Configuration.getPlaylistFile(playlistName);
+
+            List<String> entries;
+
+            try {
+
+                entries = FileUtils.readLines(playlistFile);
+
+            }catch(IOException ex){
+
+                entries = new ArrayList<>();
+            }
+
+            for(String entry : entries){
+
+                entriesToBeRemoved.add(entry);
+            }
+        }
+
+        String msg = "Found " + playlistNamesToBeRemoved.size() +
+                " playlists containing " + entriesToBeRemoved.size() +
+                " audio files to be removed, would you like to proceed?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Remove Marked Audio")
+                .setMessage(msg)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        int count = 0;
+
+                        for(String path : entriesToBeRemoved){
+
+                            File f = new File(path);
+                            if(f.exists()){
+
+                                f.delete();
+
+                                count++;
+                            }
+                        }
+
+                        Utils.toast(getApplicationContext(), count + " files removed");
+
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +143,7 @@ public class AudioListActivity extends AppCompatActivity {
             currentDir = Configuration.getAudioDirectory();
         }
 
-        Utils.toast(this, currentDir.getAbsolutePath());
+        //Utils.toast(this, currentDir.getAbsolutePath());
 
         ListView lvItems =
                 (ListView) findViewById(R.id.lvItems);

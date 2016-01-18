@@ -55,6 +55,16 @@ public class SynergyMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        refreshLayout();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        refreshLayout();
+    }
+
+    private void refreshLayout(){
         setContentView(R.layout.activity_synergy_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

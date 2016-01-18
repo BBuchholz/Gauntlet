@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.view.ViewGroup.LayoutParams;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity;
@@ -23,7 +26,36 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        refreshLayout();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        refreshLayout();
+    }
+
+    private void refreshLayout(){
         setContentView(R.layout.activity_main);
+
+        if(Configuration.isInTestMode()) {
+            addTestFeatureButton("TEST");
+        }
+    }
+
+    private void addTestFeatureButton(String btnText){
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout_linear);
+        Button btnTag = new Button(this);
+        btnTag.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        btnTag.setText(btnText);
+        btnTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.toast(getApplicationContext(), "test click");
+            }
+        });
+        layout.addView(btnTag, 0);
     }
 
     @Override
@@ -46,6 +78,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void testClick(View view){
+
     }
 
     public void launchGrowthAreas(View view){

@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.synergy.v2;
+package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,8 +15,10 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
-public class SynergyMainActivity extends AppCompatActivity {
+public class SynergyV3MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
@@ -60,7 +63,7 @@ public class SynergyMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTitle("Synergy v2");
+        setTitle("Synergy V3");
 
         refreshLayout();
     }

@@ -277,6 +277,41 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyListActivity" />
         </activity>
+        <activity
+            android:name=".synergy.v3.SynergyV3MainActivity"
+            android:label="SynergyV3MainActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
+        <activity
+            android:name=".synergy.v3.SynergyListActivity"
+            android:label="SynergyListActivity"
+            android:parentActivityName=".synergy.v3.SynergyV3MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+        </activity>
+        <activity
+            android:name=".synergy.v3.SynergyArchivesActivity"
+            android:label="SynergyArchivesActivity"
+            android:parentActivityName=".synergy.v3.SynergyV3MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+        </activity>
+        <activity
+            android:name=".synergy.v3.SynergyTemplatesActivity"
+            android:label="SynergyTemplatesActivity"
+            android:parentActivityName=".synergy.v3.SynergyV3MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+        </activity>
     </application>
 
 </manifest>

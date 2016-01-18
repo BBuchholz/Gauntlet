@@ -6,20 +6,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
-import com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterArchiveActivity;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterListActivity;
-import com.nineworldsdeep.gauntlet.synergy.v1.SynergyMasterTemplateActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
-
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -39,23 +36,35 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         if(Configuration.isInTestMode()) {
-            addTestFeatureButton("TEST");
+
+            addButton("TEST", new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.toast(getApplicationContext(), "TEST CLICKED");
+                }
+            });
+
+            addButton(1, "Synergy V3", new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), SynergyV3MainActivity.class));
+                }
+            });
         }
     }
 
-    private void addTestFeatureButton(String btnText){
+    private void addButton(String btnText, OnClickListener listener){
+        addButton(0, btnText, listener);
+    }
+
+    private void addButton(int position, String btnText, OnClickListener listener){
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_linear);
         Button btnTag = new Button(this);
         btnTag.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         btnTag.setText(btnText);
-        btnTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.toast(getApplicationContext(), "test click");
-            }
-        });
-        layout.addView(btnTag, 0);
+        btnTag.setOnClickListener(listener);
+        layout.addView(btnTag, position);
     }
 
     @Override
@@ -78,10 +87,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void testClick(View view){
-
     }
 
     public void launchGrowthAreas(View view){

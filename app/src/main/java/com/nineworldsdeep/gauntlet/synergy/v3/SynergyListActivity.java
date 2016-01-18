@@ -1,16 +1,15 @@
-package com.nineworldsdeep.gauntlet.synergy.v2;
+package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -20,6 +19,9 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class SynergyListActivity
 
         String listName =
                 intent.getStringExtra(
-                        SynergyMainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
+                        SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
 
         setTitle(listName);
 

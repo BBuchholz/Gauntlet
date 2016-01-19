@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.synergy.v2;
 
 import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -20,6 +21,11 @@ public class LineItemListFile {
     private ArrayList<String> items;
 
     public LineItemListFile(String name, File filesDir){
+
+        if(Utils.stringIsNullOrWhitespace(name)){
+            name = "utils-BLANK-LIST";
+            Utils.log("blank listname converted to '" + name + "'");
+        }
 
         listName = name;
         items = new ArrayList<>();

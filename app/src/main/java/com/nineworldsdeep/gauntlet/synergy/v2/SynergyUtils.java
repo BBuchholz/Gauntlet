@@ -111,7 +111,7 @@ public class SynergyUtils {
             }
 
             pushToFile.save();
-            currentFile.delete();
+            archive(currentFile.getListName(), true);
 
             return pushToName;
         }
@@ -137,15 +137,17 @@ public class SynergyUtils {
      * @param listName
      * @param item
      */
-    public static void archiveOne(String listName, String item){
+    public static String archiveOne(String listName, String item){
 
         SynergyArchiveFile saf = new SynergyArchiveFile(listName);
         saf.loadItems();
         saf.add(item);
         saf.save();
+
+        return item;
     }
 
-    public static void archive(String listName, boolean expired) {
+    public static void archive(String listName, boolean listIsExpired) {
 
         SynergyListFile slf = new SynergyListFile(listName);
         slf.loadItems();
@@ -156,7 +158,7 @@ public class SynergyUtils {
         List<String> toBeRemoved = new ArrayList<>();
 
         for(String itm : slf.getItems()){
-            if(expired || SynergyUtils.listItemIsCompleted(itm)){
+            if(listIsExpired || SynergyUtils.listItemIsCompleted(itm)){
                 toBeRemoved.add(itm);
             }
         }
@@ -303,5 +305,18 @@ public class SynergyUtils {
         }
 
         return -1;
+    }
+
+    public static void move(SynergyListFile slf, int pos, String moveToListName) {
+
+        SynergyListFile moveToFile = new SynergyListFile(moveToListName);
+
+        moveToFile.loadItems();
+
+        archiveOne(slf.getListName(), slf.get(pos));
+        moveToFile.add(0, slf.remove(pos));
+
+        moveToFile.save();
+        slf.save();
     }
 }

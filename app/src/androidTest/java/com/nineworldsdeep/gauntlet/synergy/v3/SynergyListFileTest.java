@@ -26,6 +26,17 @@ public class SynergyListFileTest extends TestCase {
 
     public void testGet() throws Exception {
 
+        String testText1 = "test item 1";
+        String testText2 = "test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText2));
+        slf.add(new SynergyListItem(testText3));
+
+        assertEquals(testText1, slf.get(0).getText());
+        assertEquals(testText2, slf.get(1).getText());
+        assertEquals(testText3, slf.get(2).getText());
     }
 
     public void testGetListName() throws Exception {

@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -323,5 +324,9 @@ public class SynergyUtils {
 
         moveToFile.save();
         slf.save();
+    }
+
+    public static boolean listItemIsCompleted(SynergyListItem synergyListItem) {
+        throw new UnsupportedOperationException("prototype");
     }
 }

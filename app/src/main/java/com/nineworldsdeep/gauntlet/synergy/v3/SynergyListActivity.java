@@ -69,7 +69,7 @@ public class SynergyListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = slf.get(info.position);
+        String title = slf.get(info.position).getText();
 
         menu.setHeaderTitle(title);
 
@@ -147,7 +147,8 @@ public class SynergyListActivity
         Intent intent = new Intent(this, SplitItemActivity.class);
 
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
-        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT, slf.get(position));
+        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
+                        slf.get(position).getText());
 
         startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
     }
@@ -350,7 +351,8 @@ public class SynergyListActivity
         if(Utils.containsTimeStamp(slf.getListName())){
 
             Utils.toast(this, "shelve position " + position);
-            String category = SynergyUtils.parseCategory(slf.get(position));
+            String category =
+                    SynergyUtils.parseCategory(slf.get(position).getText());
 
             if(Utils.stringIsNullOrWhitespace(category)){
 
@@ -500,7 +502,8 @@ public class SynergyListActivity
         //this method is used to add new items above completed items, but still at bottom of list
         int idx = slf.size();
 
-        while(idx > 0 && slf.get(idx - 1).startsWith("completed={"))
+//        while(idx > 0 && slf.get(idx - 1).startsWith("completed={"))
+        while(idx > 0 && SynergyUtils.listItemIsCompleted(slf.get(idx - 1)))
             idx--;
 
         return idx;

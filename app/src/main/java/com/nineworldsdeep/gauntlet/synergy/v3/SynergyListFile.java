@@ -1,5 +1,9 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
+import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Utils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +13,24 @@ import java.util.List;
 public class SynergyListFile {
 
     private String listName;
+    private File synergyFile;
+    private ArrayList<SynergyListItem> items;
 
     public SynergyListFile(String listName) {
-        throw new UnsupportedOperationException("prototype");
+
+        if(Utils.stringIsNullOrWhitespace(listName)){
+            listName = "utils-BLANK-LIST";
+            Utils.log("blank listname converted to '" + listName + "'");
+        }
+
+        this.listName = listName;
+        items = new ArrayList<>();
+        synergyFile =
+                new File(Configuration.getSynergyDirectory(), listName + ".txt");
     }
 
-    public String get(int position) {
-        throw new UnsupportedOperationException("prototype");
+    public SynergyListItem get(int position) {
+        return items.get(position);
     }
 
     public String getListName() {
@@ -64,11 +79,11 @@ public class SynergyListFile {
     }
 
     public void add(int i, SynergyListItem item) {
-        throw new UnsupportedOperationException();
+        items.add(i, item);
     }
 
     public void add(SynergyListItem item) {
-        throw new UnsupportedOperationException();
+        items.add(item);
     }
 
     public void loadItems() {
@@ -85,10 +100,10 @@ public class SynergyListFile {
     }
 
     public boolean exists() {
-        throw new UnsupportedOperationException();
+        return synergyFile.exists();
     }
 
     public void delete() {
-        throw new UnsupportedOperationException();
+        synergyFile.delete();
     }
 }

@@ -20,7 +20,7 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import java.util.ArrayList;
@@ -167,8 +167,7 @@ public class SynergyListActivity
 
                 if(lst != null) {
 
-                    SynergyUtils.archiveOne(slf.getListName(),
-                            slf.replace(pos, lst));
+                    slf.archiveOne(slf.replace(pos, lst));
                     slf.save();
                     refreshListItems();
 
@@ -260,10 +259,10 @@ public class SynergyListActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        while(SynergyUtils.hasCategorizedItems(slf)){
+                        while(slf.hasCategorizedItems()){
 
                             int pos =
-                                    SynergyUtils.getFirstCategorizedItemPosition(slf);
+                                    slf.getFirstCategorizedItemPosition();
                             shelvePosition(pos);
                         }
 
@@ -337,7 +336,7 @@ public class SynergyListActivity
         if(!Utils.containsTimeStamp(slf.getListName())){
 
             //Utils.toast(this, "queueToDailyToDo position " + position);
-            SynergyUtils.queueToDailyToDo(slf, position);
+            slf.queueToDailyToDo(position);
             Utils.toast(this, "queued");
             refreshListItems();
 
@@ -380,7 +379,7 @@ public class SynergyListActivity
                                     public void onClick(DialogInterface dialog,int id) {
 
                                         // get category from userInput and shelve
-                                        SynergyUtils.shelve(slf, position, userInput.getText().toString());
+                                        slf.shelve(position, userInput.getText().toString());
                                         Utils.toast(getApplicationContext(), "shelved");
                                     }
                                 })
@@ -399,7 +398,7 @@ public class SynergyListActivity
 
             }else {
 
-                SynergyUtils.shelve(slf, position, category);
+                slf.shelve(position, category);
                 Utils.toast(this, "shelved");
             }
 
@@ -411,32 +410,34 @@ public class SynergyListActivity
     }
 
     private void toggleCompletionStatusAtPosition(int position){
+//
+//        //move to bottom of list
+//        SynergyListItem removedItem = slf.remove(position);
+//
+//        if (removedItem.listItemIsCompleted()) {
+//            //completed item being changed to incomplete
+//            int beginIndex = removedItem.getText().indexOf("{") + 1;
+//            int endIndex = removedItem.getText().lastIndexOf("}");
+//            removedItem = removedItem.getText().substring(beginIndex, endIndex);
+//            slf.add(0, removedItem);
+//        } else {
+//            //incomplete item being changed to complete
+//            if(SynergyUtils.isCategorizedItem(removedItem)){
+//
+//                SynergyUtils.completeCategorizedItem(removedItem);
+//
+//            }else {
+//
+//                removedItem = "completed={" + removedItem + "}";
+//                slf.add(removedItem);
+//            }
+//        }
+//
+//        writeItems();
+//
+//        refreshListItems();
 
-        //move to bottom of list
-        String removedItem = slf.remove(position);
-
-        if (SynergyUtils.listItemIsCompleted(removedItem)) {
-            //completed item being changed to incomplete
-            int beginIndex = removedItem.indexOf("{") + 1;
-            int endIndex = removedItem.lastIndexOf("}");
-            removedItem = removedItem.substring(beginIndex, endIndex);
-            slf.add(0, removedItem);
-        } else {
-            //incomplete item being changed to complete
-            if(SynergyUtils.isCategorizedItem(removedItem)){
-
-                SynergyUtils.completeCategorizedItem(removedItem);
-
-            }else {
-
-                removedItem = "completed={" + removedItem + "}";
-                slf.add(removedItem);
-            }
-        }
-
-        writeItems();
-
-        refreshListItems();
+        throw new UnsupportedOperationException();
     }
 
     private void writeItems() {

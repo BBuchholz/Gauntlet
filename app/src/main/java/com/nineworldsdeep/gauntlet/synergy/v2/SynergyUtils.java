@@ -68,13 +68,18 @@ public class SynergyUtils {
         return sdf.format(new Date());
     }
 
-    public static String getCurrentTimeStamp_yyyyMMddHHmmss(boolean asFragmentEntry) {
+    public static String getCurrentTimeStamp_yyyyMMddHHmmss()
+    {
+        return getCurrentTimeStamp_yyyyMMddHHmmss(false);
+    }
+
+    public static String getCurrentTimeStamp_yyyyMMddHHmmss(boolean asTimeStampKeyVal) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
 
         String output = sdf.format(new Date());;
 
-        if(asFragmentEntry){
+        if(asTimeStampKeyVal){
 
             output = "timeStamp={" + output + "}";
         }

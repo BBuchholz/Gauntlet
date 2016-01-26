@@ -81,8 +81,8 @@ public class SynergyListFile {
         return items.size();
     }
 
-    public void move(int pos, int moveToPos) {
-        throw new UnsupportedOperationException("prototype");
+    public void move(int moveFromPos, int moveToPos) {
+        items.add(moveToPos, items.remove(moveFromPos));
     }
 
     public boolean hasCategorizedItems() {

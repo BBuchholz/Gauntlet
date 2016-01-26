@@ -16,8 +16,13 @@ public class SynergyListItem {
     private Parser p;
 
     public SynergyListItem(String itemText) {
+
         p = new Parser();
         this.itemText = itemText;
+
+        if(!v3ItemText() && p.validate(itemText)){
+            convertItemTextToV3();
+        }
     }
 
     public boolean listItemIsCompleted() {
@@ -89,5 +94,13 @@ public class SynergyListItem {
         }
 
         itemText = "item={" + itemText + "}";
+    }
+
+    public String getVal(String key) {
+        return p.extract(key, itemText);
+    }
+
+    public String toLineItem(){
+        return itemText;
     }
 }

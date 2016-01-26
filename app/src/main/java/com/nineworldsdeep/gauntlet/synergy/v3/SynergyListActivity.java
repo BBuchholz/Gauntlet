@@ -148,7 +148,7 @@ public class SynergyListActivity
 
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
         intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
-                        slf.get(position).getText());
+                slf.get(position).getText());
 
         startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
     }
@@ -168,7 +168,13 @@ public class SynergyListActivity
 
                 if(lst != null) {
 
-                    slf.archiveOne(slf.replace(pos, lst));
+                    ArrayList<SynergyListItem> sliList = new ArrayList<>();
+
+                    for(String s : lst){
+                        sliList.add(new SynergyListItem(s));
+                    }
+
+                    slf.archiveOne(slf.replace(pos, sliList));
                     slf.save();
                     refreshListItems();
 

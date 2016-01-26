@@ -3,9 +3,13 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by brent on 1/21/16.
@@ -37,16 +41,44 @@ public class SynergyListFile {
         return listName;
     }
 
-    public SynergyListItem replace(int pos, ArrayList<String> lst) {
-        throw new UnsupportedOperationException("prototype");
+    public SynergyListItem replace(int pos, ArrayList<SynergyListItem> lst) {
+
+        SynergyListItem removed = items.remove(pos);
+
+        Stack<SynergyListItem> reversedStack = new Stack<>();
+
+        for(SynergyListItem item : lst){
+
+            reversedStack.push(item);
+        }
+
+        while(!reversedStack.empty()){
+
+            items.add(pos, reversedStack.pop());
+        }
+
+        return removed;
     }
 
     public void save() {
-        throw new UnsupportedOperationException("prototype");
+        try{
+
+            ArrayList<String> lst = new ArrayList<>();
+
+            for(SynergyListItem item : items){
+                lst.add(item.toLineItem());
+            }
+
+            FileUtils.writeLines(synergyFile, lst);
+
+        }catch(IOException ex){
+
+            Utils.log("save error: " + ex.getMessage());
+        }
     }
 
     public int size() {
-        throw new UnsupportedOperationException("prototype");
+        return items.size();
     }
 
     public void move(int pos, int moveToPos) {
@@ -88,7 +120,18 @@ public class SynergyListFile {
 
     public void loadItems() {
 
-        throw new UnsupportedOperationException();
+        items = new ArrayList<>();
+
+        try{
+
+            for(String line : FileUtils.readLines(synergyFile)){
+                items.add(new SynergyListItem(line));
+            }
+
+        }catch(IOException ex){
+
+            Utils.log("loadItems() Exception: " + ex.getMessage());
+        }
     }
 
     public List<SynergyListItem> getItems() {

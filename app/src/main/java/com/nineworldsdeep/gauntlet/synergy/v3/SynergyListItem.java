@@ -25,6 +25,15 @@ public class SynergyListItem {
         }
     }
 
+    public SynergyListItem(String categoryName, SynergyListItem sli){
+
+        this(sli.itemText);
+
+        String categorizedText = "::" + categoryName + ":: - " + getText();
+
+        this.itemText = p.setFirst("item", categorizedText, this.itemText);
+    }
+
     public boolean listItemIsCompleted() {
 
         return v2Completed() || v3Completed();
@@ -102,5 +111,11 @@ public class SynergyListItem {
 
     public String toLineItem(){
         return itemText;
+    }
+
+    public boolean isCategorizedItem() {
+
+        return getText().startsWith("::") &&
+                getText().contains(":: - ");
     }
 }

@@ -329,4 +329,5 @@ public class SynergyUtils {
     public static boolean listItemIsCompleted(SynergyListItem synergyListItem) {
         throw new UnsupportedOperationException("prototype");
     }
+
 }

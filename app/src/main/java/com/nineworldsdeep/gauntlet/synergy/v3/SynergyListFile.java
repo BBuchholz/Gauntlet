@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -86,16 +87,50 @@ public class SynergyListFile {
     }
 
     public boolean hasCategorizedItems() {
-        throw new UnsupportedOperationException("prototype");
+        return getFirstCategorizedItemPosition() > -1;
     }
 
     public int getFirstCategorizedItemPosition() {
 
-        throw new UnsupportedOperationException("prototype");
+        for(int i = 0; i < size(); i++){
+
+            if(get(i).isCategorizedItem()){
+
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public void queueToDailyToDo(int position) {
-        throw new UnsupportedOperationException("prototype");
+
+        queue(position, false, "DailyToDo");
+    }
+
+    private void queue(int position, boolean keepOriginal, String queueToName) {
+
+        SynergyListFile queueToFile =
+                new SynergyListFile(
+                        SynergyUtils.getTimeStampedListName(queueToName));
+
+        queueToFile.loadItems();
+
+        SynergyListItem categorizedItem;
+
+        if(keepOriginal){
+
+            categorizedItem = new SynergyListItem(getListName(), get(position));
+
+        }else{
+
+            categorizedItem = new SynergyListItem(getListName(), remove(position));
+        }
+
+        queueToFile.add(0, categorizedItem);
+
+        queueToFile.save();
+        save();
     }
 
     public void shelve(int position, String shelveToListName) {
@@ -103,7 +138,7 @@ public class SynergyListFile {
     }
 
     public SynergyListItem remove(int position) {
-        throw new UnsupportedOperationException();
+        return items.remove(position);
     }
 
     public void add(int i, String itemText){
@@ -148,5 +183,23 @@ public class SynergyListFile {
 
     public void delete() {
         synergyFile.delete();
+    }
+
+    public SynergyListItem getByDeCategorizedItemText(String itemText) {
+
+        for(SynergyListItem sli : items){
+
+            if(SynergyUtils.trimCategory(sli.getText()).equalsIgnoreCase(itemText)){
+
+                return sli;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean containsByDeCategorizedItemText(String itemText) {
+
+        return getByDeCategorizedItemText(itemText) != null;
     }
 }

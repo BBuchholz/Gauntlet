@@ -279,4 +279,24 @@ public class Parser {
 
         return null;
     }
+
+    /**
+     * replaces value of first key found with valueToSet. if
+     * key is not found, appends it to the end
+     * @param key
+     * @param valueToSet
+     * @return
+     */
+    public String setFirst(String key, String valueToSet, String input) {
+
+        String value = extractOne(key, input);
+        String keyVal = key + "={" + value + "}";
+        String newKeyVal = key + "={" + valueToSet + "}";
+
+        String replaced =
+                input.replaceFirst(Pattern.quote(keyVal),
+                        Pattern.quote(newKeyVal));
+
+        return replaced;
+    }
 }

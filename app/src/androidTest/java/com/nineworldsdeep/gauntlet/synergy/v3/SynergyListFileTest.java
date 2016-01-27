@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import junit.framework.TestCase;
 
@@ -149,33 +150,79 @@ public class SynergyListFileTest extends TestCase {
 
     public void testHasCategorizedItems() throws Exception {
 
+        String testText1 = "test item 1";
+        String testText2 = "::Category:: - test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText3));
+
+        assertFalse(slf.hasCategorizedItems());
+
+        slf.add(1, new SynergyListItem(testText2));
+
+        assertTrue(slf.hasCategorizedItems());
     }
 
     public void testGetFirstCategorizedItemPosition() throws Exception {
+
+        String testText1 = "test item 1";
+        String testText2 = "::Category:: - test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText2));
+        slf.add(new SynergyListItem(testText3));
+
+        assertEquals(1, slf.getFirstCategorizedItemPosition());
 
     }
 
     public void testQueueToDailyToDo() throws Exception {
 
+        String dailyToDoName = SynergyUtils.getTimeStampedListName("DailyToDo");
+
+        SynergyListFile dailyToDo = new SynergyListFile(dailyToDoName);
+
+        if(dailyToDo.exists()){
+            dailyToDo.delete();
+        }
+
+        String testText1 = "test item 1";
+        String testText2 = "test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText2));
+        slf.add(new SynergyListItem(testText3));
+
+        dailyToDo.loadItems();
+
+        assertTrue(slf.containsByDeCategorizedItemText(testText2));
+        assertFalse(dailyToDo.containsByDeCategorizedItemText(testText2));
+
+        slf.queueToDailyToDo(1);
+        dailyToDo.loadItems();
+
+        assertFalse(slf.containsByDeCategorizedItemText(testText2));
+        assertTrue(dailyToDo.containsByDeCategorizedItemText(testText2));
+
+    }
+
+    public void testContainsByDeCategorizedItemText() throws Exception {
+
+        String testText1 = "test item 1";
+        String testText2 = "::Category:: - test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText2));
+        slf.add(new SynergyListItem(testText3));
+
+        assertTrue(slf.containsByDeCategorizedItemText("test item 2"));
     }
 
     public void testShelve() throws Exception {
-
-    }
-
-    public void testRemove() throws Exception {
-
-    }
-
-    public void testAdd() throws Exception {
-
-    }
-
-    public void testAdd1() throws Exception {
-
-    }
-
-    public void testAdd2() throws Exception {
 
     }
 

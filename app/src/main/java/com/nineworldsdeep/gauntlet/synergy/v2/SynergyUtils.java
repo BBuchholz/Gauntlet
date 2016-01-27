@@ -165,7 +165,15 @@ public class SynergyUtils {
 
         for(String itm : slf.getItems()){
             if(listIsExpired || SynergyUtils.listItemIsCompleted(itm)){
-                toBeRemoved.add(itm);
+                //this prevents an archive bug, github issue #48
+                //will simply not remove anything that is incomplete & categorized
+                //ignores completed items, even if categorized, but
+                //since v3 is underway, this is a negligible for now
+                //a bit hackish but can be fixed once v3 is fully implemented
+                //for now, user should use "shelve all categorized items" from menu
+                if(!isCategorizedItem(itm)){
+                    toBeRemoved.add(itm);
+                }
             }
         }
 

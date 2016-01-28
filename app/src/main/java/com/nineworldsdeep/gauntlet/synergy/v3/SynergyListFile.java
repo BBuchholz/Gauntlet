@@ -134,7 +134,21 @@ public class SynergyListFile {
     }
 
     public void shelve(int position, String shelveToListName) {
-        throw new UnsupportedOperationException("prototype");
+
+        SynergyListFile shelveToFile = new SynergyListFile(shelveToListName);
+        shelveToFile.loadItems();
+
+        SynergyListItem itemToShelve = remove(position);
+
+        if(itemToShelve.isCategorizedItem()){
+            itemToShelve.trimCategory();
+        }
+
+        //add to top of list
+        shelveToFile.add(0, itemToShelve);
+
+        shelveToFile.save();
+        save();
     }
 
     public SynergyListItem remove(int position) {

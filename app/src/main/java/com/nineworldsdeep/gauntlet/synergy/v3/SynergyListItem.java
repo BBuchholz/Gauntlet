@@ -5,6 +5,9 @@ import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.security.InvalidParameterException;
 
 /**
@@ -117,5 +120,25 @@ public class SynergyListItem {
 
         return getText().startsWith("::") &&
                 getText().contains(":: - ");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SynergyListItem that = (SynergyListItem) o;
+
+        return new EqualsBuilder()
+                .append(itemText, that.itemText)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(itemText)
+                .toHashCode();
     }
 }

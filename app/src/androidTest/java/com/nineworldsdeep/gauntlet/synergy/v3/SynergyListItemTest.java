@@ -56,4 +56,14 @@ public class SynergyListItemTest extends TestCase {
         //should not be defaultV3 text, which is in keyVal notation
         assertFalse(defaultItemTextV3.equalsIgnoreCase(sli.getText()));
     }
+
+    public void testEquals() throws Exception {
+
+        sli = new SynergyListItem("Test Item Duplicates");
+        SynergyListItem sli2 = new SynergyListItem("Test Item 2");
+        SynergyListItem sli3 = new SynergyListItem("Test Item Duplicates");
+
+        assertTrue(sli.equals(sli3));
+        assertFalse(sli.equals(sli2));
+    }
 }

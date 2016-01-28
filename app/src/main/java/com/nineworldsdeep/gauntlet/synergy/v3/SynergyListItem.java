@@ -141,4 +141,25 @@ public class SynergyListItem {
                 .append(itemText)
                 .toHashCode();
     }
+
+    /**
+     * trims category from internal representation of item if exists.
+     * @return the category trimmed from the item, or null if item was not
+     * categorized to begin with
+     */
+    public String trimCategory() {
+
+        String category = null;
+
+        if(isCategorizedItem()){
+
+            int startIdx = getText().indexOf(":: - ") + 5;
+
+            String trimmedValue = getText().substring(startIdx);
+
+            p.setFirst("item", trimmedValue, itemText);
+        }
+
+        return category;
+    }
 }

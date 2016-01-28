@@ -66,4 +66,13 @@ public class SynergyListItemTest extends TestCase {
         assertTrue(sli.equals(sli3));
         assertFalse(sli.equals(sli2));
     }
+
+    public void testTrimCategory() throws Exception {
+
+        sli = new SynergyListItem("::Testing:: - testing trim category");
+
+        assertEquals("::Testing:: - testing trim category", sli.getText());
+        assertEquals("Testing", sli.trimCategory());
+        assertEquals("testing trim category", sli.getText());
+    }
 }

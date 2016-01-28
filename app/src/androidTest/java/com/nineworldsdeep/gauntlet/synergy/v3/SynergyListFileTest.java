@@ -224,13 +224,37 @@ public class SynergyListFileTest extends TestCase {
 
     public void testShelve() throws Exception {
 
+        String testText1 = "test item 1";
+        String testText2 = "::Category:: - test item 2";
+        String testText3 = "test item 3";
+
+        slf.add(new SynergyListItem(testText1));
+        slf.add(new SynergyListItem(testText2));
+        slf.add(new SynergyListItem(testText3));
+
+        assertTrue(slf.containsByDeCategorizedItemText("test item 2"));
+
+        int pos = 1;
+
+        String category = SynergyUtils.parseCategory(slf.get(pos).getText());
+
+        slf.shelve(pos, category);
+
+        SynergyListFile shelvedTo = new SynergyListFile(category);
+
+        shelvedTo.loadItems();
+
+        assertTrue(shelvedTo.containsByDeCategorizedItemText("test item 2"));
+        assertFalse(slf.containsByDeCategorizedItemText("test item 2"));
     }
 
     public void testGetItems() throws Exception {
 
+        fail("this test isn't done yet");
     }
 
     public void testArchiveOne() throws Exception {
 
+        fail("this test isn't done yet");
     }
 }

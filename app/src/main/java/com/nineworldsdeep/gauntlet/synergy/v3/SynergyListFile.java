@@ -21,7 +21,7 @@ public class SynergyListFile {
     private File synergyFile;
     private ArrayList<SynergyListItem> items;
 
-    public SynergyListFile(String listName) {
+    protected SynergyListFile(String listName, File synergyFile) {
 
         if(Utils.stringIsNullOrWhitespace(listName)){
             listName = "utils-BLANK-LIST";
@@ -30,8 +30,12 @@ public class SynergyListFile {
 
         this.listName = listName;
         items = new ArrayList<>();
-        synergyFile =
-                new File(Configuration.getSynergyDirectory(), listName + ".txt");
+        this.synergyFile = synergyFile;
+    }
+
+    public SynergyListFile(String listName){
+        this(listName,
+                new File(Configuration.getSynergyDirectory(), listName + ".txt"));
     }
 
     public SynergyListItem get(int position) {
@@ -184,11 +188,46 @@ public class SynergyListFile {
     }
 
     public List<SynergyListItem> getItems() {
-        throw new UnsupportedOperationException();
+        return items;
     }
 
-    public void archiveOne(SynergyListItem itemToArchive) {
-        throw new UnsupportedOperationException();
+    /**
+     * archives a single list item, for the given list name.
+     * any associated Synergy file is left alone, and if the
+     * desire is to remove the item from another list, that
+     * must be handled separately.
+     * @param itemToArchive
+     * @return archived item (Note, it is unchanged in this process,
+     * this is a pass-through convenience process)
+     */
+    public SynergyListItem archiveOne(SynergyListItem itemToArchive) {
+        SynergyArchiveFile saf = new SynergyArchiveFile(getListName());
+        saf.loadItems();
+        saf.add(itemToArchive);
+        saf.save();
+
+        if(getItems().contains(itemToArchive)){
+            remove(itemToArchive);
+        }
+
+        return itemToArchive;
+    }
+
+    private void remove(SynergyListItem itemToArchive) {
+
+        int position = -1;
+
+        for(int i = 0; i < items.size(); i++){
+
+            if(get(i).equals(itemToArchive)){
+                position = i;
+            }
+        }
+
+        if(position > -1){
+            remove(position);
+        }
+
     }
 
     public boolean exists() {

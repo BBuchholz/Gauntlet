@@ -8,6 +8,7 @@ import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by brent on 1/21/16.
@@ -250,11 +251,72 @@ public class SynergyListFileTest extends TestCase {
 
     public void testGetItems() throws Exception {
 
-        fail("this test isn't done yet");
+        List<SynergyListItem> expected = new ArrayList<>();
+
+        String s1 = "test item 1";
+        String s2 = "test item 2";
+        String s3 = "test item 3";
+
+        expected.add(new SynergyListItem(s1));
+        expected.add(new SynergyListItem(s2));
+        expected.add(new SynergyListItem(s3));
+
+        slf = new SynergyListFile("TestingGetItems");
+
+        slf.add(new SynergyListItem(s1));
+        slf.add(new SynergyListItem(s2));
+        slf.add(new SynergyListItem(s3));
+
+        assertEquals(expected, slf.getItems());
     }
 
     public void testArchiveOne() throws Exception {
 
-        fail("this test isn't done yet");
+        String s1 = "test item 1";
+        String s2 = "test item 2";
+        String s3 = "test item 3";
+
+        SynergyListItem sli1 = new SynergyListItem(s1);
+        SynergyListItem sli2 = new SynergyListItem(s2);
+        SynergyListItem sli3 = new SynergyListItem(s3);
+
+        slf = new SynergyListFile("TestingArchiveOne");
+        SynergyArchiveFile saf = new SynergyArchiveFile("TestingArchiveOne");
+
+        //clear previously generated test files
+        if(slf.exists()){
+            slf.delete();
+        }
+
+        if(saf.exists()){
+            saf.delete();
+        }
+
+        slf.loadItems();
+        saf.loadItems();
+
+        slf.add(sli1);
+        slf.add(sli2);
+        slf.add(sli3);
+
+        assertTrue(slf.getItems().contains(sli1));
+        assertTrue(slf.getItems().contains(sli2));
+        assertTrue(slf.getItems().contains(sli3));
+
+        assertFalse(saf.getItems().contains(sli1));
+        assertFalse(saf.getItems().contains(sli2));
+        assertFalse(saf.getItems().contains(sli3));
+
+        slf.archiveOne(sli2); //should save internally...
+
+        saf.loadItems();      //...so this should include the newly archived item
+
+        assertTrue(slf.getItems().contains(sli1));
+        assertFalse(slf.getItems().contains(sli2));
+        assertTrue(slf.getItems().contains(sli3));
+
+        assertFalse(saf.getItems().contains(sli1));
+        assertTrue(saf.getItems().contains(sli2));
+        assertFalse(saf.getItems().contains(sli3));
     }
 }

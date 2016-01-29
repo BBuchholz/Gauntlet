@@ -153,11 +153,14 @@ public class SynergyListItem {
 
         if(isCategorizedItem()){
 
+            category = SynergyUtils.parseCategory(getText());
+
             int startIdx = getText().indexOf(":: - ") + 5;
 
             String trimmedValue = getText().substring(startIdx);
 
-            p.setFirst("item", trimmedValue, itemText);
+            this.itemText = p.setFirst("item", trimmedValue, itemText);
+
         }
 
         return category;

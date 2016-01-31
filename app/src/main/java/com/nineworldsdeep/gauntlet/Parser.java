@@ -169,6 +169,14 @@ public class Parser {
         return temp.trim().length() == 0;
     }
 
+
+    /**
+     * will return a copy of the input string
+     * with the last single tag matching the given key removed
+     * @param key the key to find (do not include value)
+     * @param input the string to trim the keyVal tag from
+     * @return a new instance of the input string with the last single tag removed
+     */
     public String trimLastKeyVal(String key, String input) {
 
         String value = extractLastOne(key, input);

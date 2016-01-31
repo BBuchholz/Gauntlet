@@ -213,13 +213,13 @@ public class SynergyListFile {
         return itemToArchive;
     }
 
-    private void remove(SynergyListItem itemToArchive) {
+    public void remove(SynergyListItem itm) {
 
         int position = -1;
 
         for(int i = 0; i < items.size(); i++){
 
-            if(get(i).equals(itemToArchive)){
+            if(get(i).equals(itm)){
                 position = i;
             }
         }
@@ -255,4 +255,5 @@ public class SynergyListFile {
 
         return getByDeCategorizedItemText(itemText) != null;
     }
+
 }

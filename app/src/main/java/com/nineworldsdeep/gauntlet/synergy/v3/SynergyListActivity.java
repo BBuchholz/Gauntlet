@@ -20,8 +20,6 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
-import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import java.util.ArrayList;
 
@@ -357,8 +355,7 @@ public class SynergyListActivity
         if(Utils.containsTimeStamp(slf.getListName())){
 
             Utils.toast(this, "shelve position " + position);
-            String category =
-                    SynergyUtils.parseCategory(slf.get(position).getText());
+            String category = slf.get(position).getCategory();
 
             if(Utils.stringIsNullOrWhitespace(category)){
 
@@ -422,7 +419,7 @@ public class SynergyListActivity
 //        //move to bottom of list
 //        SynergyListItem removedItem = slf.remove(position);
 //
-//        if (removedItem.listItemIsCompleted()) {
+//        if (removedItem.isCompleted()) {
 //            //completed item being changed to incomplete
 //            int beginIndex = removedItem.getText().indexOf("{") + 1;
 //            int endIndex = removedItem.getText().lastIndexOf("}");
@@ -445,7 +442,16 @@ public class SynergyListActivity
 //
 //        refreshListItems();
 
-        throw new UnsupportedOperationException();
+        if(!slf.get(position).isCompleted()){
+
+            slf.get(position).markCompleted();
+            moveToBottom(position);
+
+        }else{
+
+            slf.get(position).markIncomplete();
+            moveToTop(position);
+        }
     }
 
     private void writeItems() {

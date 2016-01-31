@@ -1,14 +1,11 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
-import com.nineworldsdeep.gauntlet.Fragment;
 import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.security.InvalidParameterException;
 
 /**
  * Created by brent on 1/21/16.
@@ -17,11 +14,13 @@ public class SynergyListItem {
 
     private String itemText;
     private Parser p;
+    private String displayKey;
 
     public SynergyListItem(String itemText) {
 
         p = new Parser();
         this.itemText = itemText;
+        this.displayKey = "item";
 
         if(!v3ItemText() && p.validate(itemText)){
             convertItemTextToV3();
@@ -37,7 +36,15 @@ public class SynergyListItem {
         this.itemText = p.setFirst("item", categorizedText, this.itemText);
     }
 
-    public boolean listItemIsCompleted() {
+    public String getDisplayKey() {
+        return displayKey;
+    }
+
+    public void setDisplayKey(String displayKey) {
+        this.displayKey = displayKey;
+    }
+
+    public boolean isCompleted() {
 
         return v2Completed() || v3Completed();
     }
@@ -164,5 +171,64 @@ public class SynergyListItem {
         }
 
         return category;
+    }
+
+    public String getCategory() {
+
+        if(isCategorizedItem()){
+
+            int endIdx = getText().indexOf(":: - ");
+
+            return getText().substring(2, endIdx);
+
+        }else{
+
+            return null;
+        }
+    }
+
+    public void markIncomplete() {
+
+        if(v2Completed()){
+
+            int beginIndex = itemText.indexOf("{") + 1;
+            int endIndex = itemText.lastIndexOf("}");
+            itemText = itemText.substring(beginIndex, endIndex);
+        }
+
+        if(v3Completed()){
+
+            itemText = p.trimLastKeyVal("completedAt", itemText);
+        }
+    }
+
+    @Override
+    public String toString(){
+
+        String displayText = p.extract(getDisplayKey(), itemText);
+
+        if(Utils.stringIsNullOrWhitespace(displayText)){
+
+            displayText = "[[INVALID DISPLAY KEY]::[" +
+                    itemText + "]]";
+
+        }else{
+
+            if(isCompleted()){
+
+                String completedPrefix = "(completed) ";
+
+                if(v3Completed()){
+
+                    completedPrefix = "completedAt={" +
+                            p.extract("completedAt", itemText)
+                            + "} ";
+                }
+
+                displayText =  completedPrefix + displayText;
+            }
+        }
+
+        return displayText;
     }
 }

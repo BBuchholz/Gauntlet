@@ -29,19 +29,19 @@ public class SynergyListItemTest extends TestCase {
 
         initV2();
 
-        assertFalse(sli.listItemIsCompleted());
+        assertFalse(sli.isCompleted());
 
         sli.markCompleted();
 
-        assertTrue(sli.listItemIsCompleted());
+        assertTrue(sli.isCompleted());
 
         initV3();
 
-        assertFalse(sli.listItemIsCompleted());
+        assertFalse(sli.isCompleted());
 
         sli.markCompleted();
 
-        assertTrue(sli.listItemIsCompleted());
+        assertTrue(sli.isCompleted());
     }
 
     public void testGetText() throws Exception {

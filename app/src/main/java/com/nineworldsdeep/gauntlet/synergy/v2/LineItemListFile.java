@@ -37,6 +37,8 @@ public class LineItemListFile {
         return synergyFile;
     }
 
+    public boolean exists(){ return getSynergyFile().exists(); }
+
     public int size(){
         return items.size();
     }
@@ -139,5 +141,16 @@ public class LineItemListFile {
         }
 
         return removed;
+    }
+
+    public boolean contains(String item) {
+
+        for(String itm : items){
+
+            if(itm.equalsIgnoreCase(item)){
+                return true;
+            }
+        }
+        return false;
     }
 }

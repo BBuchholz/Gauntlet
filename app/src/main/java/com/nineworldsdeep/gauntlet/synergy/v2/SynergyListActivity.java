@@ -268,12 +268,14 @@ public class SynergyListActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        while(SynergyUtils.hasCategorizedItems(slf)){
+//                        while(SynergyUtils.hasCategorizedItems(slf)){
+//
+//                            int pos =
+//                                    SynergyUtils.getFirstCategorizedItemPosition(slf);
+//                            shelvePosition(pos);
+//                        }
 
-                            int pos =
-                                    SynergyUtils.getFirstCategorizedItemPosition(slf);
-                            shelvePosition(pos);
-                        }
+                        SynergyUtils.shelveAllCategorized(slf);
 
                     }
                 })

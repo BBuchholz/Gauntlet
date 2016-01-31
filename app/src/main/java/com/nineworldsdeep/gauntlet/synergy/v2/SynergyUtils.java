@@ -108,6 +108,13 @@ public class SynergyUtils {
                     new SynergyListFile(listName);
             currentFile.loadItems();
 
+            //shelve any categorized items (related to github issue #48)
+            //see comment to v2.SynergyUtils.archive()
+            SynergyUtils.shelveAllCategorized(currentFile);
+
+            //reload after shelve
+            currentFile.loadItems();
+
             SynergyListFile pushToFile =
                     new SynergyListFile(pushToName);
             pushToFile.loadItems();
@@ -279,6 +286,19 @@ public class SynergyUtils {
         slf.loadItems();
         slf.add(markCompleted(trimCategory(item)));
         slf.save();
+    }
+
+    public static void shelveAllCategorized(SynergyListFile slf){
+
+        while(hasCategorizedItems(slf)){
+
+            int pos =
+                    SynergyUtils.getFirstCategorizedItemPosition(slf);
+
+            String category = parseCategory(slf.get(pos));
+
+            shelve(slf, pos, category);
+        }
     }
 
     public static void shelve(SynergyListFile shelveFromFile,

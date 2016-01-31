@@ -52,4 +52,5 @@
     <string name="previousButtonString"><![CDATA[<<]]></string>
     <string name="nextButtonString"><![CDATA[>>]]></string>
     <string name="menu_remove_marked_audio">Remove Marked Audio</string>
+    <string name="menu_push_all">Push All</string>
 </resources>

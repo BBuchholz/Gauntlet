@@ -35,7 +35,11 @@ public class MainActivity extends ActionBarActivity {
     private void refreshLayout(){
         setContentView(R.layout.activity_main);
 
+        //to prototype new features in test mode...
+
         if(Configuration.isInTestMode()) {
+
+            //...add here while still in proto-phase, then...
 
             addButton("TEST", new OnClickListener() {
                 @Override
@@ -43,6 +47,10 @@ public class MainActivity extends ActionBarActivity {
                     Utils.toast(getApplicationContext(), "TEST CLICKED");
                 }
             });
+
+        }else{
+
+            //...move to here when it's ready to go live :)
 
             addButton(1, "Synergy V3", new OnClickListener() {
                 @Override

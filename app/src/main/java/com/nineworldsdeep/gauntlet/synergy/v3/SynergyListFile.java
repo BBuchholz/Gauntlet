@@ -177,8 +177,11 @@ public class SynergyListFile {
 
         try{
 
-            for(String line : FileUtils.readLines(synergyFile)){
-                items.add(new SynergyListItem(line));
+            if(exists()) {
+
+                for (String line : FileUtils.readLines(synergyFile)) {
+                    items.add(new SynergyListItem(line));
+                }
             }
 
         }catch(IOException ex){

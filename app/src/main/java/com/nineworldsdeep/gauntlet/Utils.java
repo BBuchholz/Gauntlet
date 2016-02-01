@@ -151,19 +151,13 @@ public class Utils {
             }
             catch(ParseException pe) {
 
-                //TODO: implement this as one option for NWD integrated logging
-                SynergyListFile slf = new SynergyListFile("Utils-Log");
-                slf.add(pe.getMessage());
-                slf.save();
+                log("Utils.extractTimeStamp_yyyyMMdd() error: " + pe.getMessage());
 
                 return null;
             }
             catch(Exception e) {
 
-                //TODO: implement this as one option for NWD integrated logging
-                SynergyListFile slf = new SynergyListFile("Utils-Log");
-                slf.add(e.getMessage());
-                slf.save();
+                log("Utils.extractTimeStamp_yyyyMMdd() error: " + e.getMessage());
 
                 return null;
             }

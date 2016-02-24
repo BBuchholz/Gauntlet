@@ -303,7 +303,7 @@ public class Parser {
 
         String replaced =
                 input.replaceFirst(Pattern.quote(keyVal),
-                        Pattern.quote(newKeyVal));
+                                   newKeyVal);
 
         return replaced;
     }

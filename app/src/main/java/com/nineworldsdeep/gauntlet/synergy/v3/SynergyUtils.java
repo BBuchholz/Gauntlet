@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,17 +23,22 @@ public class SynergyUtils {
         saf.loadItems();
 
         List<SynergyListItem> toBeRemoved = new ArrayList<>();
+        HashMap<String, List<SynergyListItem>> catArchiveToItems = new HashMap<>();
 
         for(SynergyListItem itm : slf.getItems()){
             if(listIsExpired || SynergyUtils.listItemIsCompleted(itm)){
-                //this prevents an archive bug, github issue #48
-                //will simply not remove anything that is incomplete & categorized
-                //ignores completed items, even if categorized, but
-                //since v3 is underway, this is a negligible for now
-                //a bit hackish but can be fixed once v3 is fully implemented
-                //for now, user should use "shelve all categorized items" from menu
+
                 if(!itm.isCategorizedItem()){
                     toBeRemoved.add(itm);
+                }else{
+                    //is a categorized item, archive to a different file
+                    String category = itm.getCategory();
+
+                    if(!catArchiveToItems.containsKey(category)){
+                        catArchiveToItems.put(category, new ArrayList<SynergyListItem>());
+                    }
+
+                    catArchiveToItems.get(category).add(itm);
                 }
             }
         }
@@ -40,6 +46,23 @@ public class SynergyUtils {
         for(SynergyListItem itm : toBeRemoved){
             slf.remove(itm);
             saf.add(itm);
+        }
+
+        for(String category : catArchiveToItems.keySet()){
+
+            List<SynergyListItem> lst = catArchiveToItems.get(category);
+
+            SynergyArchiveFile thisSaf =
+                    new SynergyArchiveFile(category);
+
+            for(SynergyListItem itm : lst){
+
+                slf.remove(itm);
+                itm.trimCategory();
+                thisSaf.add(itm);
+            }
+
+            thisSaf.save();
         }
 
         saf.save();

@@ -56,6 +56,24 @@ public class ImageListActivity extends AppCompatActivity {
 
         Utils.toast(this, currentDir.getAbsolutePath());
 
+//        ListView lvItems =
+//                (ListView) findViewById(R.id.lvItems);
+//
+//        loadItems();
+//        setupListViewListener();
+//        registerForContextMenu(lvItems);
+
+        refreshLayout();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        refreshLayout();
+    }
+
+    private void refreshLayout(){
+
         ListView lvItems =
                 (ListView) findViewById(R.id.lvItems);
 

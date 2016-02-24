@@ -53,7 +53,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.action_push_all){
-            Utils.toast(this, "Sucks yo, but push all it not yet implemented...");
+            Utils.toast(this, "Sucks yo, but push all is not yet implemented...");
             return true;
         }
 

@@ -9,6 +9,7 @@ import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -262,6 +263,10 @@ public class Utils {
         }
 
         return sb.toString();
+    }
+
+    public static String toPascalCase(String s) {
+        return WordUtils.capitalizeFully(s).replace(" ", "");
     }
 
 //    @Deprecated

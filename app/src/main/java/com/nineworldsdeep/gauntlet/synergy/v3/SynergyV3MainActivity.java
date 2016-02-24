@@ -91,7 +91,11 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         itemText = itemText.trim();
+
+        itemText = Utils.toPascalCase(itemText);
+
         if(!Utils.stringIsNullOrWhitespace(itemText)){
+
             SynergyListFile slf =
                     new SynergyListFile(itemText);
             slf.loadItems(); //just in case it already exists

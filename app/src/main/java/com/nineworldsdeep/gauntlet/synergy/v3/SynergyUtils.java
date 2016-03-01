@@ -142,4 +142,35 @@ public class SynergyUtils {
 
         return null;
     }
+
+    /**
+     * archives a single list item, for the given list name.
+     * any associated Synergy file is left alone, and if the
+     * desire is to remove the item from another list, that
+     * must be handled seperately.
+     * @param listName
+     * @param item
+     */
+    public static SynergyListItem archiveOne(String listName, SynergyListItem item){
+
+        SynergyArchiveFile saf = new SynergyArchiveFile(listName);
+        saf.loadItems();
+        saf.add(item);
+        saf.save();
+
+        return item;
+    }
+
+    public static void move(SynergyListFile slf, int pos, String moveToListName) {
+
+        SynergyListFile moveToFile = new SynergyListFile(moveToListName);
+
+        moveToFile.loadItems();
+
+        archiveOne(slf.getListName(), slf.get(pos));
+        moveToFile.add(0, slf.remove(pos));
+
+        moveToFile.save();
+        slf.save();
+    }
 }

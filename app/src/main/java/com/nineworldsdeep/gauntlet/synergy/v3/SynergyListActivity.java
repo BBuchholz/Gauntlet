@@ -33,6 +33,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_MOVE_TO_BOTTOM_ID = 5;
     private static final int MENU_CONTEXT_SPLIT_ITEM_ID = 6;
     public static final int REQUEST_RESULT_SPLIT_ITEM = 7;
+    private static final int MENU_CONTEXT_MOVE_TO_LIST_ID = 8;
 
     private SynergyListFile slf;
 
@@ -88,6 +89,9 @@ public class SynergyListActivity
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
                 Menu.NONE, "Move To Bottom");
 
+        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
+                Menu.NONE, "Move To List");
+
         menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
                 Menu.NONE, "Split Item");
     }
@@ -127,6 +131,12 @@ public class SynergyListActivity
             case MENU_CONTEXT_MOVE_TO_BOTTOM_ID:
 
                 moveToBottom(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_LIST_ID:
+
+                moveToList(info.position);
 
                 return true;
 
@@ -348,6 +358,54 @@ public class SynergyListActivity
         }else{
             Utils.toast(this, "Queue only applies to non-timestamped lists");
         }
+    }
+
+    private void moveToList(final int position) {
+
+        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText("Enter listName: ");
+
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        userInput.setText(slf.getListName() + "-");
+        userInput.setSelection(userInput.getText().length());
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                // get category from userInput and shelve
+                                SynergyUtils.move(slf, position, userInput.getText().toString());
+                                Utils.toast(getApplicationContext(), "moved");
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     private void shelvePosition(final int position) {

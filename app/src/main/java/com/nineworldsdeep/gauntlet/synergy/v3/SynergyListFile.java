@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -191,6 +192,18 @@ public class SynergyListFile {
     }
 
     public List<SynergyListItem> getItems() {
+
+        //TODO: this is a hack
+        // it would be cool to encapsulate this somehow
+        // to setup some sort of constructor that would
+        // instantiate different subclasses based on
+        // list name, for now this is a hack
+        if(listName.equalsIgnoreCase("Fragments")){
+
+            Collections.shuffle(items);
+            return items;
+        }
+
         return items;
     }
 

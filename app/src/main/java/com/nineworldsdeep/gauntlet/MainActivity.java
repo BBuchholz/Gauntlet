@@ -48,17 +48,18 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-        }else{
-
-            //...move to here when it's ready to go live :)
-
-            addButton(1, "Synergy V3", new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), SynergyV3MainActivity.class));
-                }
-            });
         }
+
+        //...move to here when it's ready to go live :)
+
+        addButton(1, "Synergy V3", new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SynergyV3MainActivity.class));
+            }
+        });
+
     }
 
     private void addButton(String btnText, OnClickListener listener){

@@ -34,6 +34,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_SPLIT_ITEM_ID = 6;
     public static final int REQUEST_RESULT_SPLIT_ITEM = 7;
     private static final int MENU_CONTEXT_MOVE_TO_LIST_ID = 8;
+    private static final int MENU_CONTEXT_MOVE_TO_LYRICS_ID = 9;
 
     private SynergyListFile slf;
 
@@ -50,6 +51,17 @@ public class SynergyListActivity
                         SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
 
         setTitle(listName);
+
+//        ListView lvItems =
+//                (ListView)findViewById(R.id.lvItems);
+//
+//        readItems(lvItems, listName);
+//        registerForContextMenu(lvItems);
+
+        refreshLayout(listName);
+    }
+
+    private void refreshLayout(String listName){
 
         ListView lvItems =
                 (ListView)findViewById(R.id.lvItems);
@@ -83,11 +95,20 @@ public class SynergyListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
         }
 
-        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_TOP_ID,
-                Menu.NONE, "Move To Top");
+        if(slf.getListName().startsWith("Fragments")){
 
-        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
-                Menu.NONE, "Move To Bottom");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LYRICS_ID,
+                    Menu.NONE, "Move To Lyrics");
+
+        }else{
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_TOP_ID,
+                    Menu.NONE, "Move To Top");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
+                    Menu.NONE, "Move To Bottom");
+
+        }
 
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
                 Menu.NONE, "Move To List");
@@ -119,6 +140,12 @@ public class SynergyListActivity
             case MENU_CONTEXT_QUEUE_ID:
 
                 queuePosition(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_LYRICS_ID:
+
+                moveToLyrics(info.position);
 
                 return true;
 
@@ -360,6 +387,13 @@ public class SynergyListActivity
         }
     }
 
+    private void moveToLyrics(final int position){
+
+        SynergyUtils.move(slf, position, "Lyrics");
+        Utils.toast(getApplicationContext(), "moved to Lyrics");
+        refreshLayout(slf.getListName());
+    }
+
     private void moveToList(final int position) {
 
         //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
@@ -389,7 +423,7 @@ public class SynergyListActivity
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
 
-                                // get category from userInput and shelve
+                                // get list name from userInput and move
                                 SynergyUtils.move(slf, position, userInput.getText().toString());
                                 Utils.toast(getApplicationContext(), "moved");
                             }

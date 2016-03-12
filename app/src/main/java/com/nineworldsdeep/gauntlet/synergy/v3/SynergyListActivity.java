@@ -35,6 +35,7 @@ public class SynergyListActivity
     public static final int REQUEST_RESULT_SPLIT_ITEM = 7;
     private static final int MENU_CONTEXT_MOVE_TO_LIST_ID = 8;
     private static final int MENU_CONTEXT_MOVE_TO_LYRICS_ID = 9;
+    private static final int MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID = 10;
 
     private SynergyListFile slf;
 
@@ -110,6 +111,12 @@ public class SynergyListActivity
 
         }
 
+        if(slf.getListName().startsWith("Lyric")){
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID,
+                    Menu.NONE, "Move To Fragments");
+        }
+
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
                 Menu.NONE, "Move To List");
 
@@ -146,6 +153,12 @@ public class SynergyListActivity
             case MENU_CONTEXT_MOVE_TO_LYRICS_ID:
 
                 moveToLyrics(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID:
+
+                moveToFragments(info.position);
 
                 return true;
 
@@ -391,6 +404,13 @@ public class SynergyListActivity
 
         SynergyUtils.move(slf, position, "Lyrics");
         Utils.toast(getApplicationContext(), "moved to Lyrics");
+        refreshLayout(slf.getListName());
+    }
+
+    private void moveToFragments(final int position){
+
+        SynergyUtils.move(slf, position, "Fragments");
+        Utils.toast(getApplicationContext(), "moved to Fragments");
         refreshLayout(slf.getListName());
     }
 

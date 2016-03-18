@@ -1,11 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +12,10 @@ import com.nineworldsdeep.gauntlet.Utils;
 import java.io.IOException;
 
 public class AudioDisplayActivity extends AppCompatActivity {
+
+    // TODO: I would like to go through this tutorial and try to implement a better player from it
+    // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
+    // has features like seekbar that I am not currently implementing but would like to eventually
 
     private FileListItem ili;
     private MediaPlayerSingleton mps;
@@ -47,7 +47,7 @@ public class AudioDisplayActivity extends AppCompatActivity {
             mps = MediaPlayerSingleton.getInstance();
 
             try {
-                mps.play(ili.getFile().getPath());
+                mps.queueAndPlayFromCurrent(ili.getFile().getPath());
 
             } catch (IOException e) {
 

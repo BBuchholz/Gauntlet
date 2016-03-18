@@ -10,10 +10,18 @@ import java.io.IOException;
  */
 public class MediaPlayerSingleton {
 
+    // TODO: I would like to go through this tutorial and try to implement a better player from it
+    // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
+    //
+    // this version is totally cowboy-coded, so its rough around the edges but it does what I
+    // need it to, so for now, in the interest of getting it going, I'm just leaving this link
+    // here for later :)
+
     private static MediaPlayerSingleton singleton = null;
 
     private MediaPlayer mp;
-    private String nowPlayingPath;
+    //private String nowPlayingPath;
+    private AudioPlaylist playlist = new AudioPlaylist();
 
     private MediaPlayerSingleton(){
         //singleton constructor
@@ -30,9 +38,12 @@ public class MediaPlayerSingleton {
         return singleton;
     }
 
-    public void play(String path) throws IOException {
+    public void queueAndPlayFromCurrent(String path) throws IOException {
 
-        nowPlayingPath = path;
+        //nowPlayingPath = path;
+        AudioMediaEntry ame = new AudioMediaEntry();
+        ame.setPath(path);
+        playlist.add(ame);
 
         if(mp.isPlaying()){
             mp.stop();
@@ -43,9 +54,14 @@ public class MediaPlayerSingleton {
         //sources, so I'm just creating a new one
         mp = new MediaPlayer();
 
-        mp.setDataSource(nowPlayingPath);
-        mp.prepare();
-        mp.start();
+        ame = playlist.getCurrent();
+
+        if(ame != null){
+
+            mp.setDataSource(ame.getPath());
+            mp.prepare();
+            mp.start();
+        }
     }
 
     public void stop(){

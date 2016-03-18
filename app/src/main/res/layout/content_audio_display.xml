@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".25"
             android:text="&lt;&lt;"
-            android:id="@+id/btnLtLt"/>
+            android:id="@+id/btnLtLt"
+            android:onClick="playPrevious"/>
 
         <Button
             android:layout_width="0dp"
@@ -63,7 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".25"
             android:text="&gt;&gt;"
-            android:id="@+id/btnGtGt"/>
+            android:id="@+id/btnGtGt"
+            android:onClick="playNext"/>
 
     </LinearLayout>
 

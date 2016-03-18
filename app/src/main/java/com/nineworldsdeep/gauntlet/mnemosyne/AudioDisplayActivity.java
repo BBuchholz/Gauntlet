@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.IOException;
 
-public class AudioDisplayActivity extends AppCompatActivity {
+public class AudioDisplayActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     // TODO: I would like to go through this tutorial and try to implement a better player from it
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
@@ -47,7 +48,7 @@ public class AudioDisplayActivity extends AppCompatActivity {
             mps = MediaPlayerSingleton.getInstance();
 
             try {
-                mps.queueAndPlayFromCurrent(ili.getFile().getPath());
+                mps.queueAndPlayLast(ili.getFile().getPath(), this);
 
             } catch (IOException e) {
 
@@ -63,5 +64,35 @@ public class AudioDisplayActivity extends AppCompatActivity {
     public void stopPlayback(View view) {
 
         mps.stop();
+    }
+
+    public void playPrevious(View view) {
+
+        try{
+
+            mps.playPrevious(this);
+
+        }catch(Exception ex){
+
+            Utils.toast(this, ex.getMessage());
+        }
+    }
+
+    public void playNext(View view) {
+
+        try{
+
+            mps.playNext(this);
+
+        }catch(Exception ex){
+
+            Utils.toast(this, ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer player) {
+
+        player.start();
     }
 }

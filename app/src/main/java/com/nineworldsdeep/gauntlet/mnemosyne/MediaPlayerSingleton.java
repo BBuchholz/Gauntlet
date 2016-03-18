@@ -1,6 +1,5 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 
 import java.io.IOException;
@@ -8,7 +7,7 @@ import java.io.IOException;
 /**
  * Created by brent on 11/25/15.
  */
-public class MediaPlayerSingleton {
+public class MediaPlayerSingleton{
 
     // TODO: I would like to go through this tutorial and try to implement a better player from it
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
@@ -32,41 +31,150 @@ public class MediaPlayerSingleton {
     public static MediaPlayerSingleton getInstance(){
 
         if(singleton == null){
-            singleton = new MediaPlayerSingleton();
+
+            // this should make our lazy instantiation thread safe
+            synchronized (MediaPlayerSingleton.class){
+
+                if(singleton == null){
+
+                    singleton = new MediaPlayerSingleton();
+                }
+            }
         }
 
         return singleton;
     }
 
-    public void queueAndPlayFromCurrent(String path) throws IOException {
+    public void queueAndPlayLast(String path,
+                                 MediaPlayer.OnPreparedListener listener)
+            throws IOException {
 
         //nowPlayingPath = path;
         AudioMediaEntry ame = new AudioMediaEntry();
         ame.setPath(path);
         playlist.add(ame);
+        playlist.advanceToLast();
 
-        if(mp.isPlaying()){
+        play(listener);
+    }
+
+    private void play(MediaPlayer.OnPreparedListener listener) throws IOException{
+
+        if(mp != null && mp.isPlaying()){
             mp.stop();
         }
 
         //TODO: this is a hack
         //it keeps crashing when I try to change
         //sources, so I'm just creating a new one
-        mp = new MediaPlayer();
+        //mp = new MediaPlayer();
 
-        ame = playlist.getCurrent();
+        AudioMediaEntry ame = playlist.getCurrent();
 
         if(ame != null){
 
+            mp.reset();
             mp.setDataSource(ame.getPath());
-            mp.prepare();
-            mp.start();
+            mp.setOnPreparedListener(listener);
+            mp.prepareAsync();
         }
     }
 
+    public void playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
+
+        //nowPlayingPath = path;
+        playlist.goToPreviousTrack();
+
+//        if(mp.isPlaying()){
+//            mp.stop();
+//        }
+//
+//        //TODO: this is a hack
+//        //it keeps crashing when I try to change
+//        //sources, so I'm just creating a new one
+//
+//        AudioMediaEntry ame = playlist.getCurrent();
+//
+//        if(ame != null){
+//
+//            mp = new MediaPlayer();
+//
+//            if(ame != null){
+//
+//                mp.setDataSource(ame.getPath());
+//                mp.prepare();
+//                mp.start();
+//            }
+
+        //}
+
+        play(listener);
+    }
+
+    public void playNext(MediaPlayer.OnPreparedListener listener) throws IOException {
+
+        //nowPlayingPath = path;
+        playlist.goToNextTrack();
+
+        play(listener);
+//
+//        if(mp.isPlaying()){
+//            mp.stop();
+//        }
+//
+//        //TODO: this is a hack
+//        //it keeps crashing when I try to change
+//        //sources, so I'm just creating a new one
+//
+//        AudioMediaEntry ame = playlist.getCurrent();
+//
+//        if(ame != null){
+//
+//            mp = new MediaPlayer();
+//
+//            if(ame != null){
+//
+//                mp.setDataSource(ame.getPath());
+//                mp.prepare();
+//                mp.start();
+//            }
+//        }
+    }
+
+    public void queueAndPlayFromCurrent(String path,
+                                        MediaPlayer.OnPreparedListener listener)
+            throws IOException {
+
+        //nowPlayingPath = path;
+        AudioMediaEntry ame = new AudioMediaEntry();
+        ame.setPath(path);
+        playlist.add(ame);
+
+        play(listener);
+
+//        if(mp.isPlaying()){
+//            mp.stop();
+//        }
+//
+//        //TODO: this is a hack
+//        //it keeps crashing when I try to change
+//        //sources, so I'm just creating a new one
+//        mp = new MediaPlayer();
+//
+//        ame = playlist.getCurrent();
+//
+//        if(ame != null){
+//
+//            mp.setDataSource(ame.getPath());
+//            mp.prepare();
+//            mp.start();
+//        }
+    }
+
     public void stop(){
-        if(mp.isPlaying()){
+        if(mp != null && mp.isPlaying()){
             mp.stop();
         }
     }
+
 }

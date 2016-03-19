@@ -53,6 +53,10 @@ public class Fragment {
         return meta.get(key);
     }
 
+    protected void updateLineItem(String newLineItem){
+        originalLineItem = newLineItem;
+    }
+
     @Override
     public String toString(){
 

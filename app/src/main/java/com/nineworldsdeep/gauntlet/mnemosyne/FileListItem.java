@@ -2,6 +2,8 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.text.Editable;
 
+import com.nineworldsdeep.gauntlet.Utils;
+
 import java.io.File;
 
 /**
@@ -11,6 +13,7 @@ public class FileListItem {
 
     private File file;
     private String displayName = null;
+    private String tags = "";
 
     public FileListItem(String filePath) {
 
@@ -21,6 +24,13 @@ public class FileListItem {
         if(dni.hasDisplayName(filePath)){
 
             displayName = dni.getDisplayName(filePath);
+        }
+
+        TagIndex ti = TagIndex.getInstance();
+
+        if(ti.hasTagString(filePath)){
+
+            tags = ti.getTagString(filePath);
         }
     }
 
@@ -33,8 +43,12 @@ public class FileListItem {
     @Override
     public String toString(){
 
-        if(displayName != null){
+        if(!Utils.stringIsNullOrWhitespace(displayName)){
             return displayName;
+        }
+
+        if(!Utils.stringIsNullOrWhitespace(tags)){
+            return tags;
         }
 
         return file.getName();
@@ -53,5 +67,15 @@ public class FileListItem {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public void setTagString(String tags) {
+        TagIndex ti = TagIndex.getInstance();
+        ti.setTagString(file.getAbsolutePath(), tags);
+        this.tags = tags;
+    }
+
+    public String getTags(){
+        return tags;
     }
 }

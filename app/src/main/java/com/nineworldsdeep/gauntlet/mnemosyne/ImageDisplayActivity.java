@@ -88,7 +88,58 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
 
             return true;
+
+        } else if (id == R.id.action_set_tag_string) {
+
+            //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+            // get prompts.xml view
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            AlertDialog.Builder alertDialogBuilder =
+                    new AlertDialog.Builder(this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            String currentValue = ili.getTags();
+
+            if(!Utils.stringIsNullOrWhitespace(currentValue)){
+                userInput.setText(currentValue);
+            }
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // get user input and set it to result
+                                    // edit text
+                                    ili.setTagString(userInput.getText().toString());
+                                    TagIndex.getInstance().save();
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -102,12 +153,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        String s = i.getStringExtra(EXTRA_IMAGEPATH);
+        String path = i.getStringExtra(EXTRA_IMAGEPATH);
 
-        if(s != null){
+        if(path != null){
 
-            ili = new FileListItem(s);
-            Bitmap bmp = BitmapFactory.decodeFile(s);
+            ili = new FileListItem(path);
+            Bitmap bmp = BitmapFactory.decodeFile(path);
             ImageView img = (ImageView) findViewById(R.id.ivImage);
             img.setImageBitmap(bmp);
 

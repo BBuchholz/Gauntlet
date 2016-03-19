@@ -18,7 +18,7 @@ public class TagIndexFile extends LineItemListFile{
     }
 
 
-    public void addTagString(String tags, String path) {
+    public void addTagString(String path, String tags) {
 
         String entry = "tags={" + tags + "} ";
         entry += "path={" + path + "} ";

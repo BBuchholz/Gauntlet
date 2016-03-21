@@ -19,10 +19,15 @@ import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class SynergyV3MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
+    public static boolean ORDER_BY_COUNT = true;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,10 +140,26 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     private void readItems(ListView lvItems) {
 
+        List<ListEntry> lst = SynergyUtils.getAllListEntries();
+
+        if(ORDER_BY_COUNT){
+
+            Collections.sort(lst, new Comparator<ListEntry>() {
+
+                public int compare(ListEntry one, ListEntry other) {
+                    if (one.getItemCount() >= other.getItemCount()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        SynergyUtils.getAllListEntries()));
+                        lst));
 
 //        lvItems.setAdapter(
 //                new ArrayAdapter<>(this,

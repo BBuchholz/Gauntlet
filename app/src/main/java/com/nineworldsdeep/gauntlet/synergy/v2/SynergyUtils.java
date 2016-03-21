@@ -30,6 +30,43 @@ public class SynergyUtils {
                 Configuration.getSynergyDirectory());
     }
 
+    public static List<ListEntry> getAllListEntries(){
+
+        List<ListEntry> lst = new ArrayList<>();
+
+        for(String listName : getAllListNames()){
+
+            ListEntry le = new ListEntry();
+            le.setListName(listName);
+            le.setItemCount(getSynergyListItemCount(listName));
+            lst.add(le);
+        }
+
+        return lst;
+    }
+
+    private static int getSynergyListItemCount(String listName) {
+
+        int count = 0;
+
+        File f = getSynergyListFile(listName);
+
+        try{
+
+            count = FileUtils.readLines(f).size();
+
+        }catch(Exception ex){
+
+            //silently ignore
+        }
+
+        return count;
+    }
+
+    private static File getSynergyListFile(String listName) {
+        return new File(Configuration.getSynergyDirectory(), listName + ".txt");
+    }
+
     public static List<String> getAllArchiveNames() {
 
         return getAllTextFileNamesWithoutExt(

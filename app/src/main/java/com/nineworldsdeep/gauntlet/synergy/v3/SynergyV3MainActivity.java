@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
@@ -116,11 +117,12 @@ public class SynergyV3MainActivity extends AppCompatActivity {
                                     long id) {
 
                 //get selected list name
-                String selectedList = (String) lvItems.getItemAtPosition(idx);
+                ListEntry selectedList = (ListEntry) lvItems.getItemAtPosition(idx);
 
                 Intent intent = new Intent(view.getContext(),
                         SynergyListActivity.class);
-                intent.putExtra(EXTRA_SYNERGYMAIN_LISTNAME, selectedList);
+                intent.putExtra(EXTRA_SYNERGYMAIN_LISTNAME,
+                                selectedList.getListName());
                 startActivity(intent);
 
             }
@@ -136,7 +138,12 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        SynergyUtils.getAllListNames()));
+                        SynergyUtils.getAllListEntries()));
+
+//        lvItems.setAdapter(
+//                new ArrayAdapter<>(this,
+//                        android.R.layout.simple_list_item_1,
+//                        SynergyUtils.getAllListNames()));
     }
 
 }

@@ -27,6 +27,6 @@ public class ListEntry {
     @Override
     public String toString(){
 
-       return getListName() + " - " + getItemCount();
+       return getListName() + " (" + getItemCount() + ")";
     }
 }

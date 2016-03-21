@@ -58,6 +58,14 @@ public class SynergyV3MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_toggle_sort){
+
+            ORDER_BY_COUNT = !ORDER_BY_COUNT;
+            refreshLayout();
+
+            return true;
+        }
+
         if(id == R.id.action_push_all){
             Utils.toast(this, "Sucks yo, but push all is not yet implemented...");
             return true;

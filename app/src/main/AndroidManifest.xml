@@ -312,6 +312,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
         </activity>
+        <activity android:name=".synergy.v3.SynergyEditItemActivity"></activity>
     </application>
 
 </manifest>

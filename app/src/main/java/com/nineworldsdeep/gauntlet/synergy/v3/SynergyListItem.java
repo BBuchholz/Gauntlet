@@ -68,6 +68,10 @@ public class SynergyListItem {
         );
     }
 
+    /**
+     * gets the value for the keyVal "item"
+     * @return
+     */
     public String getText() {
 
         if(v3ItemText()){
@@ -119,6 +123,11 @@ public class SynergyListItem {
         return p.extract(key, itemText);
     }
 
+    /**
+     * returns raw lineItem
+     * (eg. "item={some text} tags={testing, examples} registeredAt={20160327190400}")
+     * @return
+     */
     public String toLineItem(){
         return itemText;
     }

@@ -269,6 +269,20 @@ public class Utils {
         return WordUtils.capitalizeFully(s).replace(" ", "");
     }
 
+    public static String removeHardReturns(String rawText) {
+
+        //remove all hard returns, replace with spaces
+        rawText = rawText.replace(System.getProperty("line.separator"), " ");
+
+        //reduce all consecutive spaces with a single space
+        while(rawText.contains("  ")){
+
+            rawText = rawText.replace("  ", " ");
+        }
+
+        return rawText;
+    }
+
 //    @Deprecated
 //    public static String processExtractOld(String originalLineItem, String key) {
 //

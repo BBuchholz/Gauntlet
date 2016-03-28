@@ -27,7 +27,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
-    public static boolean ORDER_BY_COUNT = true;
+    public static boolean ORDER_BY_COUNT = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

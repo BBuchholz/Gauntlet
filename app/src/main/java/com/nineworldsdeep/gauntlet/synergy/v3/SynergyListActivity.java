@@ -36,6 +36,8 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_MOVE_TO_LIST_ID = 8;
     private static final int MENU_CONTEXT_MOVE_TO_LYRICS_ID = 9;
     private static final int MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID = 10;
+    private static final int MENU_CONTEXT_EDIT_ITEM = 11;
+    public static final int REQUEST_RESULT_EDIT_ITEM = 12;
 
     private SynergyListFile slf;
 
@@ -122,6 +124,9 @@ public class SynergyListActivity
 
         menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
                 Menu.NONE, "Split Item");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_EDIT_ITEM,
+                Menu.NONE, "Edit Item");
     }
 
     //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
@@ -186,9 +191,26 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_EDIT_ITEM:
+
+                editItem(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void editItem(int position) {
+
+        Intent intent = new Intent(this, SynergyEditItemActivity.class);
+
+        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
+        intent.putExtra(Extras.STRING_SYNERGY_LINE_ITEM_RAW_TEXT,
+                slf.get(position).toLineItem());
+
+        startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
     }
 
     private void splitItem(int position) {
@@ -231,7 +253,22 @@ public class SynergyListActivity
                 }
             }
         }
+
+        if(requestCode== REQUEST_RESULT_EDIT_ITEM && data != null){
+
+            int pos = data.getIntExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, -1);
+
+            if(pos > -1){
+
+                String newRawText =
+                        data.getStringExtra(Extras.STRING_SYNERGY_LINE_ITEM_RAW_TEXT);
+
+                Utils.toast(this, pos + " : [" + newRawText + "]");
+            }
+        }
+
         if(requestCode== RESULT_CANCELED){
+            //do nothing
             //it crashes on back button without this, see:
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }

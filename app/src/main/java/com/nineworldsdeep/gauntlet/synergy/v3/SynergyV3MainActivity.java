@@ -17,8 +17,9 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
+//import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,6 +29,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
     public static boolean ORDER_BY_COUNT = false;
+    private List<ListEntry> currentListEntries;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,11 +69,28 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.action_push_all){
-            Utils.toast(this, "Sucks yo, but push all is not yet implemented...");
+
+            pushAll();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void pushAll() {
+
+        List<String> listNames = new ArrayList<>();
+
+        for(ListEntry le : currentListEntries){
+
+            if(Utils.containsTimeStamp(le.getListName())){
+                listNames.add(le.getListName());
+            }
+        }
+
+        SynergyUtils.pushAll(listNames);
+
+        refreshLayout();
     }
 
     @Override
@@ -164,10 +183,12 @@ public class SynergyV3MainActivity extends AppCompatActivity {
             });
         }
 
+        currentListEntries = lst;
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        lst));
+                        currentListEntries));
 
 //        lvItems.setAdapter(
 //                new ArrayAdapter<>(this,

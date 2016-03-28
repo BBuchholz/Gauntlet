@@ -1,7 +1,12 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,6 +113,44 @@ public class SynergyUtils {
         shelveFromFile.save();
     }
 
+    public static void pushAll(List<String> listNames) {
+
+        for(String listName : listNames){
+
+            if(Utils.containsTimeStamp(listName)){
+
+                String pushToName =
+                        Utils.incrementTimeStampInStringToCurrent_yyyyMMdd(listName);
+
+                //without this check, it will archive any list from the current day
+                if(!pushToName.equalsIgnoreCase(listName)){
+
+                    SynergyListFile currentFile =
+                            new SynergyListFile(listName);
+                    currentFile.loadItems();
+
+                    //shelve any categorized items (related to github issue #48)
+                    //see comment to v2.SynergyUtils.archive()
+                    SynergyUtils.shelveAllCategorized(currentFile);
+
+                    //reload after shelve
+                    currentFile.loadItems();
+
+                    SynergyListFile pushToFile =
+                            new SynergyListFile(pushToName);
+                    pushToFile.loadItems();
+
+                    for(SynergyListItem itm : currentFile.getItems()){
+                        pushToFile.add(itm);
+                    }
+
+                    pushToFile.save();
+                    archive(currentFile.getListName(), true);
+                }
+            }
+        }
+    }
+
     public static String push(String listName) {
 
         if(Utils.containsTimeStamp(listName)){
@@ -172,5 +215,54 @@ public class SynergyUtils {
 
         moveToFile.save();
         slf.save();
+    }
+
+    public static List<String> getAllListNames(){
+
+        return getAllTextFileNamesWithoutExt(
+                Configuration.getSynergyDirectory());
+    }
+
+    public static List<ListEntry> getAllListEntries(){
+
+        List<ListEntry> lst = new ArrayList<>();
+
+        for(String listName : getAllListNames()){
+
+            ListEntry le = new ListEntry();
+            le.setListName(listName);
+            le.setItemCount(getSynergyListItemCount(listName));
+            lst.add(le);
+        }
+
+        return lst;
+    }
+
+    private static List<String> getAllTextFileNamesWithoutExt(File directory){
+
+        String[] exts = {"txt"};
+        return Utils.getAllFileNamesMinusExt(directory, exts);
+    }
+
+    private static int getSynergyListItemCount(String listName) {
+
+        int count = 0;
+
+        File f = getSynergyListFile(listName);
+
+        try{
+
+            count = FileUtils.readLines(f).size();
+
+        }catch(Exception ex){
+
+            //silently ignore
+        }
+
+        return count;
+    }
+
+    private static File getSynergyListFile(String listName) {
+        return new File(Configuration.getSynergyDirectory(), listName + ".txt");
     }
 }

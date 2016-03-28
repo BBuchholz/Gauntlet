@@ -283,6 +283,22 @@ public class Utils {
         return rawText;
     }
 
+    public static String incrementTimeStampInStringToCurrent_yyyyMMdd(String listName) {
+
+        Date pushFrom = Utils.extractTimeStamp_yyyyMMdd(listName);
+
+        //defaults to current date and time
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+
+        String newTimeStamp = sdf.format(cal.getTime());
+        String oldTimeStamp = sdf2.format(pushFrom);
+
+        return listName.replace(oldTimeStamp, newTimeStamp);
+    }
+
 //    @Deprecated
 //    public static String processExtractOld(String originalLineItem, String key) {
 //

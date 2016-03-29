@@ -69,4 +69,33 @@ public class ParserTest extends TestCase {
         //should be the same
         assertEquals(expectedResult, p.fragmentToHashMap(valid));
     }
+
+    public void testHashMapToFragment() throws Exception{
+
+        String v1 = "tags={testing, test} item={some text}";
+        String v2 = "item={some text} tags={testing, test}";
+
+        HashMap<String, String> input =
+                new HashMap<>();
+
+        input.put("tags", "testing, test");
+        input.put("item", "some text");
+
+        HashMap<String, String> input2 =
+                new HashMap<>();
+
+        input2.put("tags", "testing, test");
+        input2.put("item", "some text");
+
+        //have to verify either order, isn't guaranteed
+        String input1Frag = p.hashMapToFragment(input);
+        String input2Frag = p.hashMapToFragment(input2);
+
+        assertTrue(input1Frag.equalsIgnoreCase(v1) ||
+                    input1Frag.equalsIgnoreCase(v2));
+
+        assertTrue(input2Frag.equalsIgnoreCase(v1) ||
+                input2Frag.equalsIgnoreCase(v2));
+
+    }
 }

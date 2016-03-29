@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.nineworldsdeep.gauntlet.Extras;
+import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
@@ -20,6 +21,7 @@ public class SynergyEditItemActivity extends AppCompatActivity {
 
     HashMap<String, String> keyVals = new HashMap<>();
     ArrayList<String> keys = new ArrayList<>();
+    Parser p = new Parser();
     String currentKey = null;
     int itemPosition;
 
@@ -30,12 +32,18 @@ public class SynergyEditItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        itemPosition = intent.getIntExtra(
+        itemPosition =
+                intent.getIntExtra(
                 Extras.INT_SYNERGY_LIST_ITEM_POS, -1);
+        String rawText =
+                intent.getStringExtra(
+                Extras.STRING_SYNERGY_LINE_ITEM_RAW_TEXT);
 
-        keyVals.put("item", "some item text");
-        keyVals.put("tags", "testing, test");
-        keyVals.put("filePath", "/NWD-SNDBX/test.txt");
+//        keyVals.put("item", "some item text");
+//        keyVals.put("tags", "testing, test");
+//        keyVals.put("filePath", "/NWD-SNDBX/test.txt");
+
+        keyVals = p.fragmentToHashMap(rawText);
 
         setupSpinner();
     }

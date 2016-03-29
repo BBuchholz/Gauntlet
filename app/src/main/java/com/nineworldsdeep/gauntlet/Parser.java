@@ -258,6 +258,21 @@ public class Parser {
         return fragMap;
     }
 
+    public String hashMapToFragment(HashMap<String, String> map){
+
+        String rawOutput = "";
+
+        for(String key : map.keySet()){
+
+            rawOutput +=
+                    key + "={" + map.get(key) + "} ";
+        }
+
+        rawOutput = rawOutput.trim();
+
+        return rawOutput;
+    }
+
     public boolean startsWithKeyValTag(String input) {
 
         String trimmed = input.trim();

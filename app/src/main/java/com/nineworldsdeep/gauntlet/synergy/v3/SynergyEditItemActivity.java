@@ -90,7 +90,7 @@ public class SynergyEditItemActivity extends AppCompatActivity {
 
     public void confirmClick(View v){
 
-        String newRawText = "item={confirm hasn't been implemented}";
+        String newRawText = p.hashMapToFragment(keyVals);
 
         Intent intent=new Intent();
 

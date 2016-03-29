@@ -264,6 +264,15 @@ public class SynergyListActivity
                         data.getStringExtra(Extras.STRING_SYNERGY_LINE_ITEM_RAW_TEXT);
 
                 Utils.toast(this, pos + " : [" + newRawText + "]");
+
+                // just a hack cuz i don't feel like
+                // overloading the replace method right now
+                ArrayList<SynergyListItem> lst = new ArrayList<>();
+                lst.add(new SynergyListItem(newRawText));
+
+                slf.archiveOne(slf.replace(pos, lst));
+                slf.save();
+                refreshListItems();
             }
         }
 

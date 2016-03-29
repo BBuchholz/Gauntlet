@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -228,6 +229,33 @@ public class Parser {
         String lastWord = words[words.length - 1];
 
         return lastWord.trim();
+    }
+
+    /**
+     * converts a line item fragment into a hashmap of keyVal pairs.
+     * if fragment is not valid, an empty hashmap will be returned
+     *
+     * @param fragment
+     * @return
+     */
+    public HashMap<String, String> fragmentToHashMap(String fragment){
+
+        HashMap<String, String> fragMap = new HashMap<String, String>();
+
+        if(validate(fragment)){
+
+            while(!fragment.equalsIgnoreCase("")){
+
+                String firstKey = getFirstKey(fragment);
+                String keyValue = extract(firstKey, fragment);
+
+                fragMap.put(firstKey, keyValue);
+
+                fragment = trimKeyVal(firstKey, fragment);
+            }
+        }
+
+        return fragMap;
     }
 
     public boolean startsWithKeyValTag(String input) {

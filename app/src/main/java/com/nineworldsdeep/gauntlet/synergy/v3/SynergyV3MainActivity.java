@@ -28,8 +28,35 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
-    public static boolean ORDER_BY_COUNT = false;
+    //public static boolean ORDER_BY_COUNT = false;
+    public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
+
+    public void setOrdering(SynergyListOrdering ordering) {
+        this.ordering = ordering;
+        String orderName = "";
+
+        switch (ordering){
+
+            case ByNameDescending:
+                orderName = "NameDesc";
+                break;
+
+            case ByNameAscending:
+                orderName = "NameAsc";
+                break;
+
+            case ByItemCountDescending:
+                orderName = "CountDesc";
+                break;
+
+            case ByItemCountAscending:
+                orderName = "CountAsc";
+                break;
+        }
+
+        setTitle("Synergy (" + orderName + ")");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,7 +89,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_toggle_sort){
 
-            ORDER_BY_COUNT = !ORDER_BY_COUNT;
+            incrementOrderingSelection();
             refreshLayout();
 
             return true;
@@ -75,6 +102,28 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void incrementOrderingSelection() {
+
+        switch (ordering){
+
+            case ByNameDescending:
+                setOrdering(SynergyListOrdering.ByNameAscending);
+                break;
+
+            case ByNameAscending:
+                setOrdering(SynergyListOrdering.ByItemCountDescending);
+                break;
+
+            case ByItemCountDescending:
+                setOrdering(SynergyListOrdering.ByItemCountAscending);
+                break;
+
+            case ByItemCountAscending:
+                setOrdering(SynergyListOrdering.ByNameDescending);
+                break;
+        }
     }
 
     private void pushAll() {
@@ -102,6 +151,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle("Synergy V3");
+        setOrdering(SynergyListOrdering.ByNameAscending);
 
         refreshLayout();
     }
@@ -125,7 +175,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         String itemText = etNewItem.getText().toString();
         itemText = itemText.trim();
 
-        itemText = Utils.toPascalCase(itemText);
+        itemText = Utils.processListNameInput(itemText);
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
@@ -169,12 +219,17 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
         List<ListEntry> lst = SynergyUtils.getAllListEntries();
 
-        if(ORDER_BY_COUNT){
+        if(ordering == SynergyListOrdering.ByItemCountDescending){
 
             Collections.sort(lst, new Comparator<ListEntry>() {
 
                 public int compare(ListEntry one, ListEntry other) {
-                    if (one.getItemCount() >= other.getItemCount()) {
+
+                    if(one.getItemCount() == other.getItemCount()){
+                        return 0;
+                    }
+
+                    if (one.getItemCount() > other.getItemCount()) {
                         return -1;
                     } else {
                         return 1;
@@ -182,6 +237,37 @@ public class SynergyV3MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if(ordering == SynergyListOrdering.ByItemCountAscending){
+
+            Collections.sort(lst, new Comparator<ListEntry>() {
+
+                public int compare(ListEntry one, ListEntry other) {
+
+                    if(one.getItemCount() == other.getItemCount()){
+                        return 0;
+                    }
+
+                    if (one.getItemCount() < other.getItemCount()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
+
+        if(ordering == SynergyListOrdering.ByNameDescending){
+
+            //just invert the default
+            Collections.reverse(lst);
+        }
+
+        if(ordering == SynergyListOrdering.ByNameAscending){
+
+            //do nothing, it's the default order
+        }
+
 
         currentListEntries = lst;
 

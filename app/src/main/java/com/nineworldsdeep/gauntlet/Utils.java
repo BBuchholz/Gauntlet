@@ -299,6 +299,50 @@ public class Utils {
         return listName.replace(oldTimeStamp, newTimeStamp);
     }
 
+    public static String processListNameInput(String input) {
+
+        input = input.trim();
+
+        // if trimmed name contains spaces, convert
+        // to PascalCase-RespectingDashes
+        if(input.contains(" ") || Utils.stringIsAllLower(input)){
+
+            //respect dashes
+            input = input.replace("-", " - ");
+
+            //remove double spaces
+            while(input.contains("  ")){
+
+                input = input.replace("  ", " ");
+            }
+
+            input = toPascalCase(input);
+        }
+
+        //if a name doesn't contain spaces,
+        //we assume the user inteded any capitalization
+        //within it (eg. we don't want ThisListExample to
+        //become Thislistexample)
+
+        return input;
+    }
+
+    private static boolean stringIsAllLower(String input) {
+
+        //remove all whitespace prior to testing
+        String s = input.replace(" ", "");
+
+        for (int i=0; i<s.length(); i++)
+        {
+            if (Character.isUpperCase(s.charAt(i)))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 //    @Deprecated
 //    public static String processExtractOld(String originalLineItem, String key) {
 //

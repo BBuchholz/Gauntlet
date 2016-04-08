@@ -490,7 +490,12 @@ public class SynergyListActivity
                             public void onClick(DialogInterface dialog,int id) {
 
                                 // get list name from userInput and move
-                                SynergyUtils.move(slf, position, userInput.getText().toString());
+                                String processedName =
+                                        Utils.processListNameInput(
+                                                userInput.getText().toString());
+
+                                SynergyUtils.move(slf, position, processedName);
+
                                 Utils.toast(getApplicationContext(), "moved");
                             }
                         })

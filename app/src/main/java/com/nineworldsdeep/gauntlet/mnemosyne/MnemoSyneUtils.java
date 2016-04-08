@@ -31,11 +31,6 @@ public class MnemoSyneUtils {
         return getFileListItems(dir, imageExts);
     }
 
-    public static List<FileListItem> getAudioListItems(File dir) {
-
-        return getFileListItems(dir, audioExts);
-    }
-
     public static List<FileListItem> getImageListItems(File dir,
                                                        boolean includeSyncFolders){
 
@@ -51,17 +46,18 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    public static List<FileListItem> getAudioListItems(File dir,
-                                                       boolean includeTopFolders){
+    public static List<FileListItem> getAudioListItems(File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
-        if(includeTopFolders){
+        if(dir == null){
 
             lst.addAll(getFileListItemsFromPaths(getAudioTopFolders()));
         }
-
-        lst.addAll(getFileListItems(dir, audioExts));
+        else
+        {
+            lst.addAll(getFileListItems(dir, audioExts));
+        }
 
         return lst;
     }
@@ -69,6 +65,8 @@ public class MnemoSyneUtils {
     public static List<String> getAudioTopFolders() {
 
         List<String> lst = new ArrayList<>();
+
+        lst.add(Configuration.getAudioDirectory().getAbsolutePath());
 
         lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
 

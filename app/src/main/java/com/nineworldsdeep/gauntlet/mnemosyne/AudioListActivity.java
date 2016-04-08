@@ -138,11 +138,6 @@ public class AudioListActivity extends AppCompatActivity {
             }
         }
 
-        if(currentDir == null){
-
-            currentDir = Configuration.getAudioDirectory();
-        }
-
         //Utils.toast(this, currentDir.getAbsolutePath());
 
         ListView lvItems =
@@ -345,13 +340,10 @@ public class AudioListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
-        boolean isTopFolder =
-                currentDir.equals(Configuration.getAudioDirectory());
-
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getAudioListItems(currentDir, isTopFolder))
+                        MnemoSyneUtils.getAudioListItems(currentDir))
         );
     }
 }

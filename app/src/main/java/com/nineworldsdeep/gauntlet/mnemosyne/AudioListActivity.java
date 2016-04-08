@@ -33,27 +33,27 @@ public class AudioListActivity extends AppCompatActivity {
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_audio_list, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_audio_list, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_remove_marked_audio){
-            //need to look into storage access framework maybe?
-            Utils.toast(this, "this feature disabled until further development");
-            //promptRemoveMarkedAudio();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_remove_marked_audio){
+//            //need to look into storage access framework maybe?
+//            Utils.toast(this, "this feature disabled until further development");
+//            //promptRemoveMarkedAudio();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void promptRemoveMarkedAudio() {
 
@@ -138,7 +138,19 @@ public class AudioListActivity extends AppCompatActivity {
             }
         }
 
-        //Utils.toast(this, currentDir.getAbsolutePath());
+        if(currentDir != null){
+
+            setTitle(currentDir.getName());
+
+        }else{
+
+            setTitle("NWD Audio");
+        }
+
+        refreshLayout();
+    }
+
+    private void refreshLayout(){
 
         ListView lvItems =
                 (ListView) findViewById(R.id.lvItems);
@@ -146,6 +158,12 @@ public class AudioListActivity extends AppCompatActivity {
         loadItems();
         setupListViewListener();
         registerForContextMenu(lvItems);
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        refreshLayout();
     }
 
     @Override

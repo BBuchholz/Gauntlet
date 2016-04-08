@@ -16,6 +16,8 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 
 public class ImageListActivity extends AppCompatActivity {
@@ -49,19 +51,14 @@ public class ImageListActivity extends AppCompatActivity {
             }
         }
 
-        if(currentDir == null){
+        if(currentDir != null){
 
-            currentDir = Configuration.getImagesDirectory();
+            setTitle(currentDir.getName());
+
+        }else{
+
+            setTitle("NWD Images");
         }
-
-        Utils.toast(this, currentDir.getAbsolutePath());
-
-//        ListView lvItems =
-//                (ListView) findViewById(R.id.lvItems);
-//
-//        loadItems();
-//        setupListViewListener();
-//        registerForContextMenu(lvItems);
 
         refreshLayout();
     }
@@ -222,13 +219,10 @@ public class ImageListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
-        boolean isTopFolder =
-                currentDir.equals(Configuration.getImagesDirectory());
-
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getImageListItems(currentDir, isTopFolder))
+                        MnemoSyneUtils.getImageListItems(currentDir))
         );
     }
 

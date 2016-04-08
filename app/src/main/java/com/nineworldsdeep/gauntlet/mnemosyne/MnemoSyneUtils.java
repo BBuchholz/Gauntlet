@@ -28,20 +28,16 @@ public class MnemoSyneUtils {
 
     public static List<FileListItem> getImageListItems(File dir){
 
-        return getFileListItems(dir, imageExts);
-    }
-
-    public static List<FileListItem> getImageListItems(File dir,
-                                                       boolean includeSyncFolders){
-
         List<FileListItem> lst = new ArrayList<>();
 
-        if(includeSyncFolders){
+        if(dir == null){
 
-            lst.addAll(getFileListItemsFromPaths(getImageSyncFolders()));
+            lst.addAll(getFileListItemsFromPaths(getTopImageFolders()));
+
+        }else{
+
+            lst.addAll(getFileListItems(dir, imageExts));
         }
-
-        lst.addAll(getFileListItems(dir, imageExts));
 
         return lst;
     }
@@ -67,9 +63,7 @@ public class MnemoSyneUtils {
         List<String> lst = new ArrayList<>();
 
         lst.add(Configuration.getAudioDirectory().getAbsolutePath());
-
         lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
-
         File externalMusic = Configuration.getSdCardMediaMusicDirectory();
 
         if(externalMusic != null) {
@@ -80,10 +74,11 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    public static List<String> getImageSyncFolders() {
+    public static List<String> getTopImageFolders() {
 
         List<String> lst = new ArrayList<>();
 
+        lst.add(Configuration.getImagesDirectory().getAbsolutePath());
         lst.add(Configuration.getCameraDirectory().getAbsolutePath());
         lst.add(Configuration.getScreenshotDirectory().getAbsolutePath());
         lst.add(Configuration.getSkitchDirectory().getAbsolutePath());

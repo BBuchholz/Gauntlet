@@ -1,10 +1,12 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+
+import java.io.File;
 
 public class ImageDisplayActivity extends AppCompatActivity {
 
@@ -153,7 +157,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        String path = i.getStringExtra(EXTRA_IMAGEPATH);
+        final String path = i.getStringExtra(EXTRA_IMAGEPATH);
 
         if(path != null){
 
@@ -161,6 +165,28 @@ public class ImageDisplayActivity extends AppCompatActivity {
             Bitmap bmp = BitmapFactory.decodeFile(path);
             ImageView img = (ImageView) findViewById(R.id.ivImage);
             img.setImageBitmap(bmp);
+
+            img.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    //Utils.toast(v.getContext(), path);
+
+                    //from:http://stackoverflow.com/questions/19422075/open-a-selected-file-image-pdf-programmatically-from-my-android-applicat
+                    Uri uri = Uri.fromFile(new File(path));
+                    Intent imageIntent = new Intent(Intent.ACTION_VIEW);
+                    imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    imageIntent.setDataAndType(uri, "image/*");
+
+                    try{
+                        startActivity(imageIntent);
+                    }catch (ActivityNotFoundException ex){
+                        Utils.toast(v.getContext(), "error opening image");
+                    }
+
+                    return true;
+                }
+            });
 
         }else{
 

@@ -106,7 +106,7 @@ public class ImageListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case MENU_CONTEXT_SHA1_HASH_ID:
 
-                computSHA1Hash(info.position);
+                computeSHA1Hash(info.position);
 
                 return true;
 
@@ -115,56 +115,95 @@ public class ImageListActivity extends AppCompatActivity {
         }
     }
 
-    private void computSHA1Hash(int position) {
+    private void computeSHA1Hash(int position) {
 
         FileListItem fli = getItemAtPosition(position);
         File f = fli.getFile();
 
-        if(f.exists() && f.isDirectory()){
+        String msg = "";
 
-            int count = 0;
+        if(f.exists()){
 
             FileHashIndex fhi = FileHashIndex.getInstance();
 
-            try {
+            try{
 
-                for (File f2 : f.listFiles()) {
-
-                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
-                    fhi.storeHash(f2.getAbsolutePath(), hash);
-                    count++;
-                }
+                //we specifically call this with "ignorePreviouslyHashed"
+                //as false, because image files get marked up regularily
+                //enough that their hashes change often.
+                int count = fhi.countAndStoreSHA1Hashes(f, 0, false);
 
                 fhi.save();
-                String msg = count + " file hashes stored";
 
-                Utils.toast(this, msg);
+                if(count != 1){
+
+                    msg = count + " hashes stored";
+
+                }else{
+
+                    msg = count + " hash stored";
+                }
 
             }catch(Exception ex){
 
-                Utils.toast(this, ex.getMessage());
-            }
-
-        }else if(f.exists() && f.isFile()){
-
-            try {
-
-                String hash = Utils.computeSHA1(f.getAbsolutePath());
-                FileHashIndex fhi = FileHashIndex.getInstance();
-                fhi.storeHash(f.getAbsolutePath(), hash);
-                fhi.save();
-
-                Utils.toast(this, "hash stored for file");
-
-            } catch (Exception e) {
-
-                Utils.toast(this, e.getMessage());
+                msg = ex.getMessage();
             }
 
         }else{
 
-            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
+            msg = "NonExistantPath: " + f.getAbsolutePath();
         }
+
+        Utils.toast(this, msg);
+
+//        FileListItem fli = getItemAtPosition(position);
+//        File f = fli.getFile();
+//
+//        if(f.exists() && f.isDirectory()){
+//
+//            int count = 0;
+//
+//            FileHashIndex fhi = FileHashIndex.getInstance();
+//
+//            try {
+//
+//                for (File f2 : f.listFiles()) {
+//
+//                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
+//                    fhi.storeHash(f2.getAbsolutePath(), hash);
+//                    count++;
+//                }
+//
+//                fhi.save();
+//                String msg = count + " file hashes stored";
+//
+//                Utils.toast(this, msg);
+//
+//            }catch(Exception ex){
+//
+//                Utils.toast(this, ex.getMessage());
+//            }
+//
+//        }else if(f.exists() && f.isFile()){
+//
+//            try {
+//
+//                String hash = Utils.computeSHA1(f.getAbsolutePath());
+//                FileHashIndex fhi = FileHashIndex.getInstance();
+//                fhi.storeHash(f.getAbsolutePath(), hash);
+//                fhi.save();
+//
+//                Utils.toast(this, "hash stored for file");
+//
+//            } catch (Exception e) {
+//
+//                Utils.toast(this, e.getMessage());
+//            }
+//
+//        }else{
+//
+//            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
+//        }
     }
 
     private FileListItem getItemAtPosition(int position){

@@ -200,7 +200,12 @@ public class AudioListActivity extends AppCompatActivity {
 
             try{
 
-                int count = fhi.countAndStoreSHA1Hashes(f, 0);
+                //we call the count and store version that
+                //ignores previously hashed files as
+                //our audio files are not likely to change
+                //and many in number (800+ with mp3's on my
+                //test device), so this is a costly operation
+                int count = fhi.countAndStoreSHA1Hashes(f, 0, true);
 
                 fhi.save();
 

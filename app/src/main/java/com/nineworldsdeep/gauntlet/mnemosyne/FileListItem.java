@@ -75,6 +75,11 @@ public class FileListItem {
         this.tags = tags;
     }
 
+    public void setAndSaveTagString(String tags){
+        setTagString(tags);
+        TagIndex.getInstance().save();
+    }
+
     public String getTags(){
         return tags;
     }

@@ -121,10 +121,13 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     .setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
+
                                     // get user input and set it to result
                                     // edit text
-                                    ili.setTagString(userInput.getText().toString());
-                                    TagIndex.getInstance().save();
+
+//                                    ili.setTagString(userInput.getText().toString());
+//                                    TagIndex.getInstance().save();
+                                    ili.setAndSaveTagString(userInput.getText().toString());
                                 }
                             })
                     .setNegativeButton("Cancel",

@@ -176,4 +176,9 @@ public class Configuration {
         File f = new File(getPlaylistsDirectory() + "/" + playlistNameWithExt);
         return f;
     }
+
+    public static File getDownloadDirectory() {
+
+        return getDirectoryStoragePath("/Download");
+    }
 }

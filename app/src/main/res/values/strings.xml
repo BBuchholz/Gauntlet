@@ -54,4 +54,5 @@
     <string name="menu_remove_marked_audio">Remove Marked Audio</string>
     <string name="menu_push_all">Push All</string>
     <string name="menu_set_tag_string">Set Tag String</string>
+    <string name="title_activity_tapestry_main">TapestryMainActivity</string>
 </resources>

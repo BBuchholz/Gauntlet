@@ -17,6 +17,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
@@ -25,6 +26,9 @@ public class ImageListActivity extends AppCompatActivity {
     private File currentDir;
 
     private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES = 2;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA = 3;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS = 4;
 
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -91,9 +95,19 @@ public class ImageListActivity extends AppCompatActivity {
         String name =
                 getItemAtPosition(info.position).getFile().getName();
 
+        boolean isDirectory =
+                getItemAtPosition(info.position).getFile().isDirectory();
+
         menu.setHeaderTitle(name);
 
         menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
+
+        if(!isDirectory) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES, Menu.NONE, "Move to images");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA, Menu.NONE, "Move to Camera");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
+        }
 
     }
 
@@ -110,9 +124,79 @@ public class ImageListActivity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES:
+
+                moveToImages(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA:
+
+                moveToCamera(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS:
+
+                moveToScreenShots(info.position);
+
+                return true;
+
             default:
+
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToScreenShots(int position) {
+
+        moveFile(position, Configuration.getScreenshotDirectory());
+    }
+
+    private void moveToCamera(int position) {
+
+        moveFile(position, Configuration.getCameraDirectory());
+    }
+
+    private void moveToImages(int position) {
+
+        moveFile(position, Configuration.getImagesDirectory());
+    }
+
+    private void moveFile(int position, File destinationDirectory){
+
+        FileListItem fli = getItemAtPosition(position);
+        File f = fli.getFile();
+
+        String msg = "";
+
+        if(f.exists()){
+
+            try{
+
+                File destination =
+                        new File(destinationDirectory,
+                                FilenameUtils.getName(f.getAbsolutePath()));
+
+                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
+                        destination.getAbsolutePath());
+
+                f.renameTo(destination);
+
+                msg = "file moved";
+
+            }catch (Exception ex){
+
+                msg = "Error moving file: " + ex.getMessage();
+            }
+
+        }else{
+
+            msg = "non existant path: " + f.getAbsolutePath();
+        }
+
+        Utils.toast(this, msg);
+        refreshLayout();
     }
 
     private void computeSHA1Hash(int position) {
@@ -156,6 +240,7 @@ public class ImageListActivity extends AppCompatActivity {
 
         Utils.toast(this, msg);
 
+        //COMMENTED OUT SINCE AT LEAST 20160419
 //        FileListItem fli = getItemAtPosition(position);
 //        File f = fli.getFile();
 //

@@ -312,7 +312,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
         </activity>
-        <activity android:name=".synergy.v3.SynergyEditItemActivity"></activity>
+        <activity android:name=".synergy.v3.SynergyEditItemActivity" />
+        <activity
+            android:name=".tapestry.TapestryMainActivity"
+            android:label="@string/title_activity_tapestry_main"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

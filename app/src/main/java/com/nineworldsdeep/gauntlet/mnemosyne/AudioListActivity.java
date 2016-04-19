@@ -19,6 +19,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +28,11 @@ import java.util.List;
 
 public class AudioListActivity extends AppCompatActivity {
 
-    private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
     private File currentDir;
+
+    private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO = 2;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
 
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
@@ -156,9 +160,18 @@ public class AudioListActivity extends AppCompatActivity {
         String name =
                 getItemAtPosition(info.position).getFile().getName();
 
+        boolean isDirectory =
+                getItemAtPosition(info.position).getFile().isDirectory();
+
         menu.setHeaderTitle(name);
 
         menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
+
+        if(!isDirectory) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
+        }
 
     }
 
@@ -176,9 +189,65 @@ public class AudioListActivity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO:
+
+                moveToAudio(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS:
+
+                moveToVoiceMemos(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToVoiceMemos(int position) {
+
+        moveFile(position, Configuration.getVoicememosDirectory());
+    }
+
+    private void moveToAudio(int position) {
+
+        moveFile(position, Configuration.getAudioDirectory());
+    }
+
+
+    private void moveFile(int position, File destinationDirectory){
+
+        FileListItem fli = getItemAtPosition(position);
+        File f = fli.getFile();
+
+        String msg = "";
+
+        if(f.exists()){
+
+            try{
+
+                File destination =
+                        new File(destinationDirectory,
+                                FilenameUtils.getName(f.getAbsolutePath()));
+
+                f.renameTo(destination);
+
+                msg = "file moved";
+
+            }catch (Exception ex){
+
+                msg = "Error moving file: " + ex.getMessage();
+            }
+
+        }else{
+
+            msg = "non existant path: " + f.getAbsolutePath();
+        }
+
+        Utils.toast(this, msg);
+        refreshLayout();
     }
 
     /**

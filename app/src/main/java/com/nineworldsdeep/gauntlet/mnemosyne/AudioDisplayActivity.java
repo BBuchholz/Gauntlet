@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AudioDisplayActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
@@ -57,8 +61,11 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         }else{
 
-            Utils.toast(this, "image path null");
+            Utils.toast(this, "audio path null");
         }
+
+        refreshLayout();
+
     }
 
     public void stopPlayback(View view) {
@@ -94,5 +101,32 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     public void onPrepared(MediaPlayer player) {
 
         player.start();
+    }
+
+    private void refreshLayout(){
+
+        ListView lvPlaylist =
+                (ListView) findViewById(R.id.lvPlaylist);
+
+        loadItems();
+        setupListViewListener();
+        registerForContextMenu(lvPlaylist);
+    }
+
+    private void setupListViewListener() {
+
+    }
+
+    private void loadItems() {
+
+        ListView lvItems = (ListView) findViewById(R.id.lvPlaylist);
+
+        List<AudioMediaEntry> playlistEntries = mps.getPlaylist();
+
+        lvItems.setAdapter(
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_list_item_1,
+                        playlistEntries)
+        );
     }
 }

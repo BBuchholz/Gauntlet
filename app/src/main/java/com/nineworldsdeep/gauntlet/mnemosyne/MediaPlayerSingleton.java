@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 import android.media.MediaPlayer;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by brent on 11/25/15.
@@ -177,4 +178,8 @@ public class MediaPlayerSingleton{
         }
     }
 
+    public List<AudioMediaEntry> getPlaylist() {
+
+        return playlist.getAll();
+    }
 }

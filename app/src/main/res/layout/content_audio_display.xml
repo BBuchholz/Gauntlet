@@ -27,6 +27,12 @@
         android:layout_below="@+id/tvHeader"
         android:layout_centerHorizontal="true"/>
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/lvPlaylist"
+        android:layout_below="@+id/tvTagline"/>
+
     <LinearLayout
         android:id="@+id/layoutControlButtons"
         android:layout_width="match_parent"

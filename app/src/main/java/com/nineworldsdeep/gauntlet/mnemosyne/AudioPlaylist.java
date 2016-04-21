@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by brent on 3/18/16.
@@ -99,5 +100,10 @@ public class AudioPlaylist {
     public int size(){
 
         return entries.size();
+    }
+
+    public List<AudioMediaEntry> getAll() {
+
+        return entries;
     }
 }

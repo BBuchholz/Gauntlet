@@ -55,4 +55,5 @@
     <string name="menu_push_all">Push All</string>
     <string name="menu_set_tag_string">Set Tag String</string>
     <string name="title_activity_tapestry_main">TapestryMainActivity</string>
+    <string name="menu_reset_player">Reset Player</string>
 </resources>

@@ -106,4 +106,10 @@ public class AudioPlaylist {
 
         return entries;
     }
+
+    public void clear() {
+
+        entries.clear();
+        resetPosition();
+    }
 }

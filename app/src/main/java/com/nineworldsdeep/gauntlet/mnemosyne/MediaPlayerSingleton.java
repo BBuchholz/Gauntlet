@@ -184,4 +184,25 @@ public class MediaPlayerSingleton{
 
         return playlist.getAll();
     }
+
+    public void resetPlayer() throws IOException {
+
+        //TODO: experimental -> test this
+
+        if(mp.isPlaying()){
+            mp.stop();
+        }
+
+        mp = new MediaPlayer();
+
+        //AudioMediaEntry ame = playlist.getCurrent();
+        playlist.clear();
+
+//        if(ame != null){
+//
+//            mp.setDataSource(ame.getPath());
+//            mp.prepare();
+//            mp.start();
+//        }
+    }
 }

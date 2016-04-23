@@ -46,20 +46,21 @@ public class MediaPlayerSingleton{
         return singleton;
     }
 
-    public void queueAndPlayLast(String path,
+    public AudioMediaEntry queueAndPlayLast(String path,
                                  MediaPlayer.OnPreparedListener listener)
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry();
-        ame.setPath(path);
+        AudioMediaEntry ame = new AudioMediaEntry(path);
         playlist.add(ame);
         playlist.advanceToLast();
 
         play(listener);
+
+        return ame;
     }
 
-    private void play(MediaPlayer.OnPreparedListener listener) throws IOException{
+    private AudioMediaEntry play(MediaPlayer.OnPreparedListener listener) throws IOException{
 
         if(mp != null && mp.isPlaying()){
             mp.stop();
@@ -79,9 +80,11 @@ public class MediaPlayerSingleton{
             mp.setOnPreparedListener(listener);
             mp.prepareAsync();
         }
+
+        return ame;
     }
 
-    public void playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
+    public AudioMediaEntry playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
 
         //nowPlayingPath = path;
         playlist.goToPreviousTrack();
@@ -109,15 +112,15 @@ public class MediaPlayerSingleton{
 
         //}
 
-        play(listener);
+        return play(listener);
     }
 
-    public void playNext(MediaPlayer.OnPreparedListener listener) throws IOException {
+    public AudioMediaEntry playNext(MediaPlayer.OnPreparedListener listener) throws IOException {
 
         //nowPlayingPath = path;
         playlist.goToNextTrack();
 
-        play(listener);
+        return play(listener);
 //
 //        if(mp.isPlaying()){
 //            mp.stop();
@@ -147,8 +150,7 @@ public class MediaPlayerSingleton{
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry();
-        ame.setPath(path);
+        AudioMediaEntry ame = new AudioMediaEntry(path);
         playlist.add(ame);
 
         play(listener);

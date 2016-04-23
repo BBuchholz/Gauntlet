@@ -17,20 +17,30 @@ public class FileListItem {
 
     public FileListItem(String filePath) {
 
-        file = new File(filePath);
+//        file = new File(filePath);
+//
+//        ProcessPath();
 
-        DisplayNameIndex dni = DisplayNameIndex.getInstance();
+        setPath(filePath); //handles everything
+    }
 
-        if(dni.hasDisplayName(filePath)){
+    private void ProcessPath(){
 
-            displayName = dni.getDisplayName(filePath);
-        }
+        if(file != null) {
 
-        TagIndex ti = TagIndex.getInstance();
+            DisplayNameIndex dni = DisplayNameIndex.getInstance();
 
-        if(ti.hasTagString(filePath)){
+            if (dni.hasDisplayName(file.getAbsolutePath())) {
 
-            tags = ti.getTagString(filePath);
+                displayName = dni.getDisplayName(file.getAbsolutePath());
+            }
+
+            TagIndex ti = TagIndex.getInstance();
+
+            if (ti.hasTagString(file.getAbsolutePath())) {
+
+                tags = ti.getTagString(file.getAbsolutePath());
+            }
         }
     }
 
@@ -43,19 +53,17 @@ public class FileListItem {
     @Override
     public String toString(){
 
-        if(!Utils.stringIsNullOrWhitespace(displayName)){
-            return displayName;
-        }
-
-        if(!Utils.stringIsNullOrWhitespace(tags)){
-            return tags;
-        }
-
-        return file.getName();
+        return getDefaultName();
     }
 
     public File getFile() {
         return file;
+    }
+
+    public void setPath(String filePath){
+
+        file = new File(filePath);
+        ProcessPath();
     }
 
     public void setDisplayName(String displayName) {
@@ -82,5 +90,18 @@ public class FileListItem {
 
     public String getTags(){
         return tags;
+    }
+
+    public String getDefaultName() {
+
+        if(!Utils.stringIsNullOrWhitespace(displayName)){
+            return displayName;
+        }
+
+        if(!Utils.stringIsNullOrWhitespace(tags)){
+            return tags;
+        }
+
+        return file.getName();
     }
 }

@@ -8,12 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AudioDisplayActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
@@ -22,7 +22,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
     // has features like seekbar that I am not currently implementing but would like to eventually
 
-    private FileListItem ili;
+    private AudioMediaEntry ame;
     private MediaPlayerSingleton mps;
 
     public static final String EXTRA_AUDIOPATH =
@@ -38,21 +38,22 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
 
         Intent i = getIntent();
-        String s = i.getStringExtra(EXTRA_AUDIOPATH);
+        String audioPath = i.getStringExtra(EXTRA_AUDIOPATH);
 
-        if(s != null){
+        if(audioPath != null){
 
-            ili = new FileListItem(s);
+            //ame = new FileListItem(s);
 
-            Utils.toast(this, ili.toString());
+            //Utils.toast(this, ame.toString());
+            Utils.toast(this, audioPath);
 
-            //mp = MediaPlayer.create(this, Uri.parse(ili.getFile().getPath()));
+            //mp = MediaPlayer.create(this, Uri.parse(ame.getFile().getPath()));
             //mp.start();
 
             mps = MediaPlayerSingleton.getInstance();
 
             try {
-                mps.queueAndPlayLast(ili.getFile().getPath(), this);
+                setNowPlaying(mps.queueAndPlayLast(audioPath, this));
 
             } catch (IOException e) {
 
@@ -68,6 +69,18 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
     }
 
+    private void setNowPlaying(AudioMediaEntry ame){
+
+        //display info here
+        TextView tvHeader = (TextView)findViewById(R.id.tvHeader);
+        TextView tvTagLine= (TextView)findViewById(R.id.tvTagline);
+
+        tvHeader.setText(ame.getDefaultName());
+        tvTagLine.setText(ame.getTags());
+
+        this.ame = ame;
+    }
+
     public void stopPlayback(View view) {
 
         mps.stop();
@@ -77,7 +90,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         try{
 
-            mps.playPrevious(this);
+            setNowPlaying(mps.playPrevious(this));
 
         }catch(Exception ex){
 
@@ -89,7 +102,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         try{
 
-            mps.playNext(this);
+            setNowPlaying(mps.playNext(this));
 
         }catch(Exception ex){
 

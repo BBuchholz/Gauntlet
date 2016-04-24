@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -64,10 +65,15 @@ public class SynergyListActivity
         refreshLayout(listName);
     }
 
+    private ListView getListView(){
+
+        return (ListView)findViewById(R.id.lvItems);
+    }
+
     private void refreshLayout(String listName){
 
         ListView lvItems =
-                (ListView)findViewById(R.id.lvItems);
+                getListView();
 
         readItems(lvItems, listName);
         registerForContextMenu(lvItems);

@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,6 +32,32 @@ public class SynergyV3MainActivity extends AppCompatActivity {
     //public static boolean ORDER_BY_COUNT = false;
     public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
+
+    //list state logic from: http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    private static final String LIST_STATE = "listState";
+    private Parcelable mListState = null;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        mListState = state.getParcelable(LIST_STATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout();
+        if (mListState != null)
+            getListView().onRestoreInstanceState(mListState);
+        mListState = null;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        mListState = getListView().onSaveInstanceState();
+        state.putParcelable(LIST_STATE, mListState);
+    }
 
     public void setOrdering(SynergyListOrdering ordering) {
         this.ordering = ordering;
@@ -164,10 +191,15 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     private void refreshLayout(){
 
-        ListView lvItems = (ListView)findViewById(R.id.lvItems);
+        ListView lvItems = getListView();
 
         readItems(lvItems);
         setupListViewListener(lvItems);
+    }
+
+    private ListView getListView() {
+
+        return (ListView)findViewById(R.id.lvItems);
     }
 
     public void onAddItemClick(View view) {

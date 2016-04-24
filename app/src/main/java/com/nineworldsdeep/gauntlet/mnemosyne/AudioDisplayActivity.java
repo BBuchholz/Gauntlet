@@ -196,18 +196,31 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         }else if(id == R.id.action_reset_player){
 
-            try{
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
 
-                mps.resetPlayer();
-                setNowPlaying(null);
-                refreshLayout();
+            String msg = "Reset Player? (Playlist will be emptied)";
 
-            }catch(Exception ex){
+            builder.setTitle("Reset Player")
+                    .setMessage(msg)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                Utils.toast(this,
-                            "error resetting player: " +
-                                ex.getMessage());
-            }
+                            try{
+
+                                mps.resetPlayer();
+                                setNowPlaying(null);
+                                refreshLayout();
+
+                            }catch(Exception ex){
+
+                                Utils.toast(getApplicationContext(),
+                                        "error resetting player: " +
+                                                ex.getMessage());
+                            }
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
 
             return true;
         }

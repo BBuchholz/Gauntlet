@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.synergy.v2;
 
 import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;
@@ -8,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -152,5 +154,26 @@ public class LineItemListFile {
             }
         }
         return false;
+    }
+
+    public HashMap<String, String> toHashMap() {
+
+        Parser p = new Parser();
+
+        HashMap<String, String> keyVals =
+                new HashMap<>();
+
+        for(String item : getItems()){
+
+            HashMap<String, String> itemMap =
+                    p.fragmentToHashMap(item);
+
+            for(String key : itemMap.keySet()){
+
+                keyVals.put(key, itemMap.get(key));
+            }
+        }
+
+        return keyVals;
     }
 }

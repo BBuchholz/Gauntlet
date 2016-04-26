@@ -8,6 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -158,7 +159,19 @@ public class Configuration {
 
     public static File getScreenshotDirectory() {
 
-        return getDirectoryStoragePath("/Pictures/Screenshots");
+        HashMap<String, String> dynamicVals =
+                Utils.fromLineItemConfigFile("ConfigFile");
+
+        String partialPath = "/Pictures/Screenshots";
+
+        if(dynamicVals.containsKey("screenShotFolder")){
+
+            partialPath = dynamicVals.get("screenShotFolder");
+        }
+
+        return getDirectoryStoragePath(partialPath);
+
+//        return getDirectoryStoragePath("/Pictures/Screenshots");
     }
 
     public static File getSkitchDirectory() {

@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.nineworldsdeep.gauntlet.synergy.v2.LineItemListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -341,6 +343,22 @@ public class Utils {
         }
 
         return true;
+    }
+
+    public static HashMap<String, String> fromLineItemConfigFile(String fileNameWithoutExtension) {
+
+        LineItemListFile lilf =
+                new LineItemListFile(fileNameWithoutExtension,
+                Configuration.getConfigDirectory());
+
+        //ensure without overwriting
+        if(!lilf.exists()){
+            lilf.save();
+        }
+
+        lilf.loadItems();
+
+        return lilf.toHashMap();
     }
 
 //    @Deprecated

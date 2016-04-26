@@ -150,7 +150,20 @@ public class ImageListActivity extends AppCompatActivity {
 
     private void moveToScreenShots(int position) {
 
-        moveFile(position, Configuration.getScreenshotDirectory());
+        File f = Configuration.getScreenshotDirectory();
+
+        if(f.exists()){
+
+            moveFile(position, Configuration.getScreenshotDirectory());
+
+        }else{
+
+            String msg = "screenshots folder not found at: " +
+                    f.getAbsolutePath() +
+                    " you should manually configure the path in your ConfigFile";
+
+            Utils.toast(this, msg);
+        }
     }
 
     private void moveToCamera(int position) {

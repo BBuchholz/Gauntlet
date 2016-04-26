@@ -83,8 +83,14 @@ public class MnemoSyneUtils {
         lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
         lst.add(Configuration.getImagesDirectory().getAbsolutePath());
         lst.add(Configuration.getCameraDirectory().getAbsolutePath());
-        lst.add(Configuration.getScreenshotDirectory().getAbsolutePath());
         lst.add(Configuration.getSkitchDirectory().getAbsolutePath());
+
+        File f = Configuration.getScreenshotDirectory();
+
+        if(f.exists()){
+
+            lst.add(f.getAbsolutePath());
+        }
 
         return lst;
     }

@@ -16,7 +16,6 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -30,7 +29,7 @@ public class ImageListActivity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS = 4;
 
-    public static final String EXTRA_CURRENTPATH =
+    public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
 
     @Override
@@ -42,7 +41,7 @@ public class ImageListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        String s = i.getStringExtra(EXTRA_CURRENTPATH);
+        String s = i.getStringExtra(EXTRA_CURRENT_PATH);
 
         currentDir = null;
 
@@ -340,7 +339,7 @@ public class ImageListActivity extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(),
                             ImageListActivity.class);
                     intent.putExtra(
-                            ImageListActivity.EXTRA_CURRENTPATH,
+                            ImageListActivity.EXTRA_CURRENT_PATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);

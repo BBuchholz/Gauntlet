@@ -33,6 +33,10 @@ public class FileListItem {
             if (dni.hasDisplayName(file.getAbsolutePath())) {
 
                 displayName = dni.getDisplayName(file.getAbsolutePath());
+
+            }else{
+
+                displayName = file.getName();
             }
 
             TagIndex ti = TagIndex.getInstance();
@@ -40,6 +44,10 @@ public class FileListItem {
             if (ti.hasTagString(file.getAbsolutePath())) {
 
                 tags = ti.getTagString(file.getAbsolutePath());
+
+            }else{
+
+                tags = "";
             }
         }
     }

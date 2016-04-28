@@ -282,6 +282,9 @@ public class ImageListV2Activity extends AppCompatActivity {
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
                         destination.getAbsolutePath());
 
+                MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
+                        destination.getAbsolutePath());
+
                 f.renameTo(destination);
 
                 msg = "file moved";

@@ -96,6 +96,11 @@ public class FileListItem {
         TagIndex.getInstance().save();
     }
 
+    public void setAndSaveDisplayName(String displayName){
+        setDisplayName(displayName);
+        DisplayNameIndex.getInstance().save();
+    }
+
     public String getTags(){
         return tags;
     }

@@ -232,6 +232,12 @@ public class AudioListActivity extends AppCompatActivity {
                         new File(destinationDirectory,
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
+                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
+                        destination.getAbsolutePath());
+
+                MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
+                        destination.getAbsolutePath());
+
                 f.renameTo(destination);
 
                 msg = "file moved";

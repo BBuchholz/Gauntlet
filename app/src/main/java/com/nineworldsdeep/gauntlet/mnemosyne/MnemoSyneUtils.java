@@ -171,4 +171,16 @@ public class MnemoSyneUtils {
 
         fliDest.setAndSaveTagString(fliSrc.getTags());
     }
+
+    public static void copyDisplayName(String sourcePath, String destinationPath) {
+
+        FileListItem fliSrc = new FileListItem(sourcePath);
+        FileListItem fliDest = new FileListItem(destinationPath);
+
+        if(!fliSrc.getDisplayName()
+                .equalsIgnoreCase(fliSrc.getFile().getName())){
+
+            fliDest.setAndSaveDisplayName(fliSrc.getDisplayName());
+        }
+    }
 }

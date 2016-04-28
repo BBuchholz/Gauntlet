@@ -59,7 +59,14 @@ public class ImageDisplayActivity extends AppCompatActivity {
             final EditText userInput = (EditText) promptsView
                     .findViewById(R.id.editTextDialogUserInput);
 
-            String currentValue = ili.getDisplayName();
+            String currentValue = "";
+
+            //don't prepopulate if it's just returning the file name
+            if(!ili.getDisplayName()
+                    .equalsIgnoreCase(ili.getFile().getName())){
+
+                currentValue = ili.getDisplayName();
+            }
 
             if(!Utils.stringIsNullOrWhitespace(currentValue)){
                 userInput.setText(currentValue);

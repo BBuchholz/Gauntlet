@@ -106,7 +106,14 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             final EditText userInput = (EditText) promptsView
                     .findViewById(R.id.editTextDialogUserInput);
 
-            String currentValue = ame.getDisplayName();
+            String currentValue = "";
+
+            //don't prepopulate if it's just returning the file name
+            if(!ame.getDisplayName()
+                    .equalsIgnoreCase(ame.getFile().getName())){
+
+                currentValue = ame.getDisplayName();
+            }
 
             if(!Utils.stringIsNullOrWhitespace(currentValue)){
                 userInput.setText(currentValue);

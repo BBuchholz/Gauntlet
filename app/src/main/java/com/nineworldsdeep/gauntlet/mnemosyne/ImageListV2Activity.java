@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,6 +67,12 @@ public class ImageListV2Activity extends AppCompatActivity {
             setTitle("NWD Images");
         }
 
+        refreshLayout();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
         refreshLayout();
     }
 
@@ -157,6 +169,227 @@ public class ImageListV2Activity extends AppCompatActivity {
                                    R.id.tags});
 
         lvItems.setAdapter(saItems);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String name = mFileListItems.get(info.position).getDisplayName();
+
+        boolean isDirectory =
+                mFileListItems.get(info.position).getFile().isDirectory();
+
+        menu.setHeaderTitle(name);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
+
+        if(!isDirectory) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES, Menu.NONE, "Move to images");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA, Menu.NONE, "Move to Camera");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
+        }
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case MENU_CONTEXT_SHA1_HASH_ID:
+
+                computeSHA1Hash(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES:
+
+                moveToImages(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA:
+
+                moveToCamera(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS:
+
+                moveToScreenShots(info.position);
+
+                return true;
+
+            default:
+
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void moveToScreenShots(int position) {
+
+        File f = Configuration.getScreenshotDirectory();
+
+        if(f.exists()){
+
+            moveFile(position, Configuration.getScreenshotDirectory());
+
+        }else{
+
+            String msg = "screenshots folder not found at: " +
+                    f.getAbsolutePath() +
+                    " you should manually configure the path in your ConfigFile";
+
+            Utils.toast(this, msg);
+        }
+    }
+
+    private void moveToCamera(int position) {
+
+        moveFile(position, Configuration.getCameraDirectory());
+    }
+
+    private void moveToImages(int position) {
+
+        moveFile(position, Configuration.getImagesDirectory());
+    }
+
+
+    private void moveFile(int position, File destinationDirectory){
+
+        FileListItem fli = mFileListItems.get(position);
+        File f = fli.getFile();
+
+        String msg = "";
+
+        if(f.exists()){
+
+            try{
+
+                File destination =
+                        new File(destinationDirectory,
+                                FilenameUtils.getName(f.getAbsolutePath()));
+
+                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
+                        destination.getAbsolutePath());
+
+                f.renameTo(destination);
+
+                msg = "file moved";
+
+            }catch (Exception ex){
+
+                msg = "Error moving file: " + ex.getMessage();
+            }
+
+        }else{
+
+            msg = "non existant path: " + f.getAbsolutePath();
+        }
+
+        Utils.toast(this, msg);
+        refreshLayout();
+    }
+
+    private void computeSHA1Hash(int position) {
+
+        FileListItem fli = mFileListItems.get(position);
+        File f = fli.getFile();
+
+        String msg = "";
+
+        if(f.exists()){
+
+            FileHashIndex fhi = FileHashIndex.getInstance();
+
+            try{
+
+                //we specifically call this with "ignorePreviouslyHashed"
+                //as false, because image files get marked up regularily
+                //enough that their hashes change often.
+                int count = fhi.countAndStoreSHA1Hashes(f, 0, false);
+
+                fhi.save();
+
+                if(count != 1){
+
+                    msg = count + " hashes stored";
+
+                }else{
+
+                    msg = count + " hash stored";
+                }
+
+            }catch(Exception ex){
+
+                msg = ex.getMessage();
+            }
+
+        }else{
+
+            msg = "NonExistantPath: " + f.getAbsolutePath();
+        }
+
+        Utils.toast(this, msg);
+
+        //COMMENTED OUT SINCE AT LEAST 20160419
+//        FileListItem fli = getItemAtPosition(position);
+//        File f = fli.getFile();
+//
+//        if(f.exists() && f.isDirectory()){
+//
+//            int count = 0;
+//
+//            FileHashIndex fhi = FileHashIndex.getInstance();
+//
+//            try {
+//
+//                for (File f2 : f.listFiles()) {
+//
+//                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
+//                    fhi.storeHash(f2.getAbsolutePath(), hash);
+//                    count++;
+//                }
+//
+//                fhi.save();
+//                String msg = count + " file hashes stored";
+//
+//                Utils.toast(this, msg);
+//
+//            }catch(Exception ex){
+//
+//                Utils.toast(this, ex.getMessage());
+//            }
+//
+//        }else if(f.exists() && f.isFile()){
+//
+//            try {
+//
+//                String hash = Utils.computeSHA1(f.getAbsolutePath());
+//                FileHashIndex fhi = FileHashIndex.getInstance();
+//                fhi.storeHash(f.getAbsolutePath(), hash);
+//                fhi.save();
+//
+//                Utils.toast(this, "hash stored for file");
+//
+//            } catch (Exception e) {
+//
+//                Utils.toast(this, e.getMessage());
+//            }
+//
+//        }else{
+//
+//            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
+//        }
     }
 
 }

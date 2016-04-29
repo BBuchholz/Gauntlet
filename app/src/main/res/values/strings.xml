@@ -57,4 +57,5 @@
     <string name="title_activity_tapestry_main">TapestryMainActivity</string>
     <string name="menu_reset_player">Reset Player</string>
     <string name="title_activity_image_list_v2">ImageListV2Activity</string>
+    <string name="menu_add_link">Add Link</string>
 </resources>

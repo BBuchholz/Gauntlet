@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class Parser {
 
-    public String extract(String nestedKey, String input){
+    public static String extract(String nestedKey, String input){
 
         if(validateNestedKey(nestedKey) && validate(input)){
 
@@ -35,7 +35,7 @@ public class Parser {
         }
     }
 
-    String extractOne(String key, String input){
+    static String extractOne(String key, String input){
 
         String openKey = key + "={";
 
@@ -76,7 +76,7 @@ public class Parser {
         return null;
     }
 
-    Stack<String> getInvertedKeyStack(String nestedKey){
+    static Stack<String> getInvertedKeyStack(String nestedKey){
 
         Stack<String> s = new Stack();
 
@@ -90,22 +90,22 @@ public class Parser {
         return s;
     }
 
-    public boolean validateNestedKey(String nestedKey){
+    public static boolean validateNestedKey(String nestedKey){
 
         return validateNonEmptyKeyNodes(nestedKey);
     }
 
-    boolean validateNonEmptyKeyNodes(String nestedKey){
+    static boolean validateNonEmptyKeyNodes(String nestedKey){
 
         return !nestedKey.contains("//");
     }
 
-    public boolean validate(String input){
+    public static boolean validate(String input){
         return validateOpenKeyFormat(input) &&
                 validateMatchBraces(input);
     }
 
-    boolean validateOpenKeyFormat(String input){
+    static boolean validateOpenKeyFormat(String input){
 
         List<Integer> openBraceIndexes = new ArrayList<>();
 
@@ -141,7 +141,7 @@ public class Parser {
         return valid;
     }
 
-    boolean validateMatchBraces(String input){
+    static boolean validateMatchBraces(String input){
 
         int openBracesCount = 0;
         int closingBracesCount = 0;

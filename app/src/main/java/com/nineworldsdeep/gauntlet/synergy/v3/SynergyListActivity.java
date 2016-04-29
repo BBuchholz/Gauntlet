@@ -3,7 +3,6 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -497,7 +496,7 @@ public class SynergyListActivity
 
                                 // get list name from userInput and move
                                 String processedName =
-                                        Utils.processListNameInput(
+                                        Utils.processName(
                                                 userInput.getText().toString());
 
                                 SynergyUtils.move(slf, position, processedName);

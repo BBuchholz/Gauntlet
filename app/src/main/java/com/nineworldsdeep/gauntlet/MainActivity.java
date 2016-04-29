@@ -13,11 +13,11 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -103,6 +103,11 @@ public class MainActivity extends ActionBarActivity {
 
         startActivity(new Intent(this, GrowthAreasActivity.class));
 
+    }
+
+    public void launchTapestry(View view){
+
+        startActivity(new Intent(this, TapestryNodeActivity.class));
     }
 
     public void launchMuse(View view){

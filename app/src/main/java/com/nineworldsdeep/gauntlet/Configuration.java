@@ -194,4 +194,9 @@ public class Configuration {
 
         return getDirectoryStoragePath("/Download");
     }
+
+    public static File getTapestryDirectory() {
+
+        return getDirectoryStoragePath("/NWD/tapestry");
+    }
 }

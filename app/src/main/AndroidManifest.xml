@@ -314,7 +314,7 @@
         </activity>
         <activity android:name=".synergy.v3.SynergyEditItemActivity" />
         <activity
-            android:name=".tapestry.TapestryMainActivity"
+            android:name=".tapestry.TapestryNodeActivity"
             android:label="@string/title_activity_tapestry_main"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

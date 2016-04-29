@@ -301,7 +301,7 @@ public class Utils {
         return listName.replace(oldTimeStamp, newTimeStamp);
     }
 
-    public static String processListNameInput(String input) {
+    public static String processName(String input) {
 
         input = input.trim();
 

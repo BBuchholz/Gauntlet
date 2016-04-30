@@ -56,8 +56,8 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
 
         String output = "";
 
-        output += "nodeName={" + getNodeName() + "}";
-        output += "linkType={" + getLinkType().toString() + "}";
+        output += "nodeName={" + getNodeName() + "} ";
+        output += "linkType={" + getLinkType().toString() + "} ";
 
         return output;
     }
@@ -73,7 +73,7 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
 
             case AudioLink:
 
-                nodeLink = new AudioLink(nodeName);
+                nodeLink = AudioLink.fromLineItem(nodeName, lineItem);
                 break;
 
             case ChildLink:
@@ -83,7 +83,7 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
 
             case ImageLink:
 
-                nodeLink = new ImageLink(nodeName);
+                nodeLink = ImageLink.fromLineItem(nodeName, lineItem);
                 break;
 
             case ParentLink:

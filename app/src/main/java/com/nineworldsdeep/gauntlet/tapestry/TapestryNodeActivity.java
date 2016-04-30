@@ -83,6 +83,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                     case PeerLink:
                     case ParentLink:
                     case ChildLink:
+                    case JunctionLink:
 
                         intent = new Intent(view.getContext(),
                                 TapestryNodeActivity.class);
@@ -150,8 +151,14 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
+
+        TapestryNode temp = new TapestryNode(mCurrentNodeName);
+
+        if(!temp.isJunctionNode()){
+
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
+        }
         return true;
     }
 

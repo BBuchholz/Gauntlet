@@ -8,6 +8,7 @@ public enum LinkType {
     ParentLink,
     PeerLink,
     ChildLink,
+    JunctionLink,
     SynergyListLink,
     ImageLink,
     AudioLink

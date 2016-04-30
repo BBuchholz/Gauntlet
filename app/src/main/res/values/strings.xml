@@ -58,4 +58,5 @@
     <string name="menu_reset_player">Reset Player</string>
     <string name="title_activity_image_list_v2">ImageListV2Activity</string>
     <string name="menu_add_link">Add Link</string>
+    <string name="menu_link_to_node">Link To Node</string>
 </resources>

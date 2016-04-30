@@ -6,15 +6,18 @@ import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * Created by brent on 4/29/16.
  */
 public class ImageLink extends HashedPathLink {
 
-    public ImageLink(String imageDisplayName) {
+    public ImageLink(String imagePath) {
 
-        super(imageDisplayName, LinkType.ImageLink);
-
+        super("Image: " + FilenameUtils.getName(imagePath), LinkType.ImageLink);
+        setPath(imagePath);
+        refreshHash();
     }
 
     public static ImageLink fromLineItem(String nodeName, String lineItem){

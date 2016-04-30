@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TapestryNodeActivity extends AppCompatActivity {
 
@@ -76,12 +76,50 @@ public class TapestryNodeActivity extends AppCompatActivity {
                 TapestryNodeLink link =
                         mCurrentNodeLinks.get(position);
 
-                Intent intent = new Intent(view.getContext(),
-                        TapestryNodeActivity.class);
-                intent.putExtra(
-                        TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
-                        link.getNodeName());
-                startActivity(intent);
+                Intent intent = null;
+
+                switch (link.getLinkType()){
+
+                    case PeerLink:
+                    case ParentLink:
+                    case ChildLink:
+
+                        intent = new Intent(view.getContext(),
+                                TapestryNodeActivity.class);
+                        intent.putExtra(
+                                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
+                                link.getNodeName());
+
+                        break;
+
+                    case ImageLink:
+
+                        ImageLink iLnk = (ImageLink)link;
+
+                        intent = new Intent(view.getContext(),
+                                ImageDisplayActivity.class);
+                        intent.putExtra(
+                                ImageDisplayActivity.EXTRA_IMAGEPATH,
+                                iLnk.getPath()
+                        );
+
+                        break;
+
+                    case AudioLink:
+                    case SynergyListLink:
+
+                        Utils.toast(TapestryNodeActivity.this,
+                                "non-node link processing here");
+
+                        break;
+                }
+
+                if(intent != null){
+
+                    startActivity(intent);
+                }else{
+                    Utils.toast(TapestryNodeActivity.this,"error processing link");
+                }
             }
         });
     }
@@ -176,7 +214,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                                                                   TapestryUtils.processNodeName(
                                                                           userInput.getText().toString());
 
-                                                          TapestryUtils.link(
+                                                          TapestryUtils.linkNodes(
                                                                   TapestryNodeActivity.this,
                                                                   fromNodeName,
                                                                   processedName,

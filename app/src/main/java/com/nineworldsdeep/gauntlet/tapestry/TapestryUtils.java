@@ -35,7 +35,25 @@ public class TapestryUtils {
         return Utils.processName(name);
     }
 
-    public static void link(String fromNodeName, String toNodeName, LinkType linkType) {
+    public static void linkNodeToImagePath(String nodeName, String imagePath){
+
+        TapestryNode nd = new TapestryNode(nodeName);
+        ImageLink lnk = new ImageLink(imagePath);
+
+        nd.add(lnk);
+        nd.save();
+    }
+
+    public static void linkNodeToAudioPath(String nodeName, String audioPath){
+
+        TapestryNode nd = new TapestryNode(nodeName);
+        AudioLink lnk = new AudioLink(audioPath);
+
+        nd.add(lnk);
+        nd.save();
+    }
+
+    public static void linkNodes(String fromNodeName, String toNodeName, LinkType linkType) {
 
         TapestryNode fromNode = new TapestryNode(fromNodeName);
         TapestryNode toNode = new TapestryNode(toNodeName);
@@ -45,9 +63,9 @@ public class TapestryUtils {
 
             case ParentLink:
 
-                //add parent link to fromNode
+                //add parent linkNodes to fromNode
                 fromNode.add(new ParentLink(toNodeName));
-                //add child link to toNode
+                //add child linkNodes to toNode
                 toNode.add(new ChildLink(fromNodeName));
 
                 fromNode.save();
@@ -57,7 +75,7 @@ public class TapestryUtils {
 
             case PeerLink:
 
-                //add peer link to both nodes
+                //add peer linkNodes to both nodes
                 fromNode.add(new PeerLink(toNodeName));
                 toNode.add(new PeerLink(fromNodeName));
 
@@ -68,9 +86,9 @@ public class TapestryUtils {
 
             case ChildLink:
 
-                //add child link to fromNode
+                //add child linkNodes to fromNode
                 fromNode.add(new ChildLink(toNodeName));
-                //add parent link to toNode
+                //add parent linkNodes to toNode
                 toNode.add(new ParentLink(fromNodeName));
 
                 fromNode.save();
@@ -80,11 +98,11 @@ public class TapestryUtils {
         }
     }
 
-    public static void link(Context c, String fromNodeName, String toNodeName, LinkType linkType) {
+    public static void linkNodes(Context c, String fromNodeName, String toNodeName, LinkType linkType) {
 
         //this one allows toasts
 
-        link(fromNodeName, toNodeName, linkType);
+        linkNodes(fromNodeName, toNodeName, linkType);
 
         Utils.toast(c, linkType + " from " + fromNodeName + " to " + toNodeName + " created.");
     }

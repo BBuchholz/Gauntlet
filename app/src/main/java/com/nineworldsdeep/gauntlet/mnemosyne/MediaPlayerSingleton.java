@@ -14,7 +14,7 @@ public class MediaPlayerSingleton{
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
     //
     // this version is totally cowboy-coded, so its rough around the edges but it does what I
-    // need it to, so for now, in the interest of getting it going, I'm just leaving this link
+    // need it to, so for now, in the interest of getting it going, I'm just leaving this linkNodes
     // here for later :)
 
     private static MediaPlayerSingleton singleton = null;

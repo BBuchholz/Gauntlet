@@ -16,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.tapestry.LinkType;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.File;
 
@@ -152,8 +155,59 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
 
             return true;
-        }
 
+        } else if (id == R.id.action_link_to_node){
+
+            LayoutInflater li = LayoutInflater.from(ImageDisplayActivity.this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+            tv.setText("Enter Node Name: ");
+
+            android.app.AlertDialog.Builder alertDialogBuilder =
+                    new android.app.AlertDialog.Builder(ImageDisplayActivity.this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    // get list name from userInput and move
+                                    String processedName =
+                                            TapestryUtils.processNodeName(
+                                                    userInput.getText().toString());
+
+                                    TapestryUtils
+                                            .linkNodeToImagePath(processedName,
+                                                    ili.getFile().getAbsolutePath());
+
+                                    Utils.toast(ImageDisplayActivity.this, "linked");
+
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

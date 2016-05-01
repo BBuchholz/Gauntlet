@@ -1,7 +1,14 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
@@ -107,4 +114,88 @@ public class TapestryUtils {
         Utils.toast(c, linkType + " from " + fromNodeName + " to " + toNodeName + " created.");
     }
 
+    public static String getCurrentGardenName(String currentDevice) {
+
+        //try current date, garden a, for current device
+        String dateTimeStamp = Utils.getCurrentTimeStamp_yyyyMMdd();
+        String letters = "a";
+        String gName = "";
+        TapestryNode nd = null;
+
+        String lastFoundName = "";
+
+        do{
+            gName = "Gardens-" + dateTimeStamp + "_" +
+                    letters + "_" +  currentDevice;
+
+            nd = new TapestryNode(gName);
+
+            if(nd.exists()){
+
+                lastFoundName = gName;
+            }
+
+            letters = incrementLetters(letters);
+
+        }while(nd.exists());
+
+        if(Utils.stringIsNullOrWhitespace(lastFoundName)){
+
+            lastFoundName = gName;
+        }
+
+        return lastFoundName;
+    }
+
+    private static String incrementLetters(String letters) {
+
+        //what we want:
+        //a - z for first
+        //z then increments to aa
+        //next is ab, ac, ad, etc.
+        //az increments to ba
+        //next is bb, bc, bd, etc.
+        //zz increments to aaa
+        //
+
+        //get last letter
+        //if its less than 'z', increment it
+        //if its 'z', append
+
+        //found this: http://stackoverflow.com/questions/342052/how-to-increment-a-java-string-through-all-the-possibilities
+
+        int length = letters.length();
+        char c = letters.charAt(length - 1);
+
+        if(c == 'z')
+            return length > 1 ? incrementLetters(letters.substring(0, length - 1)) + 'a' : "aa";
+
+        return letters.substring(0, length - 1) + ++c;
+    }
+
+    public static String getCurrentDevice() {
+
+        return new ConfigFile().getDeviceName();
+    }
+
+    public static String getNewGardenName(String currentDevice) {
+
+        //try current date, garden a, for current device
+        String dateTimeStamp = Utils.getCurrentTimeStamp_yyyyMMdd();
+        String letters = "a";
+        String gardenName = "";
+        TapestryNode nd = null;
+
+        do{
+            gardenName = "Gardens-" + dateTimeStamp + "_" +
+                    letters + "_" +  currentDevice;
+
+            nd = new TapestryNode(gardenName);
+
+            letters = incrementLetters(letters);
+
+        }while(nd.exists());
+
+        return gardenName;
+    }
 }

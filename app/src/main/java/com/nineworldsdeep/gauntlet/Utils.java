@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -359,6 +360,12 @@ public class Utils {
         lilf.loadItems();
 
         return lilf.toHashMap();
+    }
+
+    public static String getCurrentTimeStamp_yyyyMMdd() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        return sdf.format(new Date());
     }
 
 //    @Deprecated

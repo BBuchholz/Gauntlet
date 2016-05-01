@@ -102,7 +102,7 @@ public class TapestryNode {
 
         try{
 
-            if(mNodeFile.exists()){
+            if(exists()){
 
                 if(mNodeFile.isFile()){
 
@@ -136,6 +136,11 @@ public class TapestryNode {
             Utils.log("TapestryNode.loadLinks() error: " + ex.getMessage());
         }
 
+    }
+
+    public boolean exists() {
+
+        return mNodeFile.exists();
     }
 
     public void save() {

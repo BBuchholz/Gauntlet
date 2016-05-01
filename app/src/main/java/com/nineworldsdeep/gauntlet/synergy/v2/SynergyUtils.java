@@ -1,20 +1,14 @@
 package com.nineworldsdeep.gauntlet.synergy.v2;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -100,12 +94,6 @@ public class SynergyUtils {
         return slf;
     }
 
-    public static String getCurrentTimeStamp_yyyyMMdd() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
-        return sdf.format(new Date());
-    }
-
     public static String getCurrentTimeStamp_yyyyMMddHHmmss()
     {
         return getCurrentTimeStamp_yyyyMMddHHmmss(false);
@@ -131,7 +119,7 @@ public class SynergyUtils {
 ////        return templateName + "-" + sdf.format(new Date());
 //        return sdf.format(new Date()) + "-" + templateName;
 
-        return getCurrentTimeStamp_yyyyMMdd() + "-" + templateName;
+        return Utils.getCurrentTimeStamp_yyyyMMdd() + "-" + templateName;
     }
 
     public static String push(String listName){

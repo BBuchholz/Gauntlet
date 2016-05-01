@@ -1,7 +1,6 @@
 package com.nineworldsdeep.gauntlet;
 
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import junit.framework.TestCase;
 
@@ -21,13 +20,13 @@ public class UtilsTest extends TestCase {
     }
 
     public void testLog() throws Exception {
-        String listName = SynergyUtils.getCurrentTimeStamp_yyyyMMdd() + "-utils-log";
+        String listName = Utils.getCurrentTimeStamp_yyyyMMdd() + "-utils-log";
 
         SynergyListFile slf = new SynergyListFile(listName);
         slf.loadItems();
         int currentCount = slf.size();
 
-        String testLog = "test msg - " + SynergyUtils.getCurrentTimeStamp_yyyyMMdd();
+        String testLog = "test msg - " + Utils.getCurrentTimeStamp_yyyyMMdd();
         Utils.log(testLog);
 
         slf.loadItems();

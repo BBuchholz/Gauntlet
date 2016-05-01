@@ -40,7 +40,7 @@
     <string name="title_activity_synergy_archives">SynergyArchivesActivity</string>
     <string name="title_activity_image_list">ImageListActivity</string>
     <string name="title_activity_image_display">ImageDisplayActivity</string>
-    <string name="menu_set_display_name">Set Display Name</string>
+    <string name="menu_set_display_name">Display</string>
     <string name="title_activity_audio_list">AudioListActivity</string>
     <string name="title_activity_audio_display">AudioDisplayActivity</string>
     <string name="menu_add_keyboard_session_notes">Add Session Note</string>
@@ -53,10 +53,10 @@
     <string name="nextButtonString"><![CDATA[>>]]></string>
     <string name="menu_remove_marked_audio">Remove Marked Audio</string>
     <string name="menu_push_all">Push All</string>
-    <string name="menu_set_tag_string">Set Tag String</string>
+    <string name="menu_set_tag_string">Tags</string>
     <string name="title_activity_tapestry_main">TapestryMainActivity</string>
     <string name="menu_reset_player">Reset Player</string>
     <string name="title_activity_image_list_v2">ImageListV2Activity</string>
     <string name="menu_add_link">Add Link</string>
-    <string name="menu_link_to_node">Link To Node</string>
+    <string name="menu_link_to_node">Link Node</string>
 </resources>

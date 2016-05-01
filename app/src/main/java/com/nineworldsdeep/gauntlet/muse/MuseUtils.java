@@ -2,10 +2,8 @@ package com.nineworldsdeep.gauntlet.muse;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +43,7 @@ public class MuseUtils {
 
     public static String getCurrentSessionName() {
 
-        String currentTimestamp = SynergyUtils.getCurrentTimeStamp_yyyyMMdd();
+        String currentTimestamp = Utils.getCurrentTimeStamp_yyyyMMdd();
         String sessionName = "Session-" + currentTimestamp;
 
         return sessionName;

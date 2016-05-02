@@ -16,6 +16,7 @@ public class ImageLink extends HashedPathLink {
     public ImageLink(String imagePath) {
 
         super("Image: " + FilenameUtils.getName(imagePath), LinkType.ImageLink);
+        put("img", String.valueOf(R.mipmap.ic_nwd_media));
         setPath(imagePath);
         refreshHash();
     }

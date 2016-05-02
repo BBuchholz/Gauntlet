@@ -146,7 +146,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
             if(fli.getFile().isDirectory()){
 
-                map.put("img", String.valueOf(R.mipmap.ic_nwd_multinode));
+                map.put("img", String.valueOf(R.mipmap.ic_nwd_peer));
 
             }else{
 

@@ -1,8 +1,6 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
-import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -13,7 +11,9 @@ public class AudioLink extends HashedPathLink {
 
     public AudioLink(String audioPath) {
 
-        super("Audio: " + FilenameUtils.getName(audioPath), LinkType.AudioLink);
+        super(FilenameUtils.getName(audioPath), LinkType.AudioLink);
+
+        put("img", String.valueOf(R.mipmap.ic_nwd_media));
 
         setPath(audioPath);
         refreshHash();

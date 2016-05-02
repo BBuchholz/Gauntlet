@@ -4,7 +4,6 @@ import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by brent on 4/29/16.
@@ -18,7 +17,7 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
 
     public TapestryNodeLink(String nodeName, LinkType linkType){
 
-        put("img", String.valueOf(R.mipmap.ic_nwd_multinode));
+        put("img", String.valueOf(R.mipmap.ic_nwd_peer));
         put("nodeName", nodeName);
         put("linkType", linkType.toString());
     }

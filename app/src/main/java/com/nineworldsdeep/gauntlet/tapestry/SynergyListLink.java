@@ -9,7 +9,7 @@ public class SynergyListLink extends TapestryNodeLink {
     public SynergyListLink(String synergyListName) {
         super(processName(synergyListName), LinkType.SynergyListLink);
 
-        put("img", String.valueOf(R.mipmap.ic_nwd_singlenode));
+        put("img", String.valueOf(R.mipmap.ic_nwd_synergy_list));
     }
 
     private static String processName(String synergyListName) {

@@ -7,6 +7,15 @@
     <item android:id="@+id/action_push"
         android:title="@string/menu_push"
         app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_seed"
+        android:title="Seed"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_seed_new"
+        android:title="Seed New"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_link_to_node"
+        android:title="@string/menu_link_to_node"
+        app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_shelveAll"
         android:title="@string/menu_shelveAll"
         app:showAsAction="ifRoom|withText"/>

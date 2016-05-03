@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListActivity;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 import java.util.ArrayList;
 
@@ -107,10 +110,28 @@ public class TapestryNodeActivity extends AppCompatActivity {
                         break;
 
                     case AudioLink:
+
+                        AudioLink aLnk = (AudioLink)link;
+
+                        intent = new Intent(view.getContext(),
+                                AudioDisplayActivity.class);
+                        intent.putExtra(
+                                AudioDisplayActivity.EXTRA_AUDIOPATH,
+                                aLnk.getPath()
+                        );
+
+                        break;
+
                     case SynergyListLink:
 
-                        Utils.toast(TapestryNodeActivity.this,
-                                "non-node link processing here");
+                        SynergyListLink sLnk = (SynergyListLink)link;
+
+                        intent = new Intent(view.getContext(),
+                                SynergyListActivity.class);
+                        intent.putExtra(
+                                SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME,
+                                sLnk.getListName()
+                        );
 
                         break;
                 }

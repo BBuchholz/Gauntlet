@@ -20,6 +20,8 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
+import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.util.ArrayList;
 
@@ -39,7 +41,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_EDIT_ITEM = 11;
     public static final int REQUEST_RESULT_EDIT_ITEM = 12;
 
-    private SynergyListFile slf;
+    private SynergyListFile mSlf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +53,9 @@ public class SynergyListActivity
 
         String listName =
                 intent.getStringExtra(
-                        SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
+                        SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME); //TODO: this EXTRA should be in this class, refactor when you have time to test
 
         setTitle(listName);
-
-//        ListView lvItems =
-//                (ListView)findViewById(R.id.lvItems);
-//
-//        readItems(lvItems, listName);
-//        registerForContextMenu(lvItems);
 
         refreshLayout(listName);
     }
@@ -88,13 +84,13 @@ public class SynergyListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = slf.get(info.position).getText();
+        String title = mSlf.get(info.position).getText();
 
         menu.setHeaderTitle(title);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
-        if(Utils.containsTimeStamp(slf.getListName())){
+        if(Utils.containsTimeStamp(mSlf.getListName())){
 
             menu.add(Menu.NONE, MENU_CONTEXT_SHELVE_ID, Menu.NONE, "Shelve");
 
@@ -103,7 +99,7 @@ public class SynergyListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
         }
 
-        if(slf.getListName().startsWith("Fragments")){
+        if(mSlf.getListName().startsWith("Fragments")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LYRICS_ID,
                     Menu.NONE, "Move To Lyrics");
@@ -118,7 +114,7 @@ public class SynergyListActivity
 
         }
 
-        if(slf.getListName().startsWith("Lyric")){
+        if(mSlf.getListName().startsWith("Lyric")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID,
                     Menu.NONE, "Move To Fragments");
@@ -213,7 +209,7 @@ public class SynergyListActivity
 
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
         intent.putExtra(Extras.STRING_SYNERGY_LINE_ITEM_RAW_TEXT,
-                slf.get(position).toLineItem());
+                mSlf.get(position).toLineItem());
 
         startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
     }
@@ -223,7 +219,7 @@ public class SynergyListActivity
 
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
         intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
-                slf.get(position).getText());
+                mSlf.get(position).getText());
 
         startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
     }
@@ -249,8 +245,8 @@ public class SynergyListActivity
                         sliList.add(new SynergyListItem(s));
                     }
 
-                    slf.archiveOne(slf.replace(pos, sliList));
-                    slf.save();
+                    mSlf.archiveOne(mSlf.replace(pos, sliList));
+                    mSlf.save();
                     refreshListItems();
 
 //                    for (String itm : lst)
@@ -275,8 +271,8 @@ public class SynergyListActivity
                 ArrayList<SynergyListItem> lst = new ArrayList<>();
                 lst.add(new SynergyListItem(newRawText));
 
-                slf.archiveOne(slf.replace(pos, lst));
-                slf.save();
+                mSlf.archiveOne(mSlf.replace(pos, lst));
+                mSlf.save();
                 refreshListItems();
             }
         }
@@ -292,13 +288,13 @@ public class SynergyListActivity
 
         int moveTo = getAddItemIndex() - 1;
 
-        if(SynergyUtils.listItemIsCompleted(slf.get(pos))){
+        if(SynergyUtils.listItemIsCompleted(mSlf.get(pos))){
 
-            moveTo = slf.size() - 1;
+            moveTo = mSlf.size() - 1;
         }
 
-        slf.move(pos, moveTo);
-        slf.save();
+        mSlf.move(pos, moveTo);
+        mSlf.save();
 
         refreshListItems();
 
@@ -308,13 +304,13 @@ public class SynergyListActivity
 
         int moveTo = 0;
 
-        if(SynergyUtils.listItemIsCompleted(slf.get(pos))){
+        if(SynergyUtils.listItemIsCompleted(mSlf.get(pos))){
 
             moveTo = getAddItemIndex();
         }
 
-        slf.move(pos, moveTo);
-        slf.save();
+        mSlf.move(pos, moveTo);
+        mSlf.save();
 
         refreshListItems();
     }
@@ -335,22 +331,206 @@ public class SynergyListActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
 
-        if (id == R.id.action_archive){
+            return true;
+
+        } else if (id == R.id.action_archive){
+
             promptConfirmArchive();
             return true;
-        }
 
-        if (id == R.id.action_push){
+        } else if (id == R.id.action_push){
+
             promptConfirmPush();
             return true;
-        }
 
-        if (id == R.id.action_shelveAll){
+        } else if (id == R.id.action_shelveAll){
+
             promptShelveAll();
             return true;
+
+        } else if(id == R.id.action_seed){
+
+            String currentDevice = TapestryUtils.getCurrentDevice();
+
+            if(currentDevice == null) {
+                //prompt for one
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+
+                android.app.AlertDialog.Builder alertDialogBuilder =
+                        new android.app.AlertDialog.Builder(this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String name = userInput.getText().toString();
+
+                                        //prevent hyphens, which are used for junctions
+                                        name = name.replace("-", "_");
+
+                                        ConfigFile f = new ConfigFile();
+                                        f.setDeviceName(name);
+                                        f.save();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                Utils.toast(this, "seed discarded");
+
+            }else{
+
+                String currentGardenName = TapestryUtils.getCurrentGardenName(currentDevice);
+
+                TapestryUtils.linkNodeToSynergyList(currentGardenName,
+                                                    mSlf.getListName());
+
+                Utils.toast(this, "seed planted: " + currentGardenName);
+            }
+
+            return true;
+
+        } else if(id == R.id.action_seed_new){
+
+            String currentDevice = TapestryUtils.getCurrentDevice();
+
+            if(currentDevice == null) {
+                //prompt for one
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+
+                android.app.AlertDialog.Builder alertDialogBuilder =
+                        new android.app.AlertDialog.Builder(this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String name = userInput.getText().toString();
+
+                                        //prevent hyphens, which are used for junctions
+                                        name = name.replace("-", "_");
+
+                                        ConfigFile f = new ConfigFile();
+                                        f.setDeviceName(name);
+                                        f.save();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                Utils.toast(this, "seed discarded");
+
+            }else{
+
+                String currentGardenName = TapestryUtils.getNewGardenName(currentDevice);
+
+                TapestryUtils.linkNodeToSynergyList(currentGardenName,
+                                                    mSlf.getListName());
+
+                Utils.toast(this, "seed planted: " + currentGardenName);
+            }
+
+            return true;
+
+        } else if (id == R.id.action_link_to_node){
+
+            LayoutInflater li = LayoutInflater.from(SynergyListActivity.this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+            tv.setText("Enter Node Name: ");
+
+            android.app.AlertDialog.Builder alertDialogBuilder =
+                    new android.app.AlertDialog.Builder(SynergyListActivity.this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    // get list name from userInput and move
+                                    String processedName =
+                                            TapestryUtils.processNodeName(
+                                                    userInput.getText().toString());
+
+                                    TapestryUtils
+                                            .linkNodeToSynergyList(processedName,
+                                                    mSlf.getListName());
+
+                                    Utils.toast(SynergyListActivity.this, "linked");
+
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+            return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -365,10 +545,10 @@ public class SynergyListActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        while(slf.hasCategorizedItems()){
+                        while(mSlf.hasCategorizedItems()){
 
                             int pos =
-                                    slf.getFirstCategorizedItemPosition();
+                                    mSlf.getFirstCategorizedItemPosition();
                             shelvePosition(pos);
                         }
 
@@ -382,7 +562,7 @@ public class SynergyListActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(slf.getListName());
+        final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(mSlf.getListName());
         String msg;
 
         if(expired){
@@ -398,9 +578,9 @@ public class SynergyListActivity
                 .setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SynergyUtils.archive(slf.getListName(), expired);
+                        SynergyUtils.archive(mSlf.getListName(), expired);
                         Utils.toast(getApplicationContext(), "tasks archived");
-                        readItems(slf.getListName());
+                        readItems(mSlf.getListName());
                     }
                 })
                 .setNegativeButton("No", null)
@@ -410,21 +590,21 @@ public class SynergyListActivity
 
     private void promptConfirmPush(){
 
-        if(Utils.containsTimeStamp(slf.getListName())){
+        if(Utils.containsTimeStamp(mSlf.getListName())){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             final String pushToName =
-                    Utils.incrementTimeStampInString_yyyyMMdd(slf.getListName());
+                    Utils.incrementTimeStampInString_yyyyMMdd(mSlf.getListName());
 
             builder.setTitle("Push Tasks")
                     .setMessage("Push tasks to " + pushToName + "?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            String pushed = SynergyUtils.push(slf.getListName());
+                            String pushed = SynergyUtils.push(mSlf.getListName());
                             Utils.toast(getApplicationContext(),
                                     "tasks pushed to " + pushed);
-                            readItems(slf.getListName());
+                            readItems(mSlf.getListName());
                         }
                     })
                     .setNegativeButton("No", null)
@@ -439,10 +619,10 @@ public class SynergyListActivity
 
     private void queuePosition(int position) {
 
-        if(!Utils.containsTimeStamp(slf.getListName())){
+        if(!Utils.containsTimeStamp(mSlf.getListName())){
 
             //Utils.toast(this, "queueToDailyToDo position " + position);
-            slf.queueToDailyToDo(position);
+            mSlf.queueToDailyToDo(position);
             Utils.toast(this, "queued");
             refreshListItems();
 
@@ -453,16 +633,16 @@ public class SynergyListActivity
 
     private void moveToLyrics(final int position){
 
-        SynergyUtils.move(slf, position, "Lyrics");
+        SynergyUtils.move(mSlf, position, "Lyrics");
         Utils.toast(getApplicationContext(), "moved to Lyrics");
-        refreshLayout(slf.getListName());
+        refreshLayout(mSlf.getListName());
     }
 
     private void moveToFragments(final int position){
 
-        SynergyUtils.move(slf, position, "Fragments");
+        SynergyUtils.move(mSlf, position, "Fragments");
         Utils.toast(getApplicationContext(), "moved to Fragments");
-        refreshLayout(slf.getListName());
+        refreshLayout(mSlf.getListName());
     }
 
     private void moveToList(final int position) {
@@ -484,7 +664,7 @@ public class SynergyListActivity
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
 
-        userInput.setText(slf.getListName() + "-");
+        userInput.setText(mSlf.getListName() + "-");
         userInput.setSelection(userInput.getText().length());
 
         // set dialog message
@@ -499,7 +679,7 @@ public class SynergyListActivity
                                         Utils.processName(
                                                 userInput.getText().toString());
 
-                                SynergyUtils.move(slf, position, processedName);
+                                SynergyUtils.move(mSlf, position, processedName);
 
                                 Utils.toast(getApplicationContext(), "moved");
                             }
@@ -520,10 +700,10 @@ public class SynergyListActivity
 
     private void shelvePosition(final int position) {
 
-        if(Utils.containsTimeStamp(slf.getListName())){
+        if(Utils.containsTimeStamp(mSlf.getListName())){
 
             Utils.toast(this, "shelve position " + position);
-            String category = slf.get(position).getCategory();
+            String category = mSlf.get(position).getCategory();
 
             if(Utils.stringIsNullOrWhitespace(category)){
 
@@ -552,7 +732,7 @@ public class SynergyListActivity
                                     public void onClick(DialogInterface dialog,int id) {
 
                                         // get category from userInput and shelve
-                                        slf.shelve(position, userInput.getText().toString());
+                                        mSlf.shelve(position, userInput.getText().toString());
                                         Utils.toast(getApplicationContext(), "shelved");
                                     }
                                 })
@@ -571,7 +751,7 @@ public class SynergyListActivity
 
             }else {
 
-                slf.shelve(position, category);
+                mSlf.shelve(position, category);
                 Utils.toast(this, "shelved");
             }
 
@@ -585,14 +765,14 @@ public class SynergyListActivity
     private void toggleCompletionStatusAtPosition(int position){
 //
 //        //move to bottom of list
-//        SynergyListItem removedItem = slf.remove(position);
+//        SynergyListItem removedItem = mSlf.remove(position);
 //
 //        if (removedItem.isCompleted()) {
 //            //completed item being changed to incomplete
 //            int beginIndex = removedItem.getText().indexOf("{") + 1;
 //            int endIndex = removedItem.getText().lastIndexOf("}");
 //            removedItem = removedItem.getText().substring(beginIndex, endIndex);
-//            slf.add(0, removedItem);
+//            mSlf.add(0, removedItem);
 //        } else {
 //            //incomplete item being changed to complete
 //            if(SynergyUtils.isCategorizedItem(removedItem)){
@@ -602,7 +782,7 @@ public class SynergyListActivity
 //            }else {
 //
 //                removedItem = "completed={" + removedItem + "}";
-//                slf.add(removedItem);
+//                mSlf.add(removedItem);
 //            }
 //        }
 //
@@ -610,22 +790,22 @@ public class SynergyListActivity
 //
 //        refreshListItems();
 
-        if(!slf.get(position).isCompleted()){
+        if(!mSlf.get(position).isCompleted()){
 
-            slf.get(position).markCompleted();
+            mSlf.get(position).markCompleted();
             moveToBottom(position);
 
         }else{
 
-            slf.get(position).markIncomplete();
+            mSlf.get(position).markIncomplete();
             moveToTop(position);
         }
     }
 
     private void writeItems() {
 
-        if(slf != null){
-            slf.save();
+        if(mSlf != null){
+            mSlf.save();
         }
     }
 
@@ -643,8 +823,8 @@ public class SynergyListActivity
 
     private void readItems(ListView lvItems, String listName) {
 
-        slf = new SynergyListFile(listName);
-        slf.loadItems();
+        mSlf = new SynergyListFile(listName);
+        mSlf.loadItems();
 
         setListViewAdapter(lvItems);
     }
@@ -653,7 +833,7 @@ public class SynergyListActivity
 
         lvItems.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                slf.getItems()));
+                mSlf.getItems()));
     }
 
     private void refreshListItems(){
@@ -667,7 +847,7 @@ public class SynergyListActivity
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
-            slf.add(getAddItemIndex(), itemText);
+            mSlf.add(getAddItemIndex(), itemText);
             etNewItem.setText("");
             writeItems();
             refreshListItems();
@@ -680,10 +860,10 @@ public class SynergyListActivity
 
     private int getAddItemIndex(){
         //this method is used to add new items above completed items, but still at bottom of list
-        int idx = slf.size();
+        int idx = mSlf.size();
 
-//        while(idx > 0 && slf.get(idx - 1).startsWith("completed={"))
-        while(idx > 0 && SynergyUtils.listItemIsCompleted(slf.get(idx - 1)))
+//        while(idx > 0 && mSlf.get(idx - 1).startsWith("completed={"))
+        while(idx > 0 && SynergyUtils.listItemIsCompleted(mSlf.get(idx - 1)))
             idx--;
 
         return idx;

@@ -60,6 +60,15 @@ public class TapestryUtils {
         nd.save();
     }
 
+    public static void linkNodeToSynergyList(String nodeName, String listName){
+
+        TapestryNode nd = new TapestryNode(nodeName);
+        SynergyListLink lnk = new SynergyListLink(listName);
+
+        nd.add(lnk);
+        nd.save();
+    }
+
     public static void linkNodes(String fromNodeName, String toNodeName, LinkType linkType) {
 
         TapestryNode fromNode = new TapestryNode(fromNodeName);

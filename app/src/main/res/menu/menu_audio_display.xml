@@ -9,6 +9,15 @@
     <item android:id="@+id/action_set_tag_string"
         android:title="@string/menu_set_tag_string"
         app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_seed"
+        android:title="Seed"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_seed_new"
+        android:title="Seed New"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_link_to_node"
+        android:title="@string/menu_link_to_node"
+        app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_reset_player"
         android:title="@string/menu_reset_player"
         app:showAsAction="ifRoom|withText"/>

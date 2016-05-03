@@ -159,8 +159,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         } else if(id == R.id.action_seed){
 
-            //Utils.toast(this, "seed");
-
             String currentDevice = TapestryUtils.getCurrentDevice();
 
             if(currentDevice == null) {
@@ -342,6 +340,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
             alertDialog.show();
 
             return true;
+
         }
 
         return super.onOptionsItemSelected(item);

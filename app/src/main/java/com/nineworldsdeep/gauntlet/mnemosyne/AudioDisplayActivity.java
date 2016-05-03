@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +92,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_set_display_name) {
 
             //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
@@ -201,7 +204,191 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
             return true;
 
-        }else if(id == R.id.action_reset_player){
+        } else if(id == R.id.action_seed){
+
+            String currentDevice = TapestryUtils.getCurrentDevice();
+
+            if(currentDevice == null) {
+                //prompt for one
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String name = userInput.getText().toString();
+
+                                        //prevent hyphens, which are used for junctions
+                                        name = name.replace("-", "_");
+
+                                        ConfigFile f = new ConfigFile();
+                                        f.setDeviceName(name);
+                                        f.save();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                Utils.toast(this, "seed discarded");
+
+            }else{
+
+                String currentGardenName = TapestryUtils.getCurrentGardenName(currentDevice);
+
+                TapestryUtils
+                        .linkNodeToAudioPath(currentGardenName,
+                                ame.getPath());
+
+                Utils.toast(this, "seed planted: " + currentGardenName);
+            }
+
+            return true;
+
+        } else if(id == R.id.action_seed_new){
+
+            String currentDevice = TapestryUtils.getCurrentDevice();
+
+            if(currentDevice == null) {
+                //prompt for one
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String name = userInput.getText().toString();
+
+                                        //prevent hyphens, which are used for junctions
+                                        name = name.replace("-", "_");
+
+                                        ConfigFile f = new ConfigFile();
+                                        f.setDeviceName(name);
+                                        f.save();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                Utils.toast(this, "seed discarded");
+
+            }else{
+
+                String currentGardenName = TapestryUtils.getNewGardenName(currentDevice);
+
+                TapestryUtils
+                        .linkNodeToAudioPath(currentGardenName,
+                                             ame.getPath());
+
+                Utils.toast(this, "seed planted: " + currentGardenName);
+            }
+
+            return true;
+
+        } else if (id == R.id.action_link_to_node){
+
+            LayoutInflater li = LayoutInflater.from(AudioDisplayActivity.this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+            tv.setText("Enter Node Name: ");
+
+            android.app.AlertDialog.Builder alertDialogBuilder =
+                    new android.app.AlertDialog.Builder(AudioDisplayActivity.this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    // get list name from userInput and move
+                                    String processedName =
+                                            TapestryUtils.processNodeName(
+                                                    userInput.getText().toString());
+
+                                    TapestryUtils
+                                            .linkNodeToAudioPath(processedName,
+                                                                 ame.getPath());
+
+                                    Utils.toast(AudioDisplayActivity.this, "linked");
+
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+            return true;
+
+        } else if(id == R.id.action_reset_player){
 
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
 
@@ -230,6 +417,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                     .show();
 
             return true;
+
         }
 
         return super.onOptionsItemSelected(item);

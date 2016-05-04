@@ -18,10 +18,6 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity;
-import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListActivity;
-import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 import java.util.ArrayList;
 
@@ -79,72 +75,92 @@ public class TapestryNodeActivity extends AppCompatActivity {
                 TapestryNodeLink link =
                         mCurrentNodeLinks.get(position);
 
-                Intent intent = null;
-
-                switch (link.getLinkType()){
-
-                    case PeerLink:
-                    case ParentLink:
-                    case ChildLink:
-                    case JunctionLink:
-
-                        intent = new Intent(view.getContext(),
-                                TapestryNodeActivity.class);
-                        intent.putExtra(
-                                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
-                                link.getNodeName());
-
-                        break;
-
-                    case ImageLink:
-
-                        ImageLink iLnk = (ImageLink)link;
-
-                        intent = new Intent(view.getContext(),
-                                ImageDisplayActivity.class);
-                        intent.putExtra(
-                                ImageDisplayActivity.EXTRA_IMAGEPATH,
-                                iLnk.getPath()
-                        );
-
-                        break;
-
-                    case AudioLink:
-
-                        AudioLink aLnk = (AudioLink)link;
-
-                        intent = new Intent(view.getContext(),
-                                AudioDisplayActivity.class);
-                        intent.putExtra(
-                                AudioDisplayActivity.EXTRA_AUDIOPATH,
-                                aLnk.getPath()
-                        );
-
-                        break;
-
-                    case SynergyListLink:
-
-                        SynergyListLink sLnk = (SynergyListLink)link;
-
-                        intent = new Intent(view.getContext(),
-                                SynergyListActivity.class);
-                        intent.putExtra(
-                                SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME,
-                                sLnk.getListName()
-                        );
-
-                        break;
-                }
-
-                if(intent != null){
-
-                    startActivity(intent);
-                }else{
-                    Utils.toast(TapestryNodeActivity.this,"error processing link");
-                }
+                startActivity(link.getIntent(view.getContext()));
             }
         });
     }
+
+//    private void setupListViewListener() {
+//
+//        ListView lvItems = (ListView)findViewById(R.id.lvItems);
+//
+//        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent,
+//                                    View view,
+//                                    int position,
+//                                    long id) {
+//
+//                TapestryNodeLink link =
+//                        mCurrentNodeLinks.get(position);
+//
+//                Intent intent = null;
+//
+//                switch (link.getLinkType()){
+//
+//                    case PeerLink:
+//                    case ParentLink:
+//                    case ChildLink:
+//                    case JunctionLink:
+//
+//                        intent = new Intent(view.getContext(),
+//                                TapestryNodeActivity.class);
+//                        intent.putExtra(
+//                                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
+//                                link.getNodeName());
+//
+//                        break;
+//
+//                    case ImageLink:
+//
+//                        ImageLink iLnk = (ImageLink)link;
+//
+//                        intent = new Intent(view.getContext(),
+//                                ImageDisplayActivity.class);
+//                        intent.putExtra(
+//                                ImageDisplayActivity.EXTRA_IMAGEPATH,
+//                                iLnk.getPath()
+//                        );
+//
+//                        break;
+//
+//                    case AudioLink:
+//
+//                        AudioLink aLnk = (AudioLink)link;
+//
+//                        intent = new Intent(view.getContext(),
+//                                AudioDisplayActivity.class);
+//                        intent.putExtra(
+//                                AudioDisplayActivity.EXTRA_AUDIOPATH,
+//                                aLnk.getPath()
+//                        );
+//
+//                        break;
+//
+//                    case SynergyListLink:
+//
+//                        SynergyListLink sLnk = (SynergyListLink)link;
+//
+//                        intent = new Intent(view.getContext(),
+//                                SynergyListActivity.class);
+//                        intent.putExtra(
+//                                SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME,
+//                                sLnk.getListName()
+//                        );
+//
+//                        break;
+//                }
+//
+//                if(intent != null){
+//
+//                    startActivity(intent);
+//                }else{
+//                    Utils.toast(TapestryNodeActivity.this,"error processing link");
+//                }
+//            }
+//        });
+//    }
 
     private void loadItems() {
 

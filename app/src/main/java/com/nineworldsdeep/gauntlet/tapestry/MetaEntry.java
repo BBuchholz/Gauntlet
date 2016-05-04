@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.nineworldsdeep.gauntlet.R;
 
 import java.util.HashMap;
@@ -9,12 +12,12 @@ import java.util.HashMap;
  */
 public class MetaEntry extends HashMap<String, String> {
 
-    //private HashedPathLink mHashedPathLink;
+    private HashedPathLink mHashedPathLink;
     private static String mDescriptionKey = "path";
 
     public MetaEntry(HashedPathLink hpl){
 
-        //mHashedPathLink = hpl;
+        mHashedPathLink = hpl;
 
         setPath(hpl.getPath());
         setHash(hpl.getHash());
@@ -114,4 +117,8 @@ public class MetaEntry extends HashMap<String, String> {
                           R.id.description};
     }
 
+    public Intent getIntent(Context context) {
+
+        return mHashedPathLink.getIntent(context);
+    }
 }

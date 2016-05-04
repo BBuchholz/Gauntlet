@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
 
@@ -20,6 +23,17 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
         put("img", String.valueOf(R.mipmap.ic_nwd_peer));
         put("nodeName", nodeName);
         put("linkType", linkType.toString());
+    }
+
+    public Intent getIntent(Context c){
+
+        Intent intent = new Intent(c,
+                TapestryNodeActivity.class);
+        intent.putExtra(
+                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
+                getNodeName());
+
+        return intent;
     }
 
     public String getNodeName(){

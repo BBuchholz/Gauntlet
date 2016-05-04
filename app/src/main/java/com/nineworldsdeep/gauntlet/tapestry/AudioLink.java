@@ -1,6 +1,10 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -28,4 +32,15 @@ public class AudioLink extends HashedPathLink {
         return lnk;
     }
 
+    @Override
+    public Intent getIntent(Context c) {
+
+        Intent intent = new Intent(c, AudioDisplayActivity.class);
+        intent.putExtra(
+                AudioDisplayActivity.EXTRA_AUDIOPATH,
+                getPath()
+        );
+
+        return intent;
+    }
 }

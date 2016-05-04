@@ -1,10 +1,13 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
+import android.content.Context;
+import android.content.Intent;
 import android.provider.MediaStore;
 
 import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -28,5 +31,17 @@ public class ImageLink extends HashedPathLink {
         lnk.extractHashedPathFromLineItem(lineItem);
 
         return lnk;
+    }
+
+    @Override
+    public Intent getIntent(Context c) {
+
+        Intent intent = new Intent(c, ImageDisplayActivity.class);
+        intent.putExtra(
+                ImageDisplayActivity.EXTRA_IMAGEPATH,
+                getPath()
+        );
+
+        return intent;
     }
 }

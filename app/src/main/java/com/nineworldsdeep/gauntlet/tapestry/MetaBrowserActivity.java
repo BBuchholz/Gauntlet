@@ -2,8 +2,6 @@ package com.nineworldsdeep.gauntlet.tapestry;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,11 +15,11 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MetaBrowserActivity extends AppCompatActivity {
 
     private String mCurrentNodeName = null;
+    private ArrayList<MetaEntry> mMeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,20 +101,30 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void setupListViewListener() {
 
+        ListView lvItems = (ListView)findViewById(R.id.lvItems);
 
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                MetaEntry me = (MetaEntry)mMeta.get(position);
+
+                startActivity(me.getIntent(view.getContext()));
+            }
+        });
     }
 
     private void loadItems() {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
-        ArrayList<MetaEntry> meta =
-                TapestryUtils.getMetaEntries(mCurrentNodeName);
+        mMeta = TapestryUtils.getMetaEntries(mCurrentNodeName);
 
         SimpleAdapter saMeta =
                 new SimpleAdapter(
                         this.getBaseContext(),
-                        meta,
+                        mMeta,
                         MetaEntry.getLayout(),
                         MetaEntry.getMapKeysForView(),
                         MetaEntry.getIdsForViewElements());

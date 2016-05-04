@@ -331,6 +331,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity" />
         </activity>
+        <activity
+            android:name=".tapestry.MetaBrowserActivity"
+            android:label="@string/title_activity_meta_browser"
+            android:parentActivityName=".tapestry.TapestryNodeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity" />
+        </activity>
     </application>
 
 </manifest>

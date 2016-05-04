@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -206,5 +207,25 @@ public class TapestryUtils {
         }while(nd.exists());
 
         return gardenName;
+    }
+
+    public static ArrayList<MetaEntry> getMetaEntries(String nodeName) {
+
+        TapestryNode nd = new TapestryNode(nodeName);
+
+        ArrayList<MetaEntry> lst =
+                new ArrayList<>();
+
+        for(TapestryNodeLink lnk : nd.getLinks()){
+
+            if(lnk instanceof HashedPathLink){
+
+                HashedPathLink hpl = (HashedPathLink)lnk;
+
+                lst.add(new MetaEntry(hpl));
+            }
+        }
+
+        return lst;
     }
 }

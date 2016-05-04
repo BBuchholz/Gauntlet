@@ -59,4 +59,6 @@
     <string name="title_activity_image_list_v2">ImageListV2Activity</string>
     <string name="menu_add_link">Add Link</string>
     <string name="menu_link_to_node">Link Node</string>
+    <string name="title_activity_meta_browser">MetaBrowserActivity</string>
+    <string name="menu_browse_meta">Browse Meta</string>
 </resources>

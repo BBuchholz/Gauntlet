@@ -110,6 +110,24 @@ public class SynergyListItem {
         }
     }
 
+    public void markArchived() {
+
+        //not implemented for less than v3
+        if(!p.validate(itemText)){
+
+            throw new IllegalArgumentException("archival failed, fragment[" +
+                    itemText + "] is not valid");
+        }
+
+        //avoid overwriting anything with a timestamp already attached
+        if(Utils.stringIsNullOrWhitespace(p.extract("archivedAt", itemText))){
+
+            append("archivedAt",
+                    SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss());
+        }
+
+    }
+
     private void convertItemTextToV3() {
         if(!p.validate(itemText)){
             throw new IllegalArgumentException("cannot convert invalid string '" +
@@ -240,4 +258,5 @@ public class SynergyListItem {
 
         return displayText;
     }
+
 }

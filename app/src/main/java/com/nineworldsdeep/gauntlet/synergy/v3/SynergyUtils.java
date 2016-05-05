@@ -50,6 +50,7 @@ public class SynergyUtils {
 
         for(SynergyListItem itm : toBeRemoved){
             slf.remove(itm);
+            itm.markArchived();
             saf.add(itm);
         }
 
@@ -64,6 +65,7 @@ public class SynergyUtils {
 
                 slf.remove(itm);
                 itm.trimCategory();
+                itm.markArchived();
                 thisSaf.add(itm);
             }
 
@@ -198,6 +200,7 @@ public class SynergyUtils {
 
         SynergyArchiveFile saf = new SynergyArchiveFile(listName);
         saf.loadItems();
+        item.markArchived();
         saf.add(item);
         saf.save();
 

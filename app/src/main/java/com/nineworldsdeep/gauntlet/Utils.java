@@ -304,6 +304,7 @@ public class Utils {
 
     public static String processName(String input) {
 
+        input = Utils.removeHardReturns(input);
         input = input.trim();
 
         // if trimmed name contains spaces, convert

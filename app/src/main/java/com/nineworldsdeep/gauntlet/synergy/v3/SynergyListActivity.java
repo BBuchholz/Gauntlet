@@ -845,6 +845,8 @@ public class SynergyListActivity
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
 
+        itemText = Utils.removeHardReturns(itemText);
+
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
             mSlf.add(getAddItemIndex(), itemText);

@@ -49,7 +49,16 @@ public class TapestryNodeActivity extends AppCompatActivity {
             mCurrentNodeName = "MotherNode";
         }
 
-        setTitle(mCurrentNodeName);
+        refreshLayout(mCurrentNodeName);
+    }
+
+    private void refreshLayout(String nodeName){
+
+        if(!mCurrentNodeName.equals(nodeName)){
+
+            mCurrentNodeName = nodeName;
+            setTitle(mCurrentNodeName);
+        }
 
         refreshLayout();
     }
@@ -118,20 +127,21 @@ public class TapestryNodeActivity extends AppCompatActivity {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
 
+            MenuItem menuItem;
             //is individual garden
-            if(mCurrentNodeName.startsWith("Gardens-")){
+//            if(mCurrentNodeName.startsWith("Gardens-")){
 
-                MenuItem menuItem =
+                menuItem =
                         menu.add(Menu.NONE, MENU_TRANSPLANT_ID,
                                 Menu.NONE, "Transplant");
 
                 menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            }
+//            }
 
             //is neither main gardens node nor individual garden node
             if(!mCurrentNodeName.startsWith("Gardens")){
 
-                MenuItem menuItem =
+                menuItem =
                         menu.add(Menu.NONE, MENU_LINK_NODE_ID,
                                 Menu.NONE, "Link");
 
@@ -216,7 +226,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
                                     TapestryUtils.transplant(fromNodeName, processedName, "Gardens");
 
-                                    refreshLayout();
+                                    refreshLayout(processedName);
 
                                 }
                             })
@@ -249,7 +259,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
 
                             TapestryUtils.transplant(fromNodeName, synergyListName, "Gardens");
-                            refreshLayout();
+                            refreshLayout(synergyListName);
                         }
                     })
                     .setNegativeButton("No", null)

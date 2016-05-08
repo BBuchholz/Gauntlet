@@ -275,9 +275,19 @@ public class TapestryNode {
 
         for(TapestryNodeLink lnk : getLinks()){
 
-            TapestryNode extNd = new TapestryNode(lnk.getNodeName());
-            extNd.remapLinks(this, nd);
-            extNd.save();
+            switch (lnk.getLinkType()){
+
+                //only remap these kinds of links
+                case ChildLink:
+                case ParentLink:
+                case PeerLink:
+
+                    TapestryNode extNd = new TapestryNode(lnk.getNodeName());
+                    extNd.remapLinks(this, nd);
+
+                default:
+                    //do nothing
+            }
         }
     }
 
@@ -287,14 +297,23 @@ public class TapestryNode {
 
             if(lnk.getNodeName().equalsIgnoreCase(prevNode.getNodeName())){
 
-                lnk.remapTo(newNode);
+                remove(lnk);
+                add(lnk.remapTo(newNode));
             }
         }
+
+        save();
+    }
+
+    private void remove(TapestryNodeLink lnk) {
+
+        mNodeLinks.remove(lnk.getNodeName());
     }
 
     public void delete() {
 
-        if(mNodeFile != null &&
+        if(!mNodeName.equalsIgnoreCase("MotherNode") &&
+                mNodeFile != null &&
                 mNodeFile.exists()){
 
             mNodeFile.delete();

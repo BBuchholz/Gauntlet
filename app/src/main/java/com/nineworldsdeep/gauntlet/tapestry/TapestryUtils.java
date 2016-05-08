@@ -248,6 +248,6 @@ public class TapestryUtils {
 
         fromNd.remapExternalLinksTo(toNd);
 
-        //fromNd.delete();
+        fromNd.delete();
     }
 }

@@ -245,7 +245,9 @@ public class SynergyListActivity
                         sliList.add(new SynergyListItem(s));
                     }
 
-                    mSlf.archiveOne(mSlf.replace(pos, sliList));
+                    // need to specify false for archiveOne() or else
+                    // remove gets called twice if sliList has only one item
+                    mSlf.archiveOne(mSlf.replace(pos, sliList), false);
                     mSlf.save();
                     refreshListItems();
 
@@ -271,7 +273,9 @@ public class SynergyListActivity
                 ArrayList<SynergyListItem> lst = new ArrayList<>();
                 lst.add(new SynergyListItem(newRawText));
 
-                mSlf.archiveOne(mSlf.replace(pos, lst));
+                // need to specify false for archiveOne() or else
+                // remove gets called twice if sliList has only one item
+                mSlf.archiveOne(mSlf.replace(pos, lst), false);
                 mSlf.save();
                 refreshListItems();
             }

@@ -208,21 +208,20 @@ public class SynergyListFile {
     }
 
     /**
-     * archives a single list item, for the given list name.
-     * any associated Synergy file is left alone, and if the
-     * desire is to remove the item from another list, that
-     * must be handled separately.
+     * saves the specified item to the archive file
+     * for this list. Only removes from this list if
+     * the removeItem parameter is set to true
      * @param itemToArchive
      * @return archived item (Note, it is unchanged in this process,
      * this is a pass-through convenience process)
      */
-    public SynergyListItem archiveOne(SynergyListItem itemToArchive) {
+    public SynergyListItem archiveOne(SynergyListItem itemToArchive, boolean removeItem) {
         SynergyArchiveFile saf = new SynergyArchiveFile(getListName());
         saf.loadItems();
         saf.add(itemToArchive);
         saf.save();
 
-        if(getItems().contains(itemToArchive)){
+        if(removeItem && getItems().contains(itemToArchive)){
             remove(itemToArchive);
         }
 

@@ -228,4 +228,26 @@ public class TapestryUtils {
 
         return lst;
     }
+
+    public static void transplant(String fromNodeName,
+                                  String toNodeName,
+                                  String ignoreLinksStartingWith) {
+
+        TapestryNode fromNd = new TapestryNode(fromNodeName);
+        TapestryNode toNd = new TapestryNode(toNodeName);
+
+        for (TapestryNodeLink lnk: fromNd.getLinks()) {
+
+            if(!lnk.getNodeName().startsWith(ignoreLinksStartingWith)) {
+
+                toNd.add(lnk);
+            }
+        }
+
+        toNd.save();
+
+        fromNd.remapExternalLinksTo(toNd);
+
+        //fromNd.delete();
+    }
 }

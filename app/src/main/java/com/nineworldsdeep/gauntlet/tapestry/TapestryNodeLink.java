@@ -117,4 +117,9 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
 
         return nodeLink;
     }
+
+    public void remapTo(TapestryNode newNode){
+
+        put("nodeName", newNode.getNodeName());
+    }
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchiveActivity;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class TapestryNodeActivity extends AppCompatActivity {
     private ArrayList<TapestryNodeLink> mCurrentNodeLinks;
 
     private static final int MENU_TRANSPLANT_ID = 1;
+    private static final int MENU_LINK_NODE_ID = 2;
+
     public static final String EXTRA_CURRENT_NODE_NAME =
             "com.nineworldsdeep.gauntlet.tapestry.CURRENT_NODE_NAME";
 
@@ -115,11 +118,22 @@ public class TapestryNodeActivity extends AppCompatActivity {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
 
+            //is individual garden
             if(mCurrentNodeName.startsWith("Gardens-")){
 
                 MenuItem menuItem =
                         menu.add(Menu.NONE, MENU_TRANSPLANT_ID,
                                 Menu.NONE, "Transplant");
+
+                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            }
+
+            //is neither main gardens node nor individual garden node
+            if(!mCurrentNodeName.startsWith("Gardens")){
+
+                MenuItem menuItem =
+                        menu.add(Menu.NONE, MENU_LINK_NODE_ID,
+                                Menu.NONE, "Link");
 
                 menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             }
@@ -135,10 +149,10 @@ public class TapestryNodeActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add_link) {
+        //if (id == R.id.action_add_link) {
+        if (id == MENU_TRANSPLANT_ID) {
 
-            promptAddLink();
+            promptTransplant();
             return true;
 
         } else if (id == R.id.action_browse_meta){
@@ -152,12 +166,96 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
             startActivity(intent);
 
-        } else if (id == MENU_TRANSPLANT_ID){
+            return true;
 
-            Utils.toast(this, "tranplant test");
+        } else if (id == MENU_LINK_NODE_ID){
+
+            promptAddLink();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void promptTransplant() {
+
+        TapestryNode nd = new TapestryNode(mCurrentNodeName);
+
+        ArrayList<TapestryNodeLink> lnks = nd.getByType(SynergyListLink.class);
+
+        final String fromNodeName = nd.getNodeName();
+
+        if(lnks.size() != 1) {
+
+            LayoutInflater li = LayoutInflater.from(TapestryNodeActivity.this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+            tv.setText("Enter Node Name: ");
+
+            android.app.AlertDialog.Builder alertDialogBuilder =
+                    new android.app.AlertDialog.Builder(TapestryNodeActivity.this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    // get list name from userInput and move
+                                    String processedName =
+                                            TapestryUtils.processNodeName(
+                                                    userInput.getText().toString());
+
+                                    TapestryUtils.transplant(fromNodeName, processedName, "Gardens");
+
+                                    refreshLayout();
+
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+
+        } else{
+
+            final String synergyListName = lnks.get(0).getNodeName();
+
+            //prompt to use single name
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            String msg = "Transplant to NodeName: '" + synergyListName + "'?";
+
+            builder.setTitle("Archive Tasks")
+                    .setMessage(msg)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            TapestryUtils.transplant(fromNodeName, synergyListName, "Gardens");
+                            refreshLayout();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+
     }
 
     private void promptAddLink() {

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity">
 
-    <item android:id="@+id/action_add_link"
-        android:title="@string/menu_add_link"
-        app:showAsAction="ifRoom|withText"/>
+    <!--<item android:id="@+id/action_add_link"-->
+        <!--android:title="@string/menu_add_link"-->
+        <!--app:showAsAction="ifRoom|withText"/>-->
     <item android:id="@+id/action_browse_meta"
         android:title="@string/menu_browse_meta"
         app:showAsAction="ifRoom|withText"/>

@@ -136,6 +136,37 @@ public class TapestryNode {
             Utils.log("TapestryNode.loadLinks() error: " + ex.getMessage());
         }
 
+        linkMotherNodeIfParentMissing();
+    }
+
+    private void linkMotherNodeIfParentMissing() {
+
+        boolean parentFound = false;
+
+        if(mNodeName.equalsIgnoreCase("MotherNode") ||
+                isJunctionNode()){
+
+            parentFound = true; //mother node is own parent, ignore junction nodes
+        }
+
+        if(!parentFound){
+
+            for(TapestryNodeLink lnk : getLinks()){
+
+                if(lnk.getLinkType() == LinkType.ParentLink){
+
+                    parentFound = true;
+                }
+            }
+        }
+
+        if(!parentFound){
+
+            add(new ParentLink("MotherNode"));
+            TapestryNode mother = new TapestryNode("MotherNode");
+            mother.add(new ChildLink(this.getNodeName()));
+            mother.save();
+        }
     }
 
     public boolean exists() {
@@ -193,6 +224,80 @@ public class TapestryNode {
 
     public ArrayList<TapestryNodeLink> getLinks() {
 
-        return new ArrayList<TapestryNodeLink>(mNodeLinks.values());
+        return new ArrayList<>(mNodeLinks.values());
+    }
+
+    /**
+     * searches for links that can be cast
+     * to the specified class (so specifying
+     * TapestryNodeLink will return all,
+     * while HashedMediaLink would return
+     * Image and Audio links, as both
+     * derive from that class).
+     *
+     * Specifying an exact type will
+     * also work (so SynergyListLink will
+     * just return SynergyListLinks, &c.)
+     * @param desiredClass
+     * @return
+     */
+    public ArrayList<TapestryNodeLink> getByType(Class desiredClass) {
+
+        ArrayList<TapestryNodeLink> lst =
+                new ArrayList<>();
+
+        for(TapestryNodeLink lnk : mNodeLinks.values()){
+
+            if(desiredClass.isAssignableFrom(lnk.getClass())){
+
+                lst.add(lnk);
+            }
+        }
+
+        return lst;
+    }
+
+    public String getNodeName() {
+
+        return mNodeName;
+    }
+
+    /**
+     * goes through list of external nodes linked to
+     * this current node, and remaps those external
+     * links to the specified node.
+     *
+     * node relationships (such as parent to child)
+     * are maintained in the remapped node
+     * @param nd
+     */
+    public void remapExternalLinksTo(TapestryNode nd) {
+
+        for(TapestryNodeLink lnk : getLinks()){
+
+            TapestryNode extNd = new TapestryNode(lnk.getNodeName());
+            extNd.remapLinks(this, nd);
+            extNd.save();
+        }
+    }
+
+    private void remapLinks(TapestryNode prevNode, TapestryNode newNode) {
+
+        for(TapestryNodeLink lnk: getLinks()){
+
+            if(lnk.getNodeName().equalsIgnoreCase(prevNode.getNodeName())){
+
+                lnk.remapTo(newNode);
+            }
+        }
+    }
+
+    public void delete() {
+
+        if(mNodeFile != null &&
+                mNodeFile.exists()){
+
+            mNodeFile.delete();
+        }
     }
 }

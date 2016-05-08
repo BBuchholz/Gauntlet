@@ -61,4 +61,5 @@
     <string name="menu_link_to_node">Link Node</string>
     <string name="title_activity_meta_browser">MetaBrowserActivity</string>
     <string name="menu_browse_meta">Browse Meta</string>
+    <string name="title_activity_audio_list_v2">AudioListV2Activity</string>
 </resources>

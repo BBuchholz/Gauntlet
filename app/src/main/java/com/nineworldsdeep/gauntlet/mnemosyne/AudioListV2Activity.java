@@ -2,6 +2,8 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -23,23 +25,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ImageListV2Activity extends AppCompatActivity {
+public class AudioListV2Activity extends AppCompatActivity {
 
     private File mCurrentDir;
     List<FileListItem> mFileListItems;
 
     private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
-    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES = 2;
-    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA = 3;
-    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS = 4;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO = 2;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
 
     public static final String EXTRA_CURRENT_PATH =
-            "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
+            "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_list_v2);
+        setContentView(R.layout.activity_audio_list_v2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,7 +65,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
         }else{
 
-            setTitle("NWD Images");
+            setTitle("NWD Audio");
         }
 
         refreshLayout();
@@ -103,9 +104,9 @@ public class ImageListV2Activity extends AppCompatActivity {
                 if(f.exists() && f.isFile()){
 
                     Intent intent = new Intent(view.getContext(),
-                            ImageDisplayActivity.class);
+                            AudioDisplayActivity.class);
                     intent.putExtra(
-                            ImageDisplayActivity.EXTRA_IMAGEPATH,
+                            AudioDisplayActivity.EXTRA_AUDIOPATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
@@ -113,9 +114,9 @@ public class ImageListV2Activity extends AppCompatActivity {
                 }else if(f.exists() && f.isDirectory()){
 
                     Intent intent = new Intent(view.getContext(),
-                            ImageListV2Activity.class);
+                            AudioListV2Activity.class);
                     intent.putExtra(
-                            ImageListV2Activity.EXTRA_CURRENT_PATH,
+                            AudioListV2Activity.EXTRA_CURRENT_PATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
@@ -136,7 +137,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        mFileListItems = MnemoSyneUtils.getImageListItems(mCurrentDir);
+        mFileListItems = MnemoSyneUtils.getAudioListItems(mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -162,11 +163,11 @@ public class ImageListV2Activity extends AppCompatActivity {
                         lstItems,
                         R.layout.file_list_item,
                         new String[] {"img",
-                                      "displayName",
-                                      "tags"},
+                                "displayName",
+                                "tags"},
                         new int[] {R.id.img,
-                                   R.id.display_name,
-                                   R.id.tags});
+                                R.id.display_name,
+                                R.id.tags});
 
         lvItems.setAdapter(saItems);
     }
@@ -191,9 +192,8 @@ public class ImageListV2Activity extends AppCompatActivity {
 
         if(!isDirectory) {
 
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES, Menu.NONE, "Move to images");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA, Menu.NONE, "Move to Camera");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
         }
 
     }
@@ -211,56 +211,31 @@ public class ImageListV2Activity extends AppCompatActivity {
 
                 return true;
 
-            case MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES:
+            case MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO:
 
-                moveToImages(info.position);
-
-                return true;
-
-            case MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA:
-
-                moveToCamera(info.position);
+                moveToAudio(info.position);
 
                 return true;
 
-            case MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS:
+            case MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS:
 
-                moveToScreenShots(info.position);
+                moveToVoiceMemos(info.position);
 
                 return true;
 
             default:
-
                 return super.onContextItemSelected(item);
         }
     }
 
-    private void moveToScreenShots(int position) {
+    private void moveToVoiceMemos(int position) {
 
-        File f = Configuration.getScreenshotDirectory();
-
-        if(f.exists()){
-
-            moveFile(position, Configuration.getScreenshotDirectory());
-
-        }else{
-
-            String msg = "screenshots folder not found at: " +
-                    f.getAbsolutePath() +
-                    " you should manually configure the path in your ConfigFile";
-
-            Utils.toast(this, msg);
-        }
+        moveFile(position, Configuration.getVoicememosDirectory());
     }
 
-    private void moveToCamera(int position) {
+    private void moveToAudio(int position) {
 
-        moveFile(position, Configuration.getCameraDirectory());
-    }
-
-    private void moveToImages(int position) {
-
-        moveFile(position, Configuration.getImagesDirectory());
+        moveFile(position, Configuration.getAudioDirectory());
     }
 
 
@@ -303,6 +278,12 @@ public class ImageListV2Activity extends AppCompatActivity {
         refreshLayout();
     }
 
+    /**
+     * Computes and stores SHA1 hash for selected item if item is a file.
+     * If item is a directory, computes and stores hashes for
+     * all files within selected directory and all subfolders of the selected directory
+     * @param position
+     */
     private void computeSHA1Hash(int position) {
 
         FileListItem fli = mFileListItems.get(position);
@@ -316,10 +297,12 @@ public class ImageListV2Activity extends AppCompatActivity {
 
             try{
 
-                //we specifically call this with "ignorePreviouslyHashed"
-                //as false, because image files get marked up regularily
-                //enough that their hashes change often.
-                int count = fhi.countAndStoreSHA1Hashes(f, 0, false);
+                //we call the count and store version that
+                //ignores previously hashed files as
+                //our audio files are not likely to change
+                //and many in number (800+ with mp3's on my
+                //test device), so this is a costly operation
+                int count = fhi.countAndStoreSHA1Hashes(f, 0, true);
 
                 fhi.save();
 
@@ -343,56 +326,5 @@ public class ImageListV2Activity extends AppCompatActivity {
         }
 
         Utils.toast(this, msg);
-
-        //COMMENTED OUT SINCE AT LEAST 20160419
-//        FileListItem fli = getItemAtPosition(position);
-//        File f = fli.getFile();
-//
-//        if(f.exists() && f.isDirectory()){
-//
-//            int count = 0;
-//
-//            FileHashIndex fhi = FileHashIndex.getInstance();
-//
-//            try {
-//
-//                for (File f2 : f.listFiles()) {
-//
-//                    String hash = Utils.computeSHA1(f2.getAbsolutePath());
-//                    fhi.storeHash(f2.getAbsolutePath(), hash);
-//                    count++;
-//                }
-//
-//                fhi.save();
-//                String msg = count + " file hashes stored";
-//
-//                Utils.toast(this, msg);
-//
-//            }catch(Exception ex){
-//
-//                Utils.toast(this, ex.getMessage());
-//            }
-//
-//        }else if(f.exists() && f.isFile()){
-//
-//            try {
-//
-//                String hash = Utils.computeSHA1(f.getAbsolutePath());
-//                FileHashIndex fhi = FileHashIndex.getInstance();
-//                fhi.storeHash(f.getAbsolutePath(), hash);
-//                fhi.save();
-//
-//                Utils.toast(this, "hash stored for file");
-//
-//            } catch (Exception e) {
-//
-//                Utils.toast(this, e.getMessage());
-//            }
-//
-//        }else{
-//
-//            Utils.toast(this, "NonExistantPath: " + f.getAbsolutePath());
-//        }
     }
-
 }

@@ -26,6 +26,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
     private String mCurrentNodeName;
     private ArrayList<TapestryNodeLink> mCurrentNodeLinks;
 
+    private static final int MENU_TRANSPLANT_ID = 1;
     public static final String EXTRA_CURRENT_NODE_NAME =
             "com.nineworldsdeep.gauntlet.tapestry.CURRENT_NODE_NAME";
 
@@ -80,88 +81,6 @@ public class TapestryNodeActivity extends AppCompatActivity {
         });
     }
 
-//    private void setupListViewListener() {
-//
-//        ListView lvItems = (ListView)findViewById(R.id.lvItems);
-//
-//        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent,
-//                                    View view,
-//                                    int position,
-//                                    long id) {
-//
-//                TapestryNodeLink link =
-//                        mCurrentNodeLinks.get(position);
-//
-//                Intent intent = null;
-//
-//                switch (link.getLinkType()){
-//
-//                    case PeerLink:
-//                    case ParentLink:
-//                    case ChildLink:
-//                    case JunctionLink:
-//
-//                        intent = new Intent(view.getContext(),
-//                                TapestryNodeActivity.class);
-//                        intent.putExtra(
-//                                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
-//                                link.getNodeName());
-//
-//                        break;
-//
-//                    case ImageLink:
-//
-//                        ImageLink iLnk = (ImageLink)link;
-//
-//                        intent = new Intent(view.getContext(),
-//                                ImageDisplayActivity.class);
-//                        intent.putExtra(
-//                                ImageDisplayActivity.EXTRA_IMAGEPATH,
-//                                iLnk.getPath()
-//                        );
-//
-//                        break;
-//
-//                    case AudioLink:
-//
-//                        AudioLink aLnk = (AudioLink)link;
-//
-//                        intent = new Intent(view.getContext(),
-//                                AudioDisplayActivity.class);
-//                        intent.putExtra(
-//                                AudioDisplayActivity.EXTRA_AUDIOPATH,
-//                                aLnk.getPath()
-//                        );
-//
-//                        break;
-//
-//                    case SynergyListLink:
-//
-//                        SynergyListLink sLnk = (SynergyListLink)link;
-//
-//                        intent = new Intent(view.getContext(),
-//                                SynergyListActivity.class);
-//                        intent.putExtra(
-//                                SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME,
-//                                sLnk.getListName()
-//                        );
-//
-//                        break;
-//                }
-//
-//                if(intent != null){
-//
-//                    startActivity(intent);
-//                }else{
-//                    Utils.toast(TapestryNodeActivity.this,"error processing link");
-//                }
-//            }
-//        });
-//    }
-
     private void loadItems() {
 
         ListView lvItems = (ListView)findViewById(R.id.lvItems);
@@ -195,6 +114,16 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
+
+            if(mCurrentNodeName.startsWith("Gardens-")){
+
+                MenuItem menuItem =
+                        menu.add(Menu.NONE, MENU_TRANSPLANT_ID,
+                                Menu.NONE, "Transplant");
+
+                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            }
+
         }
         return true;
     }
@@ -222,6 +151,10 @@ public class TapestryNodeActivity extends AppCompatActivity {
                     mCurrentNodeName);
 
             startActivity(intent);
+
+        } else if (id == MENU_TRANSPLANT_ID){
+
+            Utils.toast(this, "tranplant test");
         }
 
         return super.onOptionsItemSelected(item);

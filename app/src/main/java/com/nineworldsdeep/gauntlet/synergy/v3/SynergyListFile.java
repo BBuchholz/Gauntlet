@@ -257,7 +257,7 @@ public class SynergyListFile {
 
         for(SynergyListItem sli : items){
 
-            if(SynergyUtils.trimCategory(sli.getText()).equalsIgnoreCase(itemText)){
+            if(SynergyUtils.trimCategory(sli.getItem()).equalsIgnoreCase(itemText)){
 
                 return sli;
             }

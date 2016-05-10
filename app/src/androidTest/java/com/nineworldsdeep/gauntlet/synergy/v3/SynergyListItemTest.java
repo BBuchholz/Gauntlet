@@ -47,14 +47,14 @@ public class SynergyListItemTest extends TestCase {
     public void testGetText() throws Exception {
 
         initV2();
-        assertEquals(defaultItemTextV2, sli.getText());
+        assertEquals(defaultItemTextV2, sli.getItem());
 
         initV3();
         //should have same value
-        assertEquals(defaultItemTextV2, sli.getText());
+        assertEquals(defaultItemTextV2, sli.getItem());
 
         //should not be defaultV3 text, which is in keyVal notation
-        assertFalse(defaultItemTextV3.equalsIgnoreCase(sli.getText()));
+        assertFalse(defaultItemTextV3.equalsIgnoreCase(sli.getItem()));
     }
 
     public void testEquals() throws Exception {
@@ -71,8 +71,8 @@ public class SynergyListItemTest extends TestCase {
 
         sli = new SynergyListItem("::Testing:: - testing trim category");
 
-        assertEquals("::Testing:: - testing trim category", sli.getText());
+        assertEquals("::Testing:: - testing trim category", sli.getItem());
         assertEquals("Testing", sli.trimCategory());
-        assertEquals("testing trim category", sli.getText());
+        assertEquals("testing trim category", sli.getItem());
     }
 }

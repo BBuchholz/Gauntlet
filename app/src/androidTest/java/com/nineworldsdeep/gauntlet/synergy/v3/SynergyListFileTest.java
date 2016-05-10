@@ -41,9 +41,9 @@ public class SynergyListFileTest extends TestCase {
         slf.add(new SynergyListItem(testText2));
         slf.add(new SynergyListItem(testText3));
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals(testText2, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals(testText2, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
     }
 
     public void testGetListName() throws Exception {
@@ -61,9 +61,9 @@ public class SynergyListFileTest extends TestCase {
         slf.add(new SynergyListItem(testText2));
         slf.add(new SynergyListItem(testText3));
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals(testText2, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals(testText2, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
 
         ArrayList<SynergyListItem> splitItems = new ArrayList<>();
         SynergyListItem split1 = new SynergyListItem("test");
@@ -73,10 +73,10 @@ public class SynergyListFileTest extends TestCase {
 
         slf.replace(1, splitItems);
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals("test", slf.get(1).getText());
-        assertEquals("item 2", slf.get(2).getText());
-        assertEquals(testText3, slf.get(3).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals("test", slf.get(1).getItem());
+        assertEquals("item 2", slf.get(2).getItem());
+        assertEquals(testText3, slf.get(3).getItem());
     }
 
     public void testSaveAndSizeAndLoadItems() throws Exception {
@@ -92,9 +92,9 @@ public class SynergyListFileTest extends TestCase {
         slf.get(0).append("testKey", "testVal1");
         slf.get(2).append("testKey", "testVal3");
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals(testText2, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals(testText2, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
 
         slf.save();
 
@@ -108,9 +108,9 @@ public class SynergyListFileTest extends TestCase {
 
         assertEquals(3, slf.size());
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals(testText2, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals(testText2, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
 
         assertEquals("testVal1", slf.get(0).getVal("testKey"));
         assertTrue(Utils.stringIsNullOrWhitespace(slf.get(1).getVal("testKey")));
@@ -130,9 +130,9 @@ public class SynergyListFileTest extends TestCase {
         slf.get(0).append("testKey", "testVal1");
         slf.get(2).append("testKey", "testVal3");
 
-        assertEquals(testText1, slf.get(0).getText());
-        assertEquals(testText2, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText1, slf.get(0).getItem());
+        assertEquals(testText2, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
 
         assertEquals("testVal1", slf.get(0).getVal("testKey"));
         assertTrue(Utils.stringIsNullOrWhitespace(slf.get(1).getVal("testKey")));
@@ -140,9 +140,9 @@ public class SynergyListFileTest extends TestCase {
 
         slf.move(1, 0);
 
-        assertEquals(testText2, slf.get(0).getText());
-        assertEquals(testText1, slf.get(1).getText());
-        assertEquals(testText3, slf.get(2).getText());
+        assertEquals(testText2, slf.get(0).getItem());
+        assertEquals(testText1, slf.get(1).getItem());
+        assertEquals(testText3, slf.get(2).getItem());
 
         assertTrue(Utils.stringIsNullOrWhitespace(slf.get(0).getVal("testKey")));
         assertEquals("testVal1", slf.get(1).getVal("testKey"));
@@ -237,7 +237,7 @@ public class SynergyListFileTest extends TestCase {
 
         int pos = 1;
 
-        String category = SynergyUtils.parseCategory(slf.get(pos).getText());
+        String category = SynergyUtils.parseCategory(slf.get(pos).getItem());
 
         slf.shelve(pos, category);
 

@@ -136,7 +136,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                     // get user input and set it to result
                                     // edit text
 
-//                                    ili.setTagString(userInput.getText().toString());
+//                                    ili.setTagString(userInput.getItem().toString());
 //                                    TagIndex.getInstance().save();
                                     ili.setAndSaveTagString(userInput.getText().toString());
                                 }

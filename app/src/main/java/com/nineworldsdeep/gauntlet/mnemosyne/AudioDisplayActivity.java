@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
@@ -183,7 +185,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                     // get user input and set it to result
                                     // edit text
 
-//                                    ili.setTagString(userInput.getText().toString());
+//                                    ili.setTagString(userInput.getItem().toString());
 //                                    TagIndex.getInstance().save();
                                     ame.setAndSaveTagString(userInput.getText().toString());
                                     updateMediaInfo();
@@ -439,13 +441,15 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
             defaultName = this.ame.getDefaultName();
 
-            String tagsTemp = this.ame.getTags();
+            //String tagsTemp = this.ame.getTags();
 
             //prevent duplicates if display name not set
-            if(!defaultName.equalsIgnoreCase(tagsTemp)){
+//            if(!defaultName.equalsIgnoreCase(tagsTemp)){
+//
+//                tags = tagsTemp;
+//            }
 
-                tags = tagsTemp;
-            }
+            tags = ame.getTags();
         }
 
         //display info here
@@ -505,18 +509,38 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
     private void setupListViewListener() {
 
+        final ListView lvTags = (ListView) findViewById(R.id.lvTagsFrequent);
+
+        lvTags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String tag = (String) lvTags.getItemAtPosition(position);
+                ame.setAndSaveTagString(Tags.toggleTag(tag, ame.getTags()));
+                updateMediaInfo();
+            }
+        });
     }
 
     private void loadItems() {
 
         ListView lvItems = (ListView) findViewById(R.id.lvPlaylist);
+        ListView lvTags = (ListView) findViewById(R.id.lvTagsFrequent);
 
         List<AudioMediaEntry> playlistEntries = mps.getPlaylist();
+        List<String> frequentTags = Tags.getFrequent();
 
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
                         playlistEntries)
+        );
+
+        lvTags.setAdapter(
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_list_item_1,
+                        frequentTags)
         );
     }
 }

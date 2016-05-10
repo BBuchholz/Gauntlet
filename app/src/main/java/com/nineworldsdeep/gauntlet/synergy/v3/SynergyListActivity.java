@@ -84,7 +84,7 @@ public class SynergyListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = mSlf.get(info.position).getText();
+        String title = mSlf.get(info.position).getItem();
 
         menu.setHeaderTitle(title);
 
@@ -219,7 +219,7 @@ public class SynergyListActivity
 
         intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
         intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
-                mSlf.get(position).getText());
+                mSlf.get(position).getItem());
 
         startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
     }
@@ -771,9 +771,9 @@ public class SynergyListActivity
 //
 //        if (removedItem.isCompleted()) {
 //            //completed item being changed to incomplete
-//            int beginIndex = removedItem.getText().indexOf("{") + 1;
-//            int endIndex = removedItem.getText().lastIndexOf("}");
-//            removedItem = removedItem.getText().substring(beginIndex, endIndex);
+//            int beginIndex = removedItem.getItem().indexOf("{") + 1;
+//            int endIndex = removedItem.getItem().lastIndexOf("}");
+//            removedItem = removedItem.getItem().substring(beginIndex, endIndex);
 //            mSlf.add(0, removedItem);
 //        } else {
 //            //incomplete item being changed to complete

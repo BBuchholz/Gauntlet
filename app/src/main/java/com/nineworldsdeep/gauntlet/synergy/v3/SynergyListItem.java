@@ -31,7 +31,7 @@ public class SynergyListItem {
 
         this(sli.itemText);
 
-        String categorizedText = "::" + categoryName + ":: - " + getText();
+        String categorizedText = "::" + categoryName + ":: - " + getItem();
 
         this.itemText = p.setFirst("item", categorizedText, this.itemText);
     }
@@ -72,7 +72,7 @@ public class SynergyListItem {
      * gets the value for the keyVal "item"
      * @return
      */
-    public String getText() {
+    public String getItem() {
 
         if(v3ItemText()){
             return p.extract("item", itemText);
@@ -152,8 +152,8 @@ public class SynergyListItem {
 
     public boolean isCategorizedItem() {
 
-        return getText().startsWith("::") &&
-                getText().contains(":: - ");
+        return getItem().startsWith("::") &&
+                getItem().contains(":: - ");
     }
 
     @Override
@@ -187,11 +187,11 @@ public class SynergyListItem {
 
         if(isCategorizedItem()){
 
-            category = SynergyUtils.parseCategory(getText());
+            category = SynergyUtils.parseCategory(getItem());
 
-            int startIdx = getText().indexOf(":: - ") + 5;
+            int startIdx = getItem().indexOf(":: - ") + 5;
 
-            String trimmedValue = getText().substring(startIdx);
+            String trimmedValue = getItem().substring(startIdx);
 
             this.itemText = p.setFirst("item", trimmedValue, itemText);
 
@@ -204,9 +204,9 @@ public class SynergyListItem {
 
         if(isCategorizedItem()){
 
-            int endIdx = getText().indexOf(":: - ");
+            int endIdx = getItem().indexOf(":: - ");
 
-            return getText().substring(2, endIdx);
+            return getItem().substring(2, endIdx);
 
         }else{
 

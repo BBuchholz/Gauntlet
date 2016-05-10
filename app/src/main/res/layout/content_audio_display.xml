@@ -15,7 +15,7 @@
     <TextView android:text="SOMETHING" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvHeader"
-        android:textSize="35dp"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

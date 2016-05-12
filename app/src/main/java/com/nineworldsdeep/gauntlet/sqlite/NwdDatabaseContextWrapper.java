@@ -14,11 +14,11 @@ import java.io.File;
 /**
  * FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
  */
-public class DatabaseContext extends ContextWrapper {
+public class NwdDatabaseContextWrapper extends ContextWrapper {
 
-    private static final String DEBUG_CONTEXT = "DatabaseContext";
+    private static final String DEBUG_CONTEXT = "NwdDatabaseContextWrapper";
 
-    public DatabaseContext(Context base) {
+    public NwdDatabaseContextWrapper(Context base) {
         super(base);
     }
 

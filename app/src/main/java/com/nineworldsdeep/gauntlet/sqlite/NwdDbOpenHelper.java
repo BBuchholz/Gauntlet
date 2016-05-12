@@ -13,12 +13,15 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "nwd";
     
     //tables
+    public static final String TABLE_DISPLAY_NAME = "DisplayName";
     
     //columns
-    private static final String COLUMN_DISPLAY_ID = "DisplayNameId";
+    public static final String COLUMN_DISPLAY_ID = "DisplayNameId";
+    public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
 
     // QUOTED FROM: http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
-    // Cos I'm gonna use my previous naming convention used in the rest of the NWD ecosystem
+    //
+    // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
     // we will be using "AS _id" in our statements when we get to that bridge
     //
     // "_id is useful when you are using the enhanced Adapters which make use of a
@@ -32,13 +35,25 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_DISPLAY_NAME =
 
-            "CREATE TABLE DisplayName (" +
+            "CREATE TABLE " + TABLE_DISPLAY_NAME +" (" +
 
-                COLUMN_DISPLAY_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                "DisplayNameValue TEXT NOT NULL UNIQUE " +
-
+                    COLUMN_DISPLAY_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_DISPLAY_NAME_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
+    private static final String DATABASE_LINK_DISPLAY_NAME_TO_PATH =
+            "" + //just for indentation purposes
+                    "INSERT OR IGNORE INTO DisplayName (DisplayNameValue) VALUES ('Test2'); " +
+
+                    "INSERT OR IGNORE INTO Path (PathValue) VALUES ('test/path/to/something'); " +
+
+                    "INSERT OR IGNORE INTO junc_DisplayName_Path (DisplayNameId, PathId) " +
+                    "VALUES ( " +
+                        "(SELECT DisplayNameId FROM DisplayName WHERE DisplayNameValue = 'Test2'), " +
+                        "(SELECT PathId FROM Path WHERE PathValue = 'test/path/to/something') );";
+
+    //TODO
+    private static final String DATABASE_CREATE_PATH = "";
 
     /**
      * Opens the internal database for Gauntlet/NWD
@@ -58,19 +73,22 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      */
     public NwdDbOpenHelper(final Context context, String databaseName)
     {
-        super(new DatabaseContext(context), databaseName, null, DATABASE_VERSION);
+        super(new NwdDatabaseContextWrapper(context), databaseName, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        //TODO
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         //SEE PRODUCTION REFERENCE BELOW
-        //FOR NOW THIS IS DEV VERSION
+        //FOR NOW THIS IS DEV VERSION (do the drop table thing - they show it in the bad example here: https://thebhwgroup.com/blog/how-android-sqlite-onupgrade)
+
+        //TODO
     }
 
 //    //PRODUCTION REFERENCE (original reference here: https://thebhwgroup.com/blog/how-android-sqlite-onupgrade)

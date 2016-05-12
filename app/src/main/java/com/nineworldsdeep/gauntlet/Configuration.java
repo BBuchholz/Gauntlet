@@ -199,4 +199,18 @@ public class Configuration {
 
         return getDirectoryStoragePath("/NWD/tapestry");
     }
+
+    public static File getSqliteDb(String name) {
+
+        File nwdSqliteFolder = getDirectoryStoragePath("/NWD/sqlite");
+
+        String dbFilePath = nwdSqliteFolder.getAbsolutePath() + File.separator + name;
+
+        if (!dbFilePath.endsWith(".db"))
+        {
+            dbFilePath += ".db" ;
+        }
+
+        return new File(dbFilePath);
+    }
 }

@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,32 @@ public class AudioListV2Activity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
+
+    //list state logic from: http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    private static final String LIST_STATE = "listState";
+    private Parcelable mListState = null;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        mListState = state.getParcelable(LIST_STATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout();
+        if (mListState != null)
+            getListView().onRestoreInstanceState(mListState);
+        mListState = null;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        mListState = getListView().onSaveInstanceState();
+        state.putParcelable(LIST_STATE, mListState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +104,14 @@ public class AudioListV2Activity extends AppCompatActivity {
         refreshLayout();
     }
 
+    private ListView getListView(){
+
+        return (ListView) findViewById(R.id.lvItems);
+    }
+
     private void refreshLayout() {
 
-        ListView lvItems =
-                (ListView) findViewById(R.id.lvItems);
+        ListView lvItems = getListView();
 
         loadItems();
         setupListViewListener();

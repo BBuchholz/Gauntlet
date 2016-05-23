@@ -346,7 +346,7 @@ public class SynergyListActivity
 
         if(!Utils.containsTimeStamp(slf.getListName())){
 
-            //Utils.toast(this, "queueToDailyToDo position " + position);
+            //Utils.toast(this, "queueToActive position " + position);
             SynergyUtils.queueToDailyToDo(slf, position);
             Utils.toast(this, "queued");
             refreshListItems();

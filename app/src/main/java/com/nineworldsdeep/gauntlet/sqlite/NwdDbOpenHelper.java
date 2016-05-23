@@ -14,15 +14,38 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     
     //tables
     public static final String TABLE_DISPLAY_NAME = "DisplayName";
+    public static final String TABLE_PATH = "Path";
+    public static final String TABLE_HASH = "Hash";
+    public static final String TABLE_DEVICE = "Device";
+    public static final String TABLE_FILE = "File";
+    public static final String TABLE_TAG = "Tag";
+    public static final String TABLE_FILE_TAGS = "FileTags";
     
     //columns
-    public static final String COLUMN_DISPLAY_ID = "DisplayNameId";
+    public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
     public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
 
-    // QUOTED FROM: http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
-    //
+    public static final String COLUMN_PATH_ID = "PathId";
+    public static final String COLUMN_PATH_VALUE = "PathValue";
+
+    public static final String COLUMN_HASH_ID = "HashId";
+    public static final String COLUMN_HASH_VALUE = "HashValue";
+
+    public static final String COLUMN_DEVICE_ID = "DeviceId";
+    public static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
+
+    public static final String COLUMN_FILE_ID = "FileId";
+    public static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
+
+    public static final String COLUMN_TAG_ID = "TagId";
+    public static final String COLUMN_TAG_VALUE = "TagValue";
+
+    public static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
+
     // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
     // we will be using "AS _id" in our statements when we get to that bridge
+    //
+    // BELOW QUOTED FROM: http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
     //
     // "_id is useful when you are using the enhanced Adapters which make use of a
     // Cursor (e.g. ResourceCursorAdapter). It's used by these adapters to provide
@@ -37,23 +60,58 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
             "CREATE TABLE " + TABLE_DISPLAY_NAME +" (" +
 
-                    COLUMN_DISPLAY_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_DISPLAY_NAME_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_DISPLAY_NAME_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
+    private static final String DATABASE_CREATE_PATH =
+
+            "CREATE TABLE " + TABLE_PATH +" (" +
+
+                    COLUMN_PATH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_PATH_VALUE + " TEXT NOT NULL UNIQUE " +
+            ")";
+
+    private static final String DATABASE_CREATE_HASH =
+
+            "CREATE TABLE " + TABLE_HASH +" (" +
+
+                    COLUMN_HASH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_HASH_VALUE + " TEXT NOT NULL UNIQUE " +
+            ")";
+
+    private static final String DATABASE_CREATE_DEVICE =
+
+            "CREATE TABLE " + TABLE_DEVICE +" (" +
+
+                    COLUMN_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE " +
+            ")";
+
+    //TODO
+    private static final String DATABASE_CREATE_FILE = "";
+
+    //TODO
+    private static final String DATABASE_CREATE_FILE_TAGS = "";
+
+    //TODO
+    private static final String DATABASE_CREATE_TAG = "";
+
+
+    // TODO: just use this as a template, read on for reasoning:
+    // File must be the central entity for all linkage, paths, display names, hashes, tags, and
+    // devices. Querying should support individual peripheral entites (eg. get all paths where hash
+    // equals @hash).
     private static final String DATABASE_LINK_DISPLAY_NAME_TO_PATH =
             "" + //just for indentation purposes
                     "INSERT OR IGNORE INTO DisplayName (DisplayNameValue) VALUES ('Test2'); " +
 
                     "INSERT OR IGNORE INTO Path (PathValue) VALUES ('test/path/to/something'); " +
-
+//TODO: this needs to be an upsert into FILE ???? I don't know right now, need to play with this in sql
                     "INSERT OR IGNORE INTO junc_DisplayName_Path (DisplayNameId, PathId) " +
                     "VALUES ( " +
                         "(SELECT DisplayNameId FROM DisplayName WHERE DisplayNameValue = 'Test2'), " +
                         "(SELECT PathId FROM Path WHERE PathValue = 'test/path/to/something') );";
-
-    //TODO
-    private static final String DATABASE_CREATE_PATH = "";
 
     /**
      * Opens the internal database for Gauntlet/NWD
@@ -80,13 +138,22 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         //TODO
+        // see: http://stackoverflow.com/a/16594703/670768
+        // be sure to implement our create and update statements to check if exists (do not drop
+        // tables, see the answer. It will save us from fucking up when importing external
+        // tables)
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        //SEE PRODUCTION REFERENCE BELOW
-        //FOR NOW THIS IS DEV VERSION (do the drop table thing - they show it in the bad example here: https://thebhwgroup.com/blog/how-android-sqlite-onupgrade)
+        // SEE PRODUCTION REFERENCE BELOW
+        // FOR NOW THIS IS DEV VERSION (do the drop table thing - they show it in the bad example here: https://thebhwgroup.com/blog/how-android-sqlite-onupgrade)
+
+        // see: http://stackoverflow.com/a/16594703/670768
+        // be sure to implement our create and update statements to check if exists (do not drop
+        // tables, see the answer. It will save us from fucking up when importing external
+        // tables)
 
         //TODO
     }

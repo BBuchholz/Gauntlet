@@ -351,4 +351,40 @@ public class SynergyUtils {
 
         return slf;
     }
+
+    /**
+     * copies all entries from the source list into the destination list
+     * the original list is left as is, any pre-existing entries in
+     * destination list will be kept as well.
+     * @param sourceListName
+     * @param destinationListName
+     */
+    public static void copy(String sourceListName, String destinationListName) {
+
+        SynergyListFile source = new SynergyListFile(sourceListName);
+        SynergyListFile dest = new SynergyListFile(destinationListName);
+
+        source.loadItems();
+        dest.loadItems();
+
+        for(SynergyListItem sli : source.getItems()){
+
+            dest.add(sli);
+        }
+
+        dest.save();
+    }
+
+    /**
+     * copies all entries from the source list into the destination list,
+     * any pre-existing entries in the destination list will be kept as
+     * well. the source list will be archived after renaming is complete.
+     * @param sourceName
+     * @param destinationName
+     */
+    public static void rename(String sourceName, String destinationName) {
+
+        copy(sourceName, destinationName);
+        archive(sourceName, true);
+    }
 }

@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -43,6 +44,32 @@ public class SynergyListActivity
 
     private SynergyListFile mSlf;
 
+    //list state logic from: http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    private static final String LIST_STATE = "listState";
+    private Parcelable mListState = null;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        mListState = state.getParcelable(LIST_STATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout();
+        if (mListState != null)
+            getListView().onRestoreInstanceState(mListState);
+        mListState = null;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        mListState = getListView().onSaveInstanceState();
+        state.putParcelable(LIST_STATE, mListState);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +99,19 @@ public class SynergyListActivity
 
         readItems(lvItems, listName);
         registerForContextMenu(lvItems);
+    }
+
+    private void refreshLayout(){
+
+        //ignore if its null
+        if(mSlf != null){
+
+            refreshLayout(mSlf.getListName());
+
+        } else {
+
+            Utils.toast(this, "Error refreshing layout, Synergy List File is null.");
+        }
     }
 
     //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
@@ -647,14 +687,15 @@ public class SynergyListActivity
 
     private void queuePosition(int position) {
 
-        if(!Utils.containsTimeStamp(mSlf.getListName())){
+        if(!Utils.containsTimeStamp(mSlf.getListName()) && !mSlf.getListName().startsWith("000-")){
 
-            //Utils.toast(this, "queueToDailyToDo position " + position);
-            mSlf.queueToDailyToDo(position);
+            //Utils.toast(this, "queueToActive position " + position);
+            mSlf.queueToActive(position);
             Utils.toast(this, "queued");
             refreshListItems();
 
         }else{
+
             Utils.toast(this, "Queue only applies to non-timestamped lists");
         }
     }
@@ -663,14 +704,14 @@ public class SynergyListActivity
 
         SynergyUtils.move(mSlf, position, "Lyrics");
         Utils.toast(getApplicationContext(), "moved to Lyrics");
-        refreshLayout(mSlf.getListName());
+        refreshLayout();
     }
 
     private void moveToFragments(final int position){
 
         SynergyUtils.move(mSlf, position, "Fragments");
         Utils.toast(getApplicationContext(), "moved to Fragments");
-        refreshLayout(mSlf.getListName());
+        refreshLayout();
     }
 
     private void moveToList(final int position) {

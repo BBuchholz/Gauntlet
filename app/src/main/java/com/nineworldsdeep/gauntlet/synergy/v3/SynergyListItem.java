@@ -259,4 +259,19 @@ public class SynergyListItem {
         return displayText;
     }
 
+    public void trueItem(SynergyListItem item) {
+
+        // TODO: this is a hack, we are limited by supporting v2,
+        // v4 should emulate NineWorldsDeep fragment model and
+        // deprecate both v2 and v3 SynergyListItem (update all
+        // references in V3 to V4.SynergyListItem)
+
+        //double check that these items match (Item text defines identity for truing)
+        if(getItem().equalsIgnoreCase(item.getItem())){
+
+            if(!isCompleted() && item.isCompleted()){
+                markCompleted();
+            }
+        }
+    }
 }

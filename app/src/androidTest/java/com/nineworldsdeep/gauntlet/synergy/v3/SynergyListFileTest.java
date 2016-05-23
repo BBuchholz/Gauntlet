@@ -181,7 +181,9 @@ public class SynergyListFileTest extends TestCase {
 
     public void testQueueToDailyToDo() throws Exception {
 
-        String dailyToDoName = SynergyUtils.getTimeStampedListName("DailyToDo");
+        //String dailyToDoName = SynergyUtils.getTimeStampedListName("DailyToDo");
+
+        String dailyToDoName = "000-ActiveQueue";
 
         SynergyListFile dailyToDo = new SynergyListFile(dailyToDoName);
 
@@ -202,7 +204,7 @@ public class SynergyListFileTest extends TestCase {
         assertTrue(slf.containsByDeCategorizedItemText(testText2));
         assertFalse(dailyToDo.containsByDeCategorizedItemText(testText2));
 
-        slf.queueToDailyToDo(1);
+        slf.queueToActive(1);
         dailyToDo.loadItems();
 
         assertFalse(slf.containsByDeCategorizedItemText(testText2));
@@ -307,7 +309,7 @@ public class SynergyListFileTest extends TestCase {
         assertFalse(saf.getItems().contains(sli2));
         assertFalse(saf.getItems().contains(sli3));
 
-        slf.archiveOne(sli2); //should save internally...
+        //slf.archiveOne(sli2); //should save internally...
 
         saf.loadItems();      //...so this should include the newly archived item
 

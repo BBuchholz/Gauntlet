@@ -3,7 +3,7 @@ package com.nineworldsdeep.gauntlet.sqlite;
 /**
  * Created by brent on 5/12/16.
  */
-public class NwdDatabaseDAO {
+public class NwdDb {
 
     // Creating this separate class from the NwdDbOpenHelper per:
     // http://www.vogella.com/tutorials/AndroidSQLite/article.html

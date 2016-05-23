@@ -108,16 +108,19 @@ public class SynergyListFile {
         return -1;
     }
 
-    public void queueToDailyToDo(int position) {
+    public void queueToActive(int position) {
 
-        queue(position, false, "DailyToDo");
+        queue(position, false, "000-ActiveQueue");
     }
 
     private void queue(int position, boolean keepOriginal, String queueToName) {
 
+//        SynergyListFile queueToFile =
+//                new SynergyListFile(
+//                        SynergyUtils.getTimeStampedListName(queueToName));
+
         SynergyListFile queueToFile =
-                new SynergyListFile(
-                        SynergyUtils.getTimeStampedListName(queueToName));
+                new SynergyListFile(queueToName);
 
         queueToFile.loadItems();
 
@@ -169,7 +172,33 @@ public class SynergyListFile {
     }
 
     public void add(SynergyListItem item) {
-        items.add(item);
+        //items.add(item);
+        trueItem(item);
+    }
+
+    /**
+     * "truing" items is an NWD concept that will insert if
+     * new, or merge if an item with the same text already
+     * exists.
+     * @param item
+     */
+    private void trueItem(SynergyListItem item){
+
+        boolean found = false;
+
+        for(SynergyListItem sli : getItems()){
+
+            if(sli.getItem().equalsIgnoreCase(item.getItem())){
+
+                found = true;
+                sli.trueItem(item);
+            }
+        }
+
+        if(!found){
+
+            items.add(item);
+        }
     }
 
     public void loadItems() {

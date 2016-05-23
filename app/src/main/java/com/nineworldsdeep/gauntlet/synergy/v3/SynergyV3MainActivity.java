@@ -1,10 +1,13 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
@@ -28,6 +32,10 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
+
+    private static final int MENU_CONTEXT_COPY_LIST = 1;
+    private static final int MENU_CONTEXT_RENAME_LIST = 2;
+
     //public static boolean ORDER_BY_COUNT = false;
     public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
@@ -192,8 +200,19 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
         ListView lvItems = getListView();
 
+        //from: http://stackoverflow.com/a/8276140/670768
+        //save position info
+        int index = lvItems.getFirstVisiblePosition();
+        View v = lvItems.getChildAt(0);
+        int top = (v == null) ? 0 : v.getTop();
+
+        //perform adapter operations
         readItems(lvItems);
         setupListViewListener(lvItems);
+        registerForContextMenu(lvItems);
+
+        //restore listview postion
+        lvItems.setSelectionFromTop(index, top);
     }
 
     private ListView getListView() {
@@ -241,6 +260,166 @@ public class SynergyV3MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String title = currentListEntries.get(info.position).getListName();
+
+        menu.setHeaderTitle(title);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_COPY_LIST, Menu.NONE, "Copy");
+        menu.add(Menu.NONE, MENU_CONTEXT_RENAME_LIST, Menu.NONE, "Rename");
+
+
+    }
+
+    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+
+            case MENU_CONTEXT_COPY_LIST:
+
+                promptCopyListAtPosition(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_RENAME_LIST:
+
+                promptRenameListAtPosition(info.position);
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void promptRenameListAtPosition(int position) {
+
+        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText("Enter listName: ");
+
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        final String selectedListName = currentListEntries.get(position).getListName();
+
+        userInput.setText(selectedListName);
+        userInput.setSelection(userInput.getText().length());
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                // get list name from userInput and move
+                                String processedName =
+                                        Utils.processName(
+                                                userInput.getText().toString());
+
+                                SynergyUtils.rename(selectedListName, processedName);
+
+                                Utils.toast(getApplicationContext(), "renamed");
+                                refreshLayout();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    private void promptCopyListAtPosition(int position) {
+
+        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText("Enter listName: ");
+
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        final String selectedListName = currentListEntries.get(position).getListName();
+
+        userInput.setText(selectedListName);
+        userInput.setSelection(userInput.getText().length());
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                // get list name from userInput and move
+                                String processedName =
+                                        Utils.processName(
+                                                userInput.getText().toString());
+
+                                SynergyUtils.copy(selectedListName, processedName);
+
+                                Utils.toast(getApplicationContext(), "copied");
+                                refreshLayout();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
 
     private void readItems(){
         readItems((ListView)findViewById(R.id.lvItems));

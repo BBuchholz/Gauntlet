@@ -2,7 +2,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
+import com.nineworldsdeep.gauntlet.synergy.v2.*;
 
 import org.apache.commons.io.FileUtils;
 
@@ -18,6 +18,29 @@ public class SynergyUtils {
 
     public static boolean listItemIsCompleted(SynergyListItem sli) {
         return sli.isCompleted();
+    }
+
+    /**
+     * NOTE: this will overwrite any existing template, any entries
+     * that are not in the templateList will be discarded
+     * @param trimmedName
+     * @param templateList
+     */
+    public static void updateTemplate(String trimmedName, SynergyListFile templateList) {
+
+        SynergyTemplateFile stf = new SynergyTemplateFile(trimmedName);
+
+        //stf.loadItems(); //if we wanted to preserve existing, we would uncomment this.
+
+        for(SynergyListItem sli : templateList.getItems()){
+
+            if(!sli.isCompleted()){
+
+                stf.add(sli);
+            }
+        }
+
+        stf.save();
     }
 
     public static void archive(String listName, boolean listIsExpired) {
@@ -267,5 +290,65 @@ public class SynergyUtils {
 
     private static File getSynergyListFile(String listName) {
         return new File(Configuration.getSynergyDirectory(), listName + ".txt");
+    }
+
+    public static void queueFromTemplate(SynergyTemplateFile stf, int position) {
+
+        queue(stf, position, true, stf.getListName());
+    }
+
+    public static String getTimeStampedListName(String templateName) {
+
+        return Utils.getCurrentTimeStamp_yyyyMMdd() + "-" + templateName;
+    }
+
+    public static void queue(SynergyListFile slf,
+                             int position,
+                             boolean keepOriginal,
+                             String queueToName) {
+
+        SynergyListFile currentDailyToDo =
+                new SynergyListFile(getTimeStampedListName(queueToName));
+
+        currentDailyToDo.loadItems();
+
+        SynergyListItem categorizedItem;
+
+        if(keepOriginal){
+
+            categorizedItem = slf.get(position);
+
+        }else{
+
+            categorizedItem =
+                    new SynergyListItem(slf.getListName(),
+                            slf.remove(position));
+        }
+
+        currentDailyToDo.add(0, categorizedItem);
+
+        currentDailyToDo.save();
+        slf.save();
+    }
+
+    public static List<String> getAllTemplateNames() {
+        return getAllTextFileNamesWithoutExt(
+                Configuration.getTemplateDirectory());
+    }
+
+    public static SynergyListFile generateFromTemplate(String templateName,
+                                                       String timeStampedListName){
+
+        SynergyListFile slf = new SynergyListFile(timeStampedListName);
+        slf.loadItems();
+
+        SynergyTemplateFile stf = new SynergyTemplateFile(templateName);
+        stf.loadItems();
+
+        for(SynergyListItem itm : stf.getItems()){
+            slf.add(itm);
+        }
+
+        return slf;
     }
 }

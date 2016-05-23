@@ -14,10 +14,10 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyTemplateActivity;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyTemplateFile;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyTemplateActivity;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyTemplateFile;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import java.io.File;
 
@@ -117,9 +117,8 @@ public class SynergyTemplatesActivity extends AppCompatActivity {
                                        String timestampedListName){
 
         SynergyListFile slf = new SynergyListFile(timestampedListName);
-        File f = slf.getSynergyFile();
 
-        if(f.exists()){
+        if(slf.exists()){
 
             Utils.toast(getApplicationContext(), timestampedListName +
                     " already exists! cannot create...");

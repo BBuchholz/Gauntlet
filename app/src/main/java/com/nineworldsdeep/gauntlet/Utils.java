@@ -369,6 +369,22 @@ public class Utils {
         return sdf.format(new Date());
     }
 
+    public static String trimTimeStamp_yyyyMMdd(String listName) {
+
+        if(Utils.containsTimeStamp(listName)){
+
+            Date foundTimeStamp = Utils.extractTimeStamp_yyyyMMdd(listName);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+            String timeStampPrefix = sdf.format(foundTimeStamp) + "-";
+
+            listName = listName.replace(timeStampPrefix, "");
+        }
+
+        return listName;
+    }
+
 //    @Deprecated
 //    public static String processExtractOld(String originalLineItem, String key) {
 //

@@ -341,6 +341,11 @@ public class SynergyListActivity
             promptConfirmArchive();
             return true;
 
+        } else if (id == R.id.action_update_template){
+
+            promptUpdateTemplate();
+            return true;
+
         } else if (id == R.id.action_push){
 
             promptConfirmPush();
@@ -536,6 +541,27 @@ public class SynergyListActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void promptUpdateTemplate() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSlf.getListName());
+
+        String msg = "Update Template: " + trimmedName + "?";
+
+        builder.setTitle("UpdateTemplate")
+                .setMessage(msg)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SynergyUtils.updateTemplate(trimmedName, mSlf);
+                        Utils.toast(getApplicationContext(), "template updated");
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void promptShelveAll() {

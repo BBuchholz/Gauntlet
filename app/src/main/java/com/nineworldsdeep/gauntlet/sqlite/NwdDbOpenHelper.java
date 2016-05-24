@@ -88,14 +88,47 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
                     COLUMN_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE " +
             ")";
 
-    //TODO
-    private static final String DATABASE_CREATE_FILE = "";
+    private static final String DATABASE_CREATE_FILE =
 
-    //TODO
-    private static final String DATABASE_CREATE_FILE_TAGS = "";
+            "CREATE TABLE " + TABLE_FILE + " (" +
 
-    //TODO
-    private static final String DATABASE_CREATE_TAG = "";
+                    COLUMN_FILE_ID + " INTEGER NOT NULL " +
+                        "PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+
+                    COLUMN_DEVICE_ID + " INTEGER NOT NULL REFERENCES " +
+                        TABLE_DEVICE + " (" + COLUMN_DEVICE_ID + "), " +
+
+                    COLUMN_PATH_ID + " INTEGER NOT NULL REFERENCES " +
+                        TABLE_PATH + " (" + COLUMN_PATH_ID + "), " +
+
+                    COLUMN_HASH_ID + " INTEGER REFERENCES " +
+                        TABLE_HASH + " (" + COLUMN_HASH_ID + "), " +
+
+                    COLUMN_DISPLAY_NAME_ID + " INTEGER REFERENCES " +
+                        TABLE_DISPLAY_NAME + " (" + COLUMN_DISPLAY_NAME_ID + "), " +
+
+                    COLUMN_FILE_HASHED_AT + " TEXT, " +
+
+                    "UNIQUE(" + COLUMN_DEVICE_ID + ", " + COLUMN_FILE_ID + ")" +
+            ")";
+
+    private static final String DATABASE_CREATE_FILE_TAGS =
+
+            "CREATE TABLE " + TABLE_FILE_TAGS + " (" +
+                    COLUMN_FILE_ID + " INTEGER NOT NULL REFERENCES " +
+                        TABLE_FILE + " (" + COLUMN_FILE_ID + "), " +
+                    COLUMN_TAG_ID + " INTEGER NOT NULL REFERENCES " +
+                    TABLE_TAG + " (" + COLUMN_TAG_ID + "), " +
+                    "UNIQUE(" + COLUMN_FILE_ID + ", " + COLUMN_FILE_ID + ")" +
+            ")";
+
+    private static final String DATABASE_CREATE_TAG =
+
+            "CREATE TABLE " + TABLE_TAG +" (" +
+
+                    COLUMN_TAG_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    COLUMN_TAG_VALUE + " TEXT NOT NULL UNIQUE " +
+            ")";
 
 
     // TODO: just use this as a template, read on for reasoning:

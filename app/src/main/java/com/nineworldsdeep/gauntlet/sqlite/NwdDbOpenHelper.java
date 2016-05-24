@@ -58,7 +58,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_DISPLAY_NAME =
 
-            "CREATE TABLE " + TABLE_DISPLAY_NAME +" (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_DISPLAY_NAME +" (" +
 
                     COLUMN_DISPLAY_NAME_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_DISPLAY_NAME_VALUE + " TEXT NOT NULL UNIQUE " +
@@ -66,7 +66,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_PATH =
 
-            "CREATE TABLE " + TABLE_PATH +" (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_PATH +" (" +
 
                     COLUMN_PATH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_PATH_VALUE + " TEXT NOT NULL UNIQUE " +
@@ -74,7 +74,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_HASH =
 
-            "CREATE TABLE " + TABLE_HASH +" (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_HASH +" (" +
 
                     COLUMN_HASH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_HASH_VALUE + " TEXT NOT NULL UNIQUE " +
@@ -82,7 +82,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_DEVICE =
 
-            "CREATE TABLE " + TABLE_DEVICE +" (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_DEVICE +" (" +
 
                     COLUMN_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE " +
@@ -90,7 +90,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_FILE =
 
-            "CREATE TABLE " + TABLE_FILE + " (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_FILE + " (" +
 
                     COLUMN_FILE_ID + " INTEGER NOT NULL " +
                         "PRIMARY KEY AUTOINCREMENT UNIQUE, " +
@@ -114,7 +114,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_FILE_TAGS =
 
-            "CREATE TABLE " + TABLE_FILE_TAGS + " (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_FILE_TAGS + " (" +
                     COLUMN_FILE_ID + " INTEGER NOT NULL REFERENCES " +
                         TABLE_FILE + " (" + COLUMN_FILE_ID + "), " +
                     COLUMN_TAG_ID + " INTEGER NOT NULL REFERENCES " +
@@ -124,7 +124,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_TAG =
 
-            "CREATE TABLE " + TABLE_TAG +" (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_TAG +" (" +
 
                     COLUMN_TAG_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     COLUMN_TAG_VALUE + " TEXT NOT NULL UNIQUE " +

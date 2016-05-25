@@ -2,7 +2,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -110,7 +110,7 @@ public class SynergyListFile {
 
     public void queueToActive(int position) {
 
-        queue(position, false, "000-ActiveQueue");
+        queue(position, false, SynergyUtils.getActiveQueueName());
     }
 
     private void queue(int position, boolean keepOriginal, String queueToName) {

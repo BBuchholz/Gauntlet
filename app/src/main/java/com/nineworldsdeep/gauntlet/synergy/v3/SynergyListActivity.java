@@ -130,7 +130,7 @@ public class SynergyListActivity
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
-        if(Utils.containsTimeStamp(mSlf.getListName())){
+        if(SynergyUtils.isActiveQueue(mSlf.getListName())){
 
             menu.add(Menu.NONE, MENU_CONTEXT_SHELVE_ID, Menu.NONE, "Shelve");
 
@@ -687,7 +687,10 @@ public class SynergyListActivity
 
     private void queuePosition(int position) {
 
-        if(!Utils.containsTimeStamp(mSlf.getListName()) && !mSlf.getListName().startsWith("000-")){
+        //let's try to allow queing from timestamped lists, as active queue isn't one of them anymore
+//        if(!Utils.containsTimeStamp(mSlf.getListName()) && !mSlf.getListName().startsWith("000-")){
+
+        if(!SynergyUtils.isActiveQueue(mSlf.getListName())){
 
             //Utils.toast(this, "queueToActive position " + position);
             mSlf.queueToActive(position);
@@ -769,7 +772,7 @@ public class SynergyListActivity
 
     private void shelvePosition(final int position) {
 
-        if(Utils.containsTimeStamp(mSlf.getListName())){
+        if(SynergyUtils.isActiveQueue(mSlf.getListName())){
 
             Utils.toast(this, "shelve position " + position);
             String category = mSlf.get(position).getCategory();

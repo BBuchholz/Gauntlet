@@ -375,6 +375,28 @@ public class SynergyUtils {
         dest.save();
     }
 
+
+    public static String trimCategory(String synergyListItem){
+
+        if(isCategorizedItem(synergyListItem)){
+
+            int startIdx = synergyListItem.indexOf(":: - ") + 5;
+
+            return synergyListItem.substring(startIdx);
+
+        }else{
+
+            return synergyListItem;
+        }
+    }
+
+
+    public static boolean isCategorizedItem(String synergyListItemText){
+
+        return synergyListItemText.startsWith("::") &&
+                synergyListItemText.contains(":: - ");
+    }
+
     /**
      * copies all entries from the source list into the destination list,
      * any pre-existing entries in the destination list will be kept as
@@ -386,5 +408,18 @@ public class SynergyUtils {
 
         copy(sourceName, destinationName);
         archive(sourceName, true);
+    }
+
+    public static boolean isActiveQueue(String listName) {
+
+        return listName.equalsIgnoreCase(getActiveQueueName());
+    }
+
+    public static String getActiveQueueName() {
+
+        //TODO: this is a quick and dirty encapsulation of a hard coded value
+        // localizing it here so it will be easier to later refactor into a
+        // configurable and/or multiple-queue model
+        return "000-ActiveQueue";
     }
 }

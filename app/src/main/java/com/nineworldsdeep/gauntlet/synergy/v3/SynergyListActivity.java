@@ -41,6 +41,8 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID = 10;
     private static final int MENU_CONTEXT_EDIT_ITEM = 11;
     public static final int REQUEST_RESULT_EDIT_ITEM = 12;
+    private static final int MENU_CONTEXT_MOVE_UP_ID = 13;
+    private static final int MENU_CONTEXT_MOVE_DOWN_ID = 14;
 
     private SynergyListFile mSlf;
 
@@ -152,6 +154,12 @@ public class SynergyListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_BOTTOM_ID,
                     Menu.NONE, "Move To Bottom");
 
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_UP_ID,
+                    Menu.NONE, "Move Up");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_DOWN_ID,
+                    Menu.NONE, "Move Down");
+
         }
 
         if(mSlf.getListName().startsWith("Lyric")){
@@ -220,6 +228,17 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_UP_ID:
+
+                moveUp(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_DOWN_ID:
+
+                moveDown(info.position);
+
+                return true;
             case MENU_CONTEXT_MOVE_TO_LIST_ID:
 
                 moveToList(info.position);
@@ -342,6 +361,28 @@ public class SynergyListActivity
 
     }
 
+    private void moveDown(int pos) {
+
+        int moveTo = pos + 1;
+
+        if(!SynergyUtils.listItemIsCompleted(mSlf.get(pos)) &&
+                moveTo > getAddItemIndex()){
+
+            moveTo = getAddItemIndex();
+        }
+
+        if(moveTo > mSlf.size() - 1){
+
+            moveTo = mSlf.size() - 1;
+        }
+
+        mSlf.move(pos, moveTo);
+        mSlf.save();
+
+        refreshListItems();
+
+    }
+
     private void moveToTop(int pos) {
 
         int moveTo = 0;
@@ -349,6 +390,27 @@ public class SynergyListActivity
         if(SynergyUtils.listItemIsCompleted(mSlf.get(pos))){
 
             moveTo = getAddItemIndex();
+        }
+
+        mSlf.move(pos, moveTo);
+        mSlf.save();
+
+        refreshListItems();
+    }
+
+    private void moveUp(int pos) {
+
+        int moveTo = pos - 1;
+
+        if(SynergyUtils.listItemIsCompleted(mSlf.get(pos)) &&
+                moveTo > getAddItemIndex()){
+
+            moveTo = getAddItemIndex();
+        }
+
+        if(moveTo < 0){
+
+            moveTo = 0;
         }
 
         mSlf.move(pos, moveTo);

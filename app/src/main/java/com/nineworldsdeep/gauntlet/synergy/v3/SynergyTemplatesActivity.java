@@ -138,6 +138,9 @@ public class SynergyTemplatesActivity extends AppCompatActivity {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         itemText = itemText.trim();
+
+        itemText = Utils.processName(itemText);
+
         if(!Utils.stringIsNullOrWhitespace(itemText)){
             SynergyTemplateFile stf =
                     new SynergyTemplateFile(itemText);

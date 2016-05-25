@@ -753,7 +753,7 @@ public class SynergyListActivity
 
                                 SynergyUtils.move(mSlf, position, processedName);
 
-                                Utils.toast(getApplicationContext(), "moved");
+                                Utils.toast(getApplicationContext(), "moved to " + processedName);
                             }
                         })
                 .setNegativeButton("Cancel",

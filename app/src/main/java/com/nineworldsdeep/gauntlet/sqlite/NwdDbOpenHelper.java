@@ -11,36 +11,6 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "nwd";
-    
-    //tables
-    public static final String TABLE_DISPLAY_NAME = "DisplayName";
-    public static final String TABLE_PATH = "Path";
-    public static final String TABLE_HASH = "Hash";
-    public static final String TABLE_DEVICE = "Device";
-    public static final String TABLE_FILE = "File";
-    public static final String TABLE_TAG = "Tag";
-    public static final String TABLE_FILE_TAGS = "FileTags";
-    
-    //columns
-    public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
-    public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
-
-    public static final String COLUMN_PATH_ID = "PathId";
-    public static final String COLUMN_PATH_VALUE = "PathValue";
-
-    public static final String COLUMN_HASH_ID = "HashId";
-    public static final String COLUMN_HASH_VALUE = "HashValue";
-
-    public static final String COLUMN_DEVICE_ID = "DeviceId";
-    public static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
-
-    public static final String COLUMN_FILE_ID = "FileId";
-    public static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
-
-    public static final String COLUMN_TAG_ID = "TagId";
-    public static final String COLUMN_TAG_VALUE = "TagValue";
-
-    public static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
 
     // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
     // we will be using "AS _id" in our statements when we get to that bridge
@@ -58,93 +28,83 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_DISPLAY_NAME =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_DISPLAY_NAME +" (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_DISPLAY_NAME +" (" +
 
-                    COLUMN_DISPLAY_NAME_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    COLUMN_DISPLAY_NAME_VALUE + " TEXT NOT NULL UNIQUE " +
+                    NwdContract.COLUMN_DISPLAY_NAME_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_DISPLAY_NAME_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
     private static final String DATABASE_CREATE_PATH =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_PATH +" (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_PATH +" (" +
 
-                    COLUMN_PATH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    COLUMN_PATH_VALUE + " TEXT NOT NULL UNIQUE " +
+                    NwdContract.COLUMN_PATH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_PATH_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
     private static final String DATABASE_CREATE_HASH =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_HASH +" (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_HASH +" (" +
 
-                    COLUMN_HASH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    COLUMN_HASH_VALUE + " TEXT NOT NULL UNIQUE " +
+                    NwdContract.COLUMN_HASH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_HASH_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
     private static final String DATABASE_CREATE_DEVICE =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_DEVICE +" (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_DEVICE +" (" +
 
-                    COLUMN_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    COLUMN_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE " +
+                    NwdContract.COLUMN_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE " +
             ")";
 
     private static final String DATABASE_CREATE_FILE =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_FILE + " (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_FILE + " (" +
 
-                    COLUMN_FILE_ID + " INTEGER NOT NULL " +
+                    NwdContract.COLUMN_FILE_ID + " INTEGER NOT NULL " +
                         "PRIMARY KEY AUTOINCREMENT UNIQUE, " +
 
-                    COLUMN_DEVICE_ID + " INTEGER NOT NULL REFERENCES " +
-                        TABLE_DEVICE + " (" + COLUMN_DEVICE_ID + "), " +
+                    NwdContract.COLUMN_DEVICE_ID + " INTEGER NOT NULL REFERENCES " +
+                        NwdContract.TABLE_DEVICE + " (" + NwdContract.COLUMN_DEVICE_ID + "), " +
 
-                    COLUMN_PATH_ID + " INTEGER NOT NULL REFERENCES " +
-                        TABLE_PATH + " (" + COLUMN_PATH_ID + "), " +
+                    NwdContract.COLUMN_PATH_ID + " INTEGER NOT NULL REFERENCES " +
+                        NwdContract.TABLE_PATH + " (" + NwdContract.COLUMN_PATH_ID + "), " +
 
-                    COLUMN_HASH_ID + " INTEGER REFERENCES " +
-                        TABLE_HASH + " (" + COLUMN_HASH_ID + "), " +
+                    NwdContract.COLUMN_HASH_ID + " INTEGER REFERENCES " +
+                        NwdContract.TABLE_HASH + " (" + NwdContract.COLUMN_HASH_ID + "), " +
 
-                    COLUMN_DISPLAY_NAME_ID + " INTEGER REFERENCES " +
-                        TABLE_DISPLAY_NAME + " (" + COLUMN_DISPLAY_NAME_ID + "), " +
+                    NwdContract.COLUMN_DISPLAY_NAME_ID + " INTEGER REFERENCES " +
+                        NwdContract.TABLE_DISPLAY_NAME + " (" + NwdContract.COLUMN_DISPLAY_NAME_ID + "), " +
 
-                    COLUMN_FILE_HASHED_AT + " TEXT, " +
+                    NwdContract.COLUMN_FILE_HASHED_AT + " TEXT, " +
 
-                    "UNIQUE(" + COLUMN_DEVICE_ID + ", " + COLUMN_FILE_ID + ")" +
+                    "UNIQUE(" + NwdContract.COLUMN_DEVICE_ID + ", " + NwdContract.COLUMN_FILE_ID + ")" +
             ")";
 
     private static final String DATABASE_CREATE_FILE_TAGS =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_FILE_TAGS + " (" +
-                    COLUMN_FILE_ID + " INTEGER NOT NULL REFERENCES " +
-                        TABLE_FILE + " (" + COLUMN_FILE_ID + "), " +
-                    COLUMN_TAG_ID + " INTEGER NOT NULL REFERENCES " +
-                    TABLE_TAG + " (" + COLUMN_TAG_ID + "), " +
-                    "UNIQUE(" + COLUMN_FILE_ID + ", " + COLUMN_FILE_ID + ")" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_FILE_TAGS + " (" +
+
+                    NwdContract.COLUMN_FILE_TAGS_ID + " INTEGER NOT NULL " +
+                        "PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+
+                    NwdContract.COLUMN_FILE_ID + " INTEGER NOT NULL REFERENCES " +
+                        NwdContract.TABLE_FILE + " (" + NwdContract.COLUMN_FILE_ID + "), " +
+
+                    NwdContract.COLUMN_TAG_ID + " INTEGER NOT NULL REFERENCES " +
+                    NwdContract.TABLE_TAG + " (" + NwdContract.COLUMN_TAG_ID + "), " +
+
+                    "UNIQUE(" + NwdContract.COLUMN_FILE_ID + ", " + NwdContract.COLUMN_FILE_ID + ")" +
             ")";
 
     private static final String DATABASE_CREATE_TAG =
 
-            "CREATE TABLE IF NOT EXISTS " + TABLE_TAG +" (" +
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_TAG +" (" +
 
-                    COLUMN_TAG_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    COLUMN_TAG_VALUE + " TEXT NOT NULL UNIQUE " +
+                    NwdContract.COLUMN_TAG_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_TAG_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
-
-
-    // TODO: just use this as a template, read on for reasoning:
-    // File must be the central entity for all linkage, paths, display names, hashes, tags, and
-    // devices. Querying should support individual peripheral entites (eg. get all paths where hash
-    // equals @hash).
-    private static final String DATABASE_LINK_DISPLAY_NAME_TO_PATH =
-            "" + //just for indentation purposes
-                    "INSERT OR IGNORE INTO DisplayName (DisplayNameValue) VALUES ('Test2'); " +
-
-                    "INSERT OR IGNORE INTO Path (PathValue) VALUES ('test/path/to/something'); " +
-//TODO: this needs to be an upsert into FILE ???? I don't know right now, need to play with this in sql
-                    "INSERT OR IGNORE INTO junc_DisplayName_Path (DisplayNameId, PathId) " +
-                    "VALUES ( " +
-                        "(SELECT DisplayNameId FROM DisplayName WHERE DisplayNameValue = 'Test2'), " +
-                        "(SELECT PathId FROM Path WHERE PathValue = 'test/path/to/something') );";
 
     /**
      * Opens the internal database for Gauntlet/NWD
@@ -170,11 +130,15 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        //TODO
-        // see: http://stackoverflow.com/a/16594703/670768
-        // be sure to implement our create and update statements to check if exists (do not drop
-        // tables, see the answer. It will save us from fucking up when importing external
-        // tables)
+        // all of these are "CREATE IF NOT EXISTS" statements
+        // to prevent accidental overwrites
+        db.execSQL(DATABASE_CREATE_DISPLAY_NAME);
+        db.execSQL(DATABASE_CREATE_PATH);
+        db.execSQL(DATABASE_CREATE_HASH);
+        db.execSQL(DATABASE_CREATE_DEVICE);
+        db.execSQL(DATABASE_CREATE_TAG);
+        db.execSQL(DATABASE_CREATE_FILE);
+        db.execSQL(DATABASE_CREATE_FILE_TAGS);
     }
 
     @Override

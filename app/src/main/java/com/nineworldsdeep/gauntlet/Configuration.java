@@ -200,6 +200,14 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD/tapestry");
     }
 
+    /**
+     * returns the absolute path for an external
+     * sqlite database, with the supplied name.
+     * The name can be given with or without
+     * the ".db" suffix.
+     * @param name
+     * @return
+     */
     public static File getSqliteDb(String name) {
 
         File nwdSqliteFolder = getDirectoryStoragePath("/NWD/sqlite");

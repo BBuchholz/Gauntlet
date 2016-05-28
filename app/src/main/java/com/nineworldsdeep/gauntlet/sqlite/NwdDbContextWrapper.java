@@ -14,14 +14,23 @@ import java.io.File;
 /**
  * FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
  */
-public class NwdDatabaseContextWrapper extends ContextWrapper {
+public class NwdDbContextWrapper extends ContextWrapper {
 
-    private static final String DEBUG_CONTEXT = "NwdDatabaseContextWrapper";
+    private static final String DEBUG_CONTEXT = "NwdDbContextWrapper";
 
-    public NwdDatabaseContextWrapper(Context base) {
+    public NwdDbContextWrapper(Context base) {
         super(base);
     }
 
+    /**
+     * Gets a File object representing the
+     * external database file with the
+     * supplied name.
+     * The name can be given with or without
+     * the ".db" suffix.
+     * @param name
+     * @return
+     */
     @Override
     public File getDatabasePath(String name)
     {

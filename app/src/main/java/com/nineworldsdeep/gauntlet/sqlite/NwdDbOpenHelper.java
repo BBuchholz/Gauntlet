@@ -124,7 +124,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      */
     public NwdDbOpenHelper(final Context context, String databaseName)
     {
-        super(new NwdDatabaseContextWrapper(context), databaseName, null, DATABASE_VERSION);
+        super(new NwdDbContextWrapper(context), databaseName, null, DATABASE_VERSION);
     }
 
     @Override

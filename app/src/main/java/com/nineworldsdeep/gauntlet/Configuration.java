@@ -17,6 +17,7 @@ import java.util.List;
 public class Configuration {
 
     private static boolean _testMode = false;
+    private static boolean _deleteDatabaseForDevelopment = false;
 
     public static boolean isInTestMode() {
         return _testMode;
@@ -24,6 +25,16 @@ public class Configuration {
 
     public static void setTestMode(boolean testMode) {
         _testMode = testMode;
+    }
+
+    public static boolean isInDeleteDatabaseForDevelopmentMode(){
+
+        return _deleteDatabaseForDevelopment;
+    }
+
+    public static void setDeleteDatabaseForDevelopment(boolean deleteDbForDev){
+
+        _deleteDatabaseForDevelopment = deleteDbForDev;
     }
 
     public static File getSynergyDirectory(){

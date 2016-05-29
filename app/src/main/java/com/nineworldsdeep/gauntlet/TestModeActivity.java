@@ -29,8 +29,8 @@ public class TestModeActivity extends AppCompatActivity {
 
     private void updateStatusDisplay() {
 
-        TextView tv = (TextView) findViewById(R.id.tvStatus);
-        String status = "[undefined]";
+        TextView tv = (TextView) findViewById(R.id.tvTestModeStatus);
+        String status;
 
         if(Configuration.isInTestMode()){
             status = "ACTIVE";
@@ -39,5 +39,22 @@ public class TestModeActivity extends AppCompatActivity {
         }
 
         tv.setText(status);
+
+        tv = (TextView) findViewById(R.id.tvDeleteDbForDevStatus);
+
+        if(Configuration.isInDeleteDatabaseForDevelopmentMode()){
+            status = "ACTIVE";
+        }else{
+            status = "INACTIVE";
+        }
+
+        tv.setText(status);
+    }
+
+    public void toggleDeleteDbForDev(View view) {
+
+        Configuration.setDeleteDatabaseForDevelopment(
+                !Configuration.isInDeleteDatabaseForDevelopmentMode());
+        updateStatusDisplay();
     }
 }

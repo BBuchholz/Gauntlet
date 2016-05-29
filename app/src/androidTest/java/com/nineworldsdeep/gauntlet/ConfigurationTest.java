@@ -23,7 +23,6 @@ public class ConfigurationTest extends TestCase {
 
         Configuration.setTestMode(false);
 
-
         assertEquals(new File("/storage/emulated/0/NWD/synergy"),
                 Configuration.getSynergyDirectory());
     }

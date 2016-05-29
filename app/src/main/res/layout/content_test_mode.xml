@@ -23,16 +23,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="INACTIVE"
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvTestModeStatus"
         android:layout_below="@+id/tvHeader"
         android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Toggle"
+        android:text="Toggle Test View"
+        android:id="@+id/btnTestViewToggle"
         android:onClick="toggleTestMode"
-        android:layout_below="@+id/tvStatus"
+        android:layout_below="@+id/tvTestModeStatus"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INACTIVE"
+        android:id="@+id/tvDeleteDbForDevStatus"
+        android:layout_below="@+id/btnTestViewToggle"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toggle Delete DB For Dev"
+        android:id="@+id/btnDeleteDbForDev"
+        android:onClick="toggleDeleteDbForDev"
+        android:layout_below="@+id/tvDeleteDbForDevStatus"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

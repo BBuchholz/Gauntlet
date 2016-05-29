@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nineworldsdeep.gauntlet.Configuration;
+
 /**
  * Created by brent on 5/12/16.
  */
@@ -79,7 +81,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
                     NwdContract.COLUMN_FILE_HASHED_AT + " TEXT, " +
 
-                    "UNIQUE(" + NwdContract.COLUMN_DEVICE_ID + ", " + NwdContract.COLUMN_FILE_ID + ")" +
+                    "UNIQUE(" + NwdContract.COLUMN_DEVICE_ID + ", " + NwdContract.COLUMN_PATH_ID + ")" +
             ")";
 
     private static final String DATABASE_CREATE_FILE_TAGS =
@@ -128,7 +130,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      */
     private boolean deleteDatabaseForDevelopment(){
 
-        return false;
+        return Configuration.isInDeleteDatabaseForDevelopmentMode();
     }
 
     // FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969

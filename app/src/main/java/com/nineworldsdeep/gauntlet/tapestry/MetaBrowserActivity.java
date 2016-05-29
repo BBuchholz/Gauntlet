@@ -40,6 +40,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         populateDescriptionSpinner();
 
+        assignDb();
+
         Intent i = getIntent();
         mCurrentNodeName = i.getStringExtra(
                 TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME);
@@ -61,7 +63,16 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         super.onResume();
 
-        if(Configuration.isInTestMode()){
+        assignDb();
+
+        db.open();
+    }
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
 
                 //use external db in folder NWD/sqlite
                 db = new NwdDb(this, "test");
@@ -71,8 +82,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 //use internal app db
                 db = new NwdDb(this);
             }
-
-        db.open();
+        }
     }
 
     @Override

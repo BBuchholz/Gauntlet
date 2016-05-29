@@ -8,8 +8,10 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.File;
+import java.io.FileFilter;
 
 /**
  * FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
@@ -48,6 +50,70 @@ public class NwdDbContextWrapper extends ContextWrapper {
         }
 
         return sqliteDbFile;
+    }
+
+    /**
+     * will delete a database with the specified name
+     * in the external directory (NWD/sqlite)
+     * @param name
+     * @return
+     */
+    @Override
+    public boolean deleteDatabase(String name) {
+
+        boolean successful = false;
+
+        try {
+
+            File f = Configuration.getSqliteDb(name);
+            successful = deleteSqliteDatabase(f);
+
+        } catch (Exception e) {
+
+            Utils.log("error deleting database '" + name +"':" +
+                    e.getMessage());
+        }
+
+        return successful;
+    }
+
+    /**
+     * borrow from Android.database.sqlite.SqliteDatabase.
+     * having troubles deleting external databases, putting it
+     * here in case we need to tweak it (only used in
+     * the deleteDatabase method in this class)
+     * @param file
+     * @return true if database is deleted succesfully
+     */
+    private boolean deleteSqliteDatabase(File file){
+
+        if (file == null) {
+            throw new IllegalArgumentException("file must not be null");
+        }
+
+        boolean deleted = false;
+        deleted |= file.delete();
+        deleted |= new File(file.getPath() + "-journal").delete();
+        deleted |= new File(file.getPath() + "-shm").delete();
+        deleted |= new File(file.getPath() + "-wal").delete();
+
+        File dir = file.getParentFile();
+        if (dir != null) {
+            final String prefix = file.getName() + "-mj";
+            File[] files = dir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File candidate) {
+                    return candidate.getName().startsWith(prefix);
+                }
+            });
+            if (files != null) {
+                for (File masterJournal : files) {
+                    deleted |= masterJournal.delete();
+                }
+            }
+        }
+        return deleted;
+
     }
 
     /* this version is called for android devices >= api-11. thank to @damccull for fixing this. */

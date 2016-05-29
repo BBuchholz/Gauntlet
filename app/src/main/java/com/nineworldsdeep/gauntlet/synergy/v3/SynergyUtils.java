@@ -239,8 +239,9 @@ public class SynergyUtils {
 
         moveToFile.loadItems();
 
-        archiveOne(slf.getListName(), slf.get(pos));
-        moveToFile.add(0, slf.remove(pos));
+        SynergyListItem sli = slf.remove(pos);
+        moveToFile.add(0, new SynergyListItem(sli.getItem()));
+        archiveOne(slf.getListName(), sli);
 
         moveToFile.save();
         slf.save();

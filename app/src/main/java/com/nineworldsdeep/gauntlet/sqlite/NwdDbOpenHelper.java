@@ -141,9 +141,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      * @param context
      * @param databaseName
      */
-    public NwdDbOpenHelper(final Context context, String databaseName)
+    public NwdDbOpenHelper(Context context, String databaseName)
     {
         super(new NwdDbContextWrapper(context), databaseName, null, DATABASE_VERSION);
+
+        context = new NwdDbContextWrapper(context);
 
         if(deleteDatabaseForDevelopment()){
 

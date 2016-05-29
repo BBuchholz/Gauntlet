@@ -7,9 +7,12 @@ import com.nineworldsdeep.gauntlet.synergy.v2.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by brent on 1/31/16.
@@ -300,6 +303,25 @@ public class SynergyUtils {
     public static String getTimeStampedListName(String templateName) {
 
         return Utils.getCurrentTimeStamp_yyyyMMdd() + "-" + templateName;
+    }
+
+    public static String getCurrentTimeStamp_yyyyMMddHHmmss()
+    {
+        return getCurrentTimeStamp_yyyyMMddHHmmss(false);
+    }
+
+    public static String getCurrentTimeStamp_yyyyMMddHHmmss(boolean asTimeStampKeyVal) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
+
+        String output = sdf.format(new Date());;
+
+        if(asTimeStampKeyVal){
+
+            output = "timeStamp={" + output + "}";
+        }
+
+        return output;
     }
 
     public static void queue(SynergyListFile slf,

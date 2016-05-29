@@ -95,7 +95,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
                     NwdContract.COLUMN_TAG_ID + " INTEGER NOT NULL REFERENCES " +
                     NwdContract.TABLE_TAG + " (" + NwdContract.COLUMN_TAG_ID + "), " +
 
-                    "UNIQUE(" + NwdContract.COLUMN_FILE_ID + ", " + NwdContract.COLUMN_FILE_ID + ")" +
+                    "UNIQUE(" + NwdContract.COLUMN_FILE_ID + ", " + NwdContract.COLUMN_TAG_ID + ")" +
             ")";
 
     private static final String DATABASE_CREATE_TAG =
@@ -112,6 +112,23 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      */
     public NwdDbOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        if(deleteDatabaseForDevelopment()){
+
+            context.deleteDatabase(DATABASE_NAME);
+        }
+    }
+
+    /**
+     * this is a utility method for both of the constructors.
+     * it is designed to be used to trigger deletion
+     * of the existing database during development
+     * so changes to the structure can easily actuate
+     * @return
+     */
+    private boolean deleteDatabaseForDevelopment(){
+
+        return false;
     }
 
     // FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
@@ -125,6 +142,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     public NwdDbOpenHelper(final Context context, String databaseName)
     {
         super(new NwdDbContextWrapper(context), databaseName, null, DATABASE_VERSION);
+
+        if(deleteDatabaseForDevelopment()){
+
+            context.deleteDatabase(databaseName);
+        }
     }
 
     @Override

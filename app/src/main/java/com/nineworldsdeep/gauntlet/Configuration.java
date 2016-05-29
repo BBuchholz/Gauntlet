@@ -140,6 +140,9 @@ public class Configuration {
 
     private static File getDirectoryStoragePath(String path){
 
+        //TODO: replace with getDirectoryStoragePath(_testMode, path)
+        // when we have time to run the debugger and test it
+
         if(_testMode){
             path = "/NWD-SNDBX" + path;
         }
@@ -220,5 +223,51 @@ public class Configuration {
         }
 
         return new File(dbFilePath);
+    }
+
+    private static File getDirectoryStoragePath(boolean sandbox, String path){
+
+        if(!path.startsWith("/")){
+
+            path = "/" + path;
+        }
+
+        if(sandbox){
+            path = "/NWD-SNDBX" + path;
+        }
+
+        File root = Environment.getExternalStorageDirectory();
+        File dir = new File(root.getAbsolutePath() + path);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
+    public static File getSandboxSubFolder(String folderName) {
+
+        return getDirectoryStoragePath(true, folderName);
+    }
+
+    /**
+     * returns a sandbox file object in the specified
+     * sandbox folder. If the fileName includes a suffix
+     * it will be preserved. If not, a .txt file will
+     * be assumed and returned.
+     * @param folderName
+     * @param fileName
+     * @return
+     */
+    public static File getSandboxFile(String folderName, String fileName) {
+
+        if(Utils.stringIsNullOrWhitespace(
+                FilenameUtils.getExtension(fileName))){
+
+            fileName = fileName + ".txt";
+        }
+
+        File subFolder = getSandboxSubFolder(folderName);
+
+        return new File(subFolder,fileName);
     }
 }

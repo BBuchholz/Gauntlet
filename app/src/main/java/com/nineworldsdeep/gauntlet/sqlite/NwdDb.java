@@ -4,6 +4,15 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
+
 /**
  * Created by brent on 5/12/16.
  */
@@ -15,9 +24,11 @@ public class NwdDb {
 
     private SQLiteDatabase db;
     private NwdDbOpenHelper dbHelper;
+    private File dbFilePath;
+    private boolean isInternalDb;
 
     private static final String DATABASE_INSERT_DISPLAY_NAME =
-            "INSERT OR IGNORE INTO " + NwdContract.COLUMN_DISPLAY_NAME_VALUE +
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_DISPLAY_NAME +
                     " (" + NwdContract.COLUMN_DISPLAY_NAME_VALUE + ") VALUES (?); ";
 
     private static final String DATABASE_INSERT_PATH =
@@ -65,6 +76,8 @@ public class NwdDb {
     public NwdDb(Context context){
 
         dbHelper = new NwdDbOpenHelper(context);
+        dbFilePath = context.getDatabasePath(dbHelper.getDatabaseName());
+        isInternalDb = true;
     }
 
     /**
@@ -75,7 +88,12 @@ public class NwdDb {
      */
     public NwdDb(Context context, String databaseName){
 
+        //this is necessary for dbFilePath assignment below
+        context = new NwdDbContextWrapper(context);
+
         dbHelper = new NwdDbOpenHelper(context, databaseName);
+        dbFilePath = context.getDatabasePath(dbHelper.getDatabaseName());
+        isInternalDb = false;
     }
 
     public void open() throws SQLException {
@@ -88,20 +106,79 @@ public class NwdDb {
         dbHelper.close();
     }
 
+    public String getDatabaseName(){
+
+        return dbHelper.getDatabaseName();
+    }
+
+    public boolean isInternalDb(){
+
+        return isInternalDb;
+    }
+
+    /**
+     * writes a timestamped copy of the database
+     * to NWD/sqlite
+     */
+    public void export(Context context){
+
+        try{
+
+            String timeStampedDbName =
+                    SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss() +
+                            "-" + dbHelper.getDatabaseName();
+
+            File exportFile = Configuration.getSqliteDb(timeStampedDbName);
+
+            FileChannel src = new FileInputStream(dbFilePath).getChannel();
+            FileChannel dest = new FileOutputStream(exportFile).getChannel();
+
+            dest.transferFrom(src, 0, src.size());
+
+            src.close();
+            dest.close();
+
+            Utils.toast(context, "database exported: " +
+                    exportFile.getAbsolutePath());
+
+        }catch(Exception ex){
+
+            Utils.toast(context, "error exporting database: " + ex.getMessage());
+        }
+    }
+
     public void linkDisplayNameToFile(String deviceDescription,
                                       String filePath,
                                       String displayName){
-        //insert or ignore device
-        db.rawQuery(DATABASE_INSERT_DEVICE, new String[]{deviceDescription});
-        //insert or ignore path
-        db.rawQuery(DATABASE_INSERT_PATH, new String[]{filePath});
-        //insert or ignore display name
-        db.rawQuery(DATABASE_INSERT_DISPLAY_NAME, new String[]{displayName});
-        //update or ignore file (if exists)
-        db.rawQuery(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
-                new String[]{displayName, filePath, deviceDescription});
-        //insert or ignore file (if !exists)
-        db.rawQuery(DATABASE_INSERT_DISPLAY_NAME_FOR_FILE,
-                new String[]{deviceDescription, filePath, displayName});
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            //insert or ignore device
+            db.execSQL(DATABASE_INSERT_DEVICE, new String[]{deviceDescription});
+            //insert or ignore path
+            db.execSQL(DATABASE_INSERT_PATH, new String[]{filePath});
+            //insert or ignore display name
+            db.execSQL(DATABASE_INSERT_DISPLAY_NAME, new String[]{displayName});
+            //update or ignore file (if exists)
+            db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
+                    new String[]{displayName, filePath, deviceDescription});
+            //insert or ignore file (if !exists)
+            db.execSQL(DATABASE_INSERT_DISPLAY_NAME_FOR_FILE,
+                    new String[]{deviceDescription, filePath, displayName});
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error linking display name [" +
+                    displayName + "] to file [" +
+                    filePath + "]: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
     }
 }

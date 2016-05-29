@@ -181,4 +181,34 @@ public class NwdDb {
             db.endTransaction();
         }
     }
+
+    /**
+     * determines whether the current db address is consistent with
+     * the current status of "test mode" in our configuration settings
+     *
+     * @return this method will return true if Configuration.isInTestMode
+     * is TRUE and the db path DOES NOT contain "NWD-SNDBX".
+     * it will also return true if Configuration.isInTestMode
+     * returns FALSE and the path DOES contain "NWD-SNDBX".
+     * the opposite conditios for each case return false;
+     * intended for supporting switching in and out of test mode
+     * in an activity (the db can be reopened/reassigned at
+     * the alternate address)
+     */
+    public boolean needsTestModeRefresh() {
+
+        if(Configuration.isInTestMode() &&
+                !dbFilePath.getAbsolutePath().contains("NWD-SNDBX")){
+
+            return true;
+        }
+
+        if(!Configuration.isInTestMode() &&
+                dbFilePath.getAbsolutePath().contains("NWD-SNDBX")){
+
+            return true;
+        }
+
+        return false;
+    }
 }

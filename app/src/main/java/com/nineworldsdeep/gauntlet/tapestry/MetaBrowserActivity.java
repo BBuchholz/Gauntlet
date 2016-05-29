@@ -59,23 +59,20 @@ public class MetaBrowserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
 
-        //TODO: we can remove this once db is up and running
-        //I'm having issues with sqlite not found on my test device
-        //this is a workaround that lets me access db structure
-        //through the external storage
+        super.onResume();
+
         if(Configuration.isInTestMode()){
 
-            //use external db in folder NWD/sqlite
-            db = new NwdDb(this, "test");
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
 
-        }else {
+            }else {
 
-            //use internal app db
-            db = new NwdDb(this);
-        }
+                //use internal app db
+                db = new NwdDb(this);
+            }
 
         db.open();
-        super.onResume();
     }
 
     @Override

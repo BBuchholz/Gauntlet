@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.Utils;
 
 /**
  * Created by brent on 5/12/16.
@@ -50,6 +51,15 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
                     NwdContract.COLUMN_HASH_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     NwdContract.COLUMN_HASH_VALUE + " TEXT NOT NULL UNIQUE " +
+            ")";
+
+    private static final String DATABASE_CREATE_LOCAL_CONFIG =
+
+            "CREATE TABLE IF NOT EXISTS " + NwdContract.TABLE_LOCAL_CONFIG +" (" +
+
+                    NwdContract.COLUMN_LOCAL_CONFIG_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    NwdContract.COLUMN_LOCAL_CONFIG_KEY + " TEXT NOT NULL UNIQUE, " +
+                    NwdContract.COLUMN_LOCAL_CONFIG_VALUE + " TEXT " +
             ")";
 
     private static final String DATABASE_CREATE_DEVICE =
@@ -191,6 +201,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_CREATE_FILE);
         db.execSQL(DATABASE_CREATE_FILE_TAGS);
         db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
+        db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
     }
 
     @Override
@@ -198,15 +209,48 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 2) {
 
-            db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
-                    " ADD COLUMN "
-                    + NwdContract.COLUMN_FILE_DESCRIPTION + " TEXT");
+            //all of these TRY...CATCH statements are intended to similate an
+            //ADD COLUMN IF NOT EXISTS, which isn't supported in sqlite
 
-            db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
-                    " ADD COLUMN "
-                    + NwdContract.COLUMN_FILE_NAME + " TEXT");
+            try{
 
-            db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
+                db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
+                        " ADD COLUMN "
+                        + NwdContract.COLUMN_FILE_DESCRIPTION + " TEXT");
+
+            }catch(Exception ex){
+
+                Utils.log("error upgrading database: " + ex.getMessage());
+            }
+
+            try{
+
+                db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
+                        " ADD COLUMN "
+                        + NwdContract.COLUMN_FILE_NAME + " TEXT");
+
+            }catch(Exception ex){
+
+                Utils.log("error upgrading database: " + ex.getMessage());
+            }
+
+            try{
+
+                db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
+
+            }catch(Exception ex){
+
+                Utils.log("error upgrading database: " + ex.getMessage());
+            }
+
+            try{
+
+                db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
+
+            }catch(Exception ex){
+
+                Utils.log("error upgrading database: " + ex.getMessage());
+            }
         }
 
 //        if (oldVersion < 3) {

@@ -137,7 +137,12 @@ public class MetaBrowserActivity extends AppCompatActivity {
             //and since we are using the test db
             //we can just run everything in our
             //data access object to test it
-            linkDisplayNameTestingCode();
+            displayNameTestingCode();
+            hashTestingCode();
+            tagTestingCode();
+            devicePathTestingCode();
+            audioTranscriptTestingCode();
+            localDeviceConfigTestingCode();
 
             //nextTestingCodeGoesHere();
 
@@ -156,7 +161,30 @@ public class MetaBrowserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void linkDisplayNameTestingCode() {
+    private void localDeviceConfigTestingCode() {
+
+
+    }
+
+    private void audioTranscriptTestingCode() {
+
+
+    }
+
+    private void devicePathTestingCode() {
+
+    }
+
+    private void tagTestingCode() {
+
+
+    }
+
+    private void hashTestingCode() {
+
+    }
+
+    private void displayNameTestingCode() {
 
         File filePath =
                 Configuration.getSandboxFile(
@@ -166,8 +194,6 @@ public class MetaBrowserActivity extends AppCompatActivity {
         db.linkDisplayNameToFile("Test Device",
                 filePath.getAbsolutePath(),
                 "Test Display Name");
-
-
     }
 
 

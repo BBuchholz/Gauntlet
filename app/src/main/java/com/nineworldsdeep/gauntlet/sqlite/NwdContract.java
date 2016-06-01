@@ -13,6 +13,7 @@ public class NwdContract {
     public static final String TABLE_TAG = "Tag";
     public static final String TABLE_FILE_TAGS = "FileTags";
     public static final String TABLE_AUDIO_TRANSCRIPT = "AudioTranscript";
+    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
     //columns
     public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
     public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
@@ -31,4 +32,7 @@ public class NwdContract {
     public static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
     public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
     public static final String COLUMN_FILE_NAME = "FileName";
+    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
+    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
 }

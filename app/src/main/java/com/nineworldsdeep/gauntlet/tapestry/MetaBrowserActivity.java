@@ -65,7 +65,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         assignDb();
 
-        db.open();
+        //moved to assignDb() //db.open();
     }
 
     private void assignDb(){
@@ -83,6 +83,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 db = new NwdDb(this);
             }
         }
+
+        db.open();
     }
 
     @Override
@@ -127,10 +129,25 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         } else if (id == R.id.action_test) {
 
+            Configuration.setTestMode(true);
+            assignDb();
+
+            //all transactions should be idempotent
+            //so we needn't comment any out here
+            //and since we are using the test db
+            //we can just run everything in our
+            //data access object to test it
             linkDisplayNameTestingCode();
 
             //nextTestingCodeGoesHere();
-            //comment out others, retain for reference
+
+            String dbType = db.isInternalDb() ? "internal" : "external";
+            String dbName = db.getDatabaseName();
+
+            Utils.toast(this, "tested in " + dbType + " database: " + dbName);
+
+            Configuration.setTestMode(false);
+            assignDb();
 
             return true;
 
@@ -150,12 +167,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 filePath.getAbsolutePath(),
                 "Test Display Name");
 
-        String dbType = db.isInternalDb() ? "internal" : "external";
-        String dbName = db.getDatabaseName();
 
-        Utils.toast(this, "linked in " + dbType + " database: " + dbName);
     }
-
 
 
     private void populateDescriptionSpinner() {

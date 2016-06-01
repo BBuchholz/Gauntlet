@@ -12,6 +12,7 @@ public class NwdContract {
     public static final String TABLE_FILE = "File";
     public static final String TABLE_TAG = "Tag";
     public static final String TABLE_FILE_TAGS = "FileTags";
+    public static final String TABLE_AUDIO_TRANSCRIPT = "AudioTranscript";
     //columns
     public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
     public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
@@ -26,4 +27,7 @@ public class NwdContract {
     public static final String COLUMN_TAG_ID = "TagId";
     public static final String COLUMN_TAG_VALUE = "TagValue";
     public static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
+    public static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
+    public static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
+    public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
 }

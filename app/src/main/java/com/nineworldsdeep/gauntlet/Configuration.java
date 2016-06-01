@@ -29,12 +29,15 @@ public class Configuration {
 
     public static boolean isInDeleteDatabaseForDevelopmentMode(){
 
-        return _deleteDatabaseForDevelopment;
+        //disabling for now, use onUpgrade() to handle db changes
+        //return _deleteDatabaseForDevelopment;
+        return false;
     }
 
     public static void setDeleteDatabaseForDevelopment(boolean deleteDbForDev){
 
-        _deleteDatabaseForDevelopment = deleteDbForDev;
+        //disabling for now, use onUpgrade() to handle db changes
+        //_deleteDatabaseForDevelopment = deleteDbForDev;
     }
 
     public static File getSynergyDirectory(){

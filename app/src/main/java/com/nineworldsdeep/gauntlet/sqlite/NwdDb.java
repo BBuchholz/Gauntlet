@@ -27,15 +27,15 @@ public class NwdDb {
     private File dbFilePath;
     private boolean isInternalDb;
 
-    private static final String DATABASE_INSERT_DISPLAY_NAME =
+    private static final String DATABASE_ENSURE_DISPLAY_NAME =
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_DISPLAY_NAME +
                     " (" + NwdContract.COLUMN_DISPLAY_NAME_VALUE + ") VALUES (?); ";
 
-    private static final String DATABASE_INSERT_PATH =
+    private static final String DATABASE_ENSURE_PATH =
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_PATH +
                     " (" + NwdContract.COLUMN_PATH_VALUE + ") VALUES (?); ";
 
-    private static final String DATABASE_INSERT_DEVICE =
+    private static final String DATABASE_ENSURE_DEVICE =
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_DEVICE +
                     " (" + NwdContract.COLUMN_DEVICE_DESCRIPTION + ") VALUES (?); ";
 
@@ -55,7 +55,7 @@ public class NwdDb {
                          "FROM " + NwdContract.TABLE_DEVICE + " " +
                          "WHERE " + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ?); ";
 
-    private static final String DATABASE_INSERT_DISPLAY_NAME_FOR_FILE =
+    private static final String DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE =
 
             "INSERT OR IGNORE INTO File (DeviceId, PathId, DisplayNameId) " +
             "VALUES ( " +
@@ -156,16 +156,16 @@ public class NwdDb {
         try{
 
             //insert or ignore device
-            db.execSQL(DATABASE_INSERT_DEVICE, new String[]{deviceDescription});
+            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
             //insert or ignore path
-            db.execSQL(DATABASE_INSERT_PATH, new String[]{filePath});
+            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
             //insert or ignore display name
-            db.execSQL(DATABASE_INSERT_DISPLAY_NAME, new String[]{displayName});
+            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME, new String[]{displayName});
             //update or ignore file (if exists)
             db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
                     new String[]{displayName, filePath, deviceDescription});
             //insert or ignore file (if !exists)
-            db.execSQL(DATABASE_INSERT_DISPLAY_NAME_FOR_FILE,
+            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE,
                     new String[]{deviceDescription, filePath, displayName});
 
             db.setTransactionSuccessful();

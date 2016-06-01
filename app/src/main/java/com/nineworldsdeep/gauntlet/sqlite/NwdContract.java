@@ -30,4 +30,5 @@ public class NwdContract {
     public static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
     public static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
     public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
+    public static final String COLUMN_FILE_NAME = "FileName";
 }

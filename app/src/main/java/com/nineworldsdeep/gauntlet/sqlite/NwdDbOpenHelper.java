@@ -83,6 +83,8 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
                     NwdContract.COLUMN_FILE_DESCRIPTION + " TEXT, " +
 
+                    NwdContract.COLUMN_FILE_NAME + " TEXT, " +
+
                     "UNIQUE(" + NwdContract.COLUMN_DEVICE_ID + ", " + NwdContract.COLUMN_PATH_ID + ")" +
             ")";
 
@@ -199,6 +201,10 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
                     " ADD COLUMN "
                     + NwdContract.COLUMN_FILE_DESCRIPTION + " TEXT");
+
+            db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
+                    " ADD COLUMN "
+                    + NwdContract.COLUMN_FILE_NAME + " TEXT");
 
             db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
         }

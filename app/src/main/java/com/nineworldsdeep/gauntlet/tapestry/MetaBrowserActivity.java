@@ -172,7 +172,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void localDeviceConfigTestingCode() {
 
-
+        db.setConfigValue("test key", "test value");
+        db.setConfigValue("test key2", "test value2");
+        db.setConfigValue("test key3", "test value3 should be overwritten");
+        db.setConfigValue("test key3", "value3 over-written"); //testing update
     }
 
     private void audioTranscriptTestingCode(String filePath) {

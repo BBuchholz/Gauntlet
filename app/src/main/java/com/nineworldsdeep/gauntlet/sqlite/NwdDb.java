@@ -120,6 +120,18 @@ public class NwdDb {
                              "WHERE " + NwdContract.COLUMN_PATH_VALUE + " = ?)), " +
                 "?); ";
 
+    private static final String DATABASE_UPDATE_LOCAL_CONFIG =
+
+            "UPDATE OR IGNORE " + NwdContract.TABLE_LOCAL_CONFIG + " " +
+                    "SET " + NwdContract.COLUMN_LOCAL_CONFIG_VALUE + " = ? " +
+                    "WHERE " + NwdContract.COLUMN_LOCAL_CONFIG_KEY + " = ?; ";
+
+    private static final String DATABASE_ENSURE_LOCAL_CONFIG =
+
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_LOCAL_CONFIG + " " +
+                    "(" + NwdContract.COLUMN_LOCAL_CONFIG_KEY + ", " +
+                          NwdContract.COLUMN_LOCAL_CONFIG_VALUE + ") " +
+            "VALUES (?, ?); ";
 
     private static final String DATABASE_UPDATE_AUDIO_TRANSCRIPT_FOR_FILE =
 
@@ -462,6 +474,33 @@ public class NwdDb {
             Utils.log("error updating audio transcript [" + transcription + "] " +
                     "for device [" + deviceName + "] " +
                     "and path [" + filePath + "]: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    public void setConfigValue(String key, String val) {
+
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            //update or ignore config value (if exists)
+            db.execSQL(DATABASE_UPDATE_LOCAL_CONFIG,
+                    new String[]{val, key});
+            //insert or ignore config value (if !exists)
+            db.execSQL(DATABASE_ENSURE_LOCAL_CONFIG,
+                    new String[]{key, val});
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error updating local config key [" + key + "] " +
+                    "with value [" + val + "]: " + ex.getMessage());
 
         }finally {
 

@@ -177,7 +177,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void audioTranscriptTestingCode(String filePath) {
 
-
+        db.updateAudioTranscriptForFile(
+                TapestryUtils.getCurrentDeviceName(),
+                filePath,
+                "this is a test transcription");
     }
 
     private void devicePathTestingCode(String filePath) {

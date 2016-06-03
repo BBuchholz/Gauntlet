@@ -117,7 +117,7 @@ public class NwdDb {
                          "FROM " + NwdContract.TABLE_TAG + " " +
                          "WHERE " + NwdContract.COLUMN_TAG_VALUE + " = ?)); ";
 
-        private static final String DATABASE_ENSURE_HASH_FOR_FILE =
+    private static final String DATABASE_ENSURE_HASH_FOR_FILE =
 
             //"INSERT INTO File (" + NwdContract.COLUMN_DEVICE_ID + ", " +
             "INSERT OR IGNORE INTO File (" + NwdContract.COLUMN_DEVICE_ID + ", " +
@@ -135,6 +135,19 @@ public class NwdDb {
                          "FROM " + NwdContract.TABLE_HASH + " " +
                          "WHERE " + NwdContract.COLUMN_HASH_VALUE + " = ?), " +
                 "?); ";
+
+
+    private static final String DATABASE_ENSURE_FILE =
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_FILE +
+                    " (" + NwdContract.COLUMN_DEVICE_ID + ", " +
+                    NwdContract.COLUMN_PATH_ID + ") " +
+            "VALUES ( " +
+                "(SELECT " + NwdContract.COLUMN_DEVICE_ID + " " +
+                         "FROM " + NwdContract.TABLE_DEVICE + " " +
+                         "WHERE " + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ?), " +
+                "(SELECT " + NwdContract.COLUMN_PATH_ID + " " +
+                         "FROM " + NwdContract.TABLE_PATH + " " +
+                         "WHERE " + NwdContract.COLUMN_PATH_VALUE + " = ?)); ";
 
     /**
      * Opens/Creates the internal database for Gauntlet/NWD
@@ -346,4 +359,32 @@ public class NwdDb {
         return false;
     }
 
+    public void ensureDevicePath(String deviceName, String filePath) {
+
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            //insert or ignore device
+            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+            //insert or ignore path
+            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+            //insert or ignore file (if !exists)
+            db.execSQL(DATABASE_ENSURE_FILE,
+                    new String[]{deviceName, filePath});
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error ensuring file for device [" +
+                    deviceName + "] and path [" +
+                    filePath + "]: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
 }

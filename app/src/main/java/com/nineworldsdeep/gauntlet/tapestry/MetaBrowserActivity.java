@@ -130,6 +130,9 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         } else if (id == R.id.action_test) {
 
+            //stores what mode to switch back to, after this test action
+            boolean originalTestModeSetting = Configuration.isInTestMode();
+
             Configuration.setTestMode(true);
             assignDb();
 
@@ -138,7 +141,6 @@ public class MetaBrowserActivity extends AppCompatActivity {
             //and since we are using the test db
             //we can just run everything in our
             //data access object to test it
-
 
             String filePath =
                 Configuration.getSandboxFile(
@@ -159,7 +161,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
             Utils.toast(this, "tested in " + dbType + " database: " + dbName);
 
-            Configuration.setTestMode(false);
+            Configuration.setTestMode(originalTestModeSetting);
             assignDb();
 
             return true;
@@ -180,7 +182,11 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void devicePathTestingCode(String filePath) {
 
+        db.ensureDevicePath(TapestryUtils.getCurrentDeviceName(),
+                            filePath);
 
+        db.ensureDevicePath("Test Device",
+                            filePath);
     }
 
     private void tagTestingCode(String filePath) {

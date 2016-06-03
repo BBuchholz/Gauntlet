@@ -18,7 +18,8 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
     // we will be using "AS _id" in our statements when we get to that bridge
     //
-    // BELOW QUOTED FROM: http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
+    // BELOW QUOTED FROM: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
     //
     // "_id is useful when you are using the enhanced Adapters which make use of a
     // Cursor (e.g. ResourceCursorAdapter). It's used by these adapters to provide
@@ -162,7 +163,8 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         return Configuration.isInDeleteDatabaseForDevelopmentMode();
     }
 
-    // FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
+    // FROM: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
 
     /**
      * Opens an external database for Gauntlet/NWD with the specified name

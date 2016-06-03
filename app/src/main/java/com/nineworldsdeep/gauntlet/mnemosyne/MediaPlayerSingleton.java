@@ -11,6 +11,7 @@ import java.util.List;
 public class MediaPlayerSingleton{
 
     // TODO: I would like to go through this tutorial and try to implement a better player from it
+    // TODO: LICENSE NOTES/RESEARCH
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
     //
     // this version is totally cowboy-coded, so its rough around the edges but it does what I

@@ -37,7 +37,8 @@ public class ImageListV2Activity extends AppCompatActivity {
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
 
-    //list state logic from: http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    //list state logic from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 

@@ -14,7 +14,8 @@ import java.io.File;
 import java.io.FileFilter;
 
 /**
- * FROM: http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
+ * FROM: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
  */
 public class NwdDbContextWrapper extends ContextWrapper {
 

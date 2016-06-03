@@ -40,7 +40,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
     public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
 
-    //list state logic from: http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    //list state logic from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
@@ -200,7 +201,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
         ListView lvItems = getListView();
 
-        //from: http://stackoverflow.com/a/8276140/670768
+        //from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/a/8276140/670768
         //save position info
         int index = lvItems.getFirstVisiblePosition();
         View v = lvItems.getChildAt(0);
@@ -262,7 +264,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
     }
 
 
-    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public void onCreateContextMenu(ContextMenu menu,
                                     View v,
@@ -282,7 +285,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     }
 
-    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
@@ -310,7 +314,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     private void promptRenameListAtPosition(int position) {
 
-        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        //Adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
@@ -366,7 +371,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
 
     private void promptCopyListAtPosition(int position) {
 
-        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        //Adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);

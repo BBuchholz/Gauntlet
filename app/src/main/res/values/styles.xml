@@ -1,6 +1,7 @@
 <resources>
 
-    <!-- cf. http://stackoverflow.com/questions/27458421/how-to-customize-the-contextual-action-bar-using-appcompat-in-material-design -->
+    <!-- cf.  TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/27458421/how-to-customize-the-contextual-action-bar-using-appcompat-in-material-design -->
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

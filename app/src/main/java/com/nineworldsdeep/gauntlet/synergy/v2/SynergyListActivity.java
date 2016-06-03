@@ -58,7 +58,8 @@ public class SynergyListActivity
         registerForContextMenu(lvItems);
     }
 
-    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public void onCreateContextMenu(ContextMenu menu,
                                     View v,
@@ -96,7 +97,8 @@ public class SynergyListActivity
                 Menu.NONE, "Split Item");
     }
 
-    //adapted from: http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
@@ -187,6 +189,7 @@ public class SynergyListActivity
         }
         if(requestCode== RESULT_CANCELED){
             //it crashes on back button without this, see:
+            //TODO: LICENSE NOTES/RESEARCH
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }
     }
@@ -358,7 +361,8 @@ public class SynergyListActivity
 
     private void moveToList(final int position) {
 
-        //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        //Adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
@@ -413,7 +417,8 @@ public class SynergyListActivity
 
             if(Utils.stringIsNullOrWhitespace(category)){
 
-                //Adapted from: http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                //Adapted from: TODO: LICENSE NOTES/RESEARCH
+    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
                 // get prompts.xml view
                 LayoutInflater li = LayoutInflater.from(this);
                 View promptsView = li.inflate(R.layout.prompt, null);

@@ -1,15 +1,20 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.MainThread;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity;
@@ -18,7 +23,9 @@ import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
+import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -26,6 +33,72 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         refreshLayout();
+
+        //prompt for device name if not set
+        checkAndPromptForDeviceName();
+    }
+
+    private void checkAndPromptForDeviceName(){
+
+        if(TapestryUtils.getCurrentDevice() == null){
+
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.prompt, null);
+
+            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+            tv.setText("No Device Set, Enter Device Name: ");
+
+            android.app.AlertDialog.Builder alertDialogBuilder =
+                    new android.app.AlertDialog.Builder(this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    String name = userInput.getText().toString();
+
+                                    //prevent hyphens, which are used for junctions
+                                    name = name.replace("-", "_");
+
+                                    if(!Utils.stringIsNullOrWhitespace(name)){
+
+                                        ConfigFile f = new ConfigFile();
+                                        f.setDeviceName(name);
+                                        f.save();
+
+                                        Utils.toast(MainActivity.this,
+                                                "device name stored");
+                                    }else{
+
+                                        Utils.toast(MainActivity.this,
+                                                "invalid device name");
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+
+                                    Utils.toast(MainActivity.this, "cancelled");
+
+                                    dialog.cancel();
+                                }
+                            });
+
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+            alertDialog.show();
+        }
     }
 
     @Override

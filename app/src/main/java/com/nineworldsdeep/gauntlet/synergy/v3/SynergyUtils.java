@@ -445,4 +445,16 @@ public class SynergyUtils {
         // configurable and/or multiple-queue model
         return "000-ActiveQueue";
     }
+
+    public static boolean listExists(String listName) {
+
+        if(listName == null){
+
+            return false;
+        }
+
+        SynergyListFile slf = new SynergyListFile(listName);
+
+        return slf.exists();
+    }
 }

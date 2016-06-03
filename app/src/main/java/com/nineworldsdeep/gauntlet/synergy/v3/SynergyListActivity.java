@@ -101,6 +101,60 @@ public class SynergyListActivity
 
         readItems(lvItems, listName);
         registerForContextMenu(lvItems);
+        setupListViewListener(lvItems);
+    }
+
+        private void setupListViewListener(final ListView lvItems) {
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int idx,
+                                    long id) {
+
+                //get selected list name
+                SynergyListItem selectedItem =
+                        (SynergyListItem) lvItems.getItemAtPosition(idx);
+
+
+
+                if(selectedItem.getItem().toLowerCase().startsWith("see ")){
+
+                    String listName = null;
+
+                    if(selectedItem.getItem()
+                            .toLowerCase().startsWith("see list ")){
+
+                        listName =
+                                selectedItem.getItem().toLowerCase()
+                                        .replace("see list ", "").trim();
+                    }else{
+
+                        listName = selectedItem.getItem().toLowerCase()
+                                .replace("see ", "").trim();
+                    }
+
+                    if(SynergyUtils.listExists(listName)){
+
+                        Intent intent = new Intent(view.getContext(),
+                                SynergyListActivity.class);
+
+                        intent.putExtra(SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME,
+                                        listName);
+
+                        startActivity(intent);
+
+                    }else{
+
+                        Utils.toast(SynergyListActivity.this,
+                                "Unable to navigate to list name (not found): "
+                                        + listName);
+                    }
+                }
+            }
+        });
     }
 
     private void refreshLayout(){

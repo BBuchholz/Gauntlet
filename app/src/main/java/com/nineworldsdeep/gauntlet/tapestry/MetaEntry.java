@@ -24,7 +24,7 @@ public class MetaEntry extends HashMap<String, String> {
         setHashedAt(hpl.getHashedAt());
         put("img", hpl.getImg()); //use the same icon as the referenced media
 
-        setDevice(TapestryUtils.getCurrentDevice());
+        setDevice(TapestryUtils.getCurrentDeviceName());
         MetaRegistry.fill(this);
     }
 

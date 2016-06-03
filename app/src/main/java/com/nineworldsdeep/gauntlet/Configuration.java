@@ -29,15 +29,15 @@ public class Configuration {
 
     public static boolean isInDeleteDatabaseForDevelopmentMode(){
 
-        //disabling for now, use onUpgrade() to handle db changes
-        //return _deleteDatabaseForDevelopment;
-        return false;
+        //TODO: disable for release version
+        return _deleteDatabaseForDevelopment;
+        //return false;
     }
 
     public static void setDeleteDatabaseForDevelopment(boolean deleteDbForDev){
 
-        //disabling for now, use onUpgrade() to handle db changes
-        //_deleteDatabaseForDevelopment = deleteDbForDev;
+        //TODO: disable for release version
+        _deleteDatabaseForDevelopment = deleteDbForDev;
     }
 
     public static File getSynergyDirectory(){
@@ -67,7 +67,8 @@ public class Configuration {
 
     public static File getConfigDirectory() {
 
-        return getDirectoryStoragePath("/NWD/config");
+        //test mode deactivated as we need config variables for other tests
+        return getDirectoryStoragePath("/NWD/config", false);
     }
 
     public static File getImagesDirectory() {
@@ -154,10 +155,16 @@ public class Configuration {
 
     private static File getDirectoryStoragePath(String path){
 
+        return getDirectoryStoragePath(path, true);
+    }
+
+    private static File getDirectoryStoragePath(String path,
+                                                boolean testModeSupported){
+
         //TODO: replace with getDirectoryStoragePath(_testMode, path)
         // when we have time to run the debugger and test it
 
-        if(_testMode){
+        if(_testMode && testModeSupported){
             path = "/NWD-SNDBX" + path;
         }
 

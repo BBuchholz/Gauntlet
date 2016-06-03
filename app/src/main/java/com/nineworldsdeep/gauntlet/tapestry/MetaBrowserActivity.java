@@ -17,6 +17,7 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -137,11 +138,18 @@ public class MetaBrowserActivity extends AppCompatActivity {
             //and since we are using the test db
             //we can just run everything in our
             //data access object to test it
-            displayNameTestingCode();
-            hashTestingCode();
-            tagTestingCode();
-            devicePathTestingCode();
-            audioTranscriptTestingCode();
+
+
+            String filePath =
+                Configuration.getSandboxFile(
+                        "testDisplayNameLink",
+                        "displayNameTest").getAbsolutePath();
+
+            displayNameTestingCode(filePath);
+            hashTestingCode(filePath);
+            tagTestingCode(filePath);
+            devicePathTestingCode(filePath);
+            audioTranscriptTestingCode(filePath);
             localDeviceConfigTestingCode();
 
             //nextTestingCodeGoesHere();
@@ -155,7 +163,6 @@ public class MetaBrowserActivity extends AppCompatActivity {
             assignDb();
 
             return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -166,34 +173,38 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     }
 
-    private void audioTranscriptTestingCode() {
+    private void audioTranscriptTestingCode(String filePath) {
 
 
     }
 
-    private void devicePathTestingCode() {
-
-    }
-
-    private void tagTestingCode() {
+    private void devicePathTestingCode(String filePath) {
 
 
     }
 
-    private void hashTestingCode() {
+    private void tagTestingCode(String filePath) {
+
 
     }
 
-    private void displayNameTestingCode() {
+    private void hashTestingCode(String filePath) {
 
-        File filePath =
-                Configuration.getSandboxFile(
-                        "testDisplayNameLink",
-                        "displayNameTest");
+        String sha1EmptyFileHash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
-        db.linkDisplayNameToFile("Test Device",
-                filePath.getAbsolutePath(),
-                "Test Display Name");
+        String hashedAt = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss();
+
+        db.linkHashToFile(TapestryUtils.getCurrentDeviceName(),
+                          filePath,
+                          sha1EmptyFileHash,
+                          hashedAt);
+    }
+
+    private void displayNameTestingCode(String filePath) {
+
+        db.linkDisplayNameToFile(TapestryUtils.getCurrentDeviceName(),
+                                 filePath,
+                                 "Test Display Name");
     }
 
 

@@ -183,7 +183,7 @@ public class TapestryUtils {
         return letters.substring(0, length - 1) + ++c;
     }
 
-    public static String getCurrentDevice() {
+    public static String getCurrentDeviceName() {
 
         return new ConfigFile().getDeviceName();
     }

@@ -514,9 +514,13 @@ public class SynergyListActivity
 
         } else if(id == R.id.action_seed){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
+
+                //TODO: attempt to encapsulate common prompts into class Prompt
+                //see: http://stackoverflow.com/a/22049950/670768
+
                 //prompt for one
                 LayoutInflater li = LayoutInflater.from(this);
                 View promptsView = li.inflate(R.layout.prompt, null);
@@ -579,7 +583,7 @@ public class SynergyListActivity
 
         } else if(id == R.id.action_seed_new){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
                 //prompt for one

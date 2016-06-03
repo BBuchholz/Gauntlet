@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.LinkType;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.File;
@@ -159,7 +158,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         } else if(id == R.id.action_seed){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
                 //prompt for one
@@ -225,7 +224,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         } else if(id == R.id.action_seed_new){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
                 //prompt for one

@@ -208,7 +208,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         } else if(id == R.id.action_seed){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
                 //prompt for one
@@ -274,7 +274,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         } else if(id == R.id.action_seed_new){
 
-            String currentDevice = TapestryUtils.getCurrentDevice();
+            String currentDevice = TapestryUtils.getCurrentDeviceName();
 
             if(currentDevice == null) {
                 //prompt for one

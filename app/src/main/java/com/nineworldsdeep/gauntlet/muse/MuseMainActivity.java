@@ -19,6 +19,13 @@ import com.nineworldsdeep.gauntlet.muse.legacy.LegacyKeyboardActivity;
 
 public class MuseMainActivity extends ActionBarActivity {
 
+    //just placing this here, lyric activity pending
+    //TODO: implement rhyme dictionary
+    // see an open source list at:
+    // https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/
+    //and a node.js implementation:
+    // https://github.com/substack/node-rhyme
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

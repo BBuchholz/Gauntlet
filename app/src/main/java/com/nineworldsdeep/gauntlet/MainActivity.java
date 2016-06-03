@@ -2,7 +2,6 @@ package com.nineworldsdeep.gauntlet;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.MainThread;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
@@ -40,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void checkAndPromptForDeviceName(){
 
-        if(TapestryUtils.getCurrentDevice() == null){
+        if(TapestryUtils.getCurrentDeviceName() == null){
 
             LayoutInflater li = LayoutInflater.from(this);
             View promptsView = li.inflate(R.layout.prompt, null);

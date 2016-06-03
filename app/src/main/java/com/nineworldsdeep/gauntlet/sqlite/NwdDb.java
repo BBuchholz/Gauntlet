@@ -43,6 +43,10 @@ public class NwdDb {
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_DEVICE +
                     " (" + NwdContract.COLUMN_DEVICE_DESCRIPTION + ") VALUES (?); ";
 
+    private static final String DATABASE_ENSURE_TAG =
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_TAG +
+                    " (" + NwdContract.COLUMN_TAG_VALUE + ") VALUES (?); ";
+
     private static final String DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE =
 
             "UPDATE OR IGNORE " + NwdContract.TABLE_FILE + " " +
@@ -91,6 +95,27 @@ public class NwdDb {
                 "(SELECT " + NwdContract.COLUMN_DISPLAY_NAME_ID + " " +
                          "FROM " + NwdContract.TABLE_DISPLAY_NAME + " " +
                          "WHERE " + NwdContract.COLUMN_DISPLAY_NAME_VALUE + " = ?)); ";
+
+
+    private static final String DATABASE_ENSURE_TAG_FOR_FILE =
+
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_FILE_TAGS + " " +
+                    "(" + NwdContract.COLUMN_FILE_ID + ", " +
+                    NwdContract.COLUMN_TAG_ID + ") " +
+            "VALUES ( " +
+                "(SELECT " + NwdContract.COLUMN_FILE_ID + " " +
+                         "FROM " + NwdContract.TABLE_FILE + " " +
+                         "WHERE " + NwdContract.COLUMN_DEVICE_ID + " = " +
+                            "(SELECT " + NwdContract.COLUMN_DEVICE_ID + " " +
+                             "FROM " + NwdContract.TABLE_DEVICE + " " +
+                             "WHERE " + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ?) " +
+                         "AND " + NwdContract.COLUMN_PATH_ID + " = " +
+                            "(SELECT " + NwdContract.COLUMN_PATH_ID + " " +
+                             "FROM " + NwdContract.TABLE_PATH + " " +
+                             "WHERE " + NwdContract.COLUMN_PATH_VALUE + " = ?)), " +
+                "(SELECT " + NwdContract.COLUMN_TAG_ID + " " +
+                         "FROM " + NwdContract.TABLE_TAG + " " +
+                         "WHERE " + NwdContract.COLUMN_TAG_VALUE + " = ?)); ";
 
         private static final String DATABASE_ENSURE_HASH_FOR_FILE =
 
@@ -252,6 +277,37 @@ public class NwdDb {
 
             Utils.log("error linking SHA1 hash [" +
                     sha1Hash + "] to file [" +
+                    filePath + "]: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    public void linkTagToFile(String deviceName, String filePath, String tag) {
+
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            //insert or ignore device
+            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+            //insert or ignore path
+            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+            //insert or ignore hash
+            db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+            //insert or ignore file tag entry
+            db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
+                    new String[]{deviceName, filePath, tag});
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error linking tag [" +
+                    tag + "] to file [" +
                     filePath + "]: " + ex.getMessage());
 
         }finally {

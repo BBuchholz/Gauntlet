@@ -185,7 +185,14 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void tagTestingCode(String filePath) {
 
+        String[] tags = {"test tag 1", "test tag 2", "test tag 3"};
 
+        for(String tag : tags){
+
+            db.linkTagToFile(TapestryUtils.getCurrentDeviceName(),
+                             filePath,
+                             tag);
+        }
     }
 
     private void hashTestingCode(String filePath) {

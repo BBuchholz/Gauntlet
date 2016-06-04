@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
@@ -105,7 +106,7 @@ public class SynergyListActivity
         setupListViewListener(lvItems);
     }
 
-        private void setupListViewListener(final ListView lvItems) {
+    private void setupListViewListener(final ListView lvItems) {
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -498,7 +499,16 @@ public class SynergyListActivity
 
         } else if (id == R.id.action_archive){
 
-            promptConfirmArchive();
+            if(!SynergyUtils.isActiveQueue(mSlf.getListName())){
+
+                promptConfirmArchive();
+
+            }else{
+
+                Utils.toast(this, "Archive not valid for active queue, " +
+                        "use Shelve All instead.");
+            }
+
             return true;
 
         } else if (id == R.id.action_update_template){

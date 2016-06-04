@@ -19,7 +19,6 @@ import java.nio.channels.FileChannel;
 public class NwdDb {
 
     // Creating this separate class from the NwdDbOpenHelper per:
-    // TODO: LICENSE NOTES/RESEARCH
     // http://www.vogella.com/tutorials/AndroidSQLite/article.html
     // which does so, and I like the design better that way
 

@@ -48,16 +48,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_set_display_name) {
 
-            //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-            // get prompts.xml view
             LayoutInflater li = LayoutInflater.from(this);
             View promptsView = li.inflate(R.layout.prompt, null);
 
             AlertDialog.Builder alertDialogBuilder =
                     new AlertDialog.Builder(this);
 
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
 
             final EditText userInput = (EditText) promptsView
@@ -106,16 +102,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         } else if (id == R.id.action_set_tag_string) {
 
-            //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-            // get prompts.xml view
             LayoutInflater li = LayoutInflater.from(this);
             View promptsView = li.inflate(R.layout.prompt, null);
 
             AlertDialog.Builder alertDialogBuilder =
                     new AlertDialog.Builder(this);
 
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
 
             final EditText userInput = (EditText) promptsView

@@ -29,7 +29,6 @@ import java.util.List;
 public class AudioDisplayActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     // TODO: I would like to go through this tutorial and try to implement a better player from it
-    // TODO: LICENSE NOTES/RESEARCH
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
     // has features like seekbar that I am not currently implementing but would like to eventually
 
@@ -98,16 +97,12 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         if (id == R.id.action_set_display_name) {
 
-            //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-            // get prompts.xml view
             LayoutInflater li = LayoutInflater.from(this);
             View promptsView = li.inflate(R.layout.prompt, null);
 
             AlertDialog.Builder alertDialogBuilder =
                     new AlertDialog.Builder(this);
 
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
 
             final EditText userInput = (EditText) promptsView
@@ -157,16 +152,12 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         } else if (id == R.id.action_set_tag_string) {
 
-            //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-            // get prompts.xml view
             LayoutInflater li = LayoutInflater.from(this);
             View promptsView = li.inflate(R.layout.prompt, null);
 
             AlertDialog.Builder alertDialogBuilder =
                     new AlertDialog.Builder(this);
 
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
 
             final EditText userInput = (EditText) promptsView

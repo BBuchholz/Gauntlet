@@ -21,11 +21,9 @@ public class MuseMainActivity extends ActionBarActivity {
 
     //just placing this here, lyric activity pending
     //TODO: implement rhyme dictionary
-    // see an open source list at:
-    // TODO: LICENSE NOTES/RESEARCH
+    // see an open source dict at:
     // https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/
-    //and a node.js implementation:
-    // TODO: LICENSE NOTES/RESEARCH
+    // and a node.js implementation:
     // https://github.com/substack/node-rhyme
 
     @Override

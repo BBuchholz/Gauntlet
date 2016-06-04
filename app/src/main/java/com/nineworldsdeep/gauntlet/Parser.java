@@ -194,7 +194,7 @@ public class Parser {
     }
 
     public String replaceLast(String text, String regex, String replacement) {
-        //TODO: LICENSE NOTES/RESEARCH
+
         //FROM: http://stackoverflow.com/questions/2282728/java-replacelast
         return text.replaceFirst("(?s)" + regex + "(?!.*?" + regex + ")", replacement);
     }

@@ -18,7 +18,7 @@ public class StringNumberChangeListener implements DialogInterface.OnClickListen
     }
 
     public void onClick(DialogInterface dialog, int numStringsSelection) {
-        // TODO Auto-generated method stub
+
         int numStrings = Integer.parseInt((String)Fretboard.stringNumOpts[numStringsSelection]);
         this._guitarActivity.setNumberStrings(numStrings);
         this._sender.dismiss();

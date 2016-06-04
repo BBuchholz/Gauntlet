@@ -172,8 +172,7 @@ public class TapestryUtils {
         //if its less than 'z', increment it
         //if its 'z', append
 
-        //found this: TODO: LICENSE NOTES/RESEARCH
-    // http://stackoverflow.com/questions/342052/how-to-increment-a-java-string-through-all-the-possibilities
+        // http://stackoverflow.com/questions/342052/how-to-increment-a-java-string-through-all-the-possibilities
 
         int length = letters.length();
         char c = letters.charAt(length - 1);

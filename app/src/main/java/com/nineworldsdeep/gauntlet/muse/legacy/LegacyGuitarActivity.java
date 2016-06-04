@@ -158,12 +158,12 @@ public class LegacyGuitarActivity extends Activity {
     }
 
     public void setNumberStrings(int numStrings) {
-        // TODO Auto-generated method stub
+
         this._fretboard.setNumberOfStrings(numStrings);
     }
 
     public void setFretRange(int firstFret) {
-        // TODO Auto-generated method stub
+
         this._fretboard.setFirstDisplayFret(firstFret);
     }
 

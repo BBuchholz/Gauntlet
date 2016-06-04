@@ -245,7 +245,7 @@ public class Utils {
 
     public static String computeSHA1(String path) throws Exception {
 
-        //TODO: LICENSE NOTES/RESEARCH
+
         //from: http://www.mkyong.com/java/how-to-generate-a-file-checksum-value-in-java/
 
         MessageDigest md = MessageDigest.getInstance("SHA1");

@@ -248,7 +248,7 @@ public class Fretboard extends View {
     }
 
     public void setFirstDisplayFret(int firstFret) {
-        // TODO Auto-generated method stub
+
         this.firstDisplayFret = firstFret;
         this.calculateLinePlacements();
         this.drawBoard();
@@ -274,22 +274,22 @@ public class Fretboard extends View {
     }
 
     public void setNumberOfStringsNoDraw(int numStrings) {
-        // TODO Auto-generated method stub
+
         this.numberOfStrings = numStrings;
     }
 
     public void setFirstDisplayFretNoDraw(int firstFret) {
-        // TODO Auto-generated method stub
+
         this.firstDisplayFret = firstFret;
     }
 
     public void setSelectedPositionsNoDraw(int[] posMap) {
-        // TODO Auto-generated method stub
+
         this._logicalBoard.setHeldPositions(posMap);
     }
 
     public void setTuningNoDraw(String tuning) {
-        // TODO Auto-generated method stub
+
         this._mapping.setSixStringTuning(tuning);
     }
 }

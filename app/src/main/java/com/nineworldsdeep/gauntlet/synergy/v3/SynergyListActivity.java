@@ -47,7 +47,7 @@ public class SynergyListActivity
 
     private SynergyListFile mSlf;
 
-    //list state logic from: TODO: LICENSE NOTES/RESEARCH
+    //list state logic from:
     // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
@@ -172,7 +172,7 @@ public class SynergyListActivity
         }
     }
 
-    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    //adapted from:
     // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public void onCreateContextMenu(ContextMenu menu,
@@ -235,7 +235,7 @@ public class SynergyListActivity
                 Menu.NONE, "Edit Item");
     }
 
-    //adapted from: TODO: LICENSE NOTES/RESEARCH
+    //adapted from:
     // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -399,7 +399,6 @@ public class SynergyListActivity
         if(requestCode== RESULT_CANCELED){
             //do nothing
             //it crashes on back button without this, see:
-            //TODO: LICENSE NOTES/RESEARCH
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }
     }
@@ -533,8 +532,8 @@ public class SynergyListActivity
             if(currentDevice == null) {
 
                 //TODO: attempt to encapsulate common prompts into class Prompt
-                //see: TODO: LICENSE NOTES/RESEARCH
-    // http://stackoverflow.com/a/22049950/670768
+                //see:
+                // http://stackoverflow.com/a/22049950/670768
 
                 //prompt for one
                 LayoutInflater li = LayoutInflater.from(this);
@@ -854,8 +853,8 @@ public class SynergyListActivity
 
     private void moveToList(final int position) {
 
-        //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+        //Adapted from:
+        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
         // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
@@ -915,9 +914,6 @@ public class SynergyListActivity
 
             if(Utils.stringIsNullOrWhitespace(category)){
 
-                //Adapted from: TODO: LICENSE NOTES/RESEARCH
-    // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-                // get prompts.xml view
                 LayoutInflater li = LayoutInflater.from(this);
                 View promptsView = li.inflate(R.layout.prompt, null);
 

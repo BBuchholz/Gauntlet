@@ -129,9 +129,19 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                 public void onClick(DialogInterface dialog,int id) {
                                     // get user input and set it to result
                                     // edit text
-                                    ame.setDisplayName(userInput.getText().toString());
-                                    DisplayNameIndex.getInstance().save();
-                                    updateMediaInfo();
+                                    try {
+
+                                        ame.setAndSaveDisplayName(
+                                                userInput.getText().toString());
+                                        //DisplayNameIndex.getInstance().save();
+                                        updateMediaInfo();
+
+                                    } catch (Exception e) {
+
+                                        Utils.toast(AudioDisplayActivity.this,
+                                                "error setting display name: " +
+                                        e.getMessage());
+                                    }
                                 }
                             })
                     .setNegativeButton("Cancel",
@@ -181,8 +191,18 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
 //                                    ili.setTagString(userInput.getItem().toString());
 //                                    TagIndex.getInstance().save();
-                                    ame.setAndSaveTagString(userInput.getText().toString());
-                                    updateMediaInfo();
+                                    try {
+
+                                        ame.setAndSaveTagString(
+                                                userInput.getText().toString());
+                                        updateMediaInfo();
+
+                                    } catch (Exception e) {
+
+                                        Utils.toast(AudioDisplayActivity.this,
+                                                "error setting tag string: " +
+                                        e.getMessage());
+                                    }
                                 }
                             })
                     .setNegativeButton("Cancel",
@@ -511,8 +531,18 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String tag = (String) lvTags.getItemAtPosition(position);
-                ame.setAndSaveTagString(Tags.toggleTag(tag, ame.getTags()));
-                updateMediaInfo();
+                try {
+
+                    ame.setAndSaveTagString(
+                            Tags.toggleTag(tag, ame.getTags()));
+                    updateMediaInfo();
+
+                } catch (Exception e) {
+
+                    Utils.toast(AudioDisplayActivity.this,
+                            "error setting tag string: " +
+                    e.getMessage());
+                }
             }
         });
     }

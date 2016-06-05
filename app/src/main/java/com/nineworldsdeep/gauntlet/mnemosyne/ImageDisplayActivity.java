@@ -78,10 +78,19 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     .setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
-                                    // get user input and set it to result
-                                    // edit text
-                                    ili.setDisplayName(userInput.getText().toString());
-                                    DisplayNameIndex.getInstance().save();
+
+                                    try {
+
+                                        ili.setAndSaveDisplayName(
+                                                userInput.getText().toString());
+
+                                    } catch (Exception e) {
+
+                                        Utils.toast(ImageDisplayActivity.this,
+                                                "error setting display name: " +
+                                        e.getMessage());
+                                    }
+                                    //DisplayNameIndex.getInstance().save();
                                 }
                             })
                     .setNegativeButton("Cancel",
@@ -126,12 +135,15 @@ public class ImageDisplayActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
 
-                                    // get user input and set it to result
-                                    // edit text
+                                    try {
+                                        ili.setAndSaveTagString(
+                                                userInput.getText().toString());
+                                    } catch (Exception e) {
 
-//                                    ili.setTagString(userInput.getItem().toString());
-//                                    TagIndex.getInstance().save();
-                                    ili.setAndSaveTagString(userInput.getText().toString());
+                                        Utils.toast(ImageDisplayActivity.this,
+                                                "error setting tag string: " +
+                                        e.getMessage());
+                                    }
                                 }
                             })
                     .setNegativeButton("Cancel",

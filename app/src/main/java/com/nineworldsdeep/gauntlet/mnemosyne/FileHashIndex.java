@@ -46,6 +46,13 @@ public class FileHashIndex {
         pathToHash.put(path, hash);
     }
 
+    public void hashStoreAndSave(File file) throws Exception {
+
+        String path = file.getAbsolutePath();
+        storeHash(path, Utils.computeSHA1(path));
+        save();
+    }
+
     public void save() {
 
         FileHashIndexFile fhif = new FileHashIndexFile();

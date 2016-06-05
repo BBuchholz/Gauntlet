@@ -164,7 +164,9 @@ public class MnemoSyneUtils {
                 filePath.toLowerCase().endsWith(".gif");
     }
 
-    public static void copyTags(String sourcePath, String destinationPath) {
+    public static void copyTags(String sourcePath,
+                                String destinationPath)
+            throws Exception {
 
         FileListItem fliSrc = new FileListItem(sourcePath);
         FileListItem fliDest = new FileListItem(destinationPath);
@@ -172,7 +174,9 @@ public class MnemoSyneUtils {
         fliDest.setAndSaveTagString(fliSrc.getTags());
     }
 
-    public static void copyDisplayName(String sourcePath, String destinationPath) {
+    public static void copyDisplayName(String sourcePath,
+                                       String destinationPath)
+            throws Exception {
 
         FileListItem fliSrc = new FileListItem(sourcePath);
         FileListItem fliDest = new FileListItem(destinationPath);

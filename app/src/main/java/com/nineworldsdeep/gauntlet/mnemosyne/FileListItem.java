@@ -74,29 +74,35 @@ public class FileListItem {
         ProcessPath();
     }
 
-    public void setDisplayName(String displayName) {
+    //TODO: make private, use set and save
+    public void setDisplayName(String displayName) throws Exception {
 
         DisplayNameIndex dni = DisplayNameIndex.getInstance();
         dni.setDisplayName(file.getAbsolutePath(), displayName);
         this.displayName = displayName;
+        FileHashIndex fhi = FileHashIndex.getInstance();
+        fhi.hashStoreAndSave(file);
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setTagString(String tags) {
+    //TODO: make private, use set and save
+    public void setTagString(String tags) throws Exception {
         TagIndex ti = TagIndex.getInstance();
         ti.setTagString(file.getAbsolutePath(), tags);
         this.tags = tags;
+        FileHashIndex fhi = FileHashIndex.getInstance();
+        fhi.hashStoreAndSave(file);
     }
 
-    public void setAndSaveTagString(String tags){
+    public void setAndSaveTagString(String tags) throws Exception {
         setTagString(tags);
         TagIndex.getInstance().save();
     }
 
-    public void setAndSaveDisplayName(String displayName){
+    public void setAndSaveDisplayName(String displayName) throws Exception {
         setDisplayName(displayName);
         DisplayNameIndex.getInstance().save();
     }

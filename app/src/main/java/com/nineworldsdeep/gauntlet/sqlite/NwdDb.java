@@ -1,17 +1,25 @@
 package com.nineworldsdeep.gauntlet.sqlite;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by brent on 5/12/16.
@@ -201,6 +209,35 @@ public class NwdDb {
                          "FROM " + NwdContract.TABLE_PATH + " " +
                          "WHERE " + NwdContract.COLUMN_PATH_VALUE + " = ?)); ";
 
+    private static final String DATABASE_GET_DISPLAY_NAMES_FOR_PATHS =
+            "SELECT " +
+                    "" + NwdContract.COLUMN_DEVICE_DESCRIPTION + ", " +
+                    "" + NwdContract.COLUMN_PATH_VALUE + ", " +
+                    "" + NwdContract.COLUMN_DISPLAY_NAME_VALUE + " " +
+            "FROM " + NwdContract.TABLE_PATH + " p " +
+            "JOIN " + NwdContract.TABLE_FILE + " f " +
+            "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
+            "JOIN " + NwdContract.TABLE_DISPLAY_NAME + " dn " +
+            "ON f." + NwdContract.COLUMN_DISPLAY_NAME_ID + " = dn." + NwdContract.COLUMN_DISPLAY_NAME_ID + " " +
+            "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+            "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
+            "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? ; ";
+
+    private static final String DATABASE_GET_DISPLAY_NAME_FOR_PATH =
+            "SELECT " +
+                    "" + NwdContract.COLUMN_DEVICE_DESCRIPTION + ", " +
+                    "" + NwdContract.COLUMN_PATH_VALUE + ", " +
+                    "" + NwdContract.COLUMN_DISPLAY_NAME_VALUE + " " +
+            "FROM " + NwdContract.TABLE_PATH + " p " +
+            "JOIN " + NwdContract.TABLE_FILE + " f " +
+            "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
+            "JOIN " + NwdContract.TABLE_DISPLAY_NAME + " dn " +
+            "ON f." + NwdContract.COLUMN_DISPLAY_NAME_ID + " = dn." + NwdContract.COLUMN_DISPLAY_NAME_ID + " " +
+            "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+            "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
+            "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? " +
+            "AND p."+ NwdContract.COLUMN_PATH_VALUE + " = ? ; ";
+
     /**
      * Opens/Creates the internal database for Gauntlet/NWD
      * @param context
@@ -279,7 +316,15 @@ public class NwdDb {
         }
     }
 
-    public void linkDisplayNameToFile(String deviceDescription,
+    public void linkFileToDisplayName(String filePath, String displayName){
+
+        linkFileToDisplayName(
+                TapestryUtils.getCurrentDeviceName(),
+                filePath,
+                displayName);
+    }
+
+    public void linkFileToDisplayName(String deviceDescription,
                                       String filePath,
                                       String displayName){
         //open transaction
@@ -506,5 +551,120 @@ public class NwdDb {
 
             db.endTransaction();
         }
+    }
+
+    public boolean is(NwdDb db) {
+
+        return (this.isInternalDb() == db.isInternalDb())
+                &&
+                (this.getDatabaseName().toLowerCase() ==
+                        db.getDatabaseName().toLowerCase());
+    }
+
+    public List<Map<String, String>> getPathDisplayNamesForCurrentDevice() {
+
+        List<Map<String, String>> pathDisplayNames =
+                new ArrayList<>();
+
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{TapestryUtils.getCurrentDeviceName()};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_DISPLAY_NAMES_FOR_PATHS,args);
+
+            String[] columnNames =
+                    new String[]{ NwdContract.COLUMN_DISPLAY_NAME_VALUE,
+                                  NwdContract.COLUMN_PATH_VALUE };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    pathDisplayNames.add(record);
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error retrieving path display names " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return pathDisplayNames;
+    }
+
+    private Map<String, String> cursorToRecord(Cursor c, String[] columnNames){
+
+        Map<String, String> record =
+                            new HashMap<>();
+
+        for(String colName : columnNames){
+
+            record.put(colName, c.getString(c.getColumnIndex(colName)));
+        }
+
+        return record;
+    }
+
+    public String getDisplayNameForPath(String filePath) {
+
+        String displayName = "";
+
+        //open transaction
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{TapestryUtils.getCurrentDeviceName(),
+                                 filePath};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_DISPLAY_NAME_FOR_PATH,args);
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                displayName =
+                        c.getString(
+                                c.getColumnIndex(
+                                        NwdContract.COLUMN_DISPLAY_NAME_VALUE));
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error retrieving path display names " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return displayName;
     }
 }

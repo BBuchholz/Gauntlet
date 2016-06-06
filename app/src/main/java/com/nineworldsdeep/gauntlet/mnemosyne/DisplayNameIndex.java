@@ -5,7 +5,9 @@ import java.util.Map;
 
 /**
  * Created by brent on 11/17/15.
+ * @deprecated use DisplayNameDbIndex instead
  */
+@Deprecated
 public class DisplayNameIndex {
 
     private static DisplayNameIndex instance;
@@ -28,12 +30,17 @@ public class DisplayNameIndex {
         load();
     }
 
-    public boolean hasDisplayName(String filePath) {
-
-        return pathToName.containsKey(filePath);
-    }
+//    public boolean hasDisplayName(String filePath) {
+//
+//        return pathToName.containsKey(filePath);
+//    }
 
     public String getDisplayName(String filePath) {
+
+        if (!pathToName.containsKey(filePath)){
+
+            return "";
+        }
 
         return pathToName.get(filePath);
     }

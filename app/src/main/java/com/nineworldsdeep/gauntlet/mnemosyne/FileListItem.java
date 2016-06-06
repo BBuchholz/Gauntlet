@@ -3,6 +3,8 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 import android.text.Editable;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
 
@@ -15,24 +17,26 @@ public class FileListItem {
     private String displayName = null;
     private String tags = "";
 
-    public FileListItem(String filePath) {
+    public FileListItem(String filePath, NwdDb db) {
 
 //        file = new File(filePath);
 //
 //        ProcessPath();
 
-        setPath(filePath); //handles everything
+        setPath(filePath, db); //handles everything
     }
 
-    private void ProcessPath(){
+    private void ProcessPath(NwdDb db){
 
         if(file != null) {
 
-            DisplayNameIndex dni = DisplayNameIndex.getInstance();
+            DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
 
-            if (dni.hasDisplayName(file.getAbsolutePath())) {
+            String indexedName = dni.getDisplayName(file.getAbsolutePath());
 
-                displayName = dni.getDisplayName(file.getAbsolutePath());
+            if (!Utils.stringIsNullOrWhitespace(indexedName)) {
+
+                displayName = indexedName;
 
             }else{
 
@@ -68,16 +72,16 @@ public class FileListItem {
         return file;
     }
 
-    public void setPath(String filePath){
+    public void setPath(String filePath, NwdDb db){
 
         file = new File(filePath);
-        ProcessPath();
+        ProcessPath(db);
     }
 
     //TODO: make private, use set and save
-    public void setDisplayName(String displayName) throws Exception {
+    public void setDisplayName(String displayName, NwdDb db) throws Exception {
 
-        DisplayNameIndex dni = DisplayNameIndex.getInstance();
+        DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
         dni.setDisplayName(file.getAbsolutePath(), displayName);
         this.displayName = displayName;
         FileHashIndex fhi = FileHashIndex.getInstance();
@@ -102,9 +106,9 @@ public class FileListItem {
         TagIndex.getInstance().save();
     }
 
-    public void setAndSaveDisplayName(String displayName) throws Exception {
-        setDisplayName(displayName);
-        DisplayNameIndex.getInstance().save();
+    public void setAndSaveDisplayName(String displayName, NwdDb db) throws Exception {
+        setDisplayName(displayName, db);
+        DisplayNameDbIndex.getInstance(db).save();
     }
 
     public String getTags(){

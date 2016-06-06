@@ -18,6 +18,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -42,6 +43,37 @@ public class AudioListV2Activity extends AppCompatActivity {
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
+    NwdDb db;
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
+
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
+
+            }else {
+
+                //use internal app db
+                db = new NwdDb(this);
+            }
+        }
+
+        db.open();
+    }
+//  FOR SOME WEIRD REASON THIS CRASHES THE APP IF UNCOMMENTED
+//  I CANNOT FIGURE IT OUT AS IMAGE LIST ACTIVITY IS IDENTICAL
+//  AND DOESN'T CRASH WITH THIS LEFT IN?
+//
+//    @Override
+//    protected void onPause() {
+//
+//        super.onPause();
+//        db.close();
+//    }
+
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
@@ -51,6 +83,7 @@ public class AudioListV2Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        assignDb();
         refreshLayout();
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
@@ -71,6 +104,8 @@ public class AudioListV2Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -97,12 +132,12 @@ public class AudioListV2Activity extends AppCompatActivity {
 
         refreshLayout();
     }
-
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        refreshLayout();
-    }
+//
+//    @Override
+//    protected void onRestart(){
+//        super.onRestart();
+//        refreshLayout();
+//    }
 
     private ListView getListView(){
 
@@ -168,7 +203,7 @@ public class AudioListV2Activity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        mFileListItems = MnemoSyneUtils.getAudioListItems(mCurrentDir);
+        mFileListItems = MnemoSyneUtils.getAudioListItems(db, mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -286,10 +321,10 @@ public class AudioListV2Activity extends AppCompatActivity {
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 f.renameTo(destination);
 

@@ -17,9 +17,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -35,8 +37,47 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     private AudioMediaEntry ame;
     private MediaPlayerSingleton mps;
 
+    private NwdDb db;
+
     public static final String EXTRA_AUDIOPATH =
             "com.nineworldsdeep.gauntlet.AUDIODISPLAY_AUDIO_PATH";
+
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        assignDb();
+
+        //moved to assignDb() //db.open();
+    }
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
+
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
+
+            }else {
+
+                //use internal app db
+                db = new NwdDb(this);
+            }
+        }
+
+        db.open();
+    }
+
+    @Override
+    protected void onPause() {
+
+        db.close();
+        super.onPause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +87,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        assignDb();
 
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIOPATH);
@@ -63,7 +105,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             mps = MediaPlayerSingleton.getInstance();
 
             try {
-                setNowPlaying(mps.queueAndPlayLast(audioPath, this));
+                setNowPlaying(mps.queueAndPlayLast(db, audioPath, this));
 
             } catch (IOException e) {
 
@@ -132,7 +174,8 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                     try {
 
                                         ame.setAndSaveDisplayName(
-                                                userInput.getText().toString());
+                                                userInput.getText().toString(),
+                                                db);
                                         //DisplayNameIndex.getInstance().save();
                                         updateMediaInfo();
 

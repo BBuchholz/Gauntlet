@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -10,8 +12,8 @@ public class AudioMediaEntry extends FileListItem{
 //    private String path;
 //    private String name;
 
-    public AudioMediaEntry(String filePath){
-        super(filePath);
+    public AudioMediaEntry(String filePath, NwdDb db){
+        super(filePath, db);
     }
 
     public String getPath() {

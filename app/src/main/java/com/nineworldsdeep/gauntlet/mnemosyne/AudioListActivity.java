@@ -17,6 +17,7 @@ import android.widget.ListView;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class AudioListActivity extends AppCompatActivity {
 
     private File currentDir;
@@ -36,6 +38,8 @@ public class AudioListActivity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
+
+    private NwdDb db;
 
     private void promptRemoveMarkedAudio() {
 
@@ -98,6 +102,42 @@ public class AudioListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        assignDb();
+
+        //moved to assignDb() //db.open();
+    }
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
+
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
+
+            }else {
+
+                //use internal app db
+                db = new NwdDb(this);
+            }
+        }
+
+        db.open();
+    }
+
+    @Override
+    protected void onPause() {
+
+        db.close();
+        super.onPause();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_list);
@@ -105,6 +145,7 @@ public class AudioListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENTPATH);
@@ -233,10 +274,10 @@ public class AudioListActivity extends AppCompatActivity {
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 f.renameTo(destination);
 
@@ -419,7 +460,7 @@ public class AudioListActivity extends AppCompatActivity {
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getAudioListItems(currentDir))
+                        MnemoSyneUtils.getAudioListItems(db, currentDir))
         );
     }
 }

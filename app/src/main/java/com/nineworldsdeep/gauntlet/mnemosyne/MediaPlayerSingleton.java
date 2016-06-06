@@ -2,6 +2,8 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.media.MediaPlayer;
 
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -46,12 +48,14 @@ public class MediaPlayerSingleton{
         return singleton;
     }
 
-    public AudioMediaEntry queueAndPlayLast(String path,
-                                 MediaPlayer.OnPreparedListener listener)
+    public AudioMediaEntry queueAndPlayLast(NwdDb db,
+                                            String path,
+                                            MediaPlayer.OnPreparedListener
+                                                    listener)
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry(path);
+        AudioMediaEntry ame = new AudioMediaEntry(path, db);
         playlist.add(ame);
         playlist.advanceToLast();
 
@@ -145,12 +149,14 @@ public class MediaPlayerSingleton{
 //        }
     }
 
-    public void queueAndPlayFromCurrent(String path,
-                                        MediaPlayer.OnPreparedListener listener)
+    public void queueAndPlayFromCurrent(NwdDb db,
+                                        String path,
+                                        MediaPlayer.OnPreparedListener
+                                                listener)
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry(path);
+        AudioMediaEntry ame = new AudioMediaEntry(path, db);
         playlist.add(ame);
 
         play(listener);

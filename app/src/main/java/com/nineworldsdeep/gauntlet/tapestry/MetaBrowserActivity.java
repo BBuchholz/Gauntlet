@@ -19,7 +19,6 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MetaBrowserActivity extends AppCompatActivity {
@@ -221,7 +220,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void displayNameTestingCode(String filePath) {
 
-        db.linkDisplayNameToFile(TapestryUtils.getCurrentDeviceName(),
+        db.linkFileToDisplayName(TapestryUtils.getCurrentDeviceName(),
                                  filePath,
                                  "Test Display Name");
     }

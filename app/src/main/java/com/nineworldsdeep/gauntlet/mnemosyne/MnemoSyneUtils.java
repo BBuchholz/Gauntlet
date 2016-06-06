@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,33 +27,33 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    public static List<FileListItem> getImageListItems(File dir){
+    public static List<FileListItem> getImageListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getImageListItemsFromPaths(getTopImageFolders()));
+            lst.addAll(getImageListItemsFromPaths(db, getTopImageFolders()));
 
         }else{
 
-            lst.addAll(getFileListItems(dir, imageExts));
+            lst.addAll(getFileListItems(db, dir, imageExts));
         }
 
         return lst;
     }
 
-    public static List<FileListItem> getAudioListItems(File dir){
+    public static List<FileListItem> getAudioListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getAudioListItemsFromPaths(getAudioTopFolders()));
+            lst.addAll(getAudioListItemsFromPaths(db, getAudioTopFolders()));
         }
         else
         {
-            lst.addAll(getFileListItems(dir, audioExts));
+            lst.addAll(getFileListItems(db, dir, audioExts));
         }
 
         return lst;
@@ -95,29 +96,30 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    private static List<FileListItem> getFileListItems(File dir, String[] exts){
+    private static List<FileListItem> getFileListItems(NwdDb db, File dir, String[] exts){
 
         List<FileListItem> lst = new ArrayList<>();
 
-        lst.addAll(getFileListItemsFromPaths(Utils.getAllDirectoryPaths(dir)));
+        lst.addAll(getFileListItemsFromPaths(Utils.getAllDirectoryPaths(dir), db));
 
-        lst.addAll(getFileListItemsFromPaths(Utils.getAllFilePathsWithExt(dir, exts)));
+        lst.addAll(getFileListItemsFromPaths(Utils.getAllFilePathsWithExt(dir, exts), db));
 
         return lst;
     }
 
-    private static List<FileListItem> getFileListItemsFromPaths(List<String> lst) {
+    private static List<FileListItem> getFileListItemsFromPaths(List<String> lst,
+                                                                NwdDb db) {
 
         List<FileListItem> newList = new ArrayList<>();
 
         for(String filePath : lst){
-            newList.add(new FileListItem(filePath));
+            newList.add(new FileListItem(filePath, db));
         }
 
         return newList;
     }
 
-    private static List<FileListItem> getImageListItemsFromPaths(List<String> lst) {
+    private static List<FileListItem> getImageListItemsFromPaths(NwdDb db, List<String> lst) {
 
         List<FileListItem> newList = new ArrayList<>();
 
@@ -127,14 +129,14 @@ public class MnemoSyneUtils {
 
             if(isImageFileFromPath(filePath) || f.isDirectory()) {
 
-                newList.add(new FileListItem(filePath));
+                newList.add(new FileListItem(filePath, db));
             }
         }
 
         return newList;
     }
 
-    private static List<FileListItem> getAudioListItemsFromPaths(List<String> lst) {
+    private static List<FileListItem> getAudioListItemsFromPaths(NwdDb db, List<String> lst) {
 
         List<FileListItem> newList = new ArrayList<>();
 
@@ -144,7 +146,7 @@ public class MnemoSyneUtils {
 
             if(isAudioFileFromPath(filePath) || f.isDirectory()) {
 
-                newList.add(new FileListItem(filePath));
+                newList.add(new FileListItem(filePath, db));
             }
         }
 
@@ -165,26 +167,28 @@ public class MnemoSyneUtils {
     }
 
     public static void copyTags(String sourcePath,
-                                String destinationPath)
+                                String destinationPath,
+                                NwdDb db)
             throws Exception {
 
-        FileListItem fliSrc = new FileListItem(sourcePath);
-        FileListItem fliDest = new FileListItem(destinationPath);
+        FileListItem fliSrc = new FileListItem(sourcePath, db);
+        FileListItem fliDest = new FileListItem(destinationPath, db);
 
         fliDest.setAndSaveTagString(fliSrc.getTags());
     }
 
     public static void copyDisplayName(String sourcePath,
-                                       String destinationPath)
+                                       String destinationPath,
+                                NwdDb db)
             throws Exception {
 
-        FileListItem fliSrc = new FileListItem(sourcePath);
-        FileListItem fliDest = new FileListItem(destinationPath);
+        FileListItem fliSrc = new FileListItem(sourcePath, db);
+        FileListItem fliDest = new FileListItem(destinationPath, db);
 
         if(!fliSrc.getDisplayName()
                 .equalsIgnoreCase(fliSrc.getFile().getName())){
 
-            fliDest.setAndSaveDisplayName(fliSrc.getDisplayName());
+            fliDest.setAndSaveDisplayName(fliSrc.getDisplayName(), db);
         }
     }
 }

@@ -18,8 +18,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -28,6 +30,8 @@ import java.io.File;
 public class ImageDisplayActivity extends AppCompatActivity {
 
     private FileListItem ili;
+
+    private NwdDb db;
 
     public static final String EXTRA_IMAGEPATH =
             "com.nineworldsdeep.gauntlet.IMAGEDISPLAY_IMAGE_PATH";
@@ -82,7 +86,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                     try {
 
                                         ili.setAndSaveDisplayName(
-                                                userInput.getText().toString());
+                                                userInput.getText().toString(),
+                                                db);
 
                                     } catch (Exception e) {
 
@@ -359,12 +364,14 @@ public class ImageDisplayActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        assignDb();
+
         Intent i = getIntent();
         final String path = i.getStringExtra(EXTRA_IMAGEPATH);
 
         if(path != null){
 
-            ili = new FileListItem(path);
+            ili = new FileListItem(path, db);
             Bitmap bmp = BitmapFactory.decodeFile(path);
             ImageView img = (ImageView) findViewById(R.id.ivImage);
             img.setImageBitmap(bmp);
@@ -397,4 +404,40 @@ public class ImageDisplayActivity extends AppCompatActivity {
         }
     }
 
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
+
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
+
+            }else {
+
+                //use internal app db
+                db = new NwdDb(this);
+            }
+        }
+
+        db.open();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        assignDb();
+
+        //moved to assignDb() //db.open();
+    }
+
+    @Override
+    protected void onPause() {
+
+        db.close();
+        super.onPause();
+    }
 }

@@ -16,6 +16,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -41,6 +42,34 @@ public class ImageListV2Activity extends AppCompatActivity {
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
+    private NwdDb db;
+
+    private void assignDb(){
+
+        if(db == null || db.needsTestModeRefresh()){
+
+            if(Configuration.isInTestMode()){
+
+                //use external db in folder NWD/sqlite
+                db = new NwdDb(this, "test");
+
+            }else {
+
+                //use internal app db
+                db = new NwdDb(this);
+            }
+        }
+
+        db.open();
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        db.close();
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
@@ -50,6 +79,7 @@ public class ImageListV2Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        assignDb();
         refreshLayout();
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
@@ -75,6 +105,8 @@ public class ImageListV2Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -102,11 +134,11 @@ public class ImageListV2Activity extends AppCompatActivity {
         refreshLayout();
     }
 
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        refreshLayout();
-    }
+//    @Override
+//    protected void onRestart(){
+//        super.onRestart();
+//        refreshLayout();
+//    }
 
     private void refreshLayout() {
 
@@ -168,7 +200,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        mFileListItems = MnemoSyneUtils.getImageListItems(mCurrentDir);
+        mFileListItems = MnemoSyneUtils.getImageListItems(db, mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -312,10 +344,10 @@ public class ImageListV2Activity extends AppCompatActivity {
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath());
+                        destination.getAbsolutePath(), db);
 
                 f.renameTo(destination);
 

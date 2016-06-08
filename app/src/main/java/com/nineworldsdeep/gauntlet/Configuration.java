@@ -88,6 +88,9 @@ public class Configuration {
 
     public static File getSdCardMediaMusicDirectory(){
 
+        //TODO: this need to become /NWD-MEDIA/music, but we need
+        //logic to migrate all metadata before we change
+        //the configuration
         return getSdDirectoryStoragePath("/NWD-MEDIA");
     }
 
@@ -290,5 +293,15 @@ public class Configuration {
         File subFolder = getSandboxSubFolder(folderName);
 
         return new File(subFolder,fileName);
+    }
+
+    public static File getSdCardMediaPdfDirectory() {
+
+        return getSdDirectoryStoragePath("/NWD-MEDIA/pdf");
+    }
+
+    public static File getPdfDirectory() {
+
+        return getDirectoryStoragePath("/NWD-MEDIA/pdfs");
     }
 }

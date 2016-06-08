@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nineworldsdeep.gauntlet">
+          package="com.nineworldsdeep.gauntlet">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -13,9 +13,9 @@
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -24,21 +24,21 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".SimpleToDoActivity"
-            android:label="@string/title_activity_simple_to_do" />
+            android:label="@string/title_activity_simple_to_do"/>
         <activity
             android:name=".GrowthAreasActivity"
-            android:label="@string/title_activity_growth_areas" />
+            android:label="@string/title_activity_growth_areas"/>
         <activity
             android:name=".synergy.v1.SynergyMasterListActivity"
             android:label="@string/title_activity_synergy_master_list"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v1.SynergyListActivity"
@@ -46,7 +46,7 @@
             android:parentActivityName=".synergy.v1.SynergyMasterListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.v1.SynergyMasterListActivity" />
+                android:value=".synergy.v1.SynergyMasterListActivity"/>
         </activity>
         <activity
             android:name=".synergy.v1.SynergyMasterArchiveActivity"
@@ -55,7 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v1.SynergyMasterTemplateActivity"
@@ -64,7 +64,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v1.SynergyTemplateActivity"
@@ -73,7 +73,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.v1.SynergyMasterTemplateActivity" />
+                android:value=".synergy.v1.SynergyMasterTemplateActivity"/>
         </activity>
         <activity
             android:name=".synergy.v1.SynergyArchiveActivity"
@@ -82,7 +82,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".synergy.v1.SynergyMasterArchiveActivity" />
+                android:value=".synergy.v1.SynergyMasterArchiveActivity"/>
         </activity>
         <activity
             android:name=".muse.MuseMainActivity"
@@ -91,7 +91,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".muse.clef.MuseClefActivity"
@@ -100,7 +100,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity"/>
         </activity>
         <activity
             android:name=".muse.guitar.GuitarActivity"
@@ -109,7 +109,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity"/>
         </activity>
         <activity
             android:name=".muse.keys.MuseKeyboardActivity"
@@ -118,11 +118,11 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity"/>
         </activity>
-        <activity android:name=".muse.legacy.LegacyClefActivity" />
-        <activity android:name=".muse.legacy.LegacyGuitarActivity" />
-        <activity android:name=".muse.legacy.LegacyKeyboardActivity" />
+        <activity android:name=".muse.legacy.LegacyClefActivity"/>
+        <activity android:name=".muse.legacy.LegacyGuitarActivity"/>
+        <activity android:name=".muse.legacy.LegacyKeyboardActivity"/>
         <activity
             android:name=".synergy.v2.SynergyMainActivity"
             android:label="@string/title_activity_synergy_main"
@@ -130,9 +130,9 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
-        <activity android:name=".synergy.v2.SynergyListActivity" />
+        <activity android:name=".synergy.v2.SynergyListActivity"/>
         <activity
             android:name=".bookSegments.AliasListActivity"
             android:label="@string/title_activity_alias_list"
@@ -140,7 +140,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".bookSegments.BookSegmentsActivity"
@@ -149,7 +149,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".bookSegments.AliasInputActivity"
@@ -158,7 +158,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity" />
+                android:value="com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity"/>
         </activity>
         <activity
             android:name=".bookSegments.BookSegmentsInputActivity"
@@ -167,7 +167,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity" />
+                android:value="com.nineworldsdeep.gauntlet.bookSegments.BookSegmentsActivity"/>
         </activity>
         <activity
             android:name=".synergy.v2.SynergyTemplatesActivity"
@@ -176,7 +176,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v2.SynergyTemplateActivity"
@@ -185,7 +185,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyTemplatesActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyTemplatesActivity"/>
         </activity>
         <activity
             android:name=".synergy.v2.SynergyArchivesActivity"
@@ -194,7 +194,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v2.SynergyArchiveActivity"
@@ -203,7 +203,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.ImageListActivity"
@@ -212,7 +212,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.ImageDisplayActivity"
@@ -221,7 +221,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity" />
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioListActivity"
@@ -230,7 +230,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioDisplayActivity"
@@ -239,7 +239,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity" />
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity"/>
         </activity>
         <activity
             android:name=".muse.SessionListActivity"
@@ -248,7 +248,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.muse.MuseMainActivity"/>
         </activity>
         <activity
             android:name=".muse.SessionDisplayActivity"
@@ -257,7 +257,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.muse.SessionListActivity" />
+                android:value="com.nineworldsdeep.gauntlet.muse.SessionListActivity"/>
         </activity>
         <activity
             android:name=".TestModeActivity"
@@ -266,7 +266,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v2.SplitItemActivity"
@@ -275,7 +275,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyListActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyListActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyV3MainActivity"
@@ -284,7 +284,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyListActivity"
@@ -292,7 +292,7 @@
             android:parentActivityName=".synergy.v3.SynergyV3MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyArchivesActivity"
@@ -301,7 +301,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyTemplatesActivity"
@@ -310,7 +310,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyTemplateActivity"
@@ -319,9 +319,9 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyTemplatesActivity" />
+                android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyTemplatesActivity"/>
         </activity>
-        <activity android:name=".synergy.v3.SynergyEditItemActivity" />
+        <activity android:name=".synergy.v3.SynergyEditItemActivity"/>
         <activity
             android:name=".tapestry.TapestryNodeActivity"
             android:label="@string/title_activity_tapestry_main"
@@ -329,7 +329,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.ImageListV2Activity"
@@ -338,7 +338,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
             android:name=".tapestry.MetaBrowserActivity"
@@ -347,7 +347,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity" />
+                android:value="com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioListV2Activity"
@@ -356,7 +356,16 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity" />
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".mnemosyne.PdfListActivity"
+            android:label="@string/title_activity_pdf_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
     </application>
 

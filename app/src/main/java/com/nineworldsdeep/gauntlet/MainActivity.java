@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
@@ -201,6 +202,11 @@ public class MainActivity extends ActionBarActivity {
 
         //startActivity(new Intent(this, ImageListActivity.class));
         startActivity(new Intent(this, ImageListV2Activity.class));
+    }
+
+    public void launchPdfList(View view){
+
+        startActivity(new Intent(this, PdfListActivity.class));
     }
 
     public void launchAudioList(View view) {

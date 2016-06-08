@@ -629,6 +629,11 @@ public class NwdDb {
 
         String displayName = "";
 
+        if(!db.isOpen()){
+
+            open();
+        }
+
         //open transaction
         db.beginTransaction();
 

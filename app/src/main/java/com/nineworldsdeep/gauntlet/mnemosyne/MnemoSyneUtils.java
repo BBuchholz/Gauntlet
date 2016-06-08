@@ -6,6 +6,7 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class MnemoSyneUtils {
 
     private static String[] imageExts = {"png", "jpg", "gif"}; //TODO: add more formats here
     private static String[] audioExts = {"mp3", "wav"};
+    private static String[] documentExts = {"pdf"};
 
     public static List<String> getImages(File dir) {
 
@@ -59,6 +61,64 @@ public class MnemoSyneUtils {
         return lst;
     }
 
+    public static List<FileListItem> getDocumentListItems(NwdDb db, File dir){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getDocumentListItemsFromPaths(db, getDocumentTopFolders()));
+        }
+        else
+        {
+            lst.addAll(getFileListItems(db, dir, documentExts));
+        }
+
+        return lst;
+    }
+
+    private static List<FileListItem> getDocumentListItemsFromPaths(
+            NwdDb db,
+            List<String> pathList) {
+
+        List<FileListItem> newList = new ArrayList<>();
+
+        for(String filePath : pathList){
+
+            File f = new File(filePath);
+
+            if(isPdfFileFromPath(filePath) || f.isDirectory()) {
+
+                newList.add(new FileListItem(filePath, db));
+            }
+        }
+
+        return newList;
+
+    }
+
+    private static boolean isPdfFileFromPath(String filePath) {
+
+        return filePath.toLowerCase().endsWith(".pdf");
+    }
+
+    private static List<String> getDocumentTopFolders() {
+
+        List<String> lst = new ArrayList<>();
+
+        lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
+        lst.add(Configuration.getPdfDirectory().getAbsolutePath());
+
+        File externalPdf = Configuration.getSdCardMediaPdfDirectory();
+
+        if(externalPdf != null) {
+
+            lst.add(externalPdf.getAbsolutePath());
+        }
+
+        return lst;
+    }
+
     public static List<String> getAudioTopFolders() {
 
         List<String> lst = new ArrayList<>();
@@ -96,7 +156,9 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    private static List<FileListItem> getFileListItems(NwdDb db, File dir, String[] exts){
+    private static List<FileListItem> getFileListItems(NwdDb db,
+                                                       File dir,
+                                                       String[] exts){
 
         List<FileListItem> lst = new ArrayList<>();
 
@@ -179,7 +241,7 @@ public class MnemoSyneUtils {
 
     public static void copyDisplayName(String sourcePath,
                                        String destinationPath,
-                                NwdDb db)
+                                       NwdDb db)
             throws Exception {
 
         FileListItem fliSrc = new FileListItem(sourcePath, db);

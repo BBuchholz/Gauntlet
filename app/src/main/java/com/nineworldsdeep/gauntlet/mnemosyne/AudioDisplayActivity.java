@@ -21,11 +21,13 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class AudioDisplayActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
@@ -37,7 +39,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     private AudioMediaEntry ame;
     private MediaPlayerSingleton mps;
 
-    private NwdDb db;
+    //private NwdDb db;
 
     public static final String EXTRA_AUDIOPATH =
             "com.nineworldsdeep.gauntlet.AUDIODISPLAY_AUDIO_PATH";
@@ -48,35 +50,37 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         super.onResume();
 
-        assignDb();
+        NwdDb.getInstance(this).open();
+//        assignDb();
 
         //moved to assignDb() //db.open();
     }
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
-        db.close();
         super.onPause();
+
+        NwdDb.getInstance(this).close();
     }
 
     @Override
@@ -87,7 +91,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+        //assignDb();
 
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIOPATH);
@@ -105,7 +109,10 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             mps = MediaPlayerSingleton.getInstance();
 
             try {
-                setNowPlaying(mps.queueAndPlayLast(db, audioPath, this));
+
+                HashMap<String,String> dbPathToNameMap =
+                        DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+                setNowPlaying(mps.queueAndPlayLast(dbPathToNameMap, audioPath, this));
 
             } catch (IOException e) {
 
@@ -173,9 +180,16 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                     // edit text
                                     try {
 
-                                        ame.setAndSaveDisplayName(
-                                                userInput.getText().toString(),
-                                                db);
+//                                        ame.setAndSaveDisplayName(
+//                                                userInput.getText().toString(),
+//                                                db);
+                                        DisplayNameDbIndex
+                                                .setDisplayNameAndExportFile(
+                                                        ame.getPath(),
+                                                        userInput.getText()
+                                                                .toString(),
+                                                        NwdDb.getInstance(AudioDisplayActivity.this));
+
                                         //DisplayNameIndex.getInstance().save();
                                         updateMediaInfo();
 

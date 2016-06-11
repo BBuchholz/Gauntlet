@@ -10,9 +10,9 @@ import java.util.Map;
 /**
  * Created by brent on 11/17/15.
  */
-public class DisplayNameDbIndex {
+public class TagDbIndex {
 
-    private static DisplayNameDbIndex instance;
+    private static TagDbIndex instance;
     //private NwdDb db;
 
 //    public static DisplayNameDbIndex getInstance() {
@@ -25,7 +25,7 @@ public class DisplayNameDbIndex {
 //        return instance;
 //    }
 
-    private DisplayNameDbIndex(){
+    private TagDbIndex(){
         //singleton pattern, private constructor
 
         //pathToName = new HashMap<>();
@@ -34,7 +34,7 @@ public class DisplayNameDbIndex {
     }
 
     public static HashMap<String, String> getPathToNameMap(NwdDb db){
-
+asdf
         //idempotent
         loadToDbFromFile(db);
 
@@ -58,7 +58,7 @@ public class DisplayNameDbIndex {
     }
 
     private static void saveToFile(HashMap<String, String> pathToNameMap) {
-
+asdf
         //save a copy with the db files included
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
 
@@ -100,7 +100,7 @@ public class DisplayNameDbIndex {
 //    }
 
     public static void loadToDbFromFile(NwdDb db){
-
+asdf
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
         dnif.loadItems();
 //
@@ -120,14 +120,14 @@ public class DisplayNameDbIndex {
     }
 
     private static void setDisplayNames(List<FileListItem> fileListItems, NwdDb db) {
-
+asdf
         db.linkFilesToDisplayNames(fileListItems);
     }
 
     public static void setDisplayNameAndExportFile(String path,
                                                    String displayName,
                                                    NwdDb db) {
-
+asdf
         db.linkFileToDisplayName(path, displayName);
     }
 }

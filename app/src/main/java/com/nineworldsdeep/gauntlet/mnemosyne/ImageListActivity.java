@@ -15,11 +15,13 @@ import android.widget.ListView;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.util.HashMap;
 
 @Deprecated
 public class ImageListActivity extends AppCompatActivity {
@@ -34,42 +36,45 @@ public class ImageListActivity extends AppCompatActivity {
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
 
-    private NwdDb db;
+    //private NwdDb db;
 
     @Override
     protected void onResume() {
 
         super.onResume();
 
-        assignDb();
+        NwdDb.getInstance(this).open();
+
+        //assignDb();
 
         //moved to assignDb() //db.open();
     }
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
-        db.close();
         super.onPause();
+
+        NwdDb.getInstance(this).close();
     }
 
 
@@ -81,7 +86,7 @@ public class ImageListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+        //assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -234,7 +239,7 @@ public class ImageListActivity extends AppCompatActivity {
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), db);
+                        destination.getAbsolutePath(), NwdDb.getInstance(this));
 
                 f.renameTo(destination);
 
@@ -398,10 +403,13 @@ public class ImageListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
+        HashMap<String,String> dbPathToNameMap =
+                DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getImageListItems(db, currentDir))
+                        MnemoSyneUtils.getImageListItems(dbPathToNameMap, currentDir))
         );
     }
 

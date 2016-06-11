@@ -17,6 +17,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
@@ -36,44 +37,48 @@ public class PdfListActivity extends AppCompatActivity {
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
-    private NwdDb db;
+    //private NwdDb db;
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
         super.onPause();
-        db.close();
+
+        NwdDb.getInstance(this).close();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
+
         mListState = state.getParcelable(LIST_STATE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        assignDb();
+
+        NwdDb.getInstance(this).open();
+
         refreshLayout();
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
@@ -100,7 +105,7 @@ public class PdfListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+        //assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -214,9 +219,13 @@ public class PdfListActivity extends AppCompatActivity {
         ArrayList<HashMap<String, String>> lstItems =
                 new ArrayList<>();
 
-        HashMap<String, String> map;
+        NwdDb db = NwdDb.getInstance(this);
 
-        mFileListItems = MnemoSyneUtils.getDocumentListItems(db, mCurrentDir);
+        HashMap<String, String> map;
+        HashMap<String,String> dbPathToNameMap =
+                DisplayNameDbIndex.getPathToNameMap(db);
+
+        mFileListItems = MnemoSyneUtils.getDocumentListItems(dbPathToNameMap, mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 

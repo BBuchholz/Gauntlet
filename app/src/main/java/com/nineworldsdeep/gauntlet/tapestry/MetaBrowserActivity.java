@@ -28,7 +28,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
     private String mCurrentNodeName = null;
     private ArrayList<MetaEntry> mMeta;
 
-    private NwdDb db;
+    //private NwdDb db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         populateDescriptionSpinner();
 
-        assignDb();
+        //assignDb();
 
         Intent i = getIntent();
         mCurrentNodeName = i.getStringExtra(
@@ -63,35 +63,37 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         super.onResume();
 
-        assignDb();
+        NwdDb.getInstance(this).open();
 
-        //moved to assignDb() //db.open();
+//        assignDb();
+//
+//        //moved to assignDb() //db.open();
     }
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
-        db.close();
         super.onPause();
+        NwdDb.getInstance(this).close();
     }
 
     @Override
@@ -124,7 +126,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
         //custom ids take precedence
         if (id == MENU_EXPORT_DB){
 
-            db.export(this);
+            //db.export(this);
+            NwdDb.getInstance(this).export(this);
             return true;
 
         } else if (id == R.id.action_test) {
@@ -133,7 +136,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
             boolean originalTestModeSetting = Configuration.isInTestMode();
 
             Configuration.setTestMode(true);
-            assignDb();
+            //assignDb();
 
             //all transactions should be idempotent
             //so we needn't comment any out here
@@ -155,13 +158,15 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
             //nextTestingCodeGoesHere();
 
+            NwdDb db = NwdDb.getInstance(this);
+
             String dbType = db.isInternalDb() ? "internal" : "external";
             String dbName = db.getDatabaseName();
 
             Utils.toast(this, "tested in " + dbType + " database: " + dbName);
 
             Configuration.setTestMode(originalTestModeSetting);
-            assignDb();
+            //assignDb();
 
             return true;
         }
@@ -171,6 +176,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void localDeviceConfigTestingCode() {
 
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
+
         db.setConfigValue("test key", "test value");
         db.setConfigValue("test key2", "test value2");
         db.setConfigValue("test key3", "test value3 should be overwritten");
@@ -178,6 +187,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
     }
 
     private void audioTranscriptTestingCode(String filePath) {
+
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
 
         db.updateAudioTranscriptForFile(
                 TapestryUtils.getCurrentDeviceName(),
@@ -187,6 +200,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void devicePathTestingCode(String filePath) {
 
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
+
         db.ensureDevicePath(TapestryUtils.getCurrentDeviceName(),
                             filePath);
 
@@ -195,6 +212,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
     }
 
     private void tagTestingCode(String filePath) {
+
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
 
         String[] tags = {"test tag 1", "test tag 2", "test tag 3"};
 
@@ -208,6 +229,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private void hashTestingCode(String filePath) {
 
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
+
         String sha1EmptyFileHash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
         String hashedAt = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss();
@@ -219,6 +244,10 @@ public class MetaBrowserActivity extends AppCompatActivity {
     }
 
     private void displayNameTestingCode(String filePath) {
+
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
 
         db.linkFileToDisplayName(TapestryUtils.getCurrentDeviceName(),
                                  filePath,

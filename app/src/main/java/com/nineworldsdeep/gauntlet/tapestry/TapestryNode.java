@@ -97,7 +97,7 @@ public class TapestryNode {
         // loadLinks should stay privately accessible, as an
         // empty node which then calls save() would
         // overwrite everything.
-        // thus we always want to load the items
+        // thus we always want to loadToDbFromFile the items
         // in the constructor
 
         try{

@@ -7,13 +7,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 
+import java.util.HashMap;
+
 /**
  * Created by brent on 5/12/16.
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "nwd";
+
+    private static HashMap<String, NwdDbOpenHelper> instances =
+        new HashMap<>();
 
     // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
     // we will be using "AS _id" in our statements when we get to that bridge
@@ -138,16 +143,93 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
                     NwdContract.COLUMN_TAG_VALUE + " TEXT NOT NULL UNIQUE " +
             ")";
 
+    private static final String DATABASE_DROP_PATH =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_PATH;
+    private static final String DATABASE_DROP_HASH =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_HASH;
+    private static final String DATABASE_DROP_DEVICE =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_DEVICE;
+    private static final String DATABASE_DROP_TAG =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_TAG;
+    private static final String DATABASE_DROP_FILE =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_FILE;
+    private static final String DATABASE_DROP_FILE_TAGS =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_FILE_TAGS;
+    private static final String DATABASE_DROP_AUDIO_TRANSCRIPT =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_AUDIO_TRANSCRIPT;
+    private static final String DATABASE_DROP_LOCAL_CONFIG =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_LOCAL_CONFIG;
+    private static final String DATABASE_DROP_DISPLAY_NAME =
+        "DROP TABLE IF EXISTS " + NwdContract.TABLE_DISPLAY_NAME;
+
+    public static NwdDbOpenHelper getInstance(Context c){
+
+        return getInstance(c, null);
+    }
+
+    public static NwdDbOpenHelper getInstance(Context c, String dbName){
+
+        if(Configuration.isInTestMode()){
+
+            dbName = "test";
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDbOpenHelper(c, dbName));
+            }
+
+        }else if(Utils.stringIsNullOrWhitespace(dbName) ||
+                dbName.trim().equalsIgnoreCase("nwd")){
+
+            dbName = "nwd";
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDbOpenHelper(c));
+            }
+
+        } else {
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDbOpenHelper(c, dbName));
+            }
+        }
+
+        return instances.get(dbName);
+    }
+
     /**
      * Opens the internal database for Gauntlet/NWD
      * @param context
      */
-    public NwdDbOpenHelper(Context context) {
+    private NwdDbOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         if(deleteDatabaseForDevelopment()){
 
             context.deleteDatabase(DATABASE_NAME);
+        }
+    }
+
+    // FROM:
+    // http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
+
+    /**
+     * Opens an external database for Gauntlet/NWD with the specified name
+     * in the NWD/sqlite directory. Intended for imports and exports.
+     * @param context
+     * @param databaseName
+     */
+    private NwdDbOpenHelper(Context context, String databaseName)
+    {
+        super(new NwdDbContextWrapper(context), databaseName, null, DATABASE_VERSION);
+
+        context = new NwdDbContextWrapper(context);
+
+        if(deleteDatabaseForDevelopment()){
+
+            context.deleteDatabase(databaseName);
         }
     }
 
@@ -163,27 +245,6 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         return Configuration.isInDeleteDatabaseForDevelopmentMode();
     }
 
-    // FROM:
-    // http://stackoverflow.com/questions/5332328/sqliteopenhelper-problem-with-fully-qualified-db-path-name/9168969#9168969
-
-    /**
-     * Opens an external database for Gauntlet/NWD with the specified name
-     * in the NWD/sqlite directory. Intended for imports and exports.
-     * @param context
-     * @param databaseName
-     */
-    public NwdDbOpenHelper(Context context, String databaseName)
-    {
-        super(new NwdDbContextWrapper(context), databaseName, null, DATABASE_VERSION);
-
-        context = new NwdDbContextWrapper(context);
-
-        if(deleteDatabaseForDevelopment()){
-
-            context.deleteDatabase(databaseName);
-        }
-    }
-
     @Override
     public void onConfigure(SQLiteDatabase db){
 
@@ -195,64 +256,37 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
         // all of these are "CREATE IF NOT EXISTS" statements
         // to prevent accidental overwrites
+
+        db.execSQL(DATABASE_DROP_FILE_TAGS);
+        db.execSQL(DATABASE_DROP_FILE);
+        db.execSQL(DATABASE_DROP_DISPLAY_NAME);
+        db.execSQL(DATABASE_DROP_PATH);
+        db.execSQL(DATABASE_DROP_HASH);
+        db.execSQL(DATABASE_DROP_DEVICE);
+        db.execSQL(DATABASE_DROP_TAG);
+        db.execSQL(DATABASE_DROP_AUDIO_TRANSCRIPT);
+        db.execSQL(DATABASE_DROP_LOCAL_CONFIG);
+
         db.execSQL(DATABASE_CREATE_DISPLAY_NAME);
         db.execSQL(DATABASE_CREATE_PATH);
         db.execSQL(DATABASE_CREATE_HASH);
         db.execSQL(DATABASE_CREATE_DEVICE);
         db.execSQL(DATABASE_CREATE_TAG);
-        db.execSQL(DATABASE_CREATE_FILE);
-        db.execSQL(DATABASE_CREATE_FILE_TAGS);
         db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
         db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
+        db.execSQL(DATABASE_CREATE_FILE);
+        db.execSQL(DATABASE_CREATE_FILE_TAGS);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if (oldVersion < 2) {
+        if (oldVersion < 4) {
 
-            //all of these TRY...CATCH statements are intended to similate an
-            //ADD COLUMN IF NOT EXISTS, which isn't supported in sqlite
+            //we made some changes that were not column adds, lets drop all
 
-            try{
-
-                db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
-                        " ADD COLUMN "
-                        + NwdContract.COLUMN_FILE_DESCRIPTION + " TEXT");
-
-            }catch(Exception ex){
-
-                Utils.log("error upgrading database: " + ex.getMessage());
-            }
-
-            try{
-
-                db.execSQL("ALTER TABLE " + NwdContract.TABLE_FILE +
-                        " ADD COLUMN "
-                        + NwdContract.COLUMN_FILE_NAME + " TEXT");
-
-            }catch(Exception ex){
-
-                Utils.log("error upgrading database: " + ex.getMessage());
-            }
-
-            try{
-
-                db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
-
-            }catch(Exception ex){
-
-                Utils.log("error upgrading database: " + ex.getMessage());
-            }
-
-            try{
-
-                db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
-
-            }catch(Exception ex){
-
-                Utils.log("error upgrading database: " + ex.getMessage());
-            }
+            onCreate(db);
         }
 
 //        if (oldVersion < 3) {

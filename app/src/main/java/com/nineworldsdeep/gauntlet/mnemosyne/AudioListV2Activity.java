@@ -18,6 +18,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
@@ -42,27 +43,27 @@ public class AudioListV2Activity extends AppCompatActivity {
     // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
-
-    NwdDb db;
-
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//
+//    NwdDb db;
+//
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 //  FOR SOME WEIRD REASON THIS CRASHES THE APP IF UNCOMMENTED
 //  I CANNOT FIGURE IT OUT AS IMAGE LIST ACTIVITY IS IDENTICAL
 //  AND DOESN'T CRASH WITH THIS LEFT IN?
@@ -83,7 +84,7 @@ public class AudioListV2Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        assignDb();
+        NwdDb.getInstance(this).open();
         refreshLayout();
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
@@ -105,7 +106,7 @@ public class AudioListV2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -201,9 +202,18 @@ public class AudioListV2Activity extends AppCompatActivity {
         ArrayList<HashMap<String, String>> lstItems =
                 new ArrayList<HashMap<String, String>>();
 
+        NwdDb db = NwdDb.getInstance(this);
+
+        db.open();
+
         HashMap<String, String> map;
 
-        mFileListItems = MnemoSyneUtils.getAudioListItems(db, mCurrentDir);
+        HashMap<String,String> dbPathToNameMap =
+                DisplayNameDbIndex.getPathToNameMap(db);
+
+        mFileListItems =
+                MnemoSyneUtils.getAudioListItems(dbPathToNameMap,
+                        mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -315,6 +325,8 @@ public class AudioListV2Activity extends AppCompatActivity {
         if(f.exists()){
 
             try{
+
+                NwdDb db = NwdDb.getInstance(this);
 
                 File destination =
                         new File(destinationDirectory,

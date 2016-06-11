@@ -68,7 +68,7 @@ public class DisplayNameIndex {
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
         dnif.loadItems();
 
-        for(FileListItem ili : dnif.getImageListItems()){
+        for(FileListItem ili : dnif.getFileListItems()){
 
             pathToName.put(ili.getFile().getAbsolutePath(), ili.getDisplayName());
         }

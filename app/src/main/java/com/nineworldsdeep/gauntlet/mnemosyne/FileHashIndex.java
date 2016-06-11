@@ -8,7 +8,9 @@ import java.util.Map;
 
 /**
  * Created by brent on 12/1/15.
+ * @deprecated use FileHashDbIndex instead
  */
+@Deprecated
 public class FileHashIndex {
 
     private static FileHashIndex instance;

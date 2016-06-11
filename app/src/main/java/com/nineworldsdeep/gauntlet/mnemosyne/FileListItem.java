@@ -1,12 +1,11 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
-import android.text.Editable;
-
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * Created by brent on 11/17/15.
@@ -17,31 +16,33 @@ public class FileListItem {
     private String displayName = null;
     private String tags = "";
 
-    public FileListItem(String filePath, NwdDb db) {
+    public FileListItem(String filePath, HashMap<String,String> dbPathToNameMap) {
 
 //        file = new File(filePath);
 //
-//        ProcessPath();
+//        processPath();
 
-        setPath(filePath, db); //handles everything
+        setPath(filePath, dbPathToNameMap); //handles everything
     }
 
-    private void ProcessPath(NwdDb db){
+    private void processPath(HashMap<String,String> dbPathToNameMap){
 
         if(file != null) {
 
-            DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
+            //DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
 
-            String indexedName = dni.getDisplayName(file.getAbsolutePath());
+            String indexedName = dbPathToNameMap.get(file.getAbsolutePath()); //dni.getDisplayName(file.getAbsolutePath());
 
-            if (!Utils.stringIsNullOrWhitespace(indexedName)) {
+//            if (!Utils.stringIsNullOrWhitespace(indexedName)) {
+//
+//                displayName = indexedName;
+//
+//            }else{
+//
+//                displayName = file.getName();
+//            }
 
-                displayName = indexedName;
-
-            }else{
-
-                displayName = file.getName();
-            }
+            displayName = processDisplayName(indexedName);
 
             TagIndex ti = TagIndex.getInstance();
 
@@ -56,10 +57,22 @@ public class FileListItem {
         }
     }
 
+    private String processDisplayName(String name) {
+
+        if (!Utils.stringIsNullOrWhitespace(name)) {
+
+            return name;
+
+        }else{
+
+            return file.getName();
+        }
+    }
+
     public FileListItem(String path, String displayName) {
 
         this.file = new File(path);
-        this.displayName = displayName;
+        this.displayName = processDisplayName(displayName);
     }
 
     @Override
@@ -72,17 +85,18 @@ public class FileListItem {
         return file;
     }
 
-    public void setPath(String filePath, NwdDb db){
+    public void setPath(String filePath, HashMap<String,String> dbPathToNameMap){
 
         file = new File(filePath);
-        ProcessPath(db);
+        processPath(dbPathToNameMap);
     }
 
     //TODO: make private, use set and save
     public void setDisplayName(String displayName, NwdDb db) throws Exception {
 
-        DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
-        dni.setDisplayName(file.getAbsolutePath(), displayName);
+        //DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
+        //dni.setDisplayName(file.getAbsolutePath(), displayName);
+        db.linkFileToDisplayName(file.getAbsolutePath(), displayName);
         this.displayName = displayName;
         FileHashIndex fhi = FileHashIndex.getInstance();
         fhi.hashStoreAndSave(file);
@@ -105,11 +119,11 @@ public class FileListItem {
         setTagString(tags);
         TagIndex.getInstance().save();
     }
-
-    public void setAndSaveDisplayName(String displayName, NwdDb db) throws Exception {
-        setDisplayName(displayName, db);
-        DisplayNameDbIndex.getInstance(db).save();
-    }
+//
+//    public void setAndSaveDisplayName(String displayName, NwdDb db) throws Exception {
+//        setDisplayName(displayName, db);
+//        DisplayNameDbIndex.getInstance().save();
+//    }
 
     public String getTags(){
         return tags;

@@ -5,7 +5,9 @@ import java.util.Map;
 
 /**
  * Created by brent on 12/1/15.
+ * @deprecated use TagDbIndex instead
  */
+@Deprecated
 public class TagIndex {
 
     private static TagIndex instance;

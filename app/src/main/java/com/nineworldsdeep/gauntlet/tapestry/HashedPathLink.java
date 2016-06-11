@@ -79,7 +79,7 @@ public abstract class HashedPathLink extends TapestryNodeLink {
         refreshHash(); //try to get a fresh hash
         if(Utils.stringIsNullOrWhitespace(getHash())){
 
-            //if path won't hash, load last stored one
+            //if path won't hash, loadToDbFromFile last stored one
             //to possibly locate the file elsewhare
             put("hash", Parser.extract("sha1Hash", lineItem));
         }

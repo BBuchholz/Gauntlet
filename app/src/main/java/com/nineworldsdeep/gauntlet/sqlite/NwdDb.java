@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -34,6 +35,9 @@ public class NwdDb {
     private NwdDbOpenHelper dbHelper;
     private File dbFilePath;
     private boolean isInternalDb;
+
+    private static HashMap<String, NwdDb> instances =
+            new HashMap<>();
 
     private static final String DATABASE_ENSURE_DISPLAY_NAME =
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_DISPLAY_NAME +
@@ -238,13 +242,50 @@ public class NwdDb {
             "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? " +
             "AND p."+ NwdContract.COLUMN_PATH_VALUE + " = ? ; ";
 
+    public static NwdDb getInstance(Context c){
+
+        return getInstance(c, null);
+    }
+
+    public static NwdDb getInstance(Context c, String dbName) {
+
+        if(Configuration.isInTestMode()){
+
+            dbName = "test";
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDb(c, dbName));
+            }
+
+        }else if(Utils.stringIsNullOrWhitespace(dbName) ||
+                dbName.trim().equalsIgnoreCase("nwd")){
+
+            dbName = "nwd";
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDb(c));
+            }
+
+        } else {
+
+            if(!instances.containsKey(dbName)){
+
+                instances.put(dbName, new NwdDb(c, dbName));
+            }
+        }
+
+        return instances.get(dbName);
+    }
+
     /**
      * Opens/Creates the internal database for Gauntlet/NWD
      * @param context
      */
-    public NwdDb(Context context){
+    private NwdDb(Context context){
 
-        dbHelper = new NwdDbOpenHelper(context);
+        dbHelper = NwdDbOpenHelper.getInstance(context);
         dbFilePath = context.getDatabasePath(dbHelper.getDatabaseName());
         isInternalDb = true;
     }
@@ -255,12 +296,12 @@ public class NwdDb {
      * @param context
      * @param databaseName
      */
-    public NwdDb(Context context, String databaseName){
+    private NwdDb(Context context, String databaseName){
 
         //this is necessary for dbFilePath assignment below
         context = new NwdDbContextWrapper(context);
 
-        dbHelper = new NwdDbOpenHelper(context, databaseName);
+        dbHelper = NwdDbOpenHelper.getInstance(context, databaseName);
         dbFilePath = context.getDatabasePath(dbHelper.getDatabaseName());
         isInternalDb = false;
     }
@@ -566,6 +607,15 @@ public class NwdDb {
         List<Map<String, String>> pathDisplayNames =
                 new ArrayList<>();
 
+
+//        close(); //just in case
+//        open();
+//
+//        if(!db.isOpen()){
+//            close(); //just in case
+//            open();
+//        }
+
         //open transaction
         db.beginTransaction();
 
@@ -629,10 +679,10 @@ public class NwdDb {
 
         String displayName = "";
 
-        if(!db.isOpen()){
-
-            open();
-        }
+//        if(!db.isOpen()){
+//
+//            open();
+//        }
 
         //open transaction
         db.beginTransaction();
@@ -671,5 +721,52 @@ public class NwdDb {
         }
 
         return displayName;
+    }
+
+    public void linkFilesToDisplayNames(List<FileListItem> fileListItems) {
+
+        if(!db.isOpen()){
+
+            open();
+        }
+
+        //open transaction
+        db.beginTransaction();
+
+        for(FileListItem fli : fileListItems){
+
+            String deviceDescription = TapestryUtils.getCurrentDeviceName();
+            String filePath = fli.getFile().getAbsolutePath();
+            String displayName = fli.getDisplayName();
+
+
+            try{
+
+                //insert or ignore device
+                db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
+                //insert or ignore path
+                db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+                //insert or ignore display name
+                db.execSQL(DATABASE_ENSURE_DISPLAY_NAME, new String[]{displayName});
+                //update or ignore file (if exists)
+                db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
+                        new String[]{displayName, filePath, deviceDescription});
+                //insert or ignore file (if !exists)
+                db.execSQL(DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE,
+                        new String[]{deviceDescription, filePath, displayName});
+
+            }catch(Exception ex) {
+
+                Utils.log("error linking display name [" +
+                        displayName + "] to file [" +
+                        filePath + "]: " + ex.getMessage());
+
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
+
     }
 }

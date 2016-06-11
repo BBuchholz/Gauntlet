@@ -44,7 +44,7 @@ public class SynergyUtilsTest extends TestCase {
             expectedPushFile.delete();
         }
 
-        //load fresh
+        //loadToDbFromFile fresh
         categoryFile.loadItems();
         queueFile.loadItems();
         expectedPushFile.loadItems();
@@ -60,7 +60,7 @@ public class SynergyUtilsTest extends TestCase {
         //push
         SynergyUtils.push(queueFileName);
 
-        //load fresh
+        //loadToDbFromFile fresh
         categoryFile.loadItems();
         queueFile.loadItems();
         expectedPushFile.loadItems();

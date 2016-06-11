@@ -16,6 +16,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
@@ -42,32 +43,32 @@ public class ImageListV2Activity extends AppCompatActivity {
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
-    private NwdDb db;
+    //private NwdDb db;
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
         super.onPause();
-        db.close();
+        NwdDb.getInstance(this).close();
     }
 
     @Override
@@ -79,7 +80,8 @@ public class ImageListV2Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        assignDb();
+        //assignDb();
+        NwdDb.getInstance(this).open();
         refreshLayout();
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
@@ -106,7 +108,9 @@ public class ImageListV2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+        //assignDb();
+
+        NwdDb.getInstance(this).open();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -199,8 +203,10 @@ public class ImageListV2Activity extends AppCompatActivity {
                 new ArrayList<HashMap<String, String>>();
 
         HashMap<String, String> map;
+        HashMap<String,String> dbPathToNameMap =
+                DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
 
-        mFileListItems = MnemoSyneUtils.getImageListItems(db, mCurrentDir);
+        mFileListItems = MnemoSyneUtils.getImageListItems(dbPathToNameMap, mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -344,10 +350,10 @@ public class ImageListV2Activity extends AppCompatActivity {
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), db);
+                        destination.getAbsolutePath(), NwdDb.getInstance(this));
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), db);
+                        destination.getAbsolutePath(), NwdDb.getInstance(this));
 
                 f.renameTo(destination);
 

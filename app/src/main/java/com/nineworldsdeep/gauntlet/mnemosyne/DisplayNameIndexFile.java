@@ -26,18 +26,18 @@ public class DisplayNameIndexFile extends LineItemListFile{
         add(entry);
     }
 
-    public List<FileListItem> getImageListItems() {
+    public List<FileListItem> getFileListItems() {
 
         ArrayList<FileListItem> lst = new ArrayList<>();
 
         for(String item : getItems()){
-            lst.add(getImageListItemFromLineItem(item));
+            lst.add(getFileListItemFromLineItem(item));
         }
 
         return lst;
     }
 
-    private FileListItem getImageListItemFromLineItem(String item) {
+    private FileListItem getFileListItemFromLineItem(String item) {
 
         FileListItem ili =
                 new FileListItem(Utils.processExtract(item, "path"),

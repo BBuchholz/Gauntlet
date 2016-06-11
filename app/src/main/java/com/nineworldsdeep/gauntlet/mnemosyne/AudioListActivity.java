@@ -17,6 +17,7 @@ import android.widget.ListView;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FileUtils;
@@ -25,6 +26,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Deprecated
@@ -39,7 +41,7 @@ public class AudioListActivity extends AppCompatActivity {
     public static final String EXTRA_CURRENTPATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
 
-    private NwdDb db;
+    //private NwdDb db;
 
     private void promptRemoveMarkedAudio() {
 
@@ -106,35 +108,38 @@ public class AudioListActivity extends AppCompatActivity {
 
         super.onResume();
 
-        assignDb();
+        NwdDb.getInstance(this).open();
+
+        //assignDb();
 
         //moved to assignDb() //db.open();
     }
 
-    private void assignDb(){
-
-        if(db == null || db.needsTestModeRefresh()){
-
-            if(Configuration.isInTestMode()){
-
-                //use external db in folder NWD/sqlite
-                db = new NwdDb(this, "test");
-
-            }else {
-
-                //use internal app db
-                db = new NwdDb(this);
-            }
-        }
-
-        db.open();
-    }
+//    private void assignDb(){
+//
+//        if(db == null || db.needsTestModeRefresh()){
+//
+//            if(Configuration.isInTestMode()){
+//
+//                //use external db in folder NWD/sqlite
+//                db = new NwdDb(this, "test");
+//
+//            }else {
+//
+//                //use internal app db
+//                db = new NwdDb(this);
+//            }
+//        }
+//
+//        db.open();
+//    }
 
     @Override
     protected void onPause() {
 
-        db.close();
         super.onPause();
+
+        NwdDb.getInstance(this).close();
     }
 
     @Override
@@ -145,7 +150,7 @@ public class AudioListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        assignDb();
+        //assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENTPATH);
@@ -268,6 +273,8 @@ public class AudioListActivity extends AppCompatActivity {
         if(f.exists()){
 
             try{
+
+                NwdDb db = NwdDb.getInstance(this);
 
                 File destination =
                         new File(destinationDirectory,
@@ -457,10 +464,15 @@ public class AudioListActivity extends AppCompatActivity {
 
         ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
+        NwdDb db = NwdDb.getInstance(this);
+
+        HashMap<String,String> dbPathToNameMap =
+                DisplayNameDbIndex.getPathToNameMap(db);
+
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        MnemoSyneUtils.getAudioListItems(db, currentDir))
+                        MnemoSyneUtils.getAudioListItems(dbPathToNameMap, currentDir))
         );
     }
 }

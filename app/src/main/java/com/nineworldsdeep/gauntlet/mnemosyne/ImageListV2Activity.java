@@ -206,7 +206,7 @@ public class ImageListV2Activity extends AppCompatActivity {
         HashMap<String, String> map;
 
 //        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+//                DisplayNameDbIndex.importExportPathToNameMap(NwdDb.getInstance(this));
 
         mFileListItems =
                 MnemoSyneUtils.getImageListItems(NwdDb.getInstance(this),

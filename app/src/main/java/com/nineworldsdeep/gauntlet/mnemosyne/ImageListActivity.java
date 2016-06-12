@@ -404,7 +404,7 @@ public class ImageListActivity extends AppCompatActivity {
 //        ListView lvItems = (ListView) findViewById(R.id.lvItems);
 //
 //        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+//                DisplayNameDbIndex.importExportPathToNameMap(NwdDb.getInstance(this));
 //
 //        lvItems.setAdapter(
 //                new ArrayAdapter<>(this,

@@ -33,6 +33,8 @@ public class NwdDb {
     // http://www.vogella.com/tutorials/AndroidSQLite/article.html
     // which does so, and I like the design better that way
 
+    private final static Object lock = new Object();
+
     private SQLiteDatabase db;
     private NwdDbOpenHelper dbHelper;
     private File dbFilePath;
@@ -272,7 +274,19 @@ public class NwdDb {
             "JOIN " + NwdContract.TABLE_DEVICE + " d " +
             "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
             "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? " +
-            "AND p."+ NwdContract.COLUMN_PATH_VALUE + " = ? ; ";
+            "AND p." + NwdContract.COLUMN_PATH_VALUE + " = ? ; ";
+
+    private static final String DATABASE_DELETE_TAGS_FOR_PATH =
+            "DELETE FROM " + NwdContract.TABLE_FILE_TAGS + " " +
+                    "WHERE " + NwdContract.COLUMN_FILE_ID + " = (" +
+                        "SELECT f." + NwdContract.COLUMN_FILE_ID + " " +
+                        "FROM " + NwdContract.TABLE_PATH + " p " +
+                        "JOIN " + NwdContract.TABLE_FILE + " f " +
+                        "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
+                        "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+                        "ON f." + NwdContract.COLUMN_DEVICE_ID + " = d." + NwdContract.COLUMN_DEVICE_ID + " " +
+                        "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? " +
+                        "AND p." + NwdContract.COLUMN_PATH_VALUE + " = ? )";
 
     public static NwdDb getInstance(Context c){
 
@@ -281,34 +295,37 @@ public class NwdDb {
 
     public static NwdDb getInstance(Context c, String dbName) {
 
-        if(Configuration.isInTestMode()){
+        synchronized (lock) {
 
-            dbName = "test";
+            if (Configuration.isInTestMode()) {
 
-            if(!instances.containsKey(dbName)){
+                dbName = "test";
 
-                instances.put(dbName, new NwdDb(c, dbName));
+                if (!instances.containsKey(dbName)) {
+
+                    instances.put(dbName, new NwdDb(c, dbName));
+                }
+
+            } else if (Utils.stringIsNullOrWhitespace(dbName) ||
+                    dbName.trim().equalsIgnoreCase("nwd")) {
+
+                dbName = "nwd";
+
+                if (!instances.containsKey(dbName)) {
+
+                    instances.put(dbName, new NwdDb(c));
+                }
+
+            } else {
+
+                if (!instances.containsKey(dbName)) {
+
+                    instances.put(dbName, new NwdDb(c, dbName));
+                }
             }
 
-        }else if(Utils.stringIsNullOrWhitespace(dbName) ||
-                dbName.trim().equalsIgnoreCase("nwd")){
-
-            dbName = "nwd";
-
-            if(!instances.containsKey(dbName)){
-
-                instances.put(dbName, new NwdDb(c));
-            }
-
-        } else {
-
-            if(!instances.containsKey(dbName)){
-
-                instances.put(dbName, new NwdDb(c, dbName));
-            }
+            return instances.get(dbName);
         }
-
-        return instances.get(dbName);
     }
 
     /**
@@ -509,6 +526,8 @@ public class NwdDb {
         for(String path : pathToTags.keySet()){
 
             for(String tag : pathToTags.get(path)) {
+
+                tag = tag.trim();
 
                 try{
 
@@ -1021,5 +1040,39 @@ public class NwdDb {
         }
 
         return pathTags;
+    }
+
+    public void removeTagsForFile(String path) {
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            TapestryUtils.getCurrentDeviceName(), path};
+
+            db.execSQL(DATABASE_DELETE_TAGS_FOR_PATH, args);
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error deleting tags " +
+                    "for path [" + path + "]: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    public void linkTagStringToFile(String path, String tags) {
+
+        MultiMapString pathToTags = new MultiMapString();
+
+        pathToTags.putCommaStringValues(path, tags);
+
+        linkTagsToFile(pathToTags);
     }
 }

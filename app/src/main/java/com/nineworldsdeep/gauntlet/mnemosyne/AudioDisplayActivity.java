@@ -111,7 +111,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             try {
 
 //                HashMap<String,String> dbPathToNameMap =
-//                        DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+//                        DisplayNameDbIndex.importExportPathToNameMap(NwdDb.getInstance(this));
 
                 setNowPlaying(mps.queueAndPlayLast(
                         NwdDb.getInstance(this),

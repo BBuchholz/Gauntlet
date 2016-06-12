@@ -210,7 +210,7 @@ public class AudioListV2Activity extends AppCompatActivity {
         HashMap<String, String> map;
 
 //        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.getPathToNameMap(db);
+//                DisplayNameDbIndex.importExportPathToNameMap(db);
 
         mFileListItems =
                 MnemoSyneUtils.getAudioListItems(NwdDb.getInstance(this),

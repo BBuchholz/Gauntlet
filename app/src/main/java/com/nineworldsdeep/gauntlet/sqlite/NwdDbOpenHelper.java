@@ -258,13 +258,13 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         // to prevent accidental overwrites
 
         db.execSQL(DATABASE_DROP_FILE_TAGS);
+        db.execSQL(DATABASE_DROP_AUDIO_TRANSCRIPT);
         db.execSQL(DATABASE_DROP_FILE);
         db.execSQL(DATABASE_DROP_DISPLAY_NAME);
         db.execSQL(DATABASE_DROP_PATH);
         db.execSQL(DATABASE_DROP_HASH);
         db.execSQL(DATABASE_DROP_DEVICE);
         db.execSQL(DATABASE_DROP_TAG);
-        db.execSQL(DATABASE_DROP_AUDIO_TRANSCRIPT);
         db.execSQL(DATABASE_DROP_LOCAL_CONFIG);
 
         db.execSQL(DATABASE_CREATE_DISPLAY_NAME);
@@ -272,10 +272,10 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_CREATE_HASH);
         db.execSQL(DATABASE_CREATE_DEVICE);
         db.execSQL(DATABASE_CREATE_TAG);
-        db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
         db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
         db.execSQL(DATABASE_CREATE_FILE);
         db.execSQL(DATABASE_CREATE_FILE_TAGS);
+        db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
 
     }
 

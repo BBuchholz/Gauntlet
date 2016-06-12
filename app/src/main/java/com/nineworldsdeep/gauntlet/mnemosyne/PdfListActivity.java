@@ -226,7 +226,7 @@ public class PdfListActivity extends AppCompatActivity {
         HashMap<String, String> map;
 
 //        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.getPathToNameMap(db);
+//                DisplayNameDbIndex.importExportPathToNameMap(db);
 
         mFileListItems =
                 MnemoSyneUtils.getDocumentListItems(NwdDb.getInstance(this),

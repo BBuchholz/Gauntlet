@@ -84,7 +84,7 @@ public class FileHashDbIndex {
         HashMap<String, String> pathToHashMap =
                 getPathToHashMap(true, false, db);
 
-        int count = countAndStoreSHA1Hashes(f, 0, true, pathToHashMap);
+        int count = countAndStoreSHA1Hashes(f, 0, ignorePreviouslyHashed, pathToHashMap);
 
         db.linkFilesToHashes(pathToHashMap);
 

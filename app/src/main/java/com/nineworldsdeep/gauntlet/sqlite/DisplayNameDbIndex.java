@@ -33,7 +33,7 @@ public class DisplayNameDbIndex {
 //        //loadToDbFromFile();
 //    }
 
-    public static HashMap<String, String> getPathToNameMap(NwdDb db){
+    public static HashMap<String, String> importExportPathToNameMap(NwdDb db){
 
         return getPathToNameMap(true, true, db);
     }
@@ -118,7 +118,7 @@ public class DisplayNameDbIndex {
 //
 //        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
 //
-//        for(Map.Entry<String,String> ent : getPathToNameMap().entrySet()){
+//        for(Map.Entry<String,String> ent : importExportPathToNameMap().entrySet()){
 //
 //            dnif.addDisplayName(ent.getValue(), ent.getKey());
 //        }

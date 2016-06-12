@@ -30,6 +30,11 @@ public class TagDbIndex {
         return tagString;
     }
 
+    public static HashMap<String,String> importExportPathToTagStringMap(NwdDb db){
+
+        return getMergedPathToTagStringMap(true, true, db);
+    }
+
     public static HashMap<String, String> getMergedPathToTagStringMap(
             boolean importFile,
             boolean exportFile,
@@ -118,13 +123,26 @@ public class TagDbIndex {
                                     String commaSeparatedTagString,
                                     NwdDb db) {
 
+        //be sure to import all file tags to db, so we don't erase them all on output (saves below)
+        HashMap<String,String> justForTesting = getMergedPathToTagStringMap(true, false, db);
+
+        //using for breakpoint
+        justForTesting.isEmpty();
+
+        //remove all tags so that any removed tags will disappear
+        db.removeTagsForFile(path);
+
         MultiMapString pathTags = new MultiMapString();
 
         pathTags.putCommaStringValues(path, commaSeparatedTagString);
 
         db.linkTagsToFile(pathTags);
 
-        //ignore output
-        getMergedPathToTagStringMap(true, true, db);
+        //ignore output, saves to export file without loading previous (done above)
+        justForTesting = getMergedPathToTagStringMap(false, true, db);
+
+        //using for breakpoint
+        justForTesting.isEmpty();
     }
+
 }

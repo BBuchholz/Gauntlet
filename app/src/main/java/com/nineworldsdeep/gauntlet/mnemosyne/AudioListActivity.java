@@ -467,7 +467,7 @@ public class AudioListActivity extends AppCompatActivity {
 //        NwdDb db = NwdDb.getInstance(this);
 //
 //        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.getPathToNameMap(db);
+//                DisplayNameDbIndex.importExportPathToNameMap(db);
 //
 //        lvItems.setAdapter(
 //                new ArrayAdapter<>(this,

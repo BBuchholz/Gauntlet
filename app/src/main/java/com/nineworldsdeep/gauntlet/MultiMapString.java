@@ -34,6 +34,10 @@ public class MultiMapString {
 
     public void put(String key, String value){
 
+        //always trim
+        key = key.trim();
+        value = value.trim();
+
         //just ignore empty values
         if(Utils.stringIsNullOrWhitespace(key) ||
                 Utils.stringIsNullOrWhitespace(value)){

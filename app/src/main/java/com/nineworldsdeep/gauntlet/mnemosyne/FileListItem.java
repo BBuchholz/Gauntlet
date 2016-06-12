@@ -20,14 +20,9 @@ public class FileListItem {
 
     public FileListItem(String filePath, NwdDb db) {
 
-//        file = new File(filePath);
-//
-//        processPath();
-
         setPath(filePath, db); //handles everything
     }
 
-    //private void processPath(HashMap<String,String> dbPathToNameMap){
     private void processPath(NwdDb db){
 
         if(file != null) {
@@ -78,12 +73,9 @@ public class FileListItem {
     //TODO: make private, use set and save
     public void setDisplayName(String displayName, NwdDb db) throws Exception {
 
-        //DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
-        //dni.setDisplayName(file.getAbsolutePath(), displayName);
         db.linkFileToDisplayName(file.getAbsolutePath(), displayName);
         this.displayName = displayName;
-//        FileHashIndex fhi = FileHashIndex.getInstance();
-//        fhi.hashStoreAndSave(file);
+
         FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
     }
 
@@ -92,28 +84,18 @@ public class FileListItem {
     }
 
     private void setTagString(String tags, NwdDb db) throws Exception {
-//        TagIndex ti = TagIndex.getInstance();
-//        ti.setTagString(file.getAbsolutePath(), tags);
 
         TagDbIndex.setTagString(file.getAbsolutePath(), tags, db);
 
         this.tags = tags;
-//        FileHashIndex fhi = FileHashIndex.getInstance();
-//        fhi.hashStoreAndSave(file);
+
         FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
     }
 
     public void setAndSaveTagString(String tags, NwdDb db) throws Exception {
-//        setTagString(tags, db);
-//        TagIndex.getInstance().save();
 
         setTagString(tags, db);
     }
-//
-//    public void setAndSaveDisplayName(String displayName, NwdDb db) throws Exception {
-//        setDisplayName(displayName, db);
-//        DisplayNameDbIndex.getInstance().save();
-//    }
 
     public String getTags(){
         return tags;

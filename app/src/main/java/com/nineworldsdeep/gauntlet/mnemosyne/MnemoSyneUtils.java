@@ -4,10 +4,10 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -242,13 +242,21 @@ public class MnemoSyneUtils {
                                 NwdDb db)
             throws Exception {
 
-        HashMap<String,String> dbPathToNameMap =
-                DisplayNameDbIndex.getPathToNameMap(db);
+        HashMap<String,String> dbPathToTagsMap = //storing for testing
+                TagDbIndex.importExportPathToTagStringMap(db);
 
         FileListItem fliSrc = new FileListItem(sourcePath, db);
         FileListItem fliDest = new FileListItem(destinationPath, db);
 
-        fliDest.setAndSaveTagString(fliSrc.getTags(), db);
+//        MultiMapString pathToTags = new MultiMapString();
+//
+//        pathToTags.putCommaStringValues(fliDest.getFile().getAbsolutePath(),
+//                fliSrc.getTags());
+//
+//        db.linkTagsToFile(pathToTags);
+        //fliDest.setAndSaveTagString(fliSrc.getTags(), db);
+        db.linkTagStringToFile(fliDest.getFile().getAbsolutePath(),
+                fliSrc.getTags());
     }
 
     public static void copyDisplayName(String sourcePath,
@@ -257,7 +265,7 @@ public class MnemoSyneUtils {
             throws Exception {
 
         HashMap<String,String> dbPathToNameMap =
-                DisplayNameDbIndex.getPathToNameMap(db);
+                DisplayNameDbIndex.importExportPathToNameMap(db);
 
         FileListItem fliSrc = new FileListItem(sourcePath, db);
         FileListItem fliDest = new FileListItem(destinationPath, db);

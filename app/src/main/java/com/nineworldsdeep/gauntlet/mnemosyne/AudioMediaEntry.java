@@ -14,8 +14,8 @@ public class AudioMediaEntry extends FileListItem{
 //    private String path;
 //    private String name;
 
-    public AudioMediaEntry(String filePath, HashMap<String,String> dbPathToNameMap){
-        super(filePath, dbPathToNameMap);
+    public AudioMediaEntry(String filePath, NwdDb db){
+        super(filePath, db);
     }
 
     public String getPath() {

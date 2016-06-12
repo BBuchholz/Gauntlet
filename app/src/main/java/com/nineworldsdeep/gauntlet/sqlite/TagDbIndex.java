@@ -1,7 +1,10 @@
 package com.nineworldsdeep.gauntlet.sqlite;
 
-import com.nineworldsdeep.gauntlet.mnemosyne.DisplayNameIndexFile;
-import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
+import android.text.TextUtils;
+
+import com.nineworldsdeep.gauntlet.MultiMapString;
+import com.nineworldsdeep.gauntlet.mnemosyne.FileTagFragment;
+import com.nineworldsdeep.gauntlet.mnemosyne.TagIndexFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,122 +15,116 @@ import java.util.Map;
  */
 public class TagDbIndex {
 
-    private static TagDbIndex instance;
-    //private NwdDb db;
+    public static String getTagStringForPath(String path, NwdDb db){
 
-//    public static DisplayNameDbIndex getInstance() {
-//
-//        if(instance == null){
-//
-//            instance = new DisplayNameDbIndex();
-//        }
-//
-//        return instance;
-//    }
+        HashMap<String,String> pathTagStrings =
+                getMergedPathToTagStringMap(true, false, db);
 
-    private TagDbIndex(){
-        //singleton pattern, private constructor
+        String tagString = "";
 
-        //pathToName = new HashMap<>();
-        //this.db = db;
-        //loadToDbFromFile();
+        if(pathTagStrings.containsKey(path)){
+
+            tagString = pathTagStrings.get(path);
+        }
+
+        return tagString;
     }
 
-    public static HashMap<String, String> getPathToNameMap(NwdDb db){
-asdf
-        //idempotent
-        loadToDbFromFile(db);
+    public static HashMap<String, String> getMergedPathToTagStringMap(
+            boolean importFile,
+            boolean exportFile,
+            NwdDb db){
 
-        HashMap<String, String> output = new HashMap<>();
+        if(importFile) {
+
+            //idempotent
+            loadToDbFromFile(db);
+        }
 
         List<Map<String, String>> records =
-                db.getPathDisplayNamesForCurrentDevice();
+                db.getPathTagRecordsForCurrentDevice();
+
+        MultiMapString pathToTags =
+                new MultiMapString();
 
         for(Map<String, String> map : records){
 
             String path = map.get(NwdContract.COLUMN_PATH_VALUE);
-            String name = map.get(NwdContract.COLUMN_DISPLAY_NAME_VALUE);
+            String tag = map.get(NwdContract.COLUMN_TAG_VALUE);
 
-            output.put(path, name);
+            pathToTags.put(path, tag);
         }
 
-        //TODO: this is a hack (will combine db and file records into file)
-        saveToFile(output);
+        HashMap<String, String> output =
+                convertPathTagMultiMapToPathTagStringHashMap(pathToTags);
+
+        if(exportFile) {
+
+            saveToFile(output);
+        }
 
         return output;
     }
 
-    private static void saveToFile(HashMap<String, String> pathToNameMap) {
-asdf
-        //save a copy with the db files included
-        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
+    private static HashMap<String, String>
+        convertPathTagMultiMapToPathTagStringHashMap(
+            MultiMapString pathToTags) {
 
-        for(Map.Entry<String,String> ent : pathToNameMap.entrySet()){
+        HashMap<String,String> pathToTagString =
+                new HashMap<>();
 
-            dnif.addDisplayName(ent.getValue(), ent.getKey());
+        for(String path : pathToTags.keySet()){
+
+            pathToTagString.put(path,
+                    TextUtils.join(", ", pathToTags.get(path)));
         }
 
-        dnif.save();
+        return pathToTagString;
     }
 
+    private static void saveToFile(HashMap<String, String> pathToTagString) {
 
-//    public boolean hasDisplayName(String filePath) {
-//
-//        return pathToName.containsKey(filePath);
-//    }
+        TagIndexFile tif = new TagIndexFile();
 
-    public String getDisplayName(String filePath, NwdDb db) {
+        for(Map.Entry<String,String> ent : pathToTagString.entrySet()){
 
-        return db.getDisplayNameForPath(filePath);
+            tif.addTagString(ent.getKey(), ent.getValue());
+        }
+
+        tif.save();
     }
-
-//    public void setDisplayName(String path, String displayName, NwdDb db) {
-//
-//        db.linkFileToDisplayName(path, displayName);
-//    }
-
-//    public void save() {
-//
-//        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
-//
-//        for(Map.Entry<String,String> ent : getPathToNameMap().entrySet()){
-//
-//            dnif.addDisplayName(ent.getValue(), ent.getKey());
-//        }
-//
-//        dnif.save();
-//
-//    }
 
     public static void loadToDbFromFile(NwdDb db){
-asdf
-        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
-        dnif.loadItems();
-//
-//        for(FileListItem ili : dnif.getFileListItems()){
-//
-//            setDisplayName(ili.getFile().getAbsolutePath(),
-//                    ili.getDisplayName());
-//        }
-//
-//        for(FileListItem ili : dnif.getFileListItems()){
-//
-//            setDisplayName(ili.getFile().getAbsolutePath(),
-//                    ili.getDisplayName());
-//        }
 
-        setDisplayNames(dnif.getFileListItems(), db);
+        TagIndexFile tif = new TagIndexFile();
+        tif.loadItems();
+
+        setTags(tif.getFileTagFragments(), db);
     }
 
-    private static void setDisplayNames(List<FileListItem> fileListItems, NwdDb db) {
-asdf
-        db.linkFilesToDisplayNames(fileListItems);
+    private static void setTags(List<FileTagFragment> fileTagFragments, NwdDb db) {
+
+        MultiMapString pathToTags = new MultiMapString();
+
+        for(FileTagFragment ftf : fileTagFragments){
+
+            pathToTags.putCommaStringValues(ftf.getPath(), ftf.getTags());
+        }
+
+        db.linkTagsToFile(pathToTags);
     }
 
-    public static void setDisplayNameAndExportFile(String path,
-                                                   String displayName,
-                                                   NwdDb db) {
-asdf
-        db.linkFileToDisplayName(path, displayName);
+    public static void setTagString(String path,
+                                    String commaSeparatedTagString,
+                                    NwdDb db) {
+
+        MultiMapString pathTags = new MultiMapString();
+
+        pathTags.putCommaStringValues(path, commaSeparatedTagString);
+
+        db.linkTagsToFile(pathTags);
+
+        //ignore output
+        getMergedPathToTagStringMap(true, true, db);
     }
 }

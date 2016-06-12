@@ -110,6 +110,8 @@ public class PdfListActivity extends AppCompatActivity {
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
 
+        NwdDb.getInstance(this).open();
+
         mCurrentDir = null;
 
         if(s != null){
@@ -222,10 +224,13 @@ public class PdfListActivity extends AppCompatActivity {
         NwdDb db = NwdDb.getInstance(this);
 
         HashMap<String, String> map;
-        HashMap<String,String> dbPathToNameMap =
-                DisplayNameDbIndex.getPathToNameMap(db);
 
-        mFileListItems = MnemoSyneUtils.getDocumentListItems(dbPathToNameMap, mCurrentDir);
+//        HashMap<String,String> dbPathToNameMap =
+//                DisplayNameDbIndex.getPathToNameMap(db);
+
+        mFileListItems =
+                MnemoSyneUtils.getDocumentListItems(NwdDb.getInstance(this),
+                        mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 

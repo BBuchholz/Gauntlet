@@ -2,7 +2,9 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
+import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,44 +18,26 @@ public class FileListItem {
     private String displayName = null;
     private String tags = "";
 
-    public FileListItem(String filePath, HashMap<String,String> dbPathToNameMap) {
+    public FileListItem(String filePath, NwdDb db) {
 
 //        file = new File(filePath);
 //
 //        processPath();
 
-        setPath(filePath, dbPathToNameMap); //handles everything
+        setPath(filePath, db); //handles everything
     }
 
-    private void processPath(HashMap<String,String> dbPathToNameMap){
+    //private void processPath(HashMap<String,String> dbPathToNameMap){
+    private void processPath(NwdDb db){
 
         if(file != null) {
 
-            //DisplayNameDbIndex dni = DisplayNameDbIndex.getInstance(db);
+            this.displayName = processDisplayName(
+                    DisplayNameDbIndex.getNameForPath(file.getAbsolutePath(),
+                            db));
 
-            String indexedName = dbPathToNameMap.get(file.getAbsolutePath()); //dni.getDisplayName(file.getAbsolutePath());
-
-//            if (!Utils.stringIsNullOrWhitespace(indexedName)) {
-//
-//                displayName = indexedName;
-//
-//            }else{
-//
-//                displayName = file.getName();
-//            }
-
-            displayName = processDisplayName(indexedName);
-
-            TagIndex ti = TagIndex.getInstance();
-
-            if (ti.hasTagString(file.getAbsolutePath())) {
-
-                tags = ti.getTagString(file.getAbsolutePath());
-
-            }else{
-
-                tags = "";
-            }
+            this.tags =
+                    TagDbIndex.getTagStringForPath(file.getAbsolutePath(), db);
         }
     }
 
@@ -85,10 +69,10 @@ public class FileListItem {
         return file;
     }
 
-    public void setPath(String filePath, HashMap<String,String> dbPathToNameMap){
+    public void setPath(String filePath, NwdDb db){
 
         file = new File(filePath);
-        processPath(dbPathToNameMap);
+        processPath(db);
     }
 
     //TODO: make private, use set and save
@@ -98,26 +82,32 @@ public class FileListItem {
         //dni.setDisplayName(file.getAbsolutePath(), displayName);
         db.linkFileToDisplayName(file.getAbsolutePath(), displayName);
         this.displayName = displayName;
-        FileHashIndex fhi = FileHashIndex.getInstance();
-        fhi.hashStoreAndSave(file);
+//        FileHashIndex fhi = FileHashIndex.getInstance();
+//        fhi.hashStoreAndSave(file);
+        FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    //TODO: make private, use set and save
-    public void setTagString(String tags) throws Exception {
-        TagIndex ti = TagIndex.getInstance();
-        ti.setTagString(file.getAbsolutePath(), tags);
+    private void setTagString(String tags, NwdDb db) throws Exception {
+//        TagIndex ti = TagIndex.getInstance();
+//        ti.setTagString(file.getAbsolutePath(), tags);
+
+        TagDbIndex.setTagString(file.getAbsolutePath(), tags, db);
+
         this.tags = tags;
-        FileHashIndex fhi = FileHashIndex.getInstance();
-        fhi.hashStoreAndSave(file);
+//        FileHashIndex fhi = FileHashIndex.getInstance();
+//        fhi.hashStoreAndSave(file);
+        FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
     }
 
-    public void setAndSaveTagString(String tags) throws Exception {
-        setTagString(tags);
-        TagIndex.getInstance().save();
+    public void setAndSaveTagString(String tags, NwdDb db) throws Exception {
+//        setTagString(tags, db);
+//        TagIndex.getInstance().save();
+
+        setTagString(tags, db);
     }
 //
 //    public void setAndSaveDisplayName(String displayName, NwdDb db) throws Exception {

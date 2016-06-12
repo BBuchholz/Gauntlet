@@ -31,56 +31,56 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    public static List<FileListItem> getImageListItems(HashMap<String,String> dbPathToNameMap, File dir){
+    public static List<FileListItem> getImageListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getImageListItemsFromPaths(dbPathToNameMap, getTopImageFolders()));
+            lst.addAll(getImageListItemsFromPaths(db, getTopImageFolders()));
 
         }else{
 
-            lst.addAll(getFileListItems(dbPathToNameMap, dir, imageExts));
+            lst.addAll(getFileListItems(db, dir, imageExts));
         }
 
         return lst;
     }
 
-    public static List<FileListItem> getAudioListItems(HashMap<String,String> dbPathToNameMap, File dir){
+    public static List<FileListItem> getAudioListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getAudioListItemsFromPaths(dbPathToNameMap, getAudioTopFolders()));
+            lst.addAll(getAudioListItemsFromPaths(db, getAudioTopFolders()));
         }
         else
         {
-            lst.addAll(getFileListItems(dbPathToNameMap, dir, audioExts));
+            lst.addAll(getFileListItems(db, dir, audioExts));
         }
 
         return lst;
     }
 
-    public static List<FileListItem> getDocumentListItems(HashMap<String,String> dbPathToNameMap, File dir){
+    public static List<FileListItem> getDocumentListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getDocumentListItemsFromPaths(dbPathToNameMap, getDocumentTopFolders()));
+            lst.addAll(getDocumentListItemsFromPaths(db, getDocumentTopFolders()));
         }
         else
         {
-            lst.addAll(getFileListItems(dbPathToNameMap, dir, documentExts));
+            lst.addAll(getFileListItems(db, dir, documentExts));
         }
 
         return lst;
     }
 
     private static List<FileListItem> getDocumentListItemsFromPaths(
-            HashMap<String,String> dbPathToNameMap,
+            NwdDb db,
             List<String> pathList) {
 
         List<FileListItem> newList = new ArrayList<>();
@@ -91,7 +91,7 @@ public class MnemoSyneUtils {
 
             if(isPdfFileFromPath(filePath) || f.isDirectory()) {
 
-                newList.add(new FileListItem(filePath, dbPathToNameMap));
+                newList.add(new FileListItem(filePath, db));
             }
         }
 
@@ -159,35 +159,37 @@ public class MnemoSyneUtils {
     }
 
     private static List<FileListItem> getFileListItems(
-            HashMap<String,String> dbPathToNameMap,
+            NwdDb db,
             File dir,
             String[] exts){
 
         List<FileListItem> lst = new ArrayList<>();
 
-        lst.addAll(getFileListItemsFromPaths(Utils.getAllDirectoryPaths(dir), dbPathToNameMap));
+        lst.addAll(getFileListItemsFromPaths(
+                Utils.getAllDirectoryPaths(dir), db));
 
-        lst.addAll(getFileListItemsFromPaths(Utils.getAllFilePathsWithExt(dir, exts), dbPathToNameMap));
+        lst.addAll(getFileListItemsFromPaths(
+                Utils.getAllFilePathsWithExt(dir, exts), db));
 
         return lst;
     }
 
     private static List<FileListItem> getFileListItemsFromPaths(
             List<String> lst,
-            HashMap<String,String> dbPathToNameMap) {
+            NwdDb db) {
 
         List<FileListItem> newList = new ArrayList<>();
 
         for(String filePath : lst){
-            newList.add(new FileListItem(filePath,
-                    dbPathToNameMap.get(filePath)));
+
+            newList.add(new FileListItem(filePath, db));
         }
 
         return newList;
     }
 
     private static List<FileListItem> getImageListItemsFromPaths(
-            HashMap<String,String> dbPathToNameMap,
+            NwdDb db,
             List<String> lst) {
 
         List<FileListItem> newList = new ArrayList<>();
@@ -198,15 +200,14 @@ public class MnemoSyneUtils {
 
             if(isImageFileFromPath(filePath) || f.isDirectory()) {
 
-                newList.add(new FileListItem(filePath,
-                        dbPathToNameMap.get(filePath)));
+                newList.add(new FileListItem(filePath, db));
             }
         }
 
         return newList;
     }
 
-    private static List<FileListItem> getAudioListItemsFromPaths(HashMap<String,String> dbPathToNameMap, List<String> lst) {
+    private static List<FileListItem> getAudioListItemsFromPaths(NwdDb db, List<String> lst) {
 
         List<FileListItem> newList = new ArrayList<>();
 
@@ -216,7 +217,7 @@ public class MnemoSyneUtils {
 
             if(isAudioFileFromPath(filePath) || f.isDirectory()) {
 
-                newList.add(new FileListItem(filePath, dbPathToNameMap));
+                newList.add(new FileListItem(filePath, db));
             }
         }
 
@@ -244,10 +245,10 @@ public class MnemoSyneUtils {
         HashMap<String,String> dbPathToNameMap =
                 DisplayNameDbIndex.getPathToNameMap(db);
 
-        FileListItem fliSrc = new FileListItem(sourcePath, dbPathToNameMap);
-        FileListItem fliDest = new FileListItem(destinationPath, dbPathToNameMap);
+        FileListItem fliSrc = new FileListItem(sourcePath, db);
+        FileListItem fliDest = new FileListItem(destinationPath, db);
 
-        fliDest.setAndSaveTagString(fliSrc.getTags());
+        fliDest.setAndSaveTagString(fliSrc.getTags(), db);
     }
 
     public static void copyDisplayName(String sourcePath,
@@ -258,8 +259,8 @@ public class MnemoSyneUtils {
         HashMap<String,String> dbPathToNameMap =
                 DisplayNameDbIndex.getPathToNameMap(db);
 
-        FileListItem fliSrc = new FileListItem(sourcePath, dbPathToNameMap);
-        FileListItem fliDest = new FileListItem(destinationPath, dbPathToNameMap);
+        FileListItem fliSrc = new FileListItem(sourcePath, db);
+        FileListItem fliDest = new FileListItem(destinationPath, db);
 
         if(!fliSrc.getDisplayName()
                 .equalsIgnoreCase(fliSrc.getFile().getName())){

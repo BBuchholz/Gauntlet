@@ -6,7 +6,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
@@ -223,6 +225,36 @@ public class NwdDb {
             "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
             "JOIN " + NwdContract.TABLE_DISPLAY_NAME + " dn " +
             "ON f." + NwdContract.COLUMN_DISPLAY_NAME_ID + " = dn." + NwdContract.COLUMN_DISPLAY_NAME_ID + " " +
+            "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+            "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
+            "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? ; ";
+
+
+    private static final String DATABASE_GET_HASHES_FOR_PATHS =
+            "SELECT " +
+                    "" + NwdContract.COLUMN_PATH_VALUE + ", " +
+                    "" + NwdContract.COLUMN_HASH_VALUE + " " +
+            "FROM " + NwdContract.TABLE_PATH + " p " +
+            "JOIN " + NwdContract.TABLE_FILE + " f " +
+            "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
+            "JOIN " + NwdContract.TABLE_HASH + " h " +
+            "ON f." + NwdContract.COLUMN_HASH_ID + " = h." + NwdContract.COLUMN_HASH_ID + " " +
+            "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+            "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
+            "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? ; ";
+
+
+    private static final String DATABASE_GET_TAGS_FOR_PATHS =
+            "SELECT " +
+                    "" + NwdContract.COLUMN_PATH_VALUE + ", " +
+                    "" + NwdContract.COLUMN_TAG_VALUE + " " +
+            "FROM " + NwdContract.TABLE_PATH + " p " +
+            "JOIN " + NwdContract.TABLE_FILE + " f " +
+            "ON p." + NwdContract.COLUMN_PATH_ID + " = f." + NwdContract.COLUMN_PATH_ID + " " +
+            "JOIN " + NwdContract.TABLE_FILE_TAGS + " ft " +
+            "ON f." + NwdContract.COLUMN_FILE_ID + " = ft." + NwdContract.COLUMN_FILE_ID + " " +
+            "JOIN " + NwdContract.TABLE_TAG + " t " +
+            "ON ft." + NwdContract.COLUMN_TAG_ID + " = t." + NwdContract.COLUMN_TAG_ID + " " +
             "JOIN " + NwdContract.TABLE_DEVICE + " d " +
             "ON d." + NwdContract.COLUMN_DEVICE_ID + " = f." + NwdContract.COLUMN_DEVICE_ID + " " +
             "WHERE d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + " = ? ; ";
@@ -467,6 +499,49 @@ public class NwdDb {
         }
     }
 
+    public void linkTagsToFile(MultiMapString pathToTags){
+
+        String deviceDescription = TapestryUtils.getCurrentDeviceName();
+
+        //open transaction
+        db.beginTransaction();
+
+        for(String path : pathToTags.keySet()){
+
+            for(String tag : pathToTags.get(path)) {
+
+                try{
+
+                    //insert or ignore device
+                    db.execSQL(DATABASE_ENSURE_DEVICE,
+                            new String[]{deviceDescription});
+
+                    //insert or ignore path
+                    db.execSQL(DATABASE_ENSURE_PATH,
+                            new String[]{path});
+
+                    //insert or ignore tag
+                    db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+
+                    //insert or ignore file tag entry
+                    db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
+                            new String[]{deviceDescription, path, tag});
+
+                }catch(Exception ex) {
+
+                    Utils.log("error linking tag [" +
+                            tag + "] to file path [" +
+                            path + "]: " + ex.getMessage());
+
+                }
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
+    }
+
     /**
      * determines whether the current db address is consistent with
      * the current status of "test mode" in our configuration settings
@@ -607,15 +682,6 @@ public class NwdDb {
         List<Map<String, String>> pathDisplayNames =
                 new ArrayList<>();
 
-
-//        close(); //just in case
-//        open();
-//
-//        if(!db.isOpen()){
-//            close(); //just in case
-//            open();
-//        }
-
         //open transaction
         db.beginTransaction();
 
@@ -725,17 +791,18 @@ public class NwdDb {
 
     public void linkFilesToDisplayNames(List<FileListItem> fileListItems) {
 
-        if(!db.isOpen()){
+//        if(!db.isOpen()){
+//
+//            open();
+//        }
 
-            open();
-        }
+        String deviceDescription = TapestryUtils.getCurrentDeviceName();
 
         //open transaction
         db.beginTransaction();
 
         for(FileListItem fli : fileListItems){
 
-            String deviceDescription = TapestryUtils.getCurrentDeviceName();
             String filePath = fli.getFile().getAbsolutePath();
             String displayName = fli.getDisplayName();
 
@@ -768,5 +835,191 @@ public class NwdDb {
 
         db.endTransaction();
 
+    }
+
+    public List<Map<String, String>> getPathHashRecordsForCurrentDevice() {
+
+        List<Map<String,String>> pathHashes =
+                new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{TapestryUtils.getCurrentDeviceName()};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_HASHES_FOR_PATHS, args);
+
+            String[] columnNames =
+                    new String[]{ NwdContract.COLUMN_HASH_VALUE,
+                                  NwdContract.COLUMN_PATH_VALUE };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    pathHashes.add(record);
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error retrieving path display names " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return pathHashes;
+    }
+
+    public void linkFilesToHashes(HashMap<String, String> pathToHashMap) {
+
+
+        //hack
+        String hashedAt = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss();
+
+        db.beginTransaction();
+
+        for(String path : pathToHashMap.keySet()){
+
+            String deviceDescription = TapestryUtils.getCurrentDeviceName();
+            String filePath = path;
+            String hash= pathToHashMap.get(path);
+
+            try{
+
+                //insert or ignore device
+                db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
+                //insert or ignore path
+                db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+                //insert or ignore display name
+                db.execSQL(DATABASE_ENSURE_HASH, new String[]{hash});
+                //update or ignore file (if exists)
+                db.execSQL(DATABASE_UPDATE_HASH_FOR_FILE,
+                        new String[]{hashedAt, hash, filePath, deviceDescription});
+                //insert or ignore file (if !exists)
+                db.execSQL(DATABASE_ENSURE_HASH_FOR_FILE,
+                        new String[]{deviceDescription, filePath, hash, hashedAt});
+
+            }catch(Exception ex) {
+
+                Utils.log("error linking hash [" +
+                        hash + "] to file [" +
+                        filePath + "]: " + ex.getMessage());
+
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
+    }
+
+    public void linkFilesToHashes(List<FileHashFragment> fileHashFragments) {
+
+
+        //hack
+        String hashedAt = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss();
+
+        db.beginTransaction();
+
+        for(FileHashFragment fhf : fileHashFragments){
+
+            String deviceDescription = TapestryUtils.getCurrentDeviceName();
+            String filePath = fhf.getPath();
+            String hash= fhf.getHash();
+
+            try{
+
+                //insert or ignore device
+                db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
+                //insert or ignore path
+                db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+                //insert or ignore display name
+                db.execSQL(DATABASE_ENSURE_HASH, new String[]{hash});
+                //update or ignore file (if exists)
+                db.execSQL(DATABASE_UPDATE_HASH_FOR_FILE,
+                        new String[]{hashedAt, hash, filePath, deviceDescription});
+                //insert or ignore file (if !exists)
+                db.execSQL(DATABASE_ENSURE_HASH_FOR_FILE,
+                        new String[]{deviceDescription, filePath, hash, hashedAt});
+
+            }catch(Exception ex) {
+
+                Utils.log("error linking hash [" +
+                        hash + "] to file [" +
+                        filePath + "]: " + ex.getMessage());
+
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
+    }
+
+    public List<Map<String, String>> getPathTagRecordsForCurrentDevice() {
+
+        List<Map<String,String>> pathTags =
+                new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{TapestryUtils.getCurrentDeviceName()};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_TAGS_FOR_PATHS, args);
+
+            String[] columnNames =
+                    new String[]{ NwdContract.COLUMN_TAG_VALUE,
+                                  NwdContract.COLUMN_PATH_VALUE };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    pathTags.add(record);
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log("error retrieving path tags " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return pathTags;
     }
 }

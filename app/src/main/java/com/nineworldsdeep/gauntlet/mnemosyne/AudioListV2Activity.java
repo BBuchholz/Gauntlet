@@ -19,6 +19,7 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
+import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FilenameUtils;
@@ -208,11 +209,11 @@ public class AudioListV2Activity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        HashMap<String,String> dbPathToNameMap =
-                DisplayNameDbIndex.getPathToNameMap(db);
+//        HashMap<String,String> dbPathToNameMap =
+//                DisplayNameDbIndex.getPathToNameMap(db);
 
         mFileListItems =
-                MnemoSyneUtils.getAudioListItems(dbPathToNameMap,
+                MnemoSyneUtils.getAudioListItems(NwdDb.getInstance(this),
                         mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
@@ -371,18 +372,19 @@ public class AudioListV2Activity extends AppCompatActivity {
 
         if(f.exists()){
 
-            FileHashIndex fhi = FileHashIndex.getInstance();
+            //FileHashIndex fhi = FileHashIndex.getInstance();
 
             try{
+
+                NwdDb db = NwdDb.getInstance(this);
 
                 //we call the count and store version that
                 //ignores previously hashed files as
                 //our audio files are not likely to change
                 //and many in number (800+ with mp3's on my
                 //test device), so this is a costly operation
-                int count = fhi.countAndStoreSHA1Hashes(f, 0, true);
-
-                fhi.save();
+                int count = //fhi.countAndStoreSHA1Hashes(f, 0, true);
+                        FileHashDbIndex.countAndStoreSHA1Hashes(f, true, db);
 
                 if(count != 1){
 

@@ -149,8 +149,11 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog,int id) {
 
                                     try {
+
                                         ili.setAndSaveTagString(
-                                                userInput.getText().toString());
+                                                userInput.getText().toString(),
+                                                NwdDb.getInstance(ImageDisplayActivity.this));
+
                                     } catch (Exception e) {
 
                                         Utils.toast(ImageDisplayActivity.this,

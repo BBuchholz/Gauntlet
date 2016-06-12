@@ -110,9 +110,13 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
             try {
 
-                HashMap<String,String> dbPathToNameMap =
-                        DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
-                setNowPlaying(mps.queueAndPlayLast(dbPathToNameMap, audioPath, this));
+//                HashMap<String,String> dbPathToNameMap =
+//                        DisplayNameDbIndex.getPathToNameMap(NwdDb.getInstance(this));
+
+                setNowPlaying(mps.queueAndPlayLast(
+                        NwdDb.getInstance(this),
+                        audioPath,
+                        this));
 
             } catch (IOException e) {
 
@@ -251,7 +255,8 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                     try {
 
                                         ame.setAndSaveTagString(
-                                                userInput.getText().toString());
+                                                userInput.getText().toString(),
+                                                NwdDb.getInstance(AudioDisplayActivity.this));
                                         updateMediaInfo();
 
                                     } catch (Exception e) {
@@ -591,7 +596,8 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                 try {
 
                     ame.setAndSaveTagString(
-                            Tags.toggleTag(tag, ame.getTags()));
+                            Tags.toggleTag(tag, ame.getTags()),
+                            NwdDb.getInstance(AudioDisplayActivity.this));
                     updateMediaInfo();
 
                 } catch (Exception e) {

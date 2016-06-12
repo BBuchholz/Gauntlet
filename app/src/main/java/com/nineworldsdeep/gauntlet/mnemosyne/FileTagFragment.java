@@ -33,11 +33,11 @@ public class FileTagFragment extends Fragment {
         return get("path");
     }
 
-    public void setTagString(String tags) {
-        TagIndex ti = TagIndex.getInstance();
-        ti.setTagString(getPath(), tags);
-        updateLineItem(getPath(), tags);
-    }
+//    public void setTagString(String tags) {
+//        TagIndex ti = TagIndex.getInstance();
+//        ti.setTagString(getPath(), tags);
+//        updateLineItem(getPath(), tags);
+//    }
 
     private void updateLineItem(String path, String tags){
         super.updateLineItem(toLineItem(path, tags));

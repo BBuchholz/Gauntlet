@@ -11,32 +11,57 @@ import java.util.Map;
  * Created by brent on 11/17/15.
  */
 public class DisplayNameDbIndex {
-
-    private static DisplayNameDbIndex instance;
-    //private NwdDb db;
-
-//    public static DisplayNameDbIndex getInstance() {
 //
-//        if(instance == null){
+//    private static DisplayNameDbIndex instance;
+//    //private NwdDb db;
 //
-//            instance = new DisplayNameDbIndex();
-//        }
+////    public static DisplayNameDbIndex getInstance() {
+////
+////        if(instance == null){
+////
+////            instance = new DisplayNameDbIndex();
+////        }
+////
+////        return instance;
+////    }
 //
-//        return instance;
+//    private DisplayNameDbIndex(){
+//        //singleton pattern, private constructor
+//
+//        //pathToName = new HashMap<>();
+//        //this.db = db;
+//        //loadToDbFromFile();
 //    }
-
-    private DisplayNameDbIndex(){
-        //singleton pattern, private constructor
-
-        //pathToName = new HashMap<>();
-        //this.db = db;
-        //loadToDbFromFile();
-    }
 
     public static HashMap<String, String> getPathToNameMap(NwdDb db){
 
-        //idempotent
-        loadToDbFromFile(db);
+        return getPathToNameMap(true, true, db);
+    }
+
+    public static String getNameForPath(String path, NwdDb db){
+
+        HashMap<String,String> pathNames =
+                getPathToNameMap(true, false, db);
+
+        String pathName = "";
+
+        if(pathNames.containsKey(path)){
+
+            pathName = pathNames.get(path);
+        }
+
+        return pathName;
+    }
+
+    public static HashMap<String, String> getPathToNameMap(boolean importFile,
+                                                           boolean exportFile,
+                                                           NwdDb db){
+
+        if(importFile){
+
+            //idempotent
+            loadToDbFromFile(db);
+        }
 
         HashMap<String, String> output = new HashMap<>();
 
@@ -51,8 +76,11 @@ public class DisplayNameDbIndex {
             output.put(path, name);
         }
 
-        //TODO: this is a hack (will combine db and file records into file)
-        saveToFile(output);
+        if(exportFile) {
+
+            //TODO: this is a hack (will combine db and file records into file)
+            saveToFile(output);
+        }
 
         return output;
     }
@@ -103,18 +131,6 @@ public class DisplayNameDbIndex {
 
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
         dnif.loadItems();
-//
-//        for(FileListItem ili : dnif.getFileListItems()){
-//
-//            setDisplayName(ili.getFile().getAbsolutePath(),
-//                    ili.getDisplayName());
-//        }
-//
-//        for(FileListItem ili : dnif.getFileListItems()){
-//
-//            setDisplayName(ili.getFile().getAbsolutePath(),
-//                    ili.getDisplayName());
-//        }
 
         setDisplayNames(dnif.getFileListItems(), db);
     }
@@ -129,5 +145,13 @@ public class DisplayNameDbIndex {
                                                    NwdDb db) {
 
         db.linkFileToDisplayName(path, displayName);
+
+        exportFile(db);
+    }
+
+    private static void exportFile(NwdDb db) {
+
+        //ignore return value
+        getPathToNameMap(false, true, db);
     }
 }

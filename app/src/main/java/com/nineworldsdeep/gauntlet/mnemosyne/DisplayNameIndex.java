@@ -10,67 +10,67 @@ import java.util.Map;
 @Deprecated
 public class DisplayNameIndex {
 
-    private static DisplayNameIndex instance;
-
-    private HashMap<String, String> pathToName;
-
-    public static DisplayNameIndex getInstance() {
-
-        if(instance == null){
-            instance = new DisplayNameIndex();
-        }
-
-        return instance;
-    }
-
-    private DisplayNameIndex(){
-        //singleton pattern, private constructor
-
-        pathToName = new HashMap<>();
-        load();
-    }
-
-//    public boolean hasDisplayName(String filePath) {
+//    private static DisplayNameIndex instance;
 //
-//        return pathToName.containsKey(filePath);
+//    private HashMap<String, String> pathToName;
+//
+//    public static DisplayNameIndex getInstance() {
+//
+//        if(instance == null){
+//            instance = new DisplayNameIndex();
+//        }
+//
+//        return instance;
 //    }
-
-    public String getDisplayName(String filePath) {
-
-        if (!pathToName.containsKey(filePath)){
-
-            return "";
-        }
-
-        return pathToName.get(filePath);
-    }
-
-    public void setDisplayName(String path, String displayName) {
-
-        pathToName.put(path, displayName);
-    }
-
-    public void save() {
-
-        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
-
-        for(Map.Entry<String,String> ent : pathToName.entrySet()){
-
-            dnif.addDisplayName(ent.getValue(), ent.getKey());
-        }
-
-        dnif.save();
-
-    }
-
-    public void load(){
-
-        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
-        dnif.loadItems();
-
-        for(FileListItem ili : dnif.getFileListItems()){
-
-            pathToName.put(ili.getFile().getAbsolutePath(), ili.getDisplayName());
-        }
-    }
+//
+//    private DisplayNameIndex(){
+//        //singleton pattern, private constructor
+//
+//        pathToName = new HashMap<>();
+//        load();
+//    }
+//
+////    public boolean hasDisplayName(String filePath) {
+////
+////        return pathToName.containsKey(filePath);
+////    }
+//
+//    public String getDisplayName(String filePath) {
+//
+//        if (!pathToName.containsKey(filePath)){
+//
+//            return "";
+//        }
+//
+//        return pathToName.get(filePath);
+//    }
+//
+//    public void setDisplayName(String path, String displayName) {
+//
+//        pathToName.put(path, displayName);
+//    }
+//
+//    public void save() {
+//
+//        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
+//
+//        for(Map.Entry<String,String> ent : pathToName.entrySet()){
+//
+//            dnif.addDisplayName(ent.getValue(), ent.getKey());
+//        }
+//
+//        dnif.save();
+//
+//    }
+//
+//    public void load(){
+//
+//        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
+//        dnif.loadItems();
+//
+//        for(FileListItem ili : dnif.getFileListItems()){
+//
+//            pathToName.put(ili.getFile().getAbsolutePath(), ili.getDisplayName());
+//        }
+//    }
 }

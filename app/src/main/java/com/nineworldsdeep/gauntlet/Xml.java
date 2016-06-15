@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -90,14 +91,9 @@ public class Xml {
             fileEl.appendChild(createTextElement(doc, "display-name", fmi.getDisplayName()));
         }
 
-        if(fmi.getHash() != null) {
+        if(fmi.getHashes() != null) {
 
-            fileEl.appendChild(createTextElement(doc,"hash", fmi.getHash()));
-        }
-
-        if(fmi.getHashedAt() != null) {
-
-            fileEl.appendChild(createTextElement(doc,"hashed-at", fmi.getHashedAt()));
+            fileEl.appendChild(createHashesElement(doc, fmi));
         }
 
         if(fmi.getDescription() != null) {
@@ -118,6 +114,35 @@ public class Xml {
         fileEl.appendChild(createTagsNode(doc, fmi.getTags()));
 
         return fileEl;
+    }
+
+    private static Element createHashesElement(Document doc, FileModelItem fmi) {
+
+        Element hashesEl = doc.createElement("hashes");
+
+        if(fmi.getHashes() != null) {
+
+            for(HashModelItem hmi : fmi.getHashes()){
+
+                hashesEl.appendChild(createHashElement(doc, hmi));
+            }
+        }
+
+        return hashesEl;
+    }
+
+    private static Element createHashElement(Document doc, HashModelItem hmi) {
+
+        Element hashEl = doc.createElement("hash");
+
+        hashEl.setAttribute("hash", hmi.getHash());
+
+        if(hmi.getHashedAt() != null) {
+
+            hashEl.setAttribute("hashedAt", hmi.getHashedAt());
+        }
+
+        return hashEl;
     }
 
     private static Element createTagsNode(Document doc,

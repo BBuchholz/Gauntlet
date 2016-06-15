@@ -11,9 +11,10 @@ import java.util.Map;
 public class FileModelItem {
 
     private String mId;
-    private String mDevice, mDisplayName, mHash, mHashedAt, mPath,
+    private String mDevice, mDisplayName, mPath,
             mAudioTranscript, mDescription, mName;
     private ArrayList<String> mTags = new ArrayList<>();
+    private ArrayList<HashModelItem> mHashes = new ArrayList<>();
 
     public FileModelItem(Map<String, String> record) {
 
@@ -37,14 +38,22 @@ public class FileModelItem {
             setDisplayName(record.get(NwdContract.COLUMN_DISPLAY_NAME_VALUE ));
         }
 
+        String hash = null;
+        String hashedAt = null;
+
         if(record.containsKey(NwdContract.COLUMN_HASH_VALUE )){
 
-            setHash(record.get(NwdContract.COLUMN_HASH_VALUE ));
+            hash = record.get(NwdContract.COLUMN_HASH_VALUE );
         }
 
         if(record.containsKey(NwdContract.COLUMN_FILE_HASHED_AT )){
 
-            setHashedAt(record.get(NwdContract.COLUMN_FILE_HASHED_AT ));
+            hashedAt = record.get(NwdContract.COLUMN_FILE_HASHED_AT );
+        }
+
+        if(getId() != null && hash != null){
+
+            getHashes().add(new HashModelItem(getId(), hash, hashedAt));
         }
 
         if(record.containsKey(NwdContract.COLUMN_FILE_DESCRIPTION )){
@@ -103,22 +112,6 @@ public class FileModelItem {
         this.mDisplayName = mDisplayName;
     }
 
-    public String getHash() {
-        return mHash;
-    }
-
-    public void setHash(String mHash) {
-        this.mHash = mHash;
-    }
-
-    public String getHashedAt() {
-        return mHashedAt;
-    }
-
-    public void setHashedAt(String mHashedAt) {
-        this.mHashedAt = mHashedAt;
-    }
-
     public String getPath() {
         return mPath;
     }
@@ -137,5 +130,9 @@ public class FileModelItem {
 
     public ArrayList<String> getTags() {
         return mTags;
+    }
+
+    public ArrayList<HashModelItem> getHashes() {
+        return mHashes;
     }
 }

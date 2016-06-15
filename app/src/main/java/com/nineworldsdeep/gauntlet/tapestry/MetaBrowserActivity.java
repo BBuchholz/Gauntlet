@@ -66,39 +66,15 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
 
         NwdDb.getInstance(this).open();
-
-//        assignDb();
-//
-//        //moved to assignDb() //db.open();
     }
-
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
 
     @Override
     protected void onPause() {
-
         super.onPause();
+
         NwdDb.getInstance(this).close();
     }
 

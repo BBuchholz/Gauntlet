@@ -10,6 +10,9 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -754,7 +757,14 @@ public class NwdDb {
 
         for(String colName : columnNames){
 
-            record.put(colName, c.getString(c.getColumnIndex(colName)));
+            String colValue = null;
+
+            if(!c.isNull(c.getColumnIndex(colName))){
+
+                colValue = c.getString(c.getColumnIndex(colName));
+            }
+
+            record.put(colName, colValue);
         }
 
         return record;
@@ -1074,5 +1084,231 @@ public class NwdDb {
         pathToTags.putCommaStringValues(path, tags);
 
         linkTagsToFile(pathToTags);
+    }
+
+    public List<LocalConfigModelItem> getLocalConfig(Context context) {
+
+        final String DATABASE_GET_LOCAL_CONFIG =
+                "" +
+                        "SELECT " +
+                        NwdContract.COLUMN_LOCAL_CONFIG_KEY + ", " +
+                        NwdContract.COLUMN_LOCAL_CONFIG_VALUE + " " +
+
+                        "FROM " +
+                        NwdContract.TABLE_LOCAL_CONFIG;
+
+        List<LocalConfigModelItem> cfg =
+                new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_LOCAL_CONFIG, args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_LOCAL_CONFIG_KEY,
+                            NwdContract.COLUMN_LOCAL_CONFIG_VALUE
+                    };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    cfg.add(new LocalConfigModelItem(record));
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log(context, "error retrieving path tags " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return cfg;
+
+        //throw new NotImplementedException("NwdDb.getLocalConfig() not implemented");
+    }
+
+    public List<FileModelItem> getFiles(Context context) {
+
+        final String DATABASE_GET_FILES =
+                "" +
+                    "SELECT " +
+                            "f." + NwdContract.COLUMN_FILE_ID + ", " +
+                            "d." + NwdContract.COLUMN_DEVICE_DESCRIPTION + ", " +
+                            "p." + NwdContract.COLUMN_PATH_VALUE + ", " +
+                            "dn." + NwdContract.COLUMN_DISPLAY_NAME_VALUE + ", " +
+                            "h." + NwdContract.COLUMN_HASH_VALUE + ", " +
+                            "f." + NwdContract.COLUMN_FILE_HASHED_AT + ", " +
+                            "f." + NwdContract.COLUMN_FILE_DESCRIPTION + ", " +
+                            "f." + NwdContract.COLUMN_FILE_NAME + ", " +
+                            "at." + NwdContract.COLUMN_AUDIO_TRANSCRIPT_VALUE + " " +
+                        "FROM " + NwdContract.TABLE_FILE + " f " +
+                        "JOIN " + NwdContract.TABLE_DEVICE + " d " +
+                        "ON f." + NwdContract.COLUMN_DEVICE_ID + " = " +
+                            "d." + NwdContract.COLUMN_DEVICE_ID + " " +
+                        "JOIN " + NwdContract.TABLE_PATH + " p " +
+                        "ON f." + NwdContract.COLUMN_PATH_ID + " = " +
+                            "p." + NwdContract.COLUMN_PATH_ID + " " +
+                        "LEFT JOIN " + NwdContract.TABLE_DISPLAY_NAME + " dn " +
+                        "ON f." + NwdContract.COLUMN_DISPLAY_NAME_ID + " = " +
+                            "dn." + NwdContract.COLUMN_DISPLAY_NAME_ID + " " +
+                        "LEFT JOIN " + NwdContract.TABLE_HASH + " h " +
+                        "ON f." + NwdContract.COLUMN_HASH_ID + " = " +
+                            "h." + NwdContract.COLUMN_HASH_ID + " " +
+                        "LEFT JOIN " + NwdContract.TABLE_AUDIO_TRANSCRIPT + " at " +
+                        "ON f." + NwdContract.COLUMN_FILE_ID + " = " +
+                            "at." + NwdContract.COLUMN_FILE_ID + " ";
+
+        List<FileModelItem> files =
+                new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_FILES, args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_FILE_ID,
+                            NwdContract.COLUMN_DEVICE_DESCRIPTION,
+                            NwdContract.COLUMN_PATH_VALUE,
+                            NwdContract.COLUMN_DISPLAY_NAME_VALUE,
+                            NwdContract.COLUMN_HASH_VALUE,
+                            NwdContract.COLUMN_FILE_HASHED_AT,
+                            NwdContract.COLUMN_FILE_DESCRIPTION,
+                            NwdContract.COLUMN_FILE_NAME,
+                            NwdContract.COLUMN_AUDIO_TRANSCRIPT_VALUE
+                    };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    files.add(new FileModelItem(record));
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log(context, "error retrieving path tags " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        MultiMapString fileTags = getFileTags(context);
+
+        for(FileModelItem f : files){
+
+            if(fileTags.containsKey(f.getId())){
+
+                for(String tag : fileTags.get(f.getId())){
+
+                    f.getTags().add(tag);
+                }
+            }
+        }
+
+        return files;
+    }
+
+    public MultiMapString getFileTags(Context context){
+
+        final String DATABASE_GET_FILE_TAGS =
+                "SELECT " +
+                    "ft." + NwdContract.COLUMN_FILE_ID + ", " +
+                    "t." + NwdContract.COLUMN_TAG_VALUE + " " +
+                "FROM " + NwdContract.TABLE_FILE_TAGS + " ft " +
+                "JOIN " + NwdContract.TABLE_TAG + " t " +
+                "ON ft." + NwdContract.COLUMN_TAG_ID + " = " +
+                    "t." + NwdContract.COLUMN_TAG_ID + " ";
+
+        MultiMapString fileTags = new MultiMapString();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor c =
+                    db.rawQuery(DATABASE_GET_FILE_TAGS, args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_FILE_ID,
+                            NwdContract.COLUMN_TAG_VALUE
+                    };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    FileTagModelItem fileTag = new FileTagModelItem(record);
+
+                    fileTags.put(fileTag.getFileId().toString(), fileTag.getTagValue());
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch(Exception ex) {
+
+            Utils.log(context, "error retrieving path tags " +
+                    "for current device: " + ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return fileTags;
     }
 }

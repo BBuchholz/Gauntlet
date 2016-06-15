@@ -2,6 +2,8 @@ package com.nineworldsdeep.gauntlet;
 
 import android.os.Environment;
 
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -303,5 +305,18 @@ public class Configuration {
     public static File getPdfDirectory() {
 
         return getDirectoryStoragePath("/NWD-MEDIA/pdfs");
+    }
+
+    public static File getXmlFile_yyyyMMddHHmmss(String suffix) {
+
+        String fileName = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss()
+                        + "-" + suffix + ".xml";
+
+        if(isInTestMode()){
+
+            fileName = "test-" + fileName;
+        }
+
+        return new File(getDirectoryStoragePath("/NWD/xml"), fileName);
     }
 }

@@ -57,4 +57,9 @@ public class MultiMapString {
 
         return stringToStringList.keySet();
     }
+
+    public boolean containsKey(String key){
+
+        return stringToStringList.containsKey(key);
+    }
 }

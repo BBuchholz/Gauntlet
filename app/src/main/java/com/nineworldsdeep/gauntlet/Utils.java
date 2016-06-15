@@ -36,14 +36,32 @@ public class Utils {
 
     /**
      * appends string msg to synergy list log file "yyyyMMdd-utils-log"
+     * and raises a toast informing the user
      * @param msg
      */
-    public static void log(String msg){
+    @Deprecated
+    public static void log(Context c, String msg){
         String logName = SynergyUtils.getTimeStampedListName("utils-log");
         SynergyListFile slf = new SynergyListFile(logName);
         slf.loadItems();
         slf.add(msg);
         slf.save();
+
+        if(c != null){
+
+            toast(c, "error logged in: " + logName);
+        }
+    }
+
+    /**
+     *
+     * @param msg
+     * @deprecated use log(Context,String)
+     */
+    @Deprecated
+    public static void log(String msg){
+
+        log(null, msg);
     }
 
     public static void toast(Context c, String msg){

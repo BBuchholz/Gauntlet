@@ -16,14 +16,20 @@ import android.widget.Spinner;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.Xml;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MetaBrowserActivity extends AppCompatActivity {
 
     private static final int MENU_EXPORT_DB = 1;
+    private static final int MENU_EXPORT_DB_TO_XML = 2;
 
     private String mCurrentNodeName = null;
     private ArrayList<MetaEntry> mMeta;
@@ -101,6 +107,14 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_meta_browser, menu);
 
+        MenuItem menuItem2 =
+                menu.add(Menu.NONE,
+                        MENU_EXPORT_DB_TO_XML,
+                        Menu.NONE,
+                        "Export DB XML");
+
+        menuItem2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         MenuItem menuItem =
                 menu.add(Menu.NONE,
                          MENU_EXPORT_DB,
@@ -128,6 +142,29 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
             //db.export(this);
             NwdDb.getInstance(this).export(this);
+            return true;
+
+        } else if(id == MENU_EXPORT_DB_TO_XML) {
+
+            try {
+
+                NwdDb db = NwdDb.getInstance(this);
+                List<LocalConfigModelItem> cfg = db.getLocalConfig(this);
+                List<FileModelItem> files = db.getFiles(this);
+                File destination =
+                        Configuration.getXmlFile_yyyyMMddHHmmss("nwd");
+
+                Xml.export(this, cfg, files, destination);
+
+                Utils.toast(this, "exported to: " +
+                    destination.getAbsolutePath());
+
+            } catch(Exception ex) {
+
+                Utils.log(this, "Error exporting db to xml: " +
+                    ex.getMessage());
+            }
+
             return true;
 
         } else if (id == R.id.action_test) {

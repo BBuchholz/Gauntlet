@@ -317,6 +317,11 @@ public class Configuration {
             fileName = "test-" + fileName;
         }
 
-        return new File(getDirectoryStoragePath("/NWD/xml"), fileName);
+        return new File(getXmlDirectory(), fileName);
+    }
+
+    public static File getXmlDirectory() {
+
+        return getDirectoryStoragePath("/NWD/xml");
     }
 }

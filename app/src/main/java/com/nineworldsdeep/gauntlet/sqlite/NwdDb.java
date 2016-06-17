@@ -1311,4 +1311,14 @@ public class NwdDb {
 
         return fileTags;
     }
+
+    public void importConfig(List<LocalConfigModelItem> cfg) {
+
+        throw new NotImplementedException("NwdDb.importConfig(List) not implemented");
+    }
+
+    public void importFiles(List<FileModelItem> files) {
+
+        throw new NotImplementedException("NwdDb.importFiles(List) not implemented");
+    }
 }

@@ -2,6 +2,8 @@ package com.nineworldsdeep.gauntlet.sqlite.model;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 
+import org.w3c.dom.Element;
+
 import java.util.Map;
 
 /**
@@ -22,6 +24,12 @@ public class LocalConfigModelItem {
 
             setValue(record.get(NwdContract.COLUMN_LOCAL_CONFIG_VALUE));
         }
+    }
+
+    public LocalConfigModelItem(String key, String value) {
+
+        setKey(key);
+        setValue(value);
     }
 
     public String getKey() {

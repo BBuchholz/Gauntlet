@@ -39,7 +39,6 @@ public class Utils {
      * and raises a toast informing the user
      * @param msg
      */
-    @Deprecated
     public static void log(Context c, String msg){
         String logName = SynergyUtils.getTimeStampedListName("utils-log");
         SynergyListFile slf = new SynergyListFile(logName);

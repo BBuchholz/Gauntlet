@@ -72,6 +72,12 @@ public class FileModelItem {
         }
     }
 
+    public FileModelItem(String device, String path) {
+
+        setDevice(device);
+        setPath(path);
+    }
+
     public String getDescription() {
         return mDescription;
     }

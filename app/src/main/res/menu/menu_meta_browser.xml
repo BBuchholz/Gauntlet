@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.tapestry.MetaBrowserActivity">
 
-    <item android:id="@+id/action_test"
-        android:title="@string/menu_test"
-        app:showAsAction="ifRoom|withText"/>
+    <!--<item android:id="@+id/action_test"-->
+        <!--android:title="@string/menu_test"-->
+        <!--app:showAsAction="ifRoom|withText"/>-->
 
 </menu>

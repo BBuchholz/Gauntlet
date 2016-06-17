@@ -7,14 +7,19 @@ public class HashModelItem {
 
      private String mFileId, mHash, mHashedAt;
 
-     public HashModelItem(String fileId, String hash, String hashedAt) {
+     public HashModelItem(String hash, String hashedAt) {
 
-          this.mHash = hash;
-          this.mHashedAt = hashedAt;
-          this.mFileId = fileId;
+         this(null, hash, hashedAt);
      }
 
-     public String getFileId() {
+    public HashModelItem(String fileId, String hashValue, String hashedAt) {
+
+        setFileId(fileId);
+        setHash(hashValue);
+        setHashedAt(hashedAt);
+    }
+
+    public String getFileId() {
           return this.mFileId;
      }
 

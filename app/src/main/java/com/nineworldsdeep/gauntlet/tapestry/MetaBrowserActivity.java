@@ -16,11 +16,13 @@ import android.widget.Spinner;
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.Xml;
+import com.nineworldsdeep.gauntlet.xml.Xml;
+import com.nineworldsdeep.gauntlet.xml.XmlUtils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+import com.nineworldsdeep.gauntlet.xml.XmlImporter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
     private static final int MENU_EXPORT_DB = 1;
     private static final int MENU_EXPORT_DB_TO_XML = 2;
+    private static final int MENU_IMPORT_DB_FROM_XML = 3;
+    private static final int MENU_TEST_DB = 4;
 
     private String mCurrentNodeName = null;
     private ArrayList<MetaEntry> mMeta;
@@ -83,6 +87,22 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_meta_browser, menu);
 
+        MenuItem miTest =
+                menu.add(Menu.NONE,
+                        MENU_TEST_DB,
+                        Menu.NONE,
+                        "Test DB");
+
+        miTest.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        MenuItem miImport =
+                menu.add(Menu.NONE,
+                        MENU_IMPORT_DB_FROM_XML,
+                        Menu.NONE,
+                        "Import DB XML");
+
+        miImport.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         MenuItem menuItem2 =
                 menu.add(Menu.NONE,
                         MENU_EXPORT_DB_TO_XML,
@@ -130,7 +150,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 File destination =
                         Configuration.getXmlFile_yyyyMMddHHmmss("nwd");
 
-                Xml.export(this, cfg, files, destination);
+                Xml.exportFromDb(this, cfg, files, destination);
 
                 Utils.toast(this, "exported to: " +
                     destination.getAbsolutePath());
@@ -143,7 +163,33 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
             return true;
 
-        } else if (id == R.id.action_test) {
+        } else if (id == MENU_IMPORT_DB_FROM_XML) {
+
+            try {
+
+                NwdDb db = NwdDb.getInstance(this);
+
+                File source = XmlUtils.getMostRecentFileFromXmlFolder();
+                XmlImporter xi = Xml.getImporter(source);
+
+                List<LocalConfigModelItem> cfg = xi.getConfig();
+                List<FileModelItem> files = xi.getFiles();
+
+                db.importConfig(cfg);
+                db.importFiles(files);
+
+                Utils.toast(this, "imported from: " +
+                    source.getAbsolutePath());
+
+            } catch(Exception ex) {
+
+                Utils.log(this, "Error importing db from xml: " +
+                    ex.getMessage());
+            }
+
+            return true;
+
+        } else if (id == MENU_TEST_DB) {
 
             //stores what mode to switch back to, after this test action
             boolean originalTestModeSetting = Configuration.isInTestMode();

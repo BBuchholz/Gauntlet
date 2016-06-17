@@ -1,7 +1,8 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.xml;
 
 import android.content.Context;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
@@ -12,8 +13,10 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +34,26 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class Xml {
 
-    public static void export(Context context,
-                              List<LocalConfigModelItem> config,
-                              List<FileModelItem> files,
-                              File destinationFile){
+    public static void importMostRecentToDb(Context context,
+                                            File xmlSource){
+
+        try {
+
+
+
+        }catch(Exception ex){
+
+            Utils.log(context, "Error importing xml: " + ex.getMessage());
+        }
+
+
+        //to test this, export, modify a tag or something, then import and verify changes
+    }
+
+    public static void exportFromDb(Context context,
+                                    List<LocalConfigModelItem> config,
+                                    List<FileModelItem> files,
+                                    File destinationFile){
 
         try {
 
@@ -209,5 +228,11 @@ public class Xml {
         doc.appendChild(root);
 
         return doc;
+    }
+
+    public static XmlImporter getImporter(File source)
+            throws IOException, SAXException, ParserConfigurationException {
+
+        return new XmlImporter(source);
     }
 }

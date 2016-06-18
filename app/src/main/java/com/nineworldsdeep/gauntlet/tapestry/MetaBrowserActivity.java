@@ -173,7 +173,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 XmlImporter xi = Xml.getImporter(source);
 
                 List<LocalConfigModelItem> cfg = xi.getConfig();
-                List<FileModelItem> files = xi.getFiles();
+                List<FileModelItem> files = xi.getFiles(this);
 
                 db.importConfig(cfg);
                 db.importFiles(files);

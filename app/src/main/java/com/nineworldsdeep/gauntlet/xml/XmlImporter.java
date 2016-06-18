@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.xml;
 
+import android.content.Context;
+
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
@@ -62,7 +64,7 @@ public class XmlImporter {
         return output;
     }
 
-    public List<FileModelItem> getFiles() {
+    public List<FileModelItem> getFiles(Context context) {
 
         List<FileModelItem> output =
                 new ArrayList<>();
@@ -71,42 +73,60 @@ public class XmlImporter {
 
         for(int i = 0; i < fileEls.getLength(); i++){
 
-            Element fileEl = (Element) fileEls.item(i);
+            try {
 
-            String device = getValueForFirst(fileEl, "device");
-            String path = getValueForFirst(fileEl, "path");
+                //testing
+                if(i == 138){
+                    String s = "breakpoint";
+                }
 
-            FileModelItem fmi =
-                    new FileModelItem(device, path);
+                Element fileEl = (Element) fileEls.item(i);
 
-            String displayName = getValueForFirst(fileEl, "display-name");
+                String device = getValueForFirst(fileEl, "device");
+                String path = getValueForFirst(fileEl, "path");
 
-            if(!Utils.stringIsNullOrWhitespace(displayName)){
+                FileModelItem fmi =
+                        new FileModelItem(device, path);
 
-                fmi.setDisplayName(displayName);
+                String displayName = getValueForFirst(fileEl, "display-name");
+
+                if (!Utils.stringIsNullOrWhitespace(displayName)) {
+
+                    fmi.setDisplayName(displayName);
+                }
+
+                //hashes and tags
+                NodeList hashes = fileEl.getElementsByTagName("hash");
+                for (int j = 0; j < hashes.getLength(); j++) {
+
+                    Element hashEl = (Element) hashes.item(j);
+                    String hashValue = hashEl.getAttribute("hash");
+                    String hashedAt = hashEl.getAttribute("hashedAt");
+
+                    fmi.getHashes().add(new HashModelItem(hashValue, hashedAt));
+                }
+
+                NodeList tags = fileEl.getElementsByTagName("tag");
+
+                for (int j = 0; j < tags.getLength(); j++) {
+
+                    Element tagEl = (Element) tags.item(j);
+
+                    if (tagEl != null) {
+
+                        String tagValue = tagEl.getTextContent();
+
+                        fmi.getTags().add(tagValue);
+                    }
+                }
+
+                output.add(fmi);
+
+            }catch (Exception ex){
+
+                Utils.log(context, "Error retrieving files from xml: " +
+                    ex.getMessage());
             }
-
-            //hashes and tags
-            NodeList hashes = fileEl.getElementsByTagName("hash");
-            for(int j = 0; j < hashes.getLength(); j++){
-
-                Element hashEl = (Element) hashes.item(j);
-                String hashValue = hashEl.getAttribute("hash");
-                String hashedAt = hashEl.getAttribute("hashedAt");
-
-                fmi.getHashes().add(new HashModelItem(hashValue, hashedAt));
-            }
-
-            NodeList tags = fileEl.getElementsByTagName("tag");
-            for(int j = 0; j < tags.getLength(); j++){
-
-                Element tagEl = (Element) tags.item(j);
-                String tagValue = tagEl.getTextContent();
-
-                fmi.getTags().add(tagValue);
-            }
-
-            output.add(fmi);
         }
 
         return output;
@@ -125,6 +145,13 @@ public class XmlImporter {
         Element displayNameEl =
                 (Element) parentEl.getElementsByTagName(childName).item(0);
 
-        return displayNameEl.getTextContent();
+        String output = null;
+
+        if(displayNameEl != null){
+
+            output = displayNameEl.getTextContent();
+        }
+
+        return output;
     }
 }

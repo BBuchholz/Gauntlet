@@ -95,6 +95,14 @@ public class XmlImporter {
                     fmi.setDisplayName(displayName);
                 }
 
+                String audioTranscript =
+                        getValueForFirst(fileEl, "audio-transcript");
+
+                if (!Utils.stringIsNullOrWhitespace(audioTranscript)) {
+
+                    fmi.setAudioTranscript(audioTranscript);
+                }
+
                 //hashes and tags
                 NodeList hashes = fileEl.getElementsByTagName("hash");
                 for (int j = 0; j < hashes.getLength(); j++) {

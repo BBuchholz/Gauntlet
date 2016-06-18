@@ -12,6 +12,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
+import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
@@ -417,6 +418,30 @@ public class NwdDb {
                 displayName);
     }
 
+    /**
+     * assumes an open transaction (open and close outside of this method)
+     * @param deviceDescription
+     * @param filePath
+     * @param displayName
+     */
+    private void ensureDisplayName(String deviceDescription,
+                                   String filePath,
+                                   String displayName){
+
+        //insert or ignore device
+        db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
+        //insert or ignore path
+        db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+        //insert or ignore display name
+        db.execSQL(DATABASE_ENSURE_DISPLAY_NAME, new String[]{displayName});
+        //update or ignore file (if exists)
+        db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
+                new String[]{displayName, filePath, deviceDescription});
+        //insert or ignore file (if !exists)
+        db.execSQL(DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE,
+                new String[]{deviceDescription, filePath, displayName});
+    }
+
     public void linkFileToDisplayName(String deviceDescription,
                                       String filePath,
                                       String displayName){
@@ -425,18 +450,20 @@ public class NwdDb {
 
         try{
 
-            //insert or ignore device
-            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
-            //insert or ignore path
-            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
-            //insert or ignore display name
-            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME, new String[]{displayName});
-            //update or ignore file (if exists)
-            db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
-                    new String[]{displayName, filePath, deviceDescription});
-            //insert or ignore file (if !exists)
-            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE,
-                    new String[]{deviceDescription, filePath, displayName});
+//            //insert or ignore device
+//            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceDescription});
+//            //insert or ignore path
+//            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+//            //insert or ignore display name
+//            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME, new String[]{displayName});
+//            //update or ignore file (if exists)
+//            db.execSQL(DATABASE_UPDATE_DISPLAY_NAME_FOR_FILE,
+//                    new String[]{displayName, filePath, deviceDescription});
+//            //insert or ignore file (if !exists)
+//            db.execSQL(DATABASE_ENSURE_DISPLAY_NAME_FOR_FILE,
+//                    new String[]{deviceDescription, filePath, displayName});
+
+            ensureDisplayName(deviceDescription, filePath, displayName);
 
             db.setTransactionSuccessful();
 
@@ -452,6 +479,32 @@ public class NwdDb {
         }
     }
 
+    /**
+     * assumes an open transaction (open and close outside of this method)
+     * @param deviceName
+     * @param filePath
+     * @param sha1Hash
+     * @param hashedAt
+     */
+    private void ensureHash(String deviceName,
+                            String filePath,
+                            String sha1Hash,
+                            String hashedAt){
+
+        //insert or ignore device
+        db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+        //insert or ignore path
+        db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+        //insert or ignore hash
+        db.execSQL(DATABASE_ENSURE_HASH, new String[]{sha1Hash});
+        //update or ignore file (if exists)
+        db.execSQL(DATABASE_UPDATE_HASH_FOR_FILE,
+                new String[]{hashedAt, sha1Hash, filePath, deviceName});
+        //insert or ignore file (if !exists)
+        db.execSQL(DATABASE_ENSURE_HASH_FOR_FILE,
+                new String[]{deviceName, filePath, sha1Hash,hashedAt});
+    }
+
     public void linkHashToFile(String deviceName,
                                String filePath,
                                String sha1Hash,
@@ -461,18 +514,20 @@ public class NwdDb {
 
         try{
 
-            //insert or ignore device
-            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
-            //insert or ignore path
-            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
-            //insert or ignore hash
-            db.execSQL(DATABASE_ENSURE_HASH, new String[]{sha1Hash});
-            //update or ignore file (if exists)
-            db.execSQL(DATABASE_UPDATE_HASH_FOR_FILE,
-                    new String[]{hashedAt, sha1Hash, filePath, deviceName});
-            //insert or ignore file (if !exists)
-            db.execSQL(DATABASE_ENSURE_HASH_FOR_FILE,
-                    new String[]{deviceName, filePath, sha1Hash,hashedAt});
+//            //insert or ignore device
+//            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+//            //insert or ignore path
+//            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+//            //insert or ignore hash
+//            db.execSQL(DATABASE_ENSURE_HASH, new String[]{sha1Hash});
+//            //update or ignore file (if exists)
+//            db.execSQL(DATABASE_UPDATE_HASH_FOR_FILE,
+//                    new String[]{hashedAt, sha1Hash, filePath, deviceName});
+//            //insert or ignore file (if !exists)
+//            db.execSQL(DATABASE_ENSURE_HASH_FOR_FILE,
+//                    new String[]{deviceName, filePath, sha1Hash,hashedAt});
+
+            ensureHash(deviceName, filePath, sha1Hash, hashedAt);
 
             db.setTransactionSuccessful();
 
@@ -488,6 +543,24 @@ public class NwdDb {
         }
     }
 
+    /**
+     * assumes an open transaction (open and close outside of this method)
+     * @param deviceName
+     * @param filePath
+     * @param tag
+     */
+    private void ensureTag(String deviceName, String filePath, String tag){
+
+        //insert or ignore device
+        db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+        //insert or ignore path
+        db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+        //insert or ignore hash
+        db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+        //insert or ignore file tag entry
+        db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
+                new String[]{deviceName, filePath, tag});
+    }
     public void linkTagToFile(String deviceName, String filePath, String tag) {
 
         //open transaction
@@ -495,15 +568,17 @@ public class NwdDb {
 
         try{
 
-            //insert or ignore device
-            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
-            //insert or ignore path
-            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
-            //insert or ignore hash
-            db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
-            //insert or ignore file tag entry
-            db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
-                    new String[]{deviceName, filePath, tag});
+//            //insert or ignore device
+//            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+//            //insert or ignore path
+//            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+//            //insert or ignore hash
+//            db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+//            //insert or ignore file tag entry
+//            db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
+//                    new String[]{deviceName, filePath, tag});
+
+            ensureTag(deviceName, filePath, tag);
 
             db.setTransactionSuccessful();
 
@@ -623,6 +698,31 @@ public class NwdDb {
         }
     }
 
+    /**
+     * assumes an open transaction (open and close outside of this method)
+     */
+    private void ensureAudioTranscript(String deviceName,
+                                       String filePath,
+                                       String transcription){
+
+        //insert or ignore device
+        db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+        //insert or ignore path
+        db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+        //insert or ignore audio transcript
+        db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT,
+                new String[]{transcription});
+        //insert or ignore file (if !exists)
+        db.execSQL(DATABASE_ENSURE_FILE,
+                new String[]{deviceName, filePath});
+        //update or ignore audio transcript (if exists)
+        db.execSQL(DATABASE_UPDATE_AUDIO_TRANSCRIPT_FOR_FILE,
+                new String[]{transcription, filePath, deviceName});
+        //insert or ignore file (if !exists)
+        db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT_FOR_FILE,
+                new String[]{deviceName, filePath, transcription});
+    }
+
     public void updateAudioTranscriptForFile(String deviceName,
                                              String filePath,
                                              String transcription) {
@@ -633,22 +733,24 @@ public class NwdDb {
 
         try{
 
-            //insert or ignore device
-            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
-            //insert or ignore path
-            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
-            //insert or ignore audio transcript
-            db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT,
-                    new String[]{transcription});
-            //insert or ignore file (if !exists)
-            db.execSQL(DATABASE_ENSURE_FILE,
-                    new String[]{deviceName, filePath});
-            //update or ignore audio transcript (if exists)
-            db.execSQL(DATABASE_UPDATE_AUDIO_TRANSCRIPT_FOR_FILE,
-                    new String[]{transcription, filePath, deviceName});
-            //insert or ignore file (if !exists)
-            db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT_FOR_FILE,
-                    new String[]{deviceName, filePath, transcription});
+//            //insert or ignore device
+//            db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
+//            //insert or ignore path
+//            db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
+//            //insert or ignore audio transcript
+//            db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT,
+//                    new String[]{transcription});
+//            //insert or ignore file (if !exists)
+//            db.execSQL(DATABASE_ENSURE_FILE,
+//                    new String[]{deviceName, filePath});
+//            //update or ignore audio transcript (if exists)
+//            db.execSQL(DATABASE_UPDATE_AUDIO_TRANSCRIPT_FOR_FILE,
+//                    new String[]{transcription, filePath, deviceName});
+//            //insert or ignore file (if !exists)
+//            db.execSQL(DATABASE_ENSURE_AUDIO_TRANSCRIPT_FOR_FILE,
+//                    new String[]{deviceName, filePath, transcription});
+
+            ensureAudioTranscript(deviceName, filePath, transcription);
 
             db.setTransactionSuccessful();
 
@@ -664,6 +766,21 @@ public class NwdDb {
         }
     }
 
+    /**
+     * assumes an open transaction (open and close outside of this method)
+     * @param key
+     * @param val
+     */
+    private void ensureConfigValue(String key, String val){
+
+        //update or ignore config value (if exists)
+        db.execSQL(DATABASE_UPDATE_LOCAL_CONFIG,
+                new String[]{val, key});
+        //insert or ignore config value (if !exists)
+        db.execSQL(DATABASE_ENSURE_LOCAL_CONFIG,
+                new String[]{key, val});
+    }
+
     public void setConfigValue(String key, String val) {
 
         //open transaction
@@ -671,12 +788,14 @@ public class NwdDb {
 
         try{
 
-            //update or ignore config value (if exists)
-            db.execSQL(DATABASE_UPDATE_LOCAL_CONFIG,
-                    new String[]{val, key});
-            //insert or ignore config value (if !exists)
-            db.execSQL(DATABASE_ENSURE_LOCAL_CONFIG,
-                    new String[]{key, val});
+//            //update or ignore config value (if exists)
+//            db.execSQL(DATABASE_UPDATE_LOCAL_CONFIG,
+//                    new String[]{val, key});
+//            //insert or ignore config value (if !exists)
+//            db.execSQL(DATABASE_ENSURE_LOCAL_CONFIG,
+//                    new String[]{key, val});
+
+            ensureConfigValue(key, val);
 
             db.setTransactionSuccessful();
 
@@ -1312,13 +1431,99 @@ public class NwdDb {
         return fileTags;
     }
 
-    public void importConfig(List<LocalConfigModelItem> cfg) {
+    public void importConfig(Context context, List<LocalConfigModelItem> cfg) {
 
-        throw new NotImplementedException("NwdDb.importConfig(List) not implemented");
+        db.beginTransaction();
+
+        for(LocalConfigModelItem lcmi : cfg){
+
+            try{
+
+                String key = lcmi.getKey();
+                String val = lcmi.getValue();
+
+                if(!Utils.stringIsNullOrWhitespace(key) &&
+                        val != null){
+
+                    ensureConfigValue(key, val);
+                }
+
+            }catch(Exception ex){
+
+                Utils.log(context, "error importing config data for key [" +
+                        lcmi.getKey() + "] and value [" + lcmi.getValue());
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
     }
 
-    public void importFiles(List<FileModelItem> files) {
+    public void importFiles(Context context, List<FileModelItem> files) {
 
-        throw new NotImplementedException("NwdDb.importFiles(List) not implemented");
+        db.beginTransaction();
+
+        for(FileModelItem fmi : files){
+
+            String deviceDescription = fmi.getDevice();
+            String filePath = fmi.getPath();
+            String displayName = fmi.getDisplayName();
+
+            try{
+
+                if(!Utils.stringIsNullOrWhitespace(displayName)){
+
+                    ensureDisplayName(deviceDescription, filePath, displayName);
+                }
+
+                if(fmi.getHashes().size() > 0){
+
+                    for(HashModelItem hmi : fmi.getHashes()){
+
+                        String hash = hmi.getHash();
+                        String hashedAt = hmi.getHashedAt();
+
+                        if(Utils.stringIsNullOrWhitespace(hashedAt)){
+
+                            hashedAt =
+                                    SynergyUtils
+                                            .getCurrentTimeStamp_yyyyMMddHHmmss();
+                        }
+
+                        if(!Utils.stringIsNullOrWhitespace(hash)){
+
+                            ensureHash(deviceDescription,
+                                    filePath, hash, hashedAt);
+                        }
+                    }
+                }
+
+                if(fmi.getTags().size() > 0){
+
+                    for(String tag : fmi.getTags()){
+
+                        ensureTag(deviceDescription, filePath, tag);
+                    }
+                }
+
+                String audioTranscript = fmi.getAudioTranscript();
+
+                if(!Utils.stringIsNullOrWhitespace(audioTranscript)){
+
+                    ensureAudioTranscript(deviceDescription,
+                            filePath,audioTranscript);
+                }
+
+            }catch(Exception ex){
+
+                Utils.log(context, "error importing file data for path [" +
+                        fmi.getPath() + "] on device [" + fmi.getDevice());
+            }
+        }
+
+        db.setTransactionSuccessful();
+
+        db.endTransaction();
     }
 }

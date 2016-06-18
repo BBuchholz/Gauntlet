@@ -175,8 +175,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 List<LocalConfigModelItem> cfg = xi.getConfig();
                 List<FileModelItem> files = xi.getFiles(this);
 
-                db.importConfig(cfg);
-                db.importFiles(files);
+                db.importConfig(this, cfg);
+                db.importFiles(this, files);
 
                 Utils.toast(this, "imported from: " +
                     source.getAbsolutePath());

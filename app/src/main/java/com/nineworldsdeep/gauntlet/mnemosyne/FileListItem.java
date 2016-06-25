@@ -114,7 +114,7 @@ public class FileListItem {
 
         this.tags = tags;
 
-        FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
+        //FileHashDbIndex.countAndStoreSHA1Hashes(file, false, db);
     }
 
     public void setAndSaveTagString(String tags, NwdDb db) throws Exception {

@@ -31,6 +31,23 @@ public class MnemoSyneUtils {
         return lst;
     }
 
+    public static List<FileListItem> getImageListItems(
+            HashMap<String,String> pathToTagString, File dir){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getImageListItemsFromPaths(pathToTagString, getTopImageFolders()));
+
+        }else{
+
+            lst.addAll(getFileListItems(pathToTagString, dir, imageExts));
+        }
+
+        return lst;
+    }
+
     public static List<FileListItem> getImageListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
@@ -230,6 +247,25 @@ public class MnemoSyneUtils {
         for(String filePath : lst){
 
             newList.add(new FileListItem(filePath, db));
+        }
+
+        return newList;
+    }
+
+    private static List<FileListItem> getImageListItemsFromPaths(
+            HashMap<String,String> pathToTagString,
+            List<String> lst) {
+
+        List<FileListItem> newList = new ArrayList<>();
+
+        for(String filePath : lst){
+
+            File f = new File(filePath);
+
+            if(isImageFileFromPath(filePath) || f.isDirectory()) {
+
+                newList.add(new FileListItem(filePath, pathToTagString));
+            }
         }
 
         return newList;

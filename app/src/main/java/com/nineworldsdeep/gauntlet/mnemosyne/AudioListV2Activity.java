@@ -109,7 +109,8 @@ public class AudioListV2Activity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        mListState = getListView().onSaveInstanceState();
+        //mListState = getListView().onSaveInstanceState();
+        storeInstanceState();
         state.putParcelable(LIST_STATE, mListState);
     }
 
@@ -165,12 +166,6 @@ public class AudioListV2Activity extends AppCompatActivity {
         AsyncItemLoader ail = new AsyncItemLoader();
         ail.execute();
 
-        //moved to AsyncItemLoader
-//        ListView lvItems = getListView();
-//
-//        loadItems();
-//        setupListViewListener();
-//        registerForContextMenu(lvItems);
     }
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String>{
@@ -186,7 +181,7 @@ public class AudioListV2Activity extends AppCompatActivity {
 
                 long start = System.nanoTime();
 
-                //publishProgress("loading items...");
+                publishProgress("loading...");
                 mCurrentAdapter = loadItems();
 
                 long elapsedTime = System.nanoTime() - start;
@@ -231,8 +226,7 @@ public class AudioListV2Activity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... text) {
 
-            //just for testing
-            //Utils.toast(AudioListV2Activity.this, text[0]);
+            Utils.toast(AudioListV2Activity.this, text[0]);
         }
 
     }

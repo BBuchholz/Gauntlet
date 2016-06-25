@@ -171,6 +171,7 @@ public class NwdDb {
 
     private static final String DATABASE_ENSURE_TAG_FOR_FILE =
 
+            //"INSERT INTO " + NwdContract.TABLE_FILE_TAGS + " " +
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_FILE_TAGS + " " +
                     "(" + NwdContract.COLUMN_FILE_ID + ", " +
                     NwdContract.COLUMN_TAG_ID + ") " +
@@ -619,6 +620,10 @@ public class NwdDb {
 
                     //insert or ignore tag
                     db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+
+                    //insert or ignore file (if !exists)
+                    db.execSQL(DATABASE_ENSURE_FILE,
+                        new String[]{deviceDescription, path});
 
                     //insert or ignore file tag entry
                     db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,

@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -77,22 +79,12 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         if(audioPath != null){
 
-            //ame = new FileListItem(s);
-
-            //Utils.toast(this, ame.toString());
-            Utils.toast(this, audioPath);
-
-            //mp = MediaPlayer.create(this, Uri.parse(ame.getFile().getPath()));
-            //mp.start();
-
             mps = MediaPlayerSingleton.getInstance();
 
             try {
 
                 HashMap<String,String> pathToTagString =
                         TagDbIndex.importExportPathToTagStringMap(NwdDb.getInstance(this));
-
-
 
                 setNowPlaying(mps.queueAndPlayLast(
                         pathToTagString,
@@ -579,12 +571,16 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String tag = (String) lvTags.getItemAtPosition(position);
+
                 try {
 
-                    ame.setAndSaveTagString(
-                            Tags.toggleTag(tag, ame.getTags()),
-                            NwdDb.getInstance(AudioDisplayActivity.this));
-                    updateMediaInfo();
+                    AsyncTagSave ats = new AsyncTagSave();
+                    ats.execute(tag);
+
+//                    ame.setAndSaveTagString(
+//                            Tags.toggleTag(tag, ame.getTags()),
+//                            NwdDb.getInstance(AudioDisplayActivity.this));
+//                    updateMediaInfo();
 
                 } catch (Exception e) {
 
@@ -594,6 +590,63 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                 }
             }
         });
+    }
+
+    private class AsyncTagSave extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String result;
+
+            try{
+
+                //ListView lvItems = getListView();
+                String tag = params[0];
+
+                long start = System.nanoTime();
+
+                NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
+
+                ame.setAndSaveTagString(
+                            Tags.toggleTag(tag, ame.getTags()),
+                            db);
+
+                TagDbIndex.getMergedPathToTagStringMap(false, true, db);
+
+                long elapsedTime = System.nanoTime() - start;
+                long milliseconds = elapsedTime / 1000000;
+
+                String elapsedTimeStr = Long.toString(milliseconds);
+
+                result = "finished updating tags: " + elapsedTimeStr + "ms";
+
+            }catch (Exception e){
+
+                result = e.getMessage();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Utils.toast(AudioDisplayActivity.this, result);
+
+            updateMediaInfo();
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
+        }
+
     }
 
     private void loadItems() {

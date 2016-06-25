@@ -87,7 +87,7 @@ public class TagDbIndex {
         return pathToTagString;
     }
 
-    private static void saveToFile(HashMap<String, String> pathToTagString) {
+    public static void saveToFile(HashMap<String, String> pathToTagString) {
 
         TagIndexFile tif = new TagIndexFile();
 
@@ -119,7 +119,7 @@ public class TagDbIndex {
         db.linkTagsToFile(pathToTags);
     }
 
-    public static void setTagString(String path,
+    public static void setTagStringOld(String path,
                                     String commaSeparatedTagString,
                                     NwdDb db) {
 
@@ -145,4 +145,17 @@ public class TagDbIndex {
         justForTesting.isEmpty();
     }
 
+        public static void setTagString(String path,
+                                        String commaSeparatedTagString,
+                                        NwdDb db){
+
+        //remove all tags so that any removed tags will disappear
+        db.removeTagsForFile(path);
+
+        MultiMapString pathTags = new MultiMapString();
+
+        pathTags.putCommaStringValues(path, commaSeparatedTagString);
+
+        db.linkTagsToFile(pathTags);
+    }
 }

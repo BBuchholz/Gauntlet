@@ -49,14 +49,14 @@ public class MediaPlayerSingleton{
         return singleton;
     }
 
-    public AudioMediaEntry queueAndPlayLast(NwdDb db,
+    public AudioMediaEntry queueAndPlayLast(HashMap<String,String> pathToTagString,
                                             String path,
                                             MediaPlayer.OnPreparedListener
                                                     listener)
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry(path, db);
+        AudioMediaEntry ame = new AudioMediaEntry(path, pathToTagString);
         playlist.add(ame);
         playlist.advanceToLast();
 
@@ -150,14 +150,14 @@ public class MediaPlayerSingleton{
 //        }
     }
 
-    public void queueAndPlayFromCurrent(NwdDb db,
+    public void queueAndPlayFromCurrent(HashMap<String,String> pathToTagString,
                                         String path,
                                         MediaPlayer.OnPreparedListener
                                                 listener)
             throws IOException {
 
         //nowPlayingPath = path;
-        AudioMediaEntry ame = new AudioMediaEntry(path, db);
+        AudioMediaEntry ame = new AudioMediaEntry(path, pathToTagString);
         playlist.add(ame);
 
         play(listener);

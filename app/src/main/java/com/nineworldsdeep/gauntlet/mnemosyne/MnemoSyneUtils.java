@@ -47,6 +47,23 @@ public class MnemoSyneUtils {
         return lst;
     }
 
+    public static List<FileListItem> getAudioListItems(
+            HashMap<String,String> pathToTagString, File dir){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getAudioListItemsFromPaths(pathToTagString, getAudioTopFolders()));
+        }
+        else
+        {
+            lst.addAll(getFileListItems(pathToTagString, dir, audioExts));
+        }
+
+        return lst;
+    }
+
     public static List<FileListItem> getAudioListItems(NwdDb db, File dir){
 
         List<FileListItem> lst = new ArrayList<>();
@@ -159,6 +176,22 @@ public class MnemoSyneUtils {
     }
 
     private static List<FileListItem> getFileListItems(
+            HashMap<String,String> pathToTagString,
+            File dir,
+            String[] exts){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        lst.addAll(getFileListItemsFromPaths(
+                Utils.getAllDirectoryPaths(dir), pathToTagString));
+
+        lst.addAll(getFileListItemsFromPaths(
+                Utils.getAllFilePathsWithExt(dir, exts), pathToTagString));
+
+        return lst;
+    }
+
+    private static List<FileListItem> getFileListItems(
             NwdDb db,
             File dir,
             String[] exts){
@@ -172,6 +205,20 @@ public class MnemoSyneUtils {
                 Utils.getAllFilePathsWithExt(dir, exts), db));
 
         return lst;
+    }
+
+    private static List<FileListItem> getFileListItemsFromPaths(
+            List<String> lst,
+            HashMap<String,String> pathToTagString) {
+
+        List<FileListItem> newList = new ArrayList<>();
+
+        for(String filePath : lst){
+
+            newList.add(new FileListItem(filePath, pathToTagString));
+        }
+
+        return newList;
     }
 
     private static List<FileListItem> getFileListItemsFromPaths(
@@ -218,6 +265,24 @@ public class MnemoSyneUtils {
             if(isAudioFileFromPath(filePath) || f.isDirectory()) {
 
                 newList.add(new FileListItem(filePath, db));
+            }
+        }
+
+        return newList;
+    }
+
+
+    private static List<FileListItem> getAudioListItemsFromPaths(HashMap<String,String> pathToTagString, List<String> lst) {
+
+        List<FileListItem> newList = new ArrayList<>();
+
+        for(String filePath : lst){
+
+            File f = new File(filePath);
+
+            if(isAudioFileFromPath(filePath) || f.isDirectory()) {
+
+                newList.add(new FileListItem(filePath, pathToTagString));
             }
         }
 

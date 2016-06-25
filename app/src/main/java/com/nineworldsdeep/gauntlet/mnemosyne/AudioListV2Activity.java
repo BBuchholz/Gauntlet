@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -21,6 +23,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -32,6 +35,7 @@ import java.util.List;
 public class AudioListV2Activity extends AppCompatActivity {
 
     private File mCurrentDir;
+    private ListAdapter mCurrentAdapter;
     List<FileListItem> mFileListItems;
 
     private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
@@ -87,9 +91,19 @@ public class AudioListV2Activity extends AppCompatActivity {
         super.onResume();
         NwdDb.getInstance(this).open();
         refreshLayout();
+//        if (mListState != null)
+//            getListView().onRestoreInstanceState(mListState);
+//        mListState = null;
+    }
+
+    private void restoreInstanceState(){
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
         mListState = null;
+    }
+
+    private void storeInstanceState(){
+        mListState = getListView().onSaveInstanceState();
     }
 
     @Override
@@ -132,7 +146,7 @@ public class AudioListV2Activity extends AppCompatActivity {
             setTitle("NWD Audio");
         }
 
-        refreshLayout();
+        //refreshLayout();
     }
 //
 //    @Override
@@ -148,11 +162,79 @@ public class AudioListV2Activity extends AppCompatActivity {
 
     private void refreshLayout() {
 
-        ListView lvItems = getListView();
+        AsyncItemLoader ail = new AsyncItemLoader();
+        ail.execute();
 
-        loadItems();
-        setupListViewListener();
-        registerForContextMenu(lvItems);
+        //moved to AsyncItemLoader
+//        ListView lvItems = getListView();
+//
+//        loadItems();
+//        setupListViewListener();
+//        registerForContextMenu(lvItems);
+    }
+
+    private class AsyncItemLoader extends AsyncTask<Void, String, String>{
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result;
+
+            try{
+
+                //ListView lvItems = getListView();
+
+                long start = System.nanoTime();
+
+                //publishProgress("loading items...");
+                mCurrentAdapter = loadItems();
+
+                long elapsedTime = System.nanoTime() - start;
+                long milliseconds = elapsedTime / 1000000;
+
+                String elapsedTimeStr = Long.toString(milliseconds);
+
+                result = "finished loading: " + elapsedTimeStr + "ms";
+
+            }catch (Exception e){
+
+                result = e.getMessage();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Utils.toast(AudioListV2Activity.this, result);
+
+            if(mCurrentAdapter != null){
+
+                ListView lvItems = (ListView) findViewById(R.id.lvItems);
+                lvItems.setAdapter(mCurrentAdapter);
+                setupListViewListener();
+                registerForContextMenu(lvItems);
+
+                restoreInstanceState();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+
+            storeInstanceState();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
+            //just for testing
+            //Utils.toast(AudioListV2Activity.this, text[0]);
+        }
+
     }
 
     private void setupListViewListener() {
@@ -196,9 +278,9 @@ public class AudioListV2Activity extends AppCompatActivity {
         });
     }
 
-    private void loadItems() {
+    private ListAdapter loadItems() {
 
-        ListView lvItems = (ListView) findViewById(R.id.lvItems);
+        //ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
         ArrayList<HashMap<String, String>> lstItems =
                 new ArrayList<HashMap<String, String>>();
@@ -212,9 +294,11 @@ public class AudioListV2Activity extends AppCompatActivity {
 //        HashMap<String,String> dbPathToNameMap =
 //                DisplayNameDbIndex.importExportPathToNameMap(db);
 
+        HashMap<String, String> pathToTagString =
+                TagDbIndex.importExportPathToTagStringMap(db);
+
         mFileListItems =
-                MnemoSyneUtils.getAudioListItems(NwdDb.getInstance(this),
-                        mCurrentDir);
+                MnemoSyneUtils.getAudioListItems(pathToTagString, mCurrentDir);
 
         for(FileListItem fli : mFileListItems){
 
@@ -246,7 +330,9 @@ public class AudioListV2Activity extends AppCompatActivity {
                                 R.id.display_name,
                                 R.id.tags});
 
-        lvItems.setAdapter(saItems);
+        //lvItems.setAdapter(saItems);
+
+        return saItems;
     }
 
     @Override

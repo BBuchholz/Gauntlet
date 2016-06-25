@@ -23,6 +23,7 @@ import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
@@ -51,29 +52,9 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         super.onResume();
 
         NwdDb.getInstance(this).open();
-//        assignDb();
 
-        //moved to assignDb() //db.open();
+        refreshLayout();
     }
-
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
 
     @Override
     protected void onPause() {
@@ -90,8 +71,6 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //assignDb();
 
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIOPATH);
@@ -110,13 +89,20 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
             try {
 
-//                HashMap<String,String> dbPathToNameMap =
-//                        DisplayNameDbIndex.importExportPathToNameMap(NwdDb.getInstance(this));
+                HashMap<String,String> pathToTagString =
+                        TagDbIndex.importExportPathToTagStringMap(NwdDb.getInstance(this));
+
+
 
                 setNowPlaying(mps.queueAndPlayLast(
-                        NwdDb.getInstance(this),
+                        pathToTagString,
                         audioPath,
                         this));
+
+//                setNowPlaying(mps.queueAndPlayLast(
+//                        NwdDb.getInstance(this),
+//                        audioPath,
+//                        this));
 
             } catch (IOException e) {
 
@@ -127,8 +113,8 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
             Utils.toast(this, "audio path null");
         }
-
-        refreshLayout();
+//
+//        refreshLayout();
 
     }
 

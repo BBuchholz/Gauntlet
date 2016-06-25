@@ -6,6 +6,8 @@ import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -21,6 +23,29 @@ public class FileListItem {
     public FileListItem(String filePath, NwdDb db) {
 
         setPath(filePath, db); //handles everything
+    }
+
+    /**
+     * ONLY USE THIS CONSTRUCTOR FOR ITEMS ALREADY IN THE DATABASE
+     * it does not push any data to the db like the other methods do,
+     * intended for populating large numbers of items from a single db query
+     * @param filePath
+     * @param pathToTagString - a map containing paths mapped to
+     *                        their tagStrings, intended to be used to prevent
+     *                        having to go back to the database more than once
+     *                        when initializing large numbers of items at once
+     */
+    public FileListItem(String filePath, HashMap<String,String> pathToTagString){
+
+        file = new File(filePath);
+
+        if(pathToTagString != null &&
+                pathToTagString.containsKey(filePath)){
+
+            tags = pathToTagString.get(filePath);
+        }
+
+        displayName = FilenameUtils.getName(filePath);
     }
 
     private void processPath(NwdDb db){

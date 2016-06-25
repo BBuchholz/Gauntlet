@@ -18,6 +18,10 @@ public class AudioMediaEntry extends FileListItem{
         super(filePath, db);
     }
 
+    public AudioMediaEntry(String filePath, HashMap<String,String> pathToTagString){
+        super(filePath, pathToTagString);
+    }
+
     public String getPath() {
 
         return getFile().getAbsolutePath();

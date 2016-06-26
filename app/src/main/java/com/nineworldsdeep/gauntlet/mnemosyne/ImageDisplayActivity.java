@@ -23,10 +23,12 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class ImageDisplayActivity extends AppCompatActivity {
 
@@ -150,9 +152,14 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
                                     try {
 
+                                        NwdDb db =
+                                                NwdDb.getInstance(ImageDisplayActivity.this);
+
                                         ili.setAndSaveTagString(
                                                 userInput.getText().toString(),
-                                                NwdDb.getInstance(ImageDisplayActivity.this));
+                                                db);
+
+                                        TagDbIndex.getMergedPathToTagStringMap(false, true, db);
 
                                     } catch (Exception e) {
 
@@ -384,9 +391,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             NwdDb db = NwdDb.getInstance(this);
 
-            db.open();
+            //db.open();
 
-            ili = new FileListItem(path, db.getDisplayNameForPath(path));
+            HashMap<String,String> pathToTagString =
+                    TagDbIndex.importExportPathToTagStringMap(db);
+
+            ili = new FileListItem(path, pathToTagString);
             Bitmap bmp = BitmapFactory.decodeFile(path);
             ImageView img = (ImageView) findViewById(R.id.ivImage);
             img.setImageBitmap(bmp);

@@ -232,9 +232,14 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 //                                    TagIndex.getInstance().save();
                                     try {
 
+                                        NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
+
                                         ame.setAndSaveTagString(
                                                 userInput.getText().toString(),
-                                                NwdDb.getInstance(AudioDisplayActivity.this));
+                                                db);
+
+                                        TagDbIndex.getMergedPathToTagStringMap(false, true, db);
+
                                         updateMediaInfo();
 
                                     } catch (Exception e) {

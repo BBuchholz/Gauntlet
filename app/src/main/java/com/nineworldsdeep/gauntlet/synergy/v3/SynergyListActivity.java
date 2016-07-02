@@ -21,11 +21,15 @@ import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SynergyListActivity
         extends AppCompatActivity{
@@ -44,6 +48,7 @@ public class SynergyListActivity
     public static final int REQUEST_RESULT_EDIT_ITEM = 12;
     private static final int MENU_CONTEXT_MOVE_UP_ID = 13;
     private static final int MENU_CONTEXT_MOVE_DOWN_ID = 14;
+    private static final int MENU_CONTEXT_OPEN_AUDIO = 15;
 
     private SynergyListFile mSlf;
 
@@ -198,6 +203,15 @@ public class SynergyListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
         }
 
+        Matcher m = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
+                .matcher(mSlf.get(info.position).getItem());
+
+        if (m.find()) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_AUDIO,
+                    Menu.NONE, "Open Audio");
+        }
+
         if(mSlf.getListName().startsWith("Fragments")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LYRICS_ID,
@@ -315,6 +329,12 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_OPEN_AUDIO:
+
+                openAudio(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
@@ -329,6 +349,21 @@ public class SynergyListActivity
                 mSlf.get(position).toLineItem());
 
         startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
+    }
+
+    private void openAudio(int position){
+
+        String timeStampFilters =
+                MnemoSyneUtils
+                        .extractTimeStampFilters(mSlf.get(position).getItem());
+
+        Intent intent = new Intent(this, AudioListV2Activity.class);
+        intent.putExtra(AudioListV2Activity.EXTRA_CURRENT_PATH,
+                Configuration.getVoicememosDirectory().getAbsolutePath());
+        intent.putExtra(AudioListV2Activity.EXTRA_TIMESTAMP_FILTER,
+                timeStampFilters);
+
+        startActivity(intent);
     }
 
     private void splitItem(int position) {

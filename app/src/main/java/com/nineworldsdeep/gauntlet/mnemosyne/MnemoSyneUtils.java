@@ -5,11 +5,16 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by brent on 11/16/15.
@@ -79,6 +84,60 @@ public class MnemoSyneUtils {
         }
 
         return lst;
+    }
+
+    public static List<FileListItem> getAudioListItems(
+            HashMap<String,String> pathToTagString,
+            File dir,
+            List<String> timeStampFilters){
+
+        List<FileListItem> lst = new ArrayList<>();
+        List<FileListItem> unfiltered = getAudioListItems(pathToTagString, dir);
+
+        if(timeStampFilters != null){
+
+            for(FileListItem fli : unfiltered){
+
+                String fileName = fli.getFile().getName();
+                String convertedFileName =
+                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
+
+                boolean found = false;
+                int i = 0;
+
+                while(!found && i < timeStampFilters.size()){
+
+                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
+
+                        lst.add(fli);
+                    }
+
+                    i++;
+                }
+            }
+        }
+        else
+        {
+            lst = unfiltered;
+        }
+
+        return lst;
+    }
+
+    private static String replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(String stringWithTimeStampPrefix) {
+
+        Matcher m = Pattern.compile("\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2}")
+                .matcher(stringWithTimeStampPrefix);
+
+        if (m.find()) {
+
+            String timeStamp = m.group(0);
+            String newTimeStamp = timeStamp.replace("-", "");
+            newTimeStamp = newTimeStamp.replace("_", "");
+            stringWithTimeStampPrefix = stringWithTimeStampPrefix.replace(timeStamp, newTimeStamp);
+        }
+
+        return stringWithTimeStampPrefix;
     }
 
     public static List<FileListItem> getAudioListItems(NwdDb db, File dir){
@@ -377,5 +436,46 @@ public class MnemoSyneUtils {
             db.linkFileToDisplayName(fliDest.getFile().getAbsolutePath(), fliSrc.getDisplayName());
             //fliDest.setAndSaveDisplayName(fliSrc.getDisplayName(), dbPathToNameMap);
         }
+    }
+
+    public static List<String> toTimeStampFilterList(String semiColonSeperatedString) {
+
+        List<String> lst = new ArrayList<>();
+
+        for(String timeStampFilter : semiColonSeperatedString.split(";")){
+
+            lst.add(timeStampFilter.trim());
+        }
+
+        return lst;
+    }
+
+    public static String extractTimeStampFilters(String input) {
+
+        String output = "";
+
+        if(input != null) {
+
+            Matcher m = Pattern.compile("\\b\\d{4,14}\\b")
+                    .matcher(input);
+
+            boolean first = true;
+
+            while (m.find()) {
+
+                if (!first) {
+
+                    output += "; ";
+
+                } else {
+
+                    first = false;
+                }
+
+                output += m.group(0);
+            }
+        }
+
+        return output;
     }
 }

@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +36,7 @@ import java.util.List;
 public class AudioListV2Activity extends AppCompatActivity {
 
     private File mCurrentDir;
+    private List<String> mTimeStampFilters;
     private ListAdapter mCurrentAdapter;
     List<FileListItem> mFileListItems;
 
@@ -44,41 +46,12 @@ public class AudioListV2Activity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
+    public static final String EXTRA_TIMESTAMP_FILTER =
+            "com.nineworldsdeep.gauntlet.AUDIOLIST_TIMESTAMP_FILTER";
 
     // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
-//
-//    NwdDb db;
-//
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
-//  FOR SOME WEIRD REASON THIS CRASHES THE APP IF UNCOMMENTED
-//  I CANNOT FIGURE IT OUT AS IMAGE LIST ACTIVITY IS IDENTICAL
-//  AND DOESN'T CRASH WITH THIS LEFT IN?
-//
-//    @Override
-//    protected void onPause() {
-//
-//        super.onPause();
-//        db.close();
-//    }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
@@ -122,10 +95,19 @@ public class AudioListV2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         Intent i = getIntent();
-        String s = i.getStringExtra(EXTRA_CURRENT_PATH);
+        String s = null;
+
+        if(i.hasExtra(EXTRA_CURRENT_PATH)) {
+            s = i.getStringExtra(EXTRA_CURRENT_PATH);
+        }
+
+        if(i.hasExtra(EXTRA_TIMESTAMP_FILTER)) {
+
+            mTimeStampFilters =
+                    MnemoSyneUtils.toTimeStampFilterList(
+                            i.getStringExtra(EXTRA_TIMESTAMP_FILTER));
+        }
 
         mCurrentDir = null;
 
@@ -146,15 +128,7 @@ public class AudioListV2Activity extends AppCompatActivity {
 
             setTitle("NWD Audio");
         }
-
-        //refreshLayout();
     }
-//
-//    @Override
-//    protected void onRestart(){
-//        super.onRestart();
-//        refreshLayout();
-//    }
 
     private ListView getListView(){
 
@@ -164,8 +138,12 @@ public class AudioListV2Activity extends AppCompatActivity {
     private void refreshLayout() {
 
         AsyncItemLoader ail = new AsyncItemLoader();
-        ail.execute();
+        //ail.execute();
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            ail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            ail.execute();
     }
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String>{
@@ -292,7 +270,8 @@ public class AudioListV2Activity extends AppCompatActivity {
                 TagDbIndex.importExportPathToTagStringMap(db);
 
         mFileListItems =
-                MnemoSyneUtils.getAudioListItems(pathToTagString, mCurrentDir);
+                MnemoSyneUtils.getAudioListItems(pathToTagString,
+                        mCurrentDir, mTimeStampFilters);
 
         for(FileListItem fli : mFileListItems){
 

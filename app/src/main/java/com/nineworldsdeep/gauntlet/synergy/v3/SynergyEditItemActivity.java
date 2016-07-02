@@ -88,6 +88,20 @@ public class SynergyEditItemActivity extends AppCompatActivity {
         Utils.toast(this, "stored");
     }
 
+    public void voiceMemoTag(View view) {
+
+        EditText et = (EditText)findViewById(R.id.txtEdit);
+        String currentText = et.getText().toString();
+        String timeStamp = " (has VoiceMemo: " +
+                Utils.getCurrentTimeStamp_yyyyMMdd() + ")";
+
+        if(!currentText.endsWith(timeStamp)){
+
+            currentText += timeStamp;
+            et.setText(currentText);
+        }
+    }
+
     public void confirmClick(View v){
 
         String newRawText = p.hashMapToFragment(keyVals);

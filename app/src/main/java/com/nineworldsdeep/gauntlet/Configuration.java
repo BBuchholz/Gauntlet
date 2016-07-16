@@ -20,6 +20,7 @@ public class Configuration {
 
     private static boolean _testMode = false;
     private static boolean _deleteDatabaseForDevelopment = false;
+    private static boolean _shuffleFragments = false;
 
     public static boolean isInTestMode() {
         return _testMode;
@@ -323,5 +324,15 @@ public class Configuration {
     public static File getXmlDirectory() {
 
         return getDirectoryStoragePath("/NWD/xml");
+    }
+
+    public static boolean shuffleFragments() {
+
+        return _shuffleFragments;
+    }
+
+    public static void toggleShuffleFragments() {
+
+        _shuffleFragments = !_shuffleFragments;
     }
 }

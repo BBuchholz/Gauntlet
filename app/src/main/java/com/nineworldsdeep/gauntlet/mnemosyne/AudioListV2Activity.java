@@ -416,7 +416,6 @@ public class AudioListV2Activity extends AppCompatActivity {
         moveFile(position, Configuration.getAudioDirectory());
     }
 
-
     private void moveFile(int position, File destinationDirectory){
 
         FileListItem fli = mFileListItems.get(position);

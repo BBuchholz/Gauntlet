@@ -227,7 +227,8 @@ public class SynergyListFile {
         // to setup some sort of constructor that would
         // instantiate different subclasses based on
         // list name, for now this is a hack
-        if(listName.equalsIgnoreCase("Fragments")){
+        if(listName.equalsIgnoreCase("Fragments")  &&
+                Configuration.shuffleFragments()){
 
             Collections.shuffle(items);
             return items;

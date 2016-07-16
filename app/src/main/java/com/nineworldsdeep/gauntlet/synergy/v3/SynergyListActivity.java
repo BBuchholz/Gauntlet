@@ -574,6 +574,12 @@ public class SynergyListActivity
             promptUpdateTemplate();
             return true;
 
+        } else if (id == R.id.action_toggle_shuffle_fragments){
+
+            Configuration.toggleShuffleFragments();
+            refreshLayout();
+            return true;
+
         } else if (id == R.id.action_push){
 
             promptConfirmPush();

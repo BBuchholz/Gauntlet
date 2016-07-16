@@ -1,12 +1,15 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -26,9 +29,11 @@ import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +133,43 @@ public class AudioListV2Activity extends AppCompatActivity {
 
             setTitle("NWD Audio");
         }
+    }
+
+//    @Override
+//    protected void onResume() {
+//
+//        super.onResume();
+//
+//        NwdDb.getInstance(this).open();
+//
+//        //assignDb();
+//
+//        //moved to assignDb() //db.open();
+//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_audio_list_v2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+
+            case R.id.action_remove_marked_audio:
+
+                Utils.toast(this, "use external program, " +
+                        "deactivated indefinitely");
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private ListView getListView(){

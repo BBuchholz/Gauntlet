@@ -48,7 +48,8 @@ public class SynergyListActivity
     public static final int REQUEST_RESULT_EDIT_ITEM = 12;
     private static final int MENU_CONTEXT_MOVE_UP_ID = 13;
     private static final int MENU_CONTEXT_MOVE_DOWN_ID = 14;
-    private static final int MENU_CONTEXT_OPEN_AUDIO = 15;
+    private static final int MENU_CONTEXT_OPEN_MEDIA_AUDIO = 15;
+    private static final int MENU_CONTEXT_OPEN_VM_AUDIO = 16;
 
     private SynergyListFile mSlf;
 
@@ -208,8 +209,11 @@ public class SynergyListActivity
 
         if (m.find()) {
 
-            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_AUDIO,
-                    Menu.NONE, "Open Audio");
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_MEDIA_AUDIO,
+                    Menu.NONE, "Open MEDIA audio");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_VM_AUDIO,
+                    Menu.NONE, "Open VM Audio");
         }
 
         if(mSlf.getListName().startsWith("Fragments")){
@@ -329,9 +333,15 @@ public class SynergyListActivity
 
                 return true;
 
-            case MENU_CONTEXT_OPEN_AUDIO:
+            case MENU_CONTEXT_OPEN_MEDIA_AUDIO:
 
-                openAudio(info.position);
+                openAudio(info.position, true);
+
+                return true;
+
+            case MENU_CONTEXT_OPEN_VM_AUDIO:
+
+                openAudio(info.position, false);
 
                 return true;
 
@@ -351,17 +361,31 @@ public class SynergyListActivity
         startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
     }
 
-    private void openAudio(int position){
+    private void openAudio(int position, boolean mediaNotVoiceMemos){
 
         String timeStampFilters =
                 MnemoSyneUtils
                         .extractTimeStampFilters(mSlf.get(position).getItem());
 
         Intent intent = new Intent(this, AudioListV2Activity.class);
-        intent.putExtra(AudioListV2Activity.EXTRA_CURRENT_PATH,
-                Configuration.getVoicememosDirectory().getAbsolutePath());
+
+        String pathForAudio;
+
+        if(mediaNotVoiceMemos){
+
+            pathForAudio = Configuration.getAudioDirectory().getAbsolutePath();
+
+        }else{
+
+            pathForAudio = Configuration.getVoicememosDirectory().getAbsolutePath();
+        }
+
+        intent.putExtra(AudioListV2Activity.EXTRA_CURRENT_PATH, pathForAudio);
+
         intent.putExtra(AudioListV2Activity.EXTRA_TIMESTAMP_FILTER,
                 timeStampFilters);
+
+        Utils.toast(this, "opening NWD-MEDIA/audio");
 
         startActivity(intent);
     }

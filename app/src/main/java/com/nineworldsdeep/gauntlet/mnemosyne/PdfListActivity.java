@@ -19,6 +19,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,27 +37,6 @@ public class PdfListActivity extends AppCompatActivity {
     // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
-
-    //private NwdDb db;
-
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
 
     @Override
     protected void onPause() {
@@ -104,8 +84,6 @@ public class PdfListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //assignDb();
 
         Intent i = getIntent();
         String s = i.getStringExtra(EXTRA_CURRENT_PATH);
@@ -225,11 +203,11 @@ public class PdfListActivity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-//        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.importExportPathToNameMap(db);
+        HashMap<String,String> pathToTagString =
+                TagDbIndex.importExportPathToTagStringMap(db);
 
         mFileListItems =
-                MnemoSyneUtils.getDocumentListItems(NwdDb.getInstance(this),
+                MnemoSyneUtils.getDocumentListItems(pathToTagString,
                         mCurrentDir);
 
         for(FileListItem fli : mFileListItems){

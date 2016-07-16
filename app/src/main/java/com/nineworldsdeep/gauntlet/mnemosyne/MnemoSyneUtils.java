@@ -43,7 +43,8 @@ public class MnemoSyneUtils {
 
         if(dir == null){
 
-            lst.addAll(getImageListItemsFromPaths(pathToTagString, getTopImageFolders()));
+            lst.addAll(getImageListItemsFromPaths(pathToTagString,
+                    getTopImageFolders()));
 
         }else{
 
@@ -172,6 +173,24 @@ public class MnemoSyneUtils {
         return lst;
     }
 
+    public static List<FileListItem> getDocumentListItems(
+            HashMap<String,String> pathToTagString, File dir){
+
+        List<FileListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getDocumentListItemsFromPaths(pathToTagString,
+                    getDocumentTopFolders()));
+
+        }else{
+
+            lst.addAll(getFileListItems(pathToTagString, dir, documentExts));
+        }
+
+        return lst;
+    }
+
     private static List<FileListItem> getDocumentListItemsFromPaths(
             NwdDb db,
             List<String> pathList) {
@@ -190,6 +209,25 @@ public class MnemoSyneUtils {
 
         return newList;
 
+    }
+
+    private static List<FileListItem> getDocumentListItemsFromPaths(
+            HashMap<String,String> pathToTagString,
+            List<String> lst){
+
+        List<FileListItem> newList = new ArrayList<>();
+
+        for(String filePath : lst){
+
+            File f = new File(filePath);
+
+            if(isPdfFileFromPath(filePath) || f.isDirectory()){
+
+                newList.add(new FileListItem(filePath, pathToTagString));
+            }
+        }
+
+        return newList;
     }
 
     private static boolean isPdfFileFromPath(String filePath) {

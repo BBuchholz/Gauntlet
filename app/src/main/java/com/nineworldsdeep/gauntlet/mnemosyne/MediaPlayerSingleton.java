@@ -83,6 +83,7 @@ public class MediaPlayerSingleton{
             mp.reset();
             mp.setDataSource(ame.getPath());
             mp.setOnPreparedListener(listener);
+            mp.setLooping(true);
             mp.prepareAsync();
         }
 

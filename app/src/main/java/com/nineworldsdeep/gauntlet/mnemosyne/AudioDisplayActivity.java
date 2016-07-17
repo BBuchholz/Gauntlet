@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,9 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
@@ -40,7 +39,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     // has features like seekbar that I am not currently implementing but would like to eventually
 
     private AudioMediaEntry ame;
-    private MediaPlayerSingleton mps;
+    private MediaPlayerSingleton mMediaPlayerSingleton;
 
     //private NwdDb db;
 
@@ -79,19 +78,20 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         if(audioPath != null){
 
-            mps = MediaPlayerSingleton.getInstance();
+            SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
+            mMediaPlayerSingleton = MediaPlayerSingleton.getInstance(seek);
 
             try {
 
                 HashMap<String,String> pathToTagString =
                         TagDbIndex.importExportPathToTagStringMap(NwdDb.getInstance(this));
 
-                setNowPlaying(mps.queueAndPlayLast(
+                setNowPlaying(mMediaPlayerSingleton.queueAndPlayLast(
                         pathToTagString,
                         audioPath,
                         this));
 
-//                setNowPlaying(mps.queueAndPlayLast(
+//                setNowPlaying(mMediaPlayerSingleton.queueAndPlayLast(
 //                        NwdDb.getInstance(this),
 //                        audioPath,
 //                        this));
@@ -462,7 +462,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
                             try{
 
-                                mps.resetPlayer();
+                                mMediaPlayerSingleton.resetPlayer();
                                 setNowPlaying(null);
                                 refreshLayout();
 
@@ -521,14 +521,14 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
     public void stopPlayback(View view) {
 
-        mps.stop();
+        mMediaPlayerSingleton.stop();
     }
 
     public void playPrevious(View view) {
 
         try{
 
-            setNowPlaying(mps.playPrevious(this));
+            setNowPlaying(mMediaPlayerSingleton.playPrevious(this));
             updateMediaInfo();
 
         }catch(Exception ex){
@@ -541,7 +541,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         try{
 
-            setNowPlaying(mps.playNext(this));
+            setNowPlaying(mMediaPlayerSingleton.playNext(this));
             updateMediaInfo();
 
         }catch(Exception ex){
@@ -553,6 +553,9 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     @Override
     public void onPrepared(MediaPlayer player) {
 
+        SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
+        seek.setMax(player.getDuration());
+        mMediaPlayerSingleton.updateSeek();
         player.start();
     }
 
@@ -659,7 +662,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
         ListView lvItems = (ListView) findViewById(R.id.lvPlaylist);
         ListView lvTags = (ListView) findViewById(R.id.lvTagsFrequent);
 
-        List<AudioMediaEntry> playlistEntries = mps.getPlaylist();
+        List<AudioMediaEntry> playlistEntries = mMediaPlayerSingleton.getPlaylist();
         List<String> frequentTags = Tags.getFrequent();
 
         lvItems.setAdapter(

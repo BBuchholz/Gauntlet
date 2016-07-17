@@ -1,8 +1,8 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.media.MediaPlayer;
-
-import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import android.os.Handler;
+import android.widget.SeekBar;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +21,8 @@ public class MediaPlayerSingleton{
     // here for later :)
 
     private static MediaPlayerSingleton singleton = null;
+    private static SeekBar mSeekBar = null;
+    private static Handler seekHandler = new Handler();
 
     private MediaPlayer mp;
     //private String nowPlayingPath;
@@ -32,7 +34,7 @@ public class MediaPlayerSingleton{
 
     }
 
-    public static MediaPlayerSingleton getInstance(){
+    public static MediaPlayerSingleton getInstance(SeekBar seekBarForDisplay){
 
         if(singleton == null){
 
@@ -45,6 +47,8 @@ public class MediaPlayerSingleton{
                 }
             }
         }
+
+        mSeekBar = seekBarForDisplay;
 
         return singleton;
     }
@@ -88,6 +92,20 @@ public class MediaPlayerSingleton{
         }
 
         return ame;
+    }
+
+    Runnable updateRunnable = new Runnable() {
+
+        @Override public void run()
+        {
+            updateSeek();
+        }
+    };
+
+    public void updateSeek() {
+
+        mSeekBar.setProgress(mp.getCurrentPosition());
+        seekHandler.postDelayed(updateRunnable, 10);
     }
 
     public AudioMediaEntry playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {

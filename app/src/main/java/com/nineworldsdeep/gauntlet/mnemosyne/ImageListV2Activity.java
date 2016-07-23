@@ -33,6 +33,7 @@ import java.util.List;
 public class ImageListV2Activity extends AppCompatActivity {
 
     private File mCurrentDir;
+    private List<String> mTimeStampFilters;
     private ListAdapter mCurrentAdapter;
     List<FileListItem> mFileListItems;
 
@@ -43,6 +44,8 @@ public class ImageListV2Activity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
+    public static final String EXTRA_TIMESTAMP_FILTER =
+            "com.nineworldsdeep.gauntlet.IMAGELIST_TIMESTAMP_FILTER";
 
     // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
     private static final String LIST_STATE = "listState";
@@ -118,7 +121,18 @@ public class ImageListV2Activity extends AppCompatActivity {
         NwdDb.getInstance(this).open();
 
         Intent i = getIntent();
-        String s = i.getStringExtra(EXTRA_CURRENT_PATH);
+        String s = null;
+
+        if(i.hasExtra(EXTRA_CURRENT_PATH)) {
+            s = i.getStringExtra(EXTRA_CURRENT_PATH);
+        }
+
+        if(i.hasExtra(EXTRA_TIMESTAMP_FILTER)) {
+
+            mTimeStampFilters =
+                    MnemoSyneUtils.toTimeStampFilterList(
+                            i.getStringExtra(EXTRA_TIMESTAMP_FILTER));
+        }
 
         mCurrentDir = null;
 
@@ -285,7 +299,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
         mFileListItems =
                 MnemoSyneUtils.getImageListItems(pathToTagString,
-                        mCurrentDir);
+                        mCurrentDir, mTimeStampFilters);
 
         for(FileListItem fli : mFileListItems){
 

@@ -37,7 +37,95 @@ public class MnemoSyneUtils {
     }
 
     public static List<FileListItem> getImageListItems(
-            HashMap<String,String> pathToTagString, File dir){
+            HashMap<String,String> pathToTagString,
+            File dir,
+            List<String> timeStampFilters){
+
+       List<FileListItem> unfiltered = getImageListItems(pathToTagString, dir);
+//
+//        if(dir == null){
+//
+//            lst.addAll(getImageListItemsFromPaths(pathToTagString,
+//                    getTopImageFolders()));
+//
+//        }else{
+//
+//            lst.addAll(getFileListItems(pathToTagString, dir, imageExts));
+//        }
+//
+//        return lst;
+
+//        List<FileListItem> lst = new ArrayList<>();
+//        if(timeStampFilters != null){
+//
+//            for(FileListItem fli : unfiltered){
+//
+//                String fileName = fli.getFile().getName();
+//                String convertedFileName =
+//                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
+//
+//                boolean found = false;
+//                int i = 0;
+//
+//                while(!found && i < timeStampFilters.size()){
+//
+//                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
+//
+//                        lst.add(fli);
+//                    }
+//
+//                    i++;
+//                }
+//            }
+//        }
+//        else
+//        {
+//            lst = unfiltered;
+//        }
+//
+//        return lst;
+
+        return filterList(unfiltered, timeStampFilters);
+    }
+
+    public static List<FileListItem> filterList(List<FileListItem> unfiltered,
+                                                List<String> timeStampFilters){
+
+        List<FileListItem> lst = new ArrayList<>();
+        if(timeStampFilters != null){
+
+            for(FileListItem fli : unfiltered){
+
+                String fileName = fli.getFile().getName();
+                String convertedFileName =
+                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
+
+                boolean found = false;
+                int i = 0;
+
+                while(!found && i < timeStampFilters.size()){
+
+                    if(convertedFileName.startsWith(timeStampFilters.get(i)) &&
+                            !lst.contains(fli)){
+
+                        lst.add(fli);
+                    }
+
+                    i++;
+                }
+            }
+        }
+        else
+        {
+            lst = unfiltered;
+        }
+
+        return lst;
+    }
+
+    public static List<FileListItem> getImageListItems(
+            HashMap<String,String> pathToTagString,
+            File dir){
 
         List<FileListItem> lst = new ArrayList<>();
 
@@ -49,22 +137,6 @@ public class MnemoSyneUtils {
         }else{
 
             lst.addAll(getFileListItems(pathToTagString, dir, imageExts));
-        }
-
-        return lst;
-    }
-
-    public static List<FileListItem> getImageListItems(NwdDb db, File dir){
-
-        List<FileListItem> lst = new ArrayList<>();
-
-        if(dir == null){
-
-            lst.addAll(getImageListItemsFromPaths(db, getTopImageFolders()));
-
-        }else{
-
-            lst.addAll(getFileListItems(db, dir, imageExts));
         }
 
         return lst;
@@ -92,42 +164,44 @@ public class MnemoSyneUtils {
             File dir,
             List<String> timeStampFilters){
 
-        List<FileListItem> lst = new ArrayList<>();
         List<FileListItem> unfiltered = getAudioListItems(pathToTagString, dir);
+//
+//        List<FileListItem> lst = new ArrayList<>();
+//        if(timeStampFilters != null){
+//
+//            for(FileListItem fli : unfiltered){
+//
+//                String fileName = fli.getFile().getName();
+//                String convertedFileName =
+//                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
+//
+//                boolean found = false;
+//                int i = 0;
+//
+//                while(!found && i < timeStampFilters.size()){
+//
+//                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
+//
+//                        lst.add(fli);
+//                    }
+//
+//                    i++;
+//                }
+//            }
+//        }
+//        else
+//        {
+//            lst = unfiltered;
+//        }
+//
+//        return lst;
 
-        if(timeStampFilters != null){
-
-            for(FileListItem fli : unfiltered){
-
-                String fileName = fli.getFile().getName();
-                String convertedFileName =
-                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
-
-                boolean found = false;
-                int i = 0;
-
-                while(!found && i < timeStampFilters.size()){
-
-                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
-
-                        lst.add(fli);
-                    }
-
-                    i++;
-                }
-            }
-        }
-        else
-        {
-            lst = unfiltered;
-        }
-
-        return lst;
+        return filterList(unfiltered, timeStampFilters);
     }
 
     private static String replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(String stringWithTimeStampPrefix) {
 
-        Matcher m = Pattern.compile("\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2}")
+        Matcher m = Pattern.compile("\\d{4}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}")
                 .matcher(stringWithTimeStampPrefix);
 
         if (m.find()) {

@@ -22,6 +22,7 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
@@ -50,6 +51,8 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_MOVE_DOWN_ID = 14;
     private static final int MENU_CONTEXT_OPEN_MEDIA_AUDIO = 15;
     private static final int MENU_CONTEXT_OPEN_VM_AUDIO = 16;
+    private static final int MENU_CONTEXT_OPEN_MEDIA_IMAGES = 17;
+    private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
 
     private SynergyListFile mSlf;
 
@@ -204,16 +207,28 @@ public class SynergyListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
         }
 
-        Matcher m = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
+        Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
                 .matcher(mSlf.get(info.position).getItem());
 
-        if (m.find()) {
+        if (vmMatcher.find()) {
 
             menu.add(Menu.NONE, MENU_CONTEXT_OPEN_MEDIA_AUDIO,
                     Menu.NONE, "Open MEDIA audio");
 
             menu.add(Menu.NONE, MENU_CONTEXT_OPEN_VM_AUDIO,
                     Menu.NONE, "Open VM Audio");
+        }
+
+        Matcher imgMatcher = Pattern.compile("\\(\\bhas Image: \\d{4,14}\\b\\)")
+            .matcher(mSlf.get(info.position).getItem());
+
+        if (imgMatcher.find()) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_MEDIA_IMAGES,
+                    Menu.NONE, "Open MEDIA images");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_VM_SCREENSHOTS,
+                    Menu.NONE, "Open Screenshots");
         }
 
         if(mSlf.getListName().startsWith("Fragments")){
@@ -345,6 +360,18 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_OPEN_MEDIA_IMAGES:
+
+                openImage(info.position, true);
+
+                return true;
+
+            case MENU_CONTEXT_OPEN_VM_SCREENSHOTS:
+
+                openImage(info.position, false);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
@@ -386,6 +413,35 @@ public class SynergyListActivity
                 timeStampFilters);
 
         Utils.toast(this, "opening NWD-MEDIA/audio");
+
+        startActivity(intent);
+    }
+
+    private void openImage(int position, boolean mediaNotScreenshots){
+
+        String timeStampFilters =
+                MnemoSyneUtils
+                        .extractTimeStampFilters(mSlf.get(position).getItem());
+
+        Intent intent = new Intent(this, ImageListV2Activity.class);
+
+        String pathForImage;
+
+        if(mediaNotScreenshots){
+
+            pathForImage = Configuration.getImagesDirectory().getAbsolutePath();
+
+        }else{
+
+            pathForImage = Configuration.getScreenshotDirectory().getAbsolutePath();
+        }
+
+        intent.putExtra(ImageListV2Activity.EXTRA_CURRENT_PATH, pathForImage);
+
+        intent.putExtra(ImageListV2Activity.EXTRA_TIMESTAMP_FILTER,
+                timeStampFilters);
+
+        Utils.toast(this, "opening images...");
 
         startActivity(intent);
     }

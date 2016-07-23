@@ -294,8 +294,6 @@ public class AudioListV2Activity extends AppCompatActivity {
 
     private ListAdapter loadItems() {
 
-        //ListView lvItems = (ListView) findViewById(R.id.lvItems);
-
         ArrayList<HashMap<String, String>> lstItems =
                 new ArrayList<HashMap<String, String>>();
 
@@ -304,9 +302,6 @@ public class AudioListV2Activity extends AppCompatActivity {
         db.open();
 
         HashMap<String, String> map;
-
-//        HashMap<String,String> dbPathToNameMap =
-//                DisplayNameDbIndex.importExportPathToNameMap(db);
 
         HashMap<String, String> pathToTagString =
                 TagDbIndex.importExportPathToTagStringMap(db);
@@ -344,8 +339,6 @@ public class AudioListV2Activity extends AppCompatActivity {
                         new int[] {R.id.img,
                                 R.id.display_name,
                                 R.id.tags});
-
-        //lvItems.setAdapter(saItems);
 
         return saItems;
     }

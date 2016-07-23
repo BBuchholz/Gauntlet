@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.R;
@@ -181,7 +182,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 
                 long start = System.nanoTime();
 
-                //publishProgress("loading items...");
+                publishProgress("loading items...");
                 mCurrentAdapter = loadItems();
 
                 long elapsedTime = System.nanoTime() - start;
@@ -202,7 +203,8 @@ public class ImageListV2Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            Utils.toast(ImageListV2Activity.this, result);
+            //Utils.toast(ImageListV2Activity.this, result);
+            updateStatus(result);
 
             if(mCurrentAdapter != null){
 
@@ -226,8 +228,16 @@ public class ImageListV2Activity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... text) {
 
+            if(text.length > 0)
+            updateStatus(text[0]);
         }
 
+    }
+
+    private void updateStatus(String status){
+
+        TextView tv = (TextView)findViewById(R.id.tvStatus);
+        tv.setText(status);
     }
 
     private void restoreInstanceState(){

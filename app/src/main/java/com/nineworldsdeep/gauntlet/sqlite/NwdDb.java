@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
@@ -16,8 +16,6 @@ import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;

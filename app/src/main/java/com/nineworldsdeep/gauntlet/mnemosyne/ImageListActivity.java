@@ -1,27 +1,6 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import com.nineworldsdeep.gauntlet.Configuration;
-import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
-import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
-import java.util.HashMap;
 
 @Deprecated
 public class ImageListActivity extends AppCompatActivity {

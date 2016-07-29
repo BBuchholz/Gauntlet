@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.synergy.v2.LineItemListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
@@ -20,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;

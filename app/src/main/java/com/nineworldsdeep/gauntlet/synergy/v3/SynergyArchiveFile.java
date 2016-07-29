@@ -1,6 +1,6 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
-import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 
 import java.io.File;
 

@@ -16,6 +16,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;

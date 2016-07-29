@@ -236,8 +236,8 @@
             android:name=".mnemosyne.AudioDisplayActivity"
             android:label="@string/title_activity_audio_display"
             android:parentActivityName=".mnemosyne.AudioListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.mnemosyne.AudioListActivity"/>
@@ -367,6 +367,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
+        </activity>
+        <activity android:name=".core.BaseActivity">
         </activity>
     </application>
 

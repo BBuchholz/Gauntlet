@@ -1,6 +1,6 @@
 package com.nineworldsdeep.gauntlet.muse;
 
-import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.io.File;

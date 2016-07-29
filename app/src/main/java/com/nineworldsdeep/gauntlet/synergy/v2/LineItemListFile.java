@@ -1,6 +1,5 @@
 package com.nineworldsdeep.gauntlet.synergy.v2;
 
-import com.nineworldsdeep.gauntlet.Configuration;
 import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.Utils;
 

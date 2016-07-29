@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet;
 
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 
 import junit.framework.TestCase;

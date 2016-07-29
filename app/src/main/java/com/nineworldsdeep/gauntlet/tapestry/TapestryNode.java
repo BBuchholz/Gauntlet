@@ -1,7 +1,6 @@
 package com.nineworldsdeep.gauntlet.tapestry;
 
-import com.nineworldsdeep.gauntlet.Configuration;
-import com.nineworldsdeep.gauntlet.Parser;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import org.apache.commons.io.FileUtils;

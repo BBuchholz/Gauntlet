@@ -1,7 +1,8 @@
-package com.nineworldsdeep.gauntlet;
+package com.nineworldsdeep.gauntlet.core;
 
 import android.os.Environment;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;

@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet;
 
+import com.nineworldsdeep.gauntlet.core.Configuration;
+
 import junit.framework.TestCase;
 
 import java.io.File;

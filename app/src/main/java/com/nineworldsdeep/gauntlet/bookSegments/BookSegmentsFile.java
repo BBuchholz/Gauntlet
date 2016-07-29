@@ -1,9 +1,8 @@
 package com.nineworldsdeep.gauntlet.bookSegments;
 
-import com.nineworldsdeep.gauntlet.Configuration;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.synergy.v2.LineItemListFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

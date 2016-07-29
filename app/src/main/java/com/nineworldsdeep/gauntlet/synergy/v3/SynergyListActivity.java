@@ -21,6 +21,7 @@ import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
@@ -33,7 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SynergyListActivity
-        extends AppCompatActivity{
+        extends ListBaseActivity{
 
     private static final int MENU_CONTEXT_COMPLETION_STATUS_ID = 1;
     private static final int MENU_CONTEXT_SHELVE_ID = 2;
@@ -56,32 +57,14 @@ public class SynergyListActivity
 
     private SynergyListFile mSlf;
 
-    //list state logic from:
-    // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
-    private static final String LIST_STATE = "listState";
-    private Parcelable mListState = null;
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        mListState = state.getParcelable(LIST_STATE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshLayout();
-        if (mListState != null)
-            getListView().onRestoreInstanceState(mListState);
-        mListState = null;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-        mListState = getListView().onSaveInstanceState();
-        state.putParcelable(LIST_STATE, mListState);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        refreshLayout();
+//        if (mListState != null)
+//            getListView().onRestoreInstanceState(mListState);
+//        mListState = null;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +83,8 @@ public class SynergyListActivity
         refreshLayout(listName);
     }
 
-    private ListView getListView(){
+    @Override
+    protected ListView getListView(){
 
         return (ListView)findViewById(R.id.lvItems);
     }
@@ -168,7 +152,7 @@ public class SynergyListActivity
         });
     }
 
-    private void refreshLayout(){
+    protected void refreshLayout(){
 
         //ignore if its null
         if(mSlf != null){

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 //import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
@@ -28,7 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SynergyV3MainActivity extends AppCompatActivity {
+public class SynergyV3MainActivity extends ListBaseActivity {
 
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
@@ -40,31 +41,6 @@ public class SynergyV3MainActivity extends AppCompatActivity {
     public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
 
-    // http://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
-    private static final String LIST_STATE = "listState";
-    private Parcelable mListState = null;
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        mListState = state.getParcelable(LIST_STATE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshLayout();
-        if (mListState != null)
-            getListView().onRestoreInstanceState(mListState);
-        mListState = null;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-        mListState = getListView().onSaveInstanceState();
-        state.putParcelable(LIST_STATE, mListState);
-    }
 
     public void setOrdering(SynergyListOrdering ordering) {
         this.ordering = ordering;
@@ -190,13 +166,7 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         refreshLayout();
     }
 
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        refreshLayout();
-    }
-
-    private void refreshLayout(){
+    protected void refreshLayout(){
 
         ListView lvItems = getListView();
 
@@ -216,7 +186,8 @@ public class SynergyV3MainActivity extends AppCompatActivity {
         lvItems.setSelectionFromTop(index, top);
     }
 
-    private ListView getListView() {
+    @Override
+    protected ListView getListView() {
 
         return (ListView)findViewById(R.id.lvItems);
     }
@@ -484,11 +455,6 @@ public class SynergyV3MainActivity extends AppCompatActivity {
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
                         currentListEntries));
-
-//        lvItems.setAdapter(
-//                new ArrayAdapter<>(this,
-//                        android.R.layout.simple_list_item_1,
-//                        SynergyUtils.getAllListNames()));
     }
 
 }

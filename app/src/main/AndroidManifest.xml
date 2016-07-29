@@ -368,7 +368,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
-        <activity android:name=".core.BaseActivity">
+        <activity android:name=".core.ListBaseActivity">
+        </activity>
+        <activity android:name=".core.DbBaseActivity">
         </activity>
     </application>
 

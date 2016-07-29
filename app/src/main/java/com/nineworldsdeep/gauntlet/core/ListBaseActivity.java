@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.core;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 public abstract class ListBaseActivity extends DbBaseActivity {
@@ -44,6 +45,27 @@ public abstract class ListBaseActivity extends DbBaseActivity {
         refreshLayout();
     }
 
+    protected void refreshLayout(){
+
+        ListView lvItems = getListView();
+
+
+        // http://stackoverflow.com/a/8276140/670768
+        //save position info
+        int index = lvItems.getFirstVisiblePosition();
+        View v = lvItems.getChildAt(0);
+        int top = (v == null) ? 0 : v.getTop();
+
+        //perform adapter operations
+        readItems(getListView());
+        setupListViewListener(getListView());
+        registerForContextMenu(getListView());
+
+        //restore listview postion
+        lvItems.setSelectionFromTop(index, top);
+    }
+
     protected abstract ListView getListView();
-    protected abstract void refreshLayout();
+    protected abstract void readItems(ListView lv);
+    protected abstract void setupListViewListener(ListView lv);
 }

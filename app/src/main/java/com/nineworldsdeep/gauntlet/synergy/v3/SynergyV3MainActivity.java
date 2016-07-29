@@ -166,26 +166,6 @@ public class SynergyV3MainActivity extends ListBaseActivity {
         refreshLayout();
     }
 
-    protected void refreshLayout(){
-
-        ListView lvItems = getListView();
-
-
-        // http://stackoverflow.com/a/8276140/670768
-        //save position info
-        int index = lvItems.getFirstVisiblePosition();
-        View v = lvItems.getChildAt(0);
-        int top = (v == null) ? 0 : v.getTop();
-
-        //perform adapter operations
-        readItems(lvItems);
-        setupListViewListener(lvItems);
-        registerForContextMenu(lvItems);
-
-        //restore listview postion
-        lvItems.setSelectionFromTop(index, top);
-    }
-
     @Override
     protected ListView getListView() {
 
@@ -210,7 +190,8 @@ public class SynergyV3MainActivity extends ListBaseActivity {
         }
     }
 
-    private void setupListViewListener(final ListView lvItems) {
+    @Override
+    protected void setupListViewListener(final ListView lvItems) {
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -395,7 +376,8 @@ public class SynergyV3MainActivity extends ListBaseActivity {
         readItems((ListView)findViewById(R.id.lvItems));
     }
 
-    private void readItems(ListView lvItems) {
+    @Override
+    protected void readItems(ListView lvItems) {
 
         List<ListEntry> lst = SynergyUtils.getAllListEntries();
 

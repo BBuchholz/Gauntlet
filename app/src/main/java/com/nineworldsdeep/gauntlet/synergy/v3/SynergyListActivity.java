@@ -57,15 +57,6 @@ public class SynergyListActivity
 
     private SynergyListFile mSlf;
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        refreshLayout();
-//        if (mListState != null)
-//            getListView().onRestoreInstanceState(mListState);
-//        mListState = null;
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +71,9 @@ public class SynergyListActivity
 
         setTitle(listName);
 
-        refreshLayout(listName);
+        mSlf = new SynergyListFile(listName);
+
+        refreshLayout();
     }
 
     @Override
@@ -89,17 +82,8 @@ public class SynergyListActivity
         return (ListView)findViewById(R.id.lvItems);
     }
 
-    private void refreshLayout(String listName){
-
-        ListView lvItems =
-                getListView();
-
-        readItems(lvItems, listName);
-        registerForContextMenu(lvItems);
-        setupListViewListener(lvItems);
-    }
-
-    private void setupListViewListener(final ListView lvItems) {
+    @Override
+    protected void setupListViewListener(final ListView lvItems) {
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -150,19 +134,6 @@ public class SynergyListActivity
                 }
             }
         });
-    }
-
-    protected void refreshLayout(){
-
-        //ignore if its null
-        if(mSlf != null){
-
-            refreshLayout(mSlf.getListName());
-
-        } else {
-
-            Utils.toast(this, "Error refreshing layout, Synergy List File is null.");
-        }
     }
 
     //adapted from:
@@ -887,13 +858,13 @@ public class SynergyListActivity
                     public void onClick(DialogInterface dialog, int which) {
                         SynergyUtils.archive(mSlf.getListName(), expired);
                         Utils.toast(getApplicationContext(), "tasks archived");
-                        readItems(mSlf.getListName());
+                        //readItems(mSlf.getListName());
+                        readItems();
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
-
 
     private void promptConfirmPush(){
 
@@ -911,7 +882,8 @@ public class SynergyListActivity
                             String pushed = SynergyUtils.push(mSlf.getListName());
                             Utils.toast(getApplicationContext(),
                                     "tasks pushed to " + pushed);
-                            readItems(mSlf.getListName());
+                            //readItems(mSlf.getListName());
+                            readItems();
                         }
                     })
                     .setNegativeButton("No", null)
@@ -1124,19 +1096,17 @@ public class SynergyListActivity
         return (ListView)findViewById(R.id.lvItems);
     }
 
-    public void readItems(String listName){
+    @Override
+    protected void readItems(ListView lvItems) {
 
-        ListView lvItems = getLvItems();
-
-        readItems(lvItems, listName);
-    }
-
-    private void readItems(ListView lvItems, String listName) {
-
-        mSlf = new SynergyListFile(listName);
         mSlf.loadItems();
 
         setListViewAdapter(lvItems);
+    }
+
+    private void readItems(){
+
+        readItems(getListView());
     }
 
     private void setListViewAdapter(ListView lvItems) {

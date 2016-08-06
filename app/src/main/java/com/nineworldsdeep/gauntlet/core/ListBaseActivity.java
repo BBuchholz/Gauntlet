@@ -39,16 +39,9 @@ public abstract class ListBaseActivity extends DbBaseActivity {
         mListState = null;
     }
 
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        refreshLayout();
-    }
-
     protected void refreshLayout(){
 
         ListView lvItems = getListView();
-
 
         // http://stackoverflow.com/a/8276140/670768
         //save position info

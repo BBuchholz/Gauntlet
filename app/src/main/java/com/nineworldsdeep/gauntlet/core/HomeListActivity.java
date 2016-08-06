@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HomeListActivity extends AppCompatActivity {
+public class HomeListActivity extends ListBaseActivity {
 
-    private List<NavigateActivityCommand> cmds;
+    private List<NavigateActivityCommand> cmds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,6 @@ public class HomeListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //refreshLayout();
 
         //prompt for device name if not set
         checkAndPromptForDeviceName();
@@ -55,9 +53,10 @@ public class HomeListActivity extends AppCompatActivity {
         refreshLayout();
     }
 
-    private void refreshLayout(){
+    @Override
+    protected void readItems(ListView lv) {
 
-        cmds = new ArrayList<>();
+        cmds.clear();
 
         //to prototype new features in test mode...
 
@@ -81,16 +80,26 @@ public class HomeListActivity extends AppCompatActivity {
         addNavigateActivityCommand("Test", TestModeActivity.class);
         addNavigateActivityCommand("PrevHome", MainActivity.class);
 
-        ListView lvItems = (ListView)findViewById(R.id.lvItems);
+    }
+
+    @Override
+    protected ListView getListView() {
+
+        return (ListView)findViewById(R.id.lvItems);
+    }
+
+    @Override
+    protected void setupListViewListener(ListView lvItems) {
 
         lvItems.setAdapter(
-                new ArrayAdapter<NavigateActivityCommand>(
+                new ArrayAdapter<>(
                         this, android.R.layout.simple_list_item_1, cmds));
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(
+                    AdapterView<?> parent, View view, int position, long id) {
 
                 NavigateActivityCommand cmd = cmds.get(position);
                 cmd.navigate();

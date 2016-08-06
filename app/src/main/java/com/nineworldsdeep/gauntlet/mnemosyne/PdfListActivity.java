@@ -158,46 +158,10 @@ public class PdfListActivity extends AppCompatActivity {
 
                 }else if(f.exists() && f.isFile()){
 
-                    Utils.toast(PdfListActivity.this,
-                            "long press to open file externally");
+                    openExternally(position);
                 }
             }
         });
-
-//        lvItems.setOnItemLongClickListener(
-//                new AdapterView.OnItemLongClickListener() {
-//
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent,
-//                                           View view,
-//                                           int idx,
-//                                           long id) {
-//
-//                FileListItem fli = mFileListItems.get(idx);
-//                File f = fli.getFile();
-//
-//                if(f.exists() && f.isFile()){
-//
-//                    Intent target = new Intent(Intent.ACTION_VIEW);
-//                    target.setDataAndType(Uri.fromFile(f),"application/pdf");
-//                    target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//
-//                    try{
-//
-//                        startActivity(target);
-//
-//                    }catch (ActivityNotFoundException ex){
-//
-//                        Utils.toast(PdfListActivity.this,
-//                                "error opening file: " +
-//                                f.getAbsolutePath());
-//                    }
-//
-//                }
-//
-//                return true;
-//            }
-//        });
     }
 
     @Override
@@ -222,7 +186,7 @@ public class PdfListActivity extends AppCompatActivity {
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PDFS, Menu.NONE, "Move to pdfs");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
-            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNALLY, Menu.NONE, "Open externally");
+            //menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNALLY, Menu.NONE, "Open externally");
         }
 
     }
@@ -252,11 +216,11 @@ public class PdfListActivity extends AppCompatActivity {
 
                 return true;
 
-            case MENU_CONTEXT_OPEN_EXTERNALLY:
-
-                openExternally(info.position);
-
-                return true;
+//            case MENU_CONTEXT_OPEN_EXTERNALLY:
+//
+//                openExternally(info.position);
+//
+//                return true;
 
             default:
                 return super.onContextItemSelected(item);

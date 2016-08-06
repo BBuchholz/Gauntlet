@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
@@ -26,6 +27,8 @@ import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -218,5 +221,10 @@ public class MainActivity extends ActionBarActivity {
     public void launchTestModeActivity(View view) {
 
         startActivity(new Intent(this, TestModeActivity.class));
+    }
+
+    public void launchHomeListActivity(View view) {
+
+        startActivity(new Intent(this, HomeListActivity.class));
     }
 }

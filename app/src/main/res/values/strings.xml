@@ -66,4 +66,5 @@
     <string name="menu_test">Test</string>
     <string name="title_activity_pdf_list">PdfListActivity</string>
     <string name="toggle_frag_shuffle">Toggle Frag Shuffle</string>
+    <string name="title_activity_home_list">HomeListActivity</string>
 </resources>

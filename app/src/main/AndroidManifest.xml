@@ -12,11 +12,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".DisplayMessageActivity"
@@ -205,24 +207,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity"/>
         </activity>
-        <!--<activity-->
-            <!--android:name=".mnemosyne.ImageDisplayActivity"-->
-            <!--android:label="@string/title_activity_image_display"-->
-            <!--android:parentActivityName=".mnemosyne.ImageListActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity"/>-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name=".mnemosyne.AudioListActivity"-->
-            <!--android:label="@string/title_activity_audio_list"-->
-            <!--android:parentActivityName=".MainActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nineworldsdeep.gauntlet.MainActivity"/>-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".mnemosyne.ImageDisplayActivity" -->
+        <!-- android:label="@string/title_activity_image_display" -->
+        <!-- android:parentActivityName=".mnemosyne.ImageListActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListActivity"/> -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name=".mnemosyne.AudioListActivity" -->
+        <!-- android:label="@string/title_activity_audio_list" -->
+        <!-- android:parentActivityName=".MainActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.nineworldsdeep.gauntlet.MainActivity"/> -->
+        <!-- </activity> -->
         <activity
             android:name=".mnemosyne.AudioDisplayActivity"
             android:label="@string/title_activity_audio_display"
@@ -359,8 +361,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
-        <!--<activity android:name=".core.ListBaseActivity">-->
-        <!--</activity>-->
+        <!-- <activity android:name=".core.ListBaseActivity"> -->
+        <!-- </activity> -->
         <activity android:name=".core.DbBaseActivity">
         </activity>
         <activity
@@ -372,6 +374,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".tapestry.v2.fileSubset.FileNodeDisplayActivity">
         </activity>
     </application>
 

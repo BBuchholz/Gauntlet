@@ -127,26 +127,26 @@ public class TapestryNodeActivity extends AppCompatActivity {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_tapestry_node, menu);
 
-            MenuItem menuItem;
-            //is individual garden
-//            if(mCurrentNodeName.startsWith("Gardens-")){
-
-                menuItem =
-                        menu.add(Menu.NONE, MENU_TRANSPLANT_ID,
-                                Menu.NONE, "Transplant");
-
-                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//            MenuItem menuItem;
+//            //is individual garden
+////            if(mCurrentNodeName.startsWith("Gardens-")){
+//
+//                menuItem =
+//                        menu.add(Menu.NONE, MENU_TRANSPLANT_ID,
+//                                Menu.NONE, "Transplant");
+//
+//                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+////            }
+//
+//            //is neither main gardens node nor individual garden node
+//            if(!mCurrentNodeName.startsWith("Gardens")){
+//
+//                menuItem =
+//                        menu.add(Menu.NONE, MENU_LINK_NODE_ID,
+//                                Menu.NONE, "Link");
+//
+//                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 //            }
-
-            //is neither main gardens node nor individual garden node
-            if(!mCurrentNodeName.startsWith("Gardens")){
-
-                menuItem =
-                        menu.add(Menu.NONE, MENU_LINK_NODE_ID,
-                                Menu.NONE, "Link");
-
-                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            }
 
         }
         return true;

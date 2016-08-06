@@ -1,17 +1,9 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

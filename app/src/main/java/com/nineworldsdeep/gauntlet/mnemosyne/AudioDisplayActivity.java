@@ -25,8 +25,6 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
-import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.IOException;
 import java.util.HashMap;

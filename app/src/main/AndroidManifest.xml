@@ -315,7 +315,7 @@
         </activity>
         <activity android:name=".synergy.v3.SynergyEditItemActivity"/>
         <activity
-            android:name=".tapestry.TapestryNodeActivity"
+            android:name=".tapestry.v1.TapestryNodeActivity"
             android:label="@string/title_activity_tapestry_main"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -333,13 +333,13 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
-            android:name=".tapestry.MetaBrowserActivity"
+            android:name=".tapestry.v1.MetaBrowserActivity"
             android:label="@string/title_activity_meta_browser"
-            android:parentActivityName=".tapestry.TapestryNodeActivity"
+            android:parentActivityName=".tapestry.v1.TapestryNodeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity"/>
+                android:value=".tapestry.v1.TapestryNodeActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioListV2Activity"

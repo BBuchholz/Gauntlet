@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 /**
  * Created by brent on 4/29/16.

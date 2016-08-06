@@ -2,9 +2,6 @@ package com.nineworldsdeep.gauntlet.core;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +21,11 @@ import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
-import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
+import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNodeActivity;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class HomeListActivity extends ListBaseActivity {

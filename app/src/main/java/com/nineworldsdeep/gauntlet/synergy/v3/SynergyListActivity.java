@@ -3,9 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v3;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,8 +24,6 @@ import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
-import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

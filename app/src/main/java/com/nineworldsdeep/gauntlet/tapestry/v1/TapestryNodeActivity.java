@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchiveActivity;
 
 import java.util.ArrayList;
 

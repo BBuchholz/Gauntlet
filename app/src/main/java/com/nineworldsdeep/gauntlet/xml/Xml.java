@@ -4,15 +4,12 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -23,7 +20,6 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;

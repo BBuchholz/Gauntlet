@@ -16,15 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
-import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.io.File;
 import java.util.HashMap;

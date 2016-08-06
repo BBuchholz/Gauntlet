@@ -24,11 +24,9 @@ import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
-import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
-
-import java.util.ArrayList;
+import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNodeActivity;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 public class MainActivity extends ActionBarActivity {
 

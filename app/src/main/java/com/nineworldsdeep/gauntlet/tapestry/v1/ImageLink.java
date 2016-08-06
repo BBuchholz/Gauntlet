@@ -1,12 +1,9 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.MediaStore;
 
-import com.nineworldsdeep.gauntlet.Parser;
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity;
 
 import org.apache.commons.io.FilenameUtils;

@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 import android.content.Intent;
 import android.os.Bundle;

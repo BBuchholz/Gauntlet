@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.tapestry;
+package com.nineworldsdeep.gauntlet.tapestry.v1;
 
 import com.nineworldsdeep.gauntlet.R;
 

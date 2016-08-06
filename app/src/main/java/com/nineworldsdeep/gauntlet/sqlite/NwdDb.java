@@ -15,7 +15,7 @@ import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
 import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
-import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -14,10 +14,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.MainActivity;
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.TestModeActivity;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
+import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.ConfigFile;
+import com.nineworldsdeep.gauntlet.tapestry.TapestryNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.TapestryUtils;
 
 import java.util.ArrayList;
@@ -63,11 +71,15 @@ public class HomeListActivity extends AppCompatActivity {
 
         //...move to here when it's ready to go live :)
 
-        cmds.add(
-                new NavigateActivityCommand(
-                        "Synergy V3",
-                        SynergyV3MainActivity.class,
-                        this));
+        addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
+        addNavigateActivityCommand("Muse", MuseMainActivity.class);
+        addNavigateActivityCommand("Images", ImageListV2Activity.class);
+        addNavigateActivityCommand("Audio", AudioListV2Activity.class);
+        addNavigateActivityCommand("PDFs", PdfListActivity.class);
+        addNavigateActivityCommand("Sources", AliasListActivity.class);
+        addNavigateActivityCommand("Tapestry", TapestryNodeActivity.class);
+        addNavigateActivityCommand("Test", TestModeActivity.class);
+        addNavigateActivityCommand("PrevHome", MainActivity.class);
 
         ListView lvItems = (ListView)findViewById(R.id.lvItems);
 
@@ -84,6 +96,11 @@ public class HomeListActivity extends AppCompatActivity {
                 cmd.navigate();
             }
         });
+    }
+
+    private void addNavigateActivityCommand(String text, Class activity){
+
+        cmds.add(new NavigateActivityCommand(text, activity, this));
     }
 
     private void checkAndPromptForDeviceName(){

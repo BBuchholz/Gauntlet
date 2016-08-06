@@ -12,11 +12,11 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".DisplayMessageActivity"
@@ -368,8 +368,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
-        <activity android:name=".core.ListBaseActivity">
-        </activity>
+        <!--<activity android:name=".core.ListBaseActivity">-->
+        <!--</activity>-->
         <activity android:name=".core.DbBaseActivity">
         </activity>
         <activity

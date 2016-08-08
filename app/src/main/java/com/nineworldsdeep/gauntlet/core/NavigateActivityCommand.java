@@ -21,6 +21,11 @@ public class NavigateActivityCommand {
         mParent = parent;
     }
 
+    public static void navigateTo(Class activityClass, Activity parent){
+
+        parent.startActivity(new Intent(parent, activityClass));
+    }
+
     public void navigate(){
 
         mParent.startActivity(new Intent(mParent, mActivityClass));

@@ -69,4 +69,5 @@
     <string name="title_activity_home_list">Gauntlet</string>
     <string name="title_activity_node_comparison">NodeComparisonActivity
     </string>
+    <string name="menu_go_to_audio">Go To Audio</string>
 </resources>

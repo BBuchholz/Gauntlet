@@ -18,6 +18,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
@@ -119,6 +120,29 @@ public class PdfListActivity extends AppCompatActivity {
         }
 
         refreshLayout();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_pdf_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_go_to_audio) {
+
+            NavigateActivityCommand.navigateTo(
+                    AudioDisplayActivity.class, this);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void refreshLayout() {

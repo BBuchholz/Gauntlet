@@ -1,12 +1,9 @@
 # Gauntlet
 
-Developers Note: "NineWorldsDeep" and "Gauntlet" are working development names, specifically tied to the organic growth of these projects. The current, though subject to change, working title on public release will be "messaround", reflecting the general tone of the ecosystem.
+This project is the mobile component of the Nine Worlds Deep ecosystem. 
 
-This project is a part of the Nine Worlds Deep ecosystem, which is a collection 
-of toy projects that grew together over time to become more useful together. It 
-is currently in experimental development and I would direct any curious parties to the [GitHub Wiki](https://github.com/BBuchholz/Gauntlet/wiki)
-(which currently contains my personal working notes).
+NineWorldsDeep is a node based ecosystem created with the intent of practicing and exploring interconnected disciplines.
 
-I will change this README when that status changes, until then, 
-assume that much is left out, and I make zero claims or assurances 
-as to the validity or usefulness of anything here.
+It aims to achieve this through facilitating the storage and retrieval of "linkable", "taggable", "hashable" fragments of creative and investigative works in progress.
+
+Gauntlet allows the user to tag and link hashable media and related textual information from any compatible android device. It is intended to be used in conjunction with the [NineWorldsDeep](https://github.com/BBuchholz/NineWorldsDeep) desktop application.

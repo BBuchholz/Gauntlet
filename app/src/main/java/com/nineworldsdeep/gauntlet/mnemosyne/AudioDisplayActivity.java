@@ -50,6 +50,10 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         super.onResume();
 
+        if(mMediaPlayerSingleton != null){
+            mMediaPlayerSingleton.updateSeek();
+        }
+
         NwdDb.getInstance(this).open();
 
         refreshLayout();
@@ -59,6 +63,10 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
     protected void onPause() {
 
         super.onPause();
+
+        if(mMediaPlayerSingleton != null){
+            mMediaPlayerSingleton.stopSeekUpdate();
+        }
 
         NwdDb.getInstance(this).close();
     }

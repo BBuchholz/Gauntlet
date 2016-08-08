@@ -108,6 +108,11 @@ public class MediaPlayerSingleton{
         seekHandler.postDelayed(updateRunnable, 10);
     }
 
+    public void stopSeekUpdate(){
+
+        seekHandler.removeCallbacks(updateRunnable);
+    }
+
     public AudioMediaEntry playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
 
         //nowPlayingPath = path;

@@ -207,15 +207,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity"/>
         </activity>
-         <activity
-         android:name=".mnemosyne.ImageDisplayActivity"
-         android:label="@string/title_activity_image_display"
-         android:parentActivityName=".mnemosyne.ImageListV2Activity"
-         android:theme="@style/AppTheme.NoActionBar">
-         <meta-data
-         android:name="android.support.PARENT_ACTIVITY"
-         android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
-         </activity>
+        <activity
+            android:name=".mnemosyne.ImageDisplayActivity"
+            android:label="@string/title_activity_image_display"
+            android:parentActivityName=".mnemosyne.ImageListV2Activity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
+        </activity>
         <!-- <activity -->
         <!-- android:name=".mnemosyne.AudioListActivity" -->
         <!-- android:label="@string/title_activity_audio_list" -->
@@ -376,6 +376,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".tapestry.v2.fileSubset.FileNodeDisplayActivity">
+        </activity>
+        <activity
+            android:name=".tapestry.v2.NodeComparisonActivity"
+            android:label="@string/title_activity_node_comparison"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
     </application>
 

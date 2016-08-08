@@ -24,6 +24,7 @@ import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
+import com.nineworldsdeep.gauntlet.tapestry.v2.NodeComparisonActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Sources", AliasListActivity.class);
         addNavigateActivityCommand("Tapestry", TapestryNodeActivity.class);
+        addNavigateActivityCommand("Compare Nodes", NodeComparisonActivity.class);
         addNavigateActivityCommand("Test", TestModeActivity.class);
         addNavigateActivityCommand("PrevHome", MainActivity.class);
 

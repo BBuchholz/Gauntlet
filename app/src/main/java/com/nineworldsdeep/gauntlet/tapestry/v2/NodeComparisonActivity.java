@@ -24,6 +24,8 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
     private List<RelationComparison> mRelationComparisons;
     private ListAdapter mCurrentAdapter;
+    private FileSystemNode mFileSystemNode;
+    private DatabaseNode mDatabaseNode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,26 +102,13 @@ public class NodeComparisonActivity extends AppCompatActivity {
         });
     }
 
+    private List<RelationComparison> runComparisons(){
 
-    private List<RelationComparison> generateMockup(){
+        mFileSystemNode = new FileSystemNode();
+        mDatabaseNode = new DatabaseNode();
 
-        ArrayList<RelationComparison> lst =
-                new ArrayList<>();
-
-        String p = getSelectedRelation();
-
-        //match (both same)
-        lst.add(new RelationComparison("MATCH", p + " DETAILS HERE\n" +
-                "MORE HERE\nAND HERE\nLETS SEE\nHOW MUCH"));
-        //variation (both different but neither empty)
-        lst.add(new RelationComparison("VARIATION", p + " DETAILS HERE\n" +
-                "MORE HERE\nAND HERE\nLETS SEE\nHOW MUCH"));
-        //file
-        lst.add(new RelationComparison("ONLY: File", p + " DETAILS HERE\n" +
-                "MORE HERE\nAND HERE\nLETS SEE\nHOW MUCH"));
-        //only in db
-        lst.add(new RelationComparison("ONLY: Db", p + " DETAILS HERE\n" +
-                "MORE HERE\nAND HERE\nLETS SEE\nHOW MUCH"));
+        List<RelationComparison> lst =
+                NodeComparer.compare(mFileSystemNode, mDatabaseNode);
 
         return lst;
     }
@@ -147,7 +136,7 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        mRelationComparisons = generateMockup();
+        mRelationComparisons = runComparisons();
 
         for(RelationComparison fli : mRelationComparisons){
 
@@ -181,7 +170,6 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
         return spRelation.getSelectedItem().toString();
     }
-
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String> {
 

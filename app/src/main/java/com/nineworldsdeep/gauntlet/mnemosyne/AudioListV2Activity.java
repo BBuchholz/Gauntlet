@@ -41,6 +41,7 @@ public class AudioListV2Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_SHA1_HASH_ID = 1;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO = 2;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
@@ -366,6 +367,7 @@ public class AudioListV2Activity extends AppCompatActivity {
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
         }
 
     }
@@ -395,9 +397,18 @@ public class AudioListV2Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS:
+
+                moveToDownloads(info.position);
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToDownloads(int position){
+
+        moveFile(position, Configuration.getDownloadDirectory());
     }
 
     private void moveToVoiceMemos(int position) {

@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
     private static final int MENU_CONTEXT_COPY_LIST = 1;
     private static final int MENU_CONTEXT_RENAME_LIST = 2;
+    private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 3;
 
     //public static boolean ORDER_BY_COUNT = false;
     public SynergyListOrdering ordering;
@@ -230,6 +233,8 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
         menu.add(Menu.NONE, MENU_CONTEXT_COPY_LIST, Menu.NONE, "Copy");
         menu.add(Menu.NONE, MENU_CONTEXT_RENAME_LIST, Menu.NONE, "Rename");
+        menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD,
+                    Menu.NONE, "Copy Name To Clipboard");
 
 
     }
@@ -255,9 +260,26 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
                 return true;
 
+            case MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD:
+
+                copyListNameToClipboard(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void copyListNameToClipboard(int position) {
+
+        String listName = currentListEntries.get(position).getListName();
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("synergy-list-name", listName);
+        clipboard.setPrimaryClip(clip);
+
+        Utils.toast(this, "[" + listName + "] copied to clipboard.");
     }
 
     private void promptRenameListAtPosition(int position) {

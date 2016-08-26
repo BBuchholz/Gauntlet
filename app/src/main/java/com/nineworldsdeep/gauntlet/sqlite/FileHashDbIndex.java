@@ -19,11 +19,11 @@ public class FileHashDbIndex {
                                                            boolean exportFile,
                                                            NwdDb db){
 
-        if(importFile) {
-
-            //idempotent
-            loadToDbFromFile(db);
-        }
+//        if(importFile) {
+//
+//            //idempotent
+//            loadToDbFromFile(db);
+//        }
 
         HashMap<String, String> output = new HashMap<>();
 
@@ -86,9 +86,22 @@ public class FileHashDbIndex {
 
         int count = countAndStoreSHA1Hashes(f, 0, ignorePreviouslyHashed, pathToHashMap);
 
-        db.linkFilesToHashes(pathToHashMap);
+        HashMap<String, String> filterPathToHashMap =
+                new HashMap<>();
 
-        saveToFile(pathToHashMap);
+        for(String path : pathToHashMap.keySet()){
+
+            File pathFile = new File(path);
+
+            if(pathFile.exists()){
+
+                filterPathToHashMap.put(path, pathToHashMap.get(path));
+            }
+        }
+
+        db.linkFilesToHashes(filterPathToHashMap);
+
+        saveToFile(filterPathToHashMap);
 
         return count;
     }

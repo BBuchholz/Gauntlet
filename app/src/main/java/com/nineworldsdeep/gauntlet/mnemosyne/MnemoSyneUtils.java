@@ -506,16 +506,20 @@ public class MnemoSyneUtils {
                 filePath.toLowerCase().endsWith(".gif");
     }
 
+//    public static void copyTags(String sourcePath,
+//                                String destinationPath,
+//                                NwdDb db)
     public static void copyTags(String sourcePath,
                                 String destinationPath,
+                                HashMap<String,String> dbPathToTagsMap,
                                 NwdDb db)
             throws Exception {
 
-        HashMap<String,String> dbPathToTagsMap = //storing for testing
-                TagDbIndex.importExportPathToTagStringMap(db);
+//        HashMap<String,String> dbPathToTagsMap = //storing for testing
+//                TagDbIndex.importExportPathToTagStringMap(db);
 
-        FileListItem fliSrc = new FileListItem(sourcePath, db);
-        FileListItem fliDest = new FileListItem(destinationPath, db);
+        FileListItem fliSrc = new FileListItem(sourcePath, dbPathToTagsMap);
+        FileListItem fliDest = new FileListItem(destinationPath, dbPathToTagsMap);
 
 //        MultiMapString pathToTags = new MultiMapString();
 //
@@ -528,16 +532,20 @@ public class MnemoSyneUtils {
                 fliSrc.getTags());
     }
 
+//        public static void copyDisplayName(String sourcePath,
+//                                       String destinationPath,
+//                                       NwdDb db)
     public static void copyDisplayName(String sourcePath,
                                        String destinationPath,
+                                       HashMap<String,String> dbPathToNameMap,
                                        NwdDb db)
             throws Exception {
 
-        HashMap<String,String> dbPathToNameMap =
-                DisplayNameDbIndex.importExportPathToNameMap(db);
+//        HashMap<String,String> dbPathToNameMap =
+//                DisplayNameDbIndex.importExportPathToNameMap(db);
 
-        FileListItem fliSrc = new FileListItem(sourcePath, db);
-        FileListItem fliDest = new FileListItem(destinationPath, db);
+        FileListItem fliSrc = new FileListItem(sourcePath, dbPathToNameMap);
+        FileListItem fliDest = new FileListItem(destinationPath, dbPathToNameMap);
 
         if(!fliSrc.getDisplayName()
                 .equalsIgnoreCase(fliSrc.getFile().getName())){

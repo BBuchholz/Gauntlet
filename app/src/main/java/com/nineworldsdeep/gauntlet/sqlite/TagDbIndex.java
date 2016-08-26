@@ -6,6 +6,7 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileTagFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.TagIndexFile;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,17 @@ public class TagDbIndex {
             String path = map.get(NwdContract.COLUMN_PATH_VALUE);
             String tag = map.get(NwdContract.COLUMN_TAG_VALUE);
 
-            pathToTags.put(path, tag);
+            File f = new File(path);
+
+            if(f.getAbsolutePath().contains(".jpg")){
+
+                boolean testingBreakpoint = true;
+            }
+
+            if(f.exists()) {
+
+                pathToTags.put(path, tag);
+            }
         }
 
         HashMap<String, String> output =

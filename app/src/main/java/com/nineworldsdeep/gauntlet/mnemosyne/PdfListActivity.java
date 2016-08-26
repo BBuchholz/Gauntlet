@@ -297,17 +297,28 @@ public class PdfListActivity extends AppCompatActivity {
 
             try{
 
-                NwdDb db = NwdDb.getInstance(this);
-
                 File destination =
                         new File(destinationDirectory,
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
+//                NwdDb db = NwdDb.getInstance(this);
+//
+//                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
+//                        destination.getAbsolutePath(), db);
+//
+//                MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
+//                        destination.getAbsolutePath(), db);
+
+                NwdDb db = NwdDb.getInstance(this);
+
+                HashMap<String,String> dbPathToTagsMap =
+                    TagDbIndex.importExportPathToTagStringMap(db);
+
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), db);
+                        destination.getAbsolutePath(), dbPathToTagsMap, db);
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), db);
+                        destination.getAbsolutePath(), dbPathToTagsMap, db);
 
                 f.renameTo(destination);
 

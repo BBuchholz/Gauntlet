@@ -464,11 +464,16 @@ public class ImageListV2Activity extends AppCompatActivity {
                         new File(destinationDirectory,
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
+                NwdDb db = NwdDb.getInstance(this);
+
+                HashMap<String,String> dbPathToTagsMap =
+                    TagDbIndex.importExportPathToTagStringMap(db);
+
                 MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), NwdDb.getInstance(this));
+                        destination.getAbsolutePath(), dbPathToTagsMap, db);
 
                 MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-                        destination.getAbsolutePath(), NwdDb.getInstance(this));
+                        destination.getAbsolutePath(), dbPathToTagsMap, db);
 
                 f.renameTo(destination);
 

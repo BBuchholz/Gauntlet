@@ -836,7 +836,10 @@ public class SynergyListActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(mSlf.getListName());
+        //disabling archive all expired, causing usability issues, this is the easiest way
+        //final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(mSlf.getListName());
+        final boolean expired = false;
+
         String msg;
 
         if(expired){

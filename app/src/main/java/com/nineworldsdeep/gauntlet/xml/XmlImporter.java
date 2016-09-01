@@ -3,14 +3,13 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.HashModelItem;
+import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.TagModelItem;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -124,7 +123,7 @@ public class XmlImporter {
 
                         String tagValue = tagEl.getTextContent();
 
-                        fmi.getTags().add(tagValue);
+                        fmi.getTags().add(new TagModelItem(fmi, tagValue));
                     }
                 }
 

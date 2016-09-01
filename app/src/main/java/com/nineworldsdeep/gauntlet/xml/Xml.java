@@ -3,9 +3,10 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.HashModelItem;
+import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.TagModelItem;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import org.w3c.dom.Document;
@@ -161,13 +162,13 @@ public class Xml {
     }
 
     private static Element createTagsNode(Document doc,
-                                          ArrayList<String> tags) {
+                                          ArrayList<TagModelItem> tags) {
 
         Element tagsEl = doc.createElement("tags");
 
-        for(String tag : tags){
+        for(TagModelItem tag : tags){
 
-            tagsEl.appendChild(createTextElement(doc, "tag", tag));
+            tagsEl.appendChild(createTextElement(doc, "tag", tag.value()));
         }
 
         return tagsEl;

@@ -22,7 +22,7 @@ import java.util.List;
 
 public class NodeComparisonActivity extends AppCompatActivity {
 
-    private List<RelationComparison> mRelationComparisons;
+    private List<NodeComparison> mNodeComparisons;
     private ListAdapter mCurrentAdapter;
     private FileSystemNode mFileSystemNode;
     private DatabaseNode mDatabaseNode;
@@ -60,13 +60,18 @@ public class NodeComparisonActivity extends AppCompatActivity {
         Spinner spRelation = (Spinner)this.findViewById(R.id.spRelation);
 
         ArrayList<String> lst = new ArrayList<>();
-        lst.add("PathHash");
-        lst.add("HashTag");
-        lst.add("PathTag");
-        lst.add("SynergyList");
-        lst.add("Path");
-        lst.add("Hash");
-        lst.add("Tag");
+//        lst.add("PathHash");
+//        lst.add("HashTag");
+//        lst.add("PathTag");
+//        lst.add("SynergyList");
+//        lst.add("Path");
+//        lst.add("Hash");
+//        lst.add("Tag");
+
+        for(NodeComparisonType nct : NodeComparisonType.values()){
+
+            lst.add(nct.name());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, lst);
@@ -102,13 +107,14 @@ public class NodeComparisonActivity extends AppCompatActivity {
         });
     }
 
-    private List<RelationComparison> runComparisons(){
+    private List<NodeComparison> runComparisons(){
 
         mFileSystemNode = new FileSystemNode();
         mDatabaseNode = new DatabaseNode();
 
-        List<RelationComparison> lst =
-                NodeComparer.compare(mFileSystemNode, mDatabaseNode);
+        List<NodeComparison> lst =
+                NodeComparer.compare(mFileSystemNode,
+                        mDatabaseNode, getSelectedComparisonType());
 
         return lst;
     }
@@ -136,9 +142,9 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        mRelationComparisons = runComparisons();
+        mNodeComparisons = runComparisons();
 
-        for(RelationComparison fli : mRelationComparisons){
+        for(NodeComparison fli : mNodeComparisons){
 
             map = new HashMap<>();
 
@@ -165,10 +171,10 @@ public class NodeComparisonActivity extends AppCompatActivity {
         return saItems;
     }
 
-    public String getSelectedRelation() {
+    public NodeComparisonType getSelectedComparisonType() {
         Spinner spRelation = (Spinner)findViewById(R.id.spRelation);
 
-        return spRelation.getSelectedItem().toString();
+        return NodeComparisonType.valueOf(spRelation.getSelectedItem().toString());
     }
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String> {

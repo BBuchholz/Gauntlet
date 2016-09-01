@@ -16,11 +16,12 @@ import android.widget.Spinner;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.model.TagModelItem;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 import com.nineworldsdeep.gauntlet.xml.XmlUtils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.xml.XmlImporter;
 
@@ -278,11 +279,16 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         String[] tags = {"test tag 1", "test tag 2", "test tag 3"};
 
+        FileModelItem file = new FileModelItem(
+                TapestryUtils.getCurrentDeviceName(), filePath);
+
         for(String tag : tags){
+
+            TagModelItem tmi = new TagModelItem(file, tag);
 
             db.linkTagToFile(TapestryUtils.getCurrentDeviceName(),
                              filePath,
-                             tag);
+                             tmi);
         }
     }
 

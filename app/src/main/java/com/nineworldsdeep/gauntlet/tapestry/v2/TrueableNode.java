@@ -25,5 +25,9 @@ public abstract class TrueableNode {
     // these and other possibilities are what whet my interest
     // in pursing this node model.
 
+    // UPDATE: let's have a method that takes all comparison types
+    // and treats any unsupported types as an empty list
+
     public abstract void forceRefresh();
+
 }

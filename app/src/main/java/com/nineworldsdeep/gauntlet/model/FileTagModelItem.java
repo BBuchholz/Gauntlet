@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.sqlite.model;
+package com.nineworldsdeep.gauntlet.model;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 

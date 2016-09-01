@@ -10,10 +10,11 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.FileTagModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.sqlite.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
+import com.nineworldsdeep.gauntlet.model.HashModelItem;
+import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.TagModelItem;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
@@ -548,19 +549,21 @@ public class NwdDb {
      * @param filePath
      * @param tag
      */
-    private void ensureTag(String deviceName, String filePath, String tag){
+    private void ensureTag(String deviceName, String filePath, TagModelItem tag){
+
+        String tagValue = tag.value();
 
         //insert or ignore device
         db.execSQL(DATABASE_ENSURE_DEVICE, new String[]{deviceName});
         //insert or ignore path
         db.execSQL(DATABASE_ENSURE_PATH, new String[]{filePath});
         //insert or ignore hash
-        db.execSQL(DATABASE_ENSURE_TAG, new String[]{tag});
+        db.execSQL(DATABASE_ENSURE_TAG, new String[]{tagValue});
         //insert or ignore file tag entry
         db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
-                new String[]{deviceName, filePath, tag});
+                new String[]{deviceName, filePath, tagValue});
     }
-    public void linkTagToFile(String deviceName, String filePath, String tag) {
+    public void linkTagToFile(String deviceName, String filePath, TagModelItem tag) {
 
         //open transaction
         db.beginTransaction();
@@ -1364,7 +1367,7 @@ public class NwdDb {
 
                 for(String tag : fileTags.get(f.getId())){
 
-                    f.getTags().add(tag);
+                    f.getTags().add(new TagModelItem(f, tag));
                 }
             }
         }
@@ -1504,7 +1507,7 @@ public class NwdDb {
 
                 if(fmi.getTags().size() > 0){
 
-                    for(String tag : fmi.getTags()){
+                    for(TagModelItem tag : fmi.getTags()){
 
                         ensureTag(deviceDescription, filePath, tag);
                     }

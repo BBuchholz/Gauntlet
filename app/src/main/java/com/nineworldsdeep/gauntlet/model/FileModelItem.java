@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.sqlite.model;
+package com.nineworldsdeep.gauntlet.model;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 
@@ -13,7 +13,7 @@ public class FileModelItem {
     private String mId;
     private String mDevice, mDisplayName, mPath,
             mAudioTranscript, mDescription, mName;
-    private ArrayList<String> mTags = new ArrayList<>();
+    private ArrayList<TagModelItem> mTags = new ArrayList<>();
     private ArrayList<HashModelItem> mHashes = new ArrayList<>();
 
     public FileModelItem(Map<String, String> record) {
@@ -51,9 +51,9 @@ public class FileModelItem {
             hashedAt = record.get(NwdContract.COLUMN_FILE_HASHED_AT );
         }
 
-        if(getId() != null && hash != null){
+        if(hash != null){
 
-            getHashes().add(new HashModelItem(getId(), hash, hashedAt));
+            getHashes().add(new HashModelItem(this, hash, hashedAt));
         }
 
         if(record.containsKey(NwdContract.COLUMN_FILE_DESCRIPTION )){
@@ -134,7 +134,7 @@ public class FileModelItem {
         this.mAudioTranscript = mAudioTranscript;
     }
 
-    public ArrayList<String> getTags() {
+    public ArrayList<TagModelItem> getTags() {
         return mTags;
     }
 

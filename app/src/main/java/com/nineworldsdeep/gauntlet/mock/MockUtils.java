@@ -1,6 +1,8 @@
 package com.nineworldsdeep.gauntlet.mock;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by brent on 9/1/16.
@@ -19,6 +21,7 @@ public class MockUtils {
 
     static{
 
+        //NB: all words were randomly generated with an online app
         populateNouns();
         populateAdjectives();
         populateVerbs();
@@ -336,10 +339,26 @@ public class MockUtils {
     }
 
     public static String getRandomNoun(){
-        return "SOME RANDOM NOUN";
+
+        int idx = getRandomIndex(100);
+        return mNouns.get(idx);
     }
 
     public static String getRandomAdjective(){
-        return "SOME RANDOM ADJECTIVE";
+
+        int idx = getRandomIndex(100);
+        return mAdjectives.get(idx);
+    }
+
+    public static String getRandomVerb(){
+
+        int idx = getRandomIndex(100);
+        return mVerbs.get(idx);
+    }
+
+    private static int getRandomIndex(int upperBoundExclusive){
+
+        Random r = new Random();
+        return r.nextInt(upperBoundExclusive);
     }
 }

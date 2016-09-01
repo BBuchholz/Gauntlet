@@ -1,5 +1,14 @@
 package com.nineworldsdeep.gauntlet.tapestry.v2;
 
+import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.HashModelItem;
+import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.SynergyListItemModelItem;
+import com.nineworldsdeep.gauntlet.model.SynergyListModelItem;
+import com.nineworldsdeep.gauntlet.model.TagModelItem;
+
+import java.util.ArrayList;
+
 /**
  * Created by brent on 8/11/16.
  */
@@ -29,5 +38,11 @@ public abstract class TrueableNode {
     // and treats any unsupported types as an empty list
 
     public abstract void forceRefresh();
+    public abstract ArrayList<FileModelItem> getFiles();
+    public abstract ArrayList<HashModelItem> getHashes();
+    public abstract ArrayList<TagModelItem> getTags();
+    public abstract ArrayList<LocalConfigModelItem> getLocalConfig();
+    public abstract ArrayList<SynergyListModelItem> getSynergyLists();
+    public abstract ArrayList<SynergyListItemModelItem> getSynergyListItems();
 
 }

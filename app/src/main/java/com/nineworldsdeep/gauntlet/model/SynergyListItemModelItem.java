@@ -34,7 +34,7 @@ public class SynergyListItemModelItem {
      */
     public void addParentList(SynergyListModelItem list){
 
-        if(!mParentLists.contains(list)){
+        if(list != null && !mParentLists.contains(list)){
 
             mParentLists.add(list);
         }

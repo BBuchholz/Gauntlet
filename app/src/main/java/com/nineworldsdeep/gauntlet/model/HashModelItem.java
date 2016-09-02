@@ -34,7 +34,7 @@ public class HashModelItem {
 
     public void addFile(FileModelItem file) {
 
-        if(file != null){
+        if(file != null && !mFiles.contains(file)){
 
             this.mFiles.add(file);
         }
@@ -45,7 +45,10 @@ public class HashModelItem {
      }
 
     public void addTag(TagModelItem tag) {
-          this.mTags.add(tag);
+
+        if(tag != null && !mTags.contains(tag))
+
+        this.mTags.add(tag);
      }
 
     public String getHash() {

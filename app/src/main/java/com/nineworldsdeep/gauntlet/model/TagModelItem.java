@@ -17,7 +17,16 @@ public class TagModelItem {
     public TagModelItem(FileModelItem file, String tag){
 
         mTag = tag;
-        mFiles.add(file);
+
+        addFile(file);
+    }
+
+    public void addFile(FileModelItem file) {
+
+        if(file != null && !mFiles.contains(file)) {
+
+            mFiles.add(file);
+        }
     }
 
     public String value(){

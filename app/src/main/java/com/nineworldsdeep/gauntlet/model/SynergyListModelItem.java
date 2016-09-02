@@ -18,8 +18,12 @@ public class SynergyListModelItem {
         mName = name;
     }
 
-    public void add(SynergyListModelItem item){
+    public void add(SynergyListItemModelItem item){
 
+        if(item != null && !mItems.contains(item)){
+
+            mItems.add(item);
+        }
     }
 
     @Override

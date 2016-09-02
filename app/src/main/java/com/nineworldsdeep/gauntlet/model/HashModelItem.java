@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 
 /**
@@ -30,7 +33,11 @@ public class HashModelItem {
      }
 
     public void addFile(FileModelItem file) {
-          this.mFiles.add(file);
+
+        if(file != null){
+
+            this.mFiles.add(file);
+        }
      }
 
     public ArrayList<TagModelItem> getTags() {
@@ -56,4 +63,26 @@ public class HashModelItem {
     public void setHashedAt(String hashedAt) {
           this.mHashedAt = hashedAt;
      }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HashModelItem that = (HashModelItem) o;
+
+        return new EqualsBuilder()
+                .append(mHash, that.mHash)
+                .append(mHashedAt, that.mHashedAt)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(mHash)
+                .append(mHashedAt)
+                .toHashCode();
+    }
 }

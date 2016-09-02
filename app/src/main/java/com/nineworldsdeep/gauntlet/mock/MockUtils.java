@@ -2,7 +2,7 @@ package com.nineworldsdeep.gauntlet.mock;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import com.nineworldsdeep.gauntlet.model.*;
 
 /**
  * Created by brent on 9/1/16.
@@ -19,12 +19,52 @@ public class MockUtils {
     private static ArrayList<String> mVerbs =
             new ArrayList<>();
 
+    //NEED ARRAYLISTS FOR EACH MODEL ITEM TO HOLD A FEW MOCKED COMMON ITEMS
+    //eg. A couple FileModelItems to add into multiple nodes to test commonality
+    private static ArrayList<FileModelItem> mFiles = new ArrayList<>();
+    private static ArrayList<HashModelItem> mHashes = new ArrayList<>();
+    private static ArrayList<TagModelItem> mTags = new ArrayList<>();
+    private static ArrayList<LocalConfigModelItem> mLocalConfig = new ArrayList<>();
+    private static ArrayList<SynergyListModelItem> mSynergyLists = new ArrayList<>();
+    private static ArrayList<SynergyListItemModelItem> mSynergyListItems = new ArrayList<>();
+
     static{
 
         //NB: all words were randomly generated with an online app
         populateNouns();
         populateAdjectives();
         populateVerbs();
+
+        populateFiles();
+        populateHashes();
+        populateTags();
+        populateLocalConfig();
+        populateSynergyLists();
+        populateSynergyListItems();
+    }
+
+    private static void populateSynergyListItems() {
+
+    }
+
+    private static void populateSynergyLists() {
+
+    }
+
+    private static void populateLocalConfig() {
+
+    }
+
+    private static void populateTags() {
+
+    }
+
+    private static void populateHashes() {
+
+    }
+
+    private static void populateFiles() {
+
     }
 
     private static void populateVerbs() {
@@ -340,19 +380,19 @@ public class MockUtils {
 
     public static String getRandomNoun(){
 
-        int idx = getRandomIndex(100);
+        int idx = getRandomIndex(mNouns.size());
         return mNouns.get(idx);
     }
 
     public static String getRandomAdjective(){
 
-        int idx = getRandomIndex(100);
+        int idx = getRandomIndex(mAdjectives.size());
         return mAdjectives.get(idx);
     }
 
     public static String getRandomVerb(){
 
-        int idx = getRandomIndex(100);
+        int idx = getRandomIndex(mVerbs.size());
         return mVerbs.get(idx);
     }
 

@@ -2,6 +2,9 @@ package com.nineworldsdeep.gauntlet.model;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -140,5 +143,27 @@ public class FileModelItem {
 
     public ArrayList<HashModelItem> getHashes() {
         return mHashes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FileModelItem that = (FileModelItem) o;
+
+        return new EqualsBuilder()
+                .append(mDevice, that.mDevice)
+                .append(mPath, that.mPath)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(mDevice)
+                .append(mPath)
+                .toHashCode();
     }
 }

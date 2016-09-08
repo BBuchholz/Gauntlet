@@ -1,15 +1,22 @@
 package com.nineworldsdeep.gauntlet.mock;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.model.*;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  * Created by brent on 9/1/16.
  */
 public class MockUtils {
 
-    //get a list of adjectives and nouns to generate less static mock items
+    //get a list of adjectives and nouns to generate random mock items
     //(like default router passwords used by some ISP's)
 
     private static ArrayList<String> mAdjectives =
@@ -36,35 +43,245 @@ public class MockUtils {
         populateVerbs();
 
         populateFiles();
-        populateHashes();
-        populateTags();
         populateLocalConfig();
         populateSynergyLists();
-        populateSynergyListItems();
     }
 
-    private static void populateSynergyListItems() {
+    private static void populateSynergyListItems(SynergyListModelItem lst) {
 
+        //add a random number of existing items
+        int numberOfExistingToAdd = getRandomIndex(6);
+
+        for(int i = 0; i < numberOfExistingToAdd; i++){
+
+            if(mSynergyListItems.size() > 0) {
+
+                int idx = getRandomIndex(mSynergyListItems.size());
+
+                lst.add(mSynergyListItems.get(idx));
+            }
+        }
+
+        //generate a random number of new items to add to shared list
+        int numberOfNewSharedToAdd = getRandomIndex(4);
+
+        for(int i = 0; i < numberOfNewSharedToAdd; i++){
+
+            String testText = getRandomVerb() + " " +
+                    getRandomAdjective() + " " +
+                    getRandomNoun();
+
+            SynergyListItemModelItem sli =
+                    new SynergyListItemModelItem(lst, testText);
+
+            lst.add(sli);
+            mSynergyListItems.add(sli);
+        }
+
+        //generate a random number of new items to keep seperate
+        int numberOfNewPrivateToAdd = getRandomIndex(4);
+
+        for(int i = 0; i < numberOfNewPrivateToAdd; i++){
+
+            String testText = getRandomVerb() + " " +
+                    getRandomAdjective() + " " +
+                    getRandomNoun();
+
+            SynergyListItemModelItem sli =
+                    new SynergyListItemModelItem(lst, testText);
+
+            lst.add(sli);
+        }
+    }
+
+    private static void populateTags(FileModelItem fmi) {
+
+        //add a random number of existing tags
+        int numberOfExistingToAdd = getRandomIndex(3);
+
+        for(int i = 0; i < numberOfExistingToAdd; i++){
+
+            if(mTags.size() > 0) {
+
+                int idx = getRandomIndex(mTags.size());
+
+                fmi.add(mTags.get(idx));
+            }
+        }
+
+        //generate a random number of new tags to add to shared list
+        int numberOfNewSharedToAdd = getRandomIndex(4);
+
+        for(int i = 0; i < numberOfNewSharedToAdd; i++){
+
+            String testTag;
+
+            if(i%2 ==0) {
+
+                testTag =
+                        getRandomAdjective() + " " +
+                                getRandomNoun();
+            }else{
+
+                testTag =
+                        getRandomNoun();
+            }
+
+            TagModelItem tmi = new TagModelItem(fmi, testTag);
+            fmi.add(tmi);
+            mTags.add(tmi);
+        }
+
+        //generate a random number of new tags to keep seperate
+        int numberOfNewPrivateToAdd = getRandomIndex(3);
+
+        for(int i = 0; i < numberOfNewPrivateToAdd; i++){
+
+            String testTag;
+
+            if(i%2 ==0) {
+
+                testTag =
+                        getRandomAdjective() + " " +
+                                getRandomNoun();
+            }else{
+
+                testTag =
+                        getRandomNoun();
+            }
+
+            TagModelItem tmi = new TagModelItem(fmi, testTag);
+            fmi.add(tmi);
+        }
+    }
+
+    private static void populateHashes(FileModelItem fmi) {
+
+        int numberOfExistingToAdd = getRandomIndex(2);
+
+        for(int i = 0; i < numberOfExistingToAdd; i++){
+
+            if(mHashes.size() > 0) {
+
+                int idx = getRandomIndex(mHashes.size());
+
+                fmi.add(mHashes.get(idx));
+            }
+        }
+
+        //generate a random number of new hashes to add to shared list
+        int numberOfNewSharedToAdd = getRandomIndex(2);
+
+        for(int i = 0; i < numberOfNewSharedToAdd; i++){
+
+            HashModelItem hmi = getRandomHashModelItem(fmi);
+
+            fmi.add(hmi);
+            mHashes.add(hmi);
+        }
+
+        //generate a random number of new hashes to keep seperate
+        int numberOfNewPrivateToAdd = getRandomIndex(2);
+
+        for(int i = 0; i < numberOfNewPrivateToAdd; i++){
+
+            HashModelItem hmi = getRandomHashModelItem(fmi);
+
+            fmi.add(hmi);
+        }
+    }
+
+    private static HashModelItem getRandomHashModelItem(FileModelItem fmi) {
+
+            return new HashModelItem(fmi,
+                    getRandomSha1HashString(),
+                    getRandomTimeStamp());
+    }
+
+    private static String getRandomTimeStamp() {
+
+        long offset = Timestamp.valueOf("2015-01-01 00:00:00").getTime();
+        long end = Timestamp.valueOf("2016-09-08 00:00:00").getTime();
+        long diff = end - offset + 1;
+        Timestamp rand = new Timestamp(offset + (long)(Math.random() * diff));
+
+        Date dt = new Date(rand.getTime());
+
+        return SynergyUtils.getTimeStamp_yyyyMMddHHmmss(dt);
+    }
+
+    private static String getRandomSha1HashString() {
+
+        //just a very random string, all concatenated
+        String randomString = getRandomAdjective() + getRandomNoun() +
+                getRandomVerb() + getRandomNoun() + getRandomVerb();
+
+        String output;
+
+        try {
+
+            output = Utils.computeSha1HashForText(randomString);
+
+        }catch (Exception ex){
+
+            //create empty hash
+            output = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
+        }
+
+        return output;
     }
 
     private static void populateSynergyLists() {
 
-    }
+        int numberToAdd = getRandomIndex(13);
 
-    private static void populateLocalConfig() {
+        for(int i = 0; i < numberToAdd; i++){
 
-    }
+            SynergyListModelItem lst =
+                    new SynergyListModelItem(
+                            WordUtils.capitalizeFully(getRandomAdjective()) +
+                                    WordUtils.capitalizeFully(getRandomNoun())
+                    );
 
-    private static void populateTags() {
+            populateSynergyListItems(lst);
 
-    }
-
-    private static void populateHashes() {
-
+            mSynergyLists.add(lst);
+        }
     }
 
     private static void populateFiles() {
 
+        int numberToAdd = getRandomIndex(51);
+
+        for(int i = 0; i < numberToAdd; i++){
+
+            String deviceDesc =
+                    WordUtils.capitalizeFully(getRandomAdjective()) + " " +
+                            WordUtils.capitalizeFully(getRandomNoun());
+
+            String path =
+                    "/NWD/" + getRandomNoun() + "/" + getRandomNoun() + ".test";
+
+            FileModelItem fmi = new FileModelItem(deviceDesc, path);
+
+            populateTags(fmi);
+            populateHashes(fmi);
+
+            mFiles.add(fmi);
+        }
+    }
+
+    private static void populateLocalConfig() {
+
+        int numberToAdd = getRandomIndex(9);
+
+        for(int i = 0; i < numberToAdd; i++){
+
+            String key = getRandomNoun();
+            String value = getRandomAdjective() + " " + getRandomNoun();
+
+            mLocalConfig.add(new LocalConfigModelItem(key, value));
+        }
     }
 
     private static void populateVerbs() {

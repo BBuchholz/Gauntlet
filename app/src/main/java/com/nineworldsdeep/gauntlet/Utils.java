@@ -260,6 +260,23 @@ public class Utils {
         return p.extract(key, input);
     }
 
+    public static String computeSha1HashForText(String text) throws Exception{
+
+        MessageDigest md = MessageDigest.getInstance("SHA1");
+
+        md.update(text.getBytes("iso-8859-1"), 0, text.length());
+
+        byte[] mdBytes = md.digest();
+
+        //convert the byte to hex format
+        StringBuffer sb = new StringBuffer("");
+        for (int i = 0; i < mdBytes.length; i++) {
+            sb.append(Integer.toString((mdBytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
+    }
+
     public static String computeSHA1(String path) throws Exception {
 
 

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -19,6 +20,7 @@ public class FileModelItem {
     private ArrayList<TagModelItem> mTags = new ArrayList<>();
     private ArrayList<HashModelItem> mHashes = new ArrayList<>();
 
+    //TODO: THIS NEEDS TO MOVE TO THE DATA MAPPER (see DATA MAPPER pattern)
     public FileModelItem(Map<String, String> record) {
 
         if(record.containsKey(NwdContract.COLUMN_FILE_ID )){
@@ -56,7 +58,7 @@ public class FileModelItem {
 
         if(hash != null){
 
-            getHashes().add(new HashModelItem(this, hash, hashedAt));
+            add(new HashModelItem(this, hash, hashedAt));
         }
 
         if(record.containsKey(NwdContract.COLUMN_FILE_DESCRIPTION )){
@@ -137,12 +139,28 @@ public class FileModelItem {
         this.mAudioTranscript = mAudioTranscript;
     }
 
-    public ArrayList<TagModelItem> getTags() {
-        return mTags;
+    public Iterator<TagModelItem> getTags() {
+        return mTags.iterator();
     }
 
-    public ArrayList<HashModelItem> getHashes() {
-        return mHashes;
+    public void add(TagModelItem tmi){
+
+        if(!mTags.contains(tmi)){
+
+            mTags.add(tmi);
+        }
+    }
+
+    public Iterator<HashModelItem> getHashes() {
+        return mHashes.iterator();
+    }
+
+    public void add(HashModelItem hmi){
+
+        if(!mHashes.contains(hmi)){
+
+            mHashes.add(hmi);
+        }
     }
 
     @Override

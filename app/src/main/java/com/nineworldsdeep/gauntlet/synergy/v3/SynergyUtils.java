@@ -23,6 +23,16 @@ public class SynergyUtils {
         return sli.isCompleted();
     }
 
+    public static String getTimeStamp_yyyyMMddHHmmss(Date dt) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
+
+        String output = sdf.format(dt);
+
+        return output;
+    }
+
+
     /**
      * NOTE: this will overwrite any existing template, any entries
      * that are not in the templateList will be discarded

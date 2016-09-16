@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
 
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -24,6 +25,7 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -1367,7 +1369,8 @@ public class NwdDb {
 
                 for(String tag : fileTags.get(f.getId())){
 
-                    f.getTags().add(new TagModelItem(f, tag));
+                    //f.getTags().add(new TagModelItem(f, tag));
+                    f.add(new TagModelItem(f, tag));
                 }
             }
         }
@@ -1483,9 +1486,13 @@ public class NwdDb {
                     ensureDisplayName(deviceDescription, filePath, displayName);
                 }
 
-                if(fmi.getHashes().size() > 0){
+                if(fmi.hashCount() > 0){
 
-                    for(HashModelItem hmi : fmi.getHashes()){
+                    Iterator<HashModelItem> itr = fmi.getHashes();
+
+                    while(itr.hasNext()){
+
+                        HashModelItem hmi = itr.next();
 
                         String hash = hmi.getHash();
                         String hashedAt = hmi.getHashedAt();
@@ -1505,9 +1512,13 @@ public class NwdDb {
                     }
                 }
 
-                if(fmi.getTags().size() > 0){
+                if(fmi.tagCount() > 0){
 
-                    for(TagModelItem tag : fmi.getTags()){
+                    Iterator<TagModelItem> itr = fmi.getTags();
+
+                    while(itr.hasNext()){
+
+                        TagModelItem tag = itr.next();
 
                         ensureTag(deviceDescription, filePath, tag);
                     }

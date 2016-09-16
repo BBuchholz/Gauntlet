@@ -110,7 +110,7 @@ public class XmlImporter {
                     String hashValue = hashEl.getAttribute("hash");
                     String hashedAt = hashEl.getAttribute("hashedAt");
 
-                    fmi.getHashes().add(new HashModelItem(hashValue, hashedAt));
+                    fmi.add(new HashModelItem(hashValue, hashedAt));
                 }
 
                 NodeList tags = fileEl.getElementsByTagName("tag");
@@ -123,7 +123,7 @@ public class XmlImporter {
 
                         String tagValue = tagEl.getTextContent();
 
-                        fmi.getTags().add(new TagModelItem(fmi, tagValue));
+                        fmi.add(new TagModelItem(fmi, tagValue));
                     }
                 }
 

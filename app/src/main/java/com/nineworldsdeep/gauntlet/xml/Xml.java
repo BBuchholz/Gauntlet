@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -138,7 +139,11 @@ public class Xml {
 
         if(fmi.getHashes() != null) {
 
-            for(HashModelItem hmi : fmi.getHashes()){
+            Iterator<HashModelItem> hashes = fmi.getHashes();
+
+            while(hashes.hasNext()){
+
+                HashModelItem hmi = hashes.next();
 
                 hashesEl.appendChild(createHashElement(doc, hmi));
             }
@@ -162,11 +167,13 @@ public class Xml {
     }
 
     private static Element createTagsNode(Document doc,
-                                          ArrayList<TagModelItem> tags) {
+                                          Iterator<TagModelItem> tags) {
 
         Element tagsEl = doc.createElement("tags");
 
-        for(TagModelItem tag : tags){
+        while(tags.hasNext()){
+
+            TagModelItem tag = tags.next();
 
             tagsEl.appendChild(createTextElement(doc, "tag", tag.value()));
         }

@@ -184,4 +184,14 @@ public class FileModelItem {
                 .append(mPath)
                 .toHashCode();
     }
+
+    public int hashCount() {
+
+        return mHashes.size();
+    }
+
+    public int tagCount() {
+
+        return mTags.size();
+    }
 }

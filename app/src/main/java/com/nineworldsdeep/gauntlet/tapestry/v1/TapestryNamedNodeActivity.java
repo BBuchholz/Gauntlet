@@ -21,10 +21,10 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
 
-public class TapestryNodeActivity extends AppCompatActivity {
+public class TapestryNamedNodeActivity extends AppCompatActivity {
 
     private String mCurrentNodeName;
-    private ArrayList<TapestryNodeLink> mCurrentNodeLinks;
+    private ArrayList<TapestryNamedNodeLink> mCurrentNodeLinks;
 
     private static final int MENU_TRANSPLANT_ID = 1;
     private static final int MENU_LINK_NODE_ID = 2;
@@ -84,7 +84,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                                     int position,
                                     long id) {
 
-                TapestryNodeLink link =
+                TapestryNamedNodeLink link =
                         mCurrentNodeLinks.get(position);
 
                 startActivity(link.getIntent(view.getContext()));
@@ -103,9 +103,9 @@ public class TapestryNodeActivity extends AppCompatActivity {
                 new SimpleAdapter(
                         this.getBaseContext(),
                         mCurrentNodeLinks,
-                        TapestryNodeLink.getLayout(),
-                        TapestryNodeLink.getMapKeysForView(),
-                        TapestryNodeLink.getIdsForViewElements());
+                        TapestryNamedNodeLink.getLayout(),
+                        TapestryNamedNodeLink.getMapKeysForView(),
+                        TapestryNamedNodeLink.getIdsForViewElements());
 
         lvItems.setAdapter(saLinks);
     }
@@ -119,7 +119,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        TapestryNode temp = new TapestryNode(mCurrentNodeName);
+        TapestryNamedNode temp = new TapestryNamedNode(mCurrentNodeName);
 
         if(!temp.isJunctionNode()){
 
@@ -170,7 +170,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                     MetaBrowserActivity.class);
 
             intent.putExtra(
-                    TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
+                    TapestryNamedNodeActivity.EXTRA_CURRENT_NODE_NAME,
                     mCurrentNodeName);
 
             startActivity(intent);
@@ -188,22 +188,22 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
     private void promptTransplant() {
 
-        TapestryNode nd = new TapestryNode(mCurrentNodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(mCurrentNodeName);
 
-        ArrayList<TapestryNodeLink> lnks = nd.getByType(SynergyListLink.class);
+        ArrayList<TapestryNamedNodeLink> lnks = nd.getByType(SynergyListLink.class);
 
         final String fromNodeName = nd.getNodeName();
 
         if(lnks.size() != 1) {
 
-            LayoutInflater li = LayoutInflater.from(TapestryNodeActivity.this);
+            LayoutInflater li = LayoutInflater.from(TapestryNamedNodeActivity.this);
             View promptsView = li.inflate(R.layout.prompt, null);
 
             TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
             tv.setText("Enter Node Name: ");
 
             android.app.AlertDialog.Builder alertDialogBuilder =
-                    new android.app.AlertDialog.Builder(TapestryNodeActivity.this);
+                    new android.app.AlertDialog.Builder(TapestryNamedNodeActivity.this);
 
             // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
@@ -282,14 +282,14 @@ public class TapestryNodeActivity extends AppCompatActivity {
 
                                   final int idx = which;
 
-                                  LayoutInflater li = LayoutInflater.from(TapestryNodeActivity.this);
+                                  LayoutInflater li = LayoutInflater.from(TapestryNamedNodeActivity.this);
                                   View promptsView = li.inflate(R.layout.prompt, null);
 
                                   TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
                                   tv.setText("Enter Node Name: ");
 
                                   android.app.AlertDialog.Builder alertDialogBuilder =
-                                          new android.app.AlertDialog.Builder(TapestryNodeActivity.this);
+                                          new android.app.AlertDialog.Builder(TapestryNamedNodeActivity.this);
 
                                   // set prompts.xml to alertdialog builder
                                   alertDialogBuilder.setView(promptsView);
@@ -310,7 +310,7 @@ public class TapestryNodeActivity extends AppCompatActivity {
                                                                           userInput.getText().toString());
 
                                                           TapestryUtils.linkNodes(
-                                                                  TapestryNodeActivity.this,
+                                                                  TapestryNamedNodeActivity.this,
                                                                   fromNodeName,
                                                                   processedName,
                                                                   LinkType.valueOf(

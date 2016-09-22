@@ -11,7 +11,7 @@ import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 /**
  * Created by brent on 4/29/16.
  */
-public class SynergyListLink extends TapestryNodeLink {
+public class SynergyListLink extends TapestryNamedNodeLink {
     public SynergyListLink(String synergyListName) {
         super(processName(synergyListName), LinkType.SynergyListLink);
 

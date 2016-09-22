@@ -23,7 +23,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNodeActivity;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNamedNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 import com.nineworldsdeep.gauntlet.tapestry.v2.NodeComparisonActivity;
 
@@ -75,7 +75,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Audio", AudioListV2Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Sources", AliasListActivity.class);
-        addNavigateActivityCommand("Tapestry", TapestryNodeActivity.class);
+        addNavigateActivityCommand("Tapestry", TapestryNamedNodeActivity.class);
         addNavigateActivityCommand("Compare Nodes", NodeComparisonActivity.class);
         addNavigateActivityCommand("Test", TestModeActivity.class);
         addNavigateActivityCommand("PrevHome", MainActivity.class);

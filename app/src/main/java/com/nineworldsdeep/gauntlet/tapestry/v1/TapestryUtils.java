@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class TapestryUtils {
 
-    public static ArrayList<TapestryNodeLink> getNodeLinks(String nodeName) {
+    public static ArrayList<TapestryNamedNodeLink> getNodeLinks(String nodeName) {
 //
 //       ArrayList<TapestryNodeLink> lst =
 //               new ArrayList<>();
@@ -25,7 +25,7 @@ public class TapestryUtils {
 //        lst.add(new SynergyListLink("TestSynergyList"));
 //        lst.add(new AudioLink("Audio Display Name"));
 
-        TapestryNode nd = new TapestryNode(nodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(nodeName);
 
         return nd.getLinks();
     }
@@ -37,7 +37,7 @@ public class TapestryUtils {
 
     public static void linkNodeToImagePath(String nodeName, String imagePath){
 
-        TapestryNode nd = new TapestryNode(nodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(nodeName);
         ImageLink lnk = new ImageLink(imagePath);
 
         nd.add(lnk);
@@ -46,7 +46,7 @@ public class TapestryUtils {
 
     public static void linkNodeToAudioPath(String nodeName, String audioPath){
 
-        TapestryNode nd = new TapestryNode(nodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(nodeName);
         AudioLink lnk = new AudioLink(audioPath);
 
         nd.add(lnk);
@@ -55,7 +55,7 @@ public class TapestryUtils {
 
     public static void linkNodeToSynergyList(String nodeName, String listName){
 
-        TapestryNode nd = new TapestryNode(nodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(nodeName);
         SynergyListLink lnk = new SynergyListLink(listName);
 
         nd.add(lnk);
@@ -64,8 +64,8 @@ public class TapestryUtils {
 
     public static void linkNodes(String fromNodeName, String toNodeName, LinkType linkType) {
 
-        TapestryNode fromNode = new TapestryNode(fromNodeName);
-        TapestryNode toNode = new TapestryNode(toNodeName);
+        TapestryNamedNode fromNode = new TapestryNamedNode(fromNodeName);
+        TapestryNamedNode toNode = new TapestryNamedNode(toNodeName);
 
         //switch enum?
         switch (linkType){
@@ -122,7 +122,7 @@ public class TapestryUtils {
         String dateTimeStamp = Utils.getCurrentTimeStamp_yyyyMMdd();
         String letters = "a";
         String gName = "";
-        TapestryNode nd = null;
+        TapestryNamedNode nd = null;
 
         String lastFoundName = "";
 
@@ -130,7 +130,7 @@ public class TapestryUtils {
             gName = "Gardens-" + dateTimeStamp + "_" +
                     letters + "_" +  currentDevice;
 
-            nd = new TapestryNode(gName);
+            nd = new TapestryNamedNode(gName);
 
             if(nd.exists()){
 
@@ -186,13 +186,13 @@ public class TapestryUtils {
         String dateTimeStamp = Utils.getCurrentTimeStamp_yyyyMMdd();
         String letters = "a";
         String gardenName = "";
-        TapestryNode nd = null;
+        TapestryNamedNode nd = null;
 
         do{
             gardenName = "Gardens-" + dateTimeStamp + "_" +
                     letters + "_" +  currentDevice;
 
-            nd = new TapestryNode(gardenName);
+            nd = new TapestryNamedNode(gardenName);
 
             letters = incrementLetters(letters);
 
@@ -203,12 +203,12 @@ public class TapestryUtils {
 
     public static ArrayList<MetaEntry> getMetaEntries(String nodeName) {
 
-        TapestryNode nd = new TapestryNode(nodeName);
+        TapestryNamedNode nd = new TapestryNamedNode(nodeName);
 
         ArrayList<MetaEntry> lst =
                 new ArrayList<>();
 
-        for(TapestryNodeLink lnk : nd.getLinks()){
+        for(TapestryNamedNodeLink lnk : nd.getLinks()){
 
             if(lnk instanceof HashedPathLink){
 
@@ -225,10 +225,10 @@ public class TapestryUtils {
                                   String toNodeName,
                                   String ignoreLinksStartingWith) {
 
-        TapestryNode fromNd = new TapestryNode(fromNodeName);
-        TapestryNode toNd = new TapestryNode(toNodeName);
+        TapestryNamedNode fromNd = new TapestryNamedNode(fromNodeName);
+        TapestryNamedNode toNd = new TapestryNamedNode(toNodeName);
 
-        for (TapestryNodeLink lnk: fromNd.getLinks()) {
+        for (TapestryNamedNodeLink lnk: fromNd.getLinks()) {
 
             if(!lnk.getNodeName().startsWith(ignoreLinksStartingWith)) {
 

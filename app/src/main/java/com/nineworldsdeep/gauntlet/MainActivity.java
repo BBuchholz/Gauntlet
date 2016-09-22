@@ -25,7 +25,7 @@ import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
-import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNodeActivity;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNamedNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 public class MainActivity extends ActionBarActivity {
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void launchTapestry(View view){
 
-        startActivity(new Intent(this, TapestryNodeActivity.class));
+        startActivity(new Intent(this, TapestryNamedNodeActivity.class));
     }
 
     public void launchMuse(View view){

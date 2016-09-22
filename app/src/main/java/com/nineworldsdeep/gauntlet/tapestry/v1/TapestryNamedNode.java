@@ -12,13 +12,13 @@ import java.util.HashMap;
 /**
  * Created by brent on 4/28/16.
  */
-public class TapestryNode {
+public class TapestryNamedNode {
 
     private String mNodeName;
     private File mNodeFile;
-    private HashMap<String, TapestryNodeLink> mNodeLinks;
+    private HashMap<String, TapestryNamedNodeLink> mNodeLinks;
 
-    public TapestryNode(String nodeName) {
+    public TapestryNamedNode(String nodeName) {
 
         if(Utils.stringIsNullOrWhitespace(nodeName)){
 
@@ -49,7 +49,7 @@ public class TapestryNode {
                         nodeName.substring(0,
                                 nodeName.length() - toTrim.length());
 
-                TapestryNodeLink lnk =
+                TapestryNamedNodeLink lnk =
                         new ParentLink(parentNodeName);
 
                 mNodeLinks.put(lnk.getNodeName(), lnk);
@@ -59,7 +59,7 @@ public class TapestryNode {
 
             if(hasJunction(nodePartialPath)){
 
-                TapestryNodeLink lnk =
+                TapestryNamedNodeLink lnk =
                         new JunctionLink(nodeName + "-");
 
                 mNodeLinks.put(lnk.getNodeName(), lnk);
@@ -107,8 +107,8 @@ public class TapestryNode {
 
                     for (String line : FileUtils.readLines(mNodeFile)){
 
-                        TapestryNodeLink lnk =
-                                TapestryNodeLink.fromLineItem(line);
+                        TapestryNamedNodeLink lnk =
+                                TapestryNamedNodeLink.fromLineItem(line);
 
                         //prevents child links from appearing
                         //in nodes with associated junctions
@@ -123,7 +123,7 @@ public class TapestryNode {
                     for (String childNodeName
                             : Utils.getAllFileNamesMinusExt(mNodeFile,
                                                             new String[]{"txt"})){
-                        TapestryNodeLink lnk =
+                        TapestryNamedNodeLink lnk =
                                 new ChildLink(mNodeName + childNodeName);
                         mNodeLinks.put(lnk.getNodeName(), lnk);
                     }
@@ -150,7 +150,7 @@ public class TapestryNode {
 
         if(!parentFound){
 
-            for(TapestryNodeLink lnk : getLinks()){
+            for(TapestryNamedNodeLink lnk : getLinks()){
 
                 if(lnk.getLinkType() == LinkType.ParentLink){
 
@@ -162,7 +162,7 @@ public class TapestryNode {
         if(!parentFound){
 
             add(new ParentLink("MotherNode"));
-            TapestryNode mother = new TapestryNode("MotherNode");
+            TapestryNamedNode mother = new TapestryNamedNode("MotherNode");
             mother.add(new ChildLink(this.getNodeName()));
             mother.save();
         }
@@ -183,7 +183,7 @@ public class TapestryNode {
 
             ArrayList<String> lst = new ArrayList<>();
 
-            for(TapestryNodeLink link : mNodeLinks.values()){
+            for(TapestryNamedNodeLink link : mNodeLinks.values()){
 
                 if(link.getLinkType() != LinkType.JunctionLink){
 
@@ -199,7 +199,7 @@ public class TapestryNode {
         }
     }
 
-    public void add(TapestryNodeLink link) {
+    public void add(TapestryNamedNodeLink link) {
 
         if(isJunctionNode()){
             return; //disable public link add for junction nodes
@@ -221,7 +221,7 @@ public class TapestryNode {
         return mNodeName.endsWith("-");
     }
 
-    public ArrayList<TapestryNodeLink> getLinks() {
+    public ArrayList<TapestryNamedNodeLink> getLinks() {
 
         return new ArrayList<>(mNodeLinks.values());
     }
@@ -240,12 +240,12 @@ public class TapestryNode {
      * @param desiredClass
      * @return
      */
-    public ArrayList<TapestryNodeLink> getByType(Class desiredClass) {
+    public ArrayList<TapestryNamedNodeLink> getByType(Class desiredClass) {
 
-        ArrayList<TapestryNodeLink> lst =
+        ArrayList<TapestryNamedNodeLink> lst =
                 new ArrayList<>();
 
-        for(TapestryNodeLink lnk : mNodeLinks.values()){
+        for(TapestryNamedNodeLink lnk : mNodeLinks.values()){
 
             if(desiredClass.isAssignableFrom(lnk.getClass())){
 
@@ -270,9 +270,9 @@ public class TapestryNode {
      * are maintained in the remapped node
      * @param nd
      */
-    public void remapExternalLinksTo(TapestryNode nd) {
+    public void remapExternalLinksTo(TapestryNamedNode nd) {
 
-        for(TapestryNodeLink lnk : getLinks()){
+        for(TapestryNamedNodeLink lnk : getLinks()){
 
             switch (lnk.getLinkType()){
 
@@ -281,7 +281,7 @@ public class TapestryNode {
                 case ParentLink:
                 case PeerLink:
 
-                    TapestryNode extNd = new TapestryNode(lnk.getNodeName());
+                    TapestryNamedNode extNd = new TapestryNamedNode(lnk.getNodeName());
                     extNd.remapLinks(this, nd);
 
                 default:
@@ -290,9 +290,9 @@ public class TapestryNode {
         }
     }
 
-    private void remapLinks(TapestryNode prevNode, TapestryNode newNode) {
+    private void remapLinks(TapestryNamedNode prevNode, TapestryNamedNode newNode) {
 
-        for(TapestryNodeLink lnk: getLinks()){
+        for(TapestryNamedNodeLink lnk: getLinks()){
 
             if(lnk.getNodeName().equalsIgnoreCase(prevNode.getNodeName())){
 
@@ -304,7 +304,7 @@ public class TapestryNode {
         save();
     }
 
-    private void remove(TapestryNodeLink lnk) {
+    private void remove(TapestryNamedNodeLink lnk) {
 
         mNodeLinks.remove(lnk.getNodeName());
     }

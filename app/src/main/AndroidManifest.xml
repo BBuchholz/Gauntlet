@@ -317,7 +317,7 @@
         </activity>
         <activity android:name=".synergy.v3.SynergyEditItemActivity"/>
         <activity
-            android:name=".tapestry.v1.TapestryNodeActivity"
+            android:name=".tapestry.v1.TapestryNamedNodeActivity"
             android:label="@string/title_activity_tapestry_main"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -337,11 +337,11 @@
         <activity
             android:name=".tapestry.v1.MetaBrowserActivity"
             android:label="@string/title_activity_meta_browser"
-            android:parentActivityName=".tapestry.v1.TapestryNodeActivity"
+            android:parentActivityName=".tapestry.v1.TapestryNamedNodeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".tapestry.v1.TapestryNodeActivity"/>
+                android:value=".tapestry.v1.TapestryNamedNodeActivity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioListV2Activity"

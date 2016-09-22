@@ -55,7 +55,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         mCurrentNodeName = i.getStringExtra(
-                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME);
+                TapestryNamedNodeActivity.EXTRA_CURRENT_NODE_NAME);
 
         if(Utils.stringIsNullOrWhitespace(mCurrentNodeName)){
 

@@ -11,14 +11,14 @@ import java.util.HashMap;
 /**
  * Created by brent on 4/29/16.
  */
-public abstract class TapestryNodeLink extends HashMap<String, String> {
+public abstract class TapestryNamedNodeLink extends HashMap<String, String> {
 
     //Link Type (ParentLink, ChildLink,
     //           PeerLink, ImageLink,
     //           SynergyListLink, AudioLink)
 
 
-    public TapestryNodeLink(String nodeName, LinkType linkType){
+    public TapestryNamedNodeLink(String nodeName, LinkType linkType){
 
         put("img", String.valueOf(R.mipmap.ic_nwd_peer));
         put("nodeName", nodeName);
@@ -28,9 +28,9 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
     public Intent getIntent(Context c){
 
         Intent intent = new Intent(c,
-                TapestryNodeActivity.class);
+                TapestryNamedNodeActivity.class);
         intent.putExtra(
-                TapestryNodeActivity.EXTRA_CURRENT_NODE_NAME,
+                TapestryNamedNodeActivity.EXTRA_CURRENT_NODE_NAME,
                 getNodeName());
 
         return intent;
@@ -75,12 +75,12 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
         return output;
     }
 
-    public static TapestryNodeLink fromLineItem(String lineItem) {
+    public static TapestryNamedNodeLink fromLineItem(String lineItem) {
 
         String nodeName = Parser.extract("nodeName", lineItem);
         LinkType linkType = LinkType.valueOf(Parser.extract("linkType", lineItem));
 
-        TapestryNodeLink nodeLink = null;
+        TapestryNamedNodeLink nodeLink = null;
 
         switch (linkType){
 
@@ -118,7 +118,7 @@ public abstract class TapestryNodeLink extends HashMap<String, String> {
         return nodeLink;
     }
 
-    public TapestryNodeLink remapTo(TapestryNode newNode){
+    public TapestryNamedNodeLink remapTo(TapestryNamedNode newNode){
 
         put("nodeName", newNode.getNodeName());
         return this;

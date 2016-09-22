@@ -8,7 +8,7 @@ import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
 /**
  * Created by brent on 4/29/16.
  */
-public abstract class HashedPathLink extends TapestryNodeLink {
+public abstract class HashedPathLink extends TapestryNamedNodeLink {
 
     public HashedPathLink(String nodeName, LinkType linkType) {
         super(nodeName, linkType);

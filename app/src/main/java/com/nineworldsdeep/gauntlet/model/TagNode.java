@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by brent on 9/1/16.
  */
-public class TagNode {
+public class TagNode implements TapestryNode {
 
     private String mTag;
     private ArrayList<FileNode> mFiles =
@@ -52,5 +52,10 @@ public class TagNode {
         return new HashCodeBuilder(17, 37)
                 .append(mTag)
                 .toHashCode();
+    }
+
+    @Override
+    public boolean supersedes(TapestryNode nd) {
+        return false;
     }
 }

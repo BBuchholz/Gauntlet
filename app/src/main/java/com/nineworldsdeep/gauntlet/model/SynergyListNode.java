@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by brent on 9/1/16.
  */
-public class SynergyListNode {
+public class SynergyListNode implements TapestryNode {
 
     private String mName;
     private ArrayList<SynergyItemNode> mItems =
@@ -44,5 +44,10 @@ public class SynergyListNode {
         return new HashCodeBuilder(17, 37)
                 .append(mName)
                 .toHashCode();
+    }
+
+    @Override
+    public boolean supersedes(TapestryNode nd) {
+        return false;
     }
 }

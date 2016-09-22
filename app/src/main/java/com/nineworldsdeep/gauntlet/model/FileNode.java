@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by brent on 6/14/16.
  */
-public class FileNode {
+public class FileNode implements TapestryNode {
 
     private String mId;
     private String mDevice, mDisplayName, mPath,
@@ -193,5 +193,10 @@ public class FileNode {
     public int tagCount() {
 
         return mTags.size();
+    }
+
+    @Override
+    public boolean supersedes(TapestryNode nd) {
+        return false;
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by brent on 6/15/16.
  */
-public class HashNode {
+public class HashNode implements TapestryNode {
 
     private String mHash, mHashedAt;
     private ArrayList<FileNode> mFiles =
@@ -87,5 +87,10 @@ public class HashNode {
                 .append(mHash)
                 .append(mHashedAt)
                 .toHashCode();
+    }
+
+    @Override
+    public boolean supersedes(TapestryNode nd) {
+        return false;
     }
 }

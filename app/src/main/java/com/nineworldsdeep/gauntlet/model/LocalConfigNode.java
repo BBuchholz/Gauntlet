@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by brent on 6/14/16.
  */
-public class LocalConfigNode {
+public class LocalConfigNode implements TapestryNode {
 
     private String mKey, mValue;
 
@@ -69,5 +69,10 @@ public class LocalConfigNode {
                 .append(mKey)
                 .append(mValue)
                 .toHashCode();
+    }
+
+    @Override
+    public boolean supersedes(TapestryNode nd) {
+        return false;
     }
 }

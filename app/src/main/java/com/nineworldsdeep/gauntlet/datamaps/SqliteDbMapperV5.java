@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by brent on 8/11/16.
  */
-public class FileSystemMapper implements DataMapper {
+public class SqliteDbMapperV5 implements DataMapper {
 
     //region File Subset
 

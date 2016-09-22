@@ -8,13 +8,13 @@ import java.util.ArrayList;
 /**
  * Created by brent on 9/1/16.
  */
-public class SynergyListItemNode {
+public class SynergyItemNode {
 
     private String mItemText;
     private ArrayList<SynergyListNode> mParentLists =
             new ArrayList<>();
 
-    public SynergyListItemNode(SynergyListNode list, String itemText){
+    public SynergyItemNode(SynergyListNode list, String itemText){
 
         mItemText = itemText;
         mParentLists.add(list);
@@ -46,7 +46,7 @@ public class SynergyListItemNode {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        SynergyListItemNode that = (SynergyListItemNode) o;
+        SynergyItemNode that = (SynergyItemNode) o;
 
         return new EqualsBuilder()
                 .append(mItemText, that.mItemText)

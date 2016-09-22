@@ -33,7 +33,7 @@ public class MockUtils {
     private static ArrayList<TagNode> mTags = new ArrayList<>();
     private static ArrayList<LocalConfigNode> mLocalConfig = new ArrayList<>();
     private static ArrayList<SynergyListNode> mSynergyLists = new ArrayList<>();
-    private static ArrayList<SynergyListItemNode> mSynergyListItems = new ArrayList<>();
+    private static ArrayList<SynergyItemNode> mSynergyListItems = new ArrayList<>();
 
     static{
 
@@ -71,8 +71,8 @@ public class MockUtils {
                     getRandomAdjective() + " " +
                     getRandomNoun();
 
-            SynergyListItemNode sli =
-                    new SynergyListItemNode(lst, testText);
+            SynergyItemNode sli =
+                    new SynergyItemNode(lst, testText);
 
             lst.add(sli);
             mSynergyListItems.add(sli);
@@ -87,8 +87,8 @@ public class MockUtils {
                     getRandomAdjective() + " " +
                     getRandomNoun();
 
-            SynergyListItemNode sli =
-                    new SynergyListItemNode(lst, testText);
+            SynergyItemNode sli =
+                    new SynergyItemNode(lst, testText);
 
             lst.add(sli);
         }

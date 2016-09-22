@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.datamaps.DatabaseMapper;
+import com.nineworldsdeep.gauntlet.datamaps.SqliteDbMapperV5;
 import com.nineworldsdeep.gauntlet.datamaps.FileSystemMapper;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class NodeComparisonActivity extends AppCompatActivity {
     private List<NodeComparison> mNodeComparisons;
     private ListAdapter mCurrentAdapter;
     private FileSystemMapper mFileSystemMapper;
-    private DatabaseMapper mDatabaseMapper;
+    private SqliteDbMapperV5 mSqliteDbMapperV5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,11 +112,11 @@ public class NodeComparisonActivity extends AppCompatActivity {
     private List<NodeComparison> runComparisons(){
 
         mFileSystemMapper = new FileSystemMapper();
-        mDatabaseMapper = new DatabaseMapper();
+        mSqliteDbMapperV5 = new SqliteDbMapperV5();
 
         List<NodeComparison> lst =
                 NodeComparer.compare(mFileSystemMapper,
-                        mDatabaseMapper, getSelectedComparisonType());
+                        mSqliteDbMapperV5, getSelectedComparisonType());
 
         return lst;
     }

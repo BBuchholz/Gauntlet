@@ -11,14 +11,14 @@ import java.util.ArrayList;
 public class SynergyListNode {
 
     private String mName;
-    private ArrayList<SynergyListItemNode> mItems =
+    private ArrayList<SynergyItemNode> mItems =
             new ArrayList<>();
 
     public SynergyListNode(String name){
         mName = name;
     }
 
-    public void add(SynergyListItemNode item){
+    public void add(SynergyItemNode item){
 
         if(item != null && !mItems.contains(item)){
 

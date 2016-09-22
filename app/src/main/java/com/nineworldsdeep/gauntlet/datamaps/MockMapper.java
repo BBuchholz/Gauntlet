@@ -1,13 +1,21 @@
 package com.nineworldsdeep.gauntlet.datamaps;
 
-import com.nineworldsdeep.gauntlet.model.*;
+import com.nineworldsdeep.gauntlet.model.DeviceNode;
+import com.nineworldsdeep.gauntlet.model.FileNode;
+import com.nineworldsdeep.gauntlet.model.HashNode;
+import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
+import com.nineworldsdeep.gauntlet.model.SynergyItemNode;
+import com.nineworldsdeep.gauntlet.model.SynergyListNode;
+import com.nineworldsdeep.gauntlet.model.SynergyToDoNode;
+import com.nineworldsdeep.gauntlet.model.TagNode;
 
 import java.util.ArrayList;
 
 /**
- * Created by brent on 8/11/16.
+ * Created by brent on 9/22/16.
  */
-public class FileSystemMapper implements DataMapper {
+
+public class MockMapper implements DataMapper {
 
     //region File Subset
 
@@ -288,5 +296,6 @@ public class FileSystemMapper implements DataMapper {
     //endregion
 
     //endregion
+
 
 }

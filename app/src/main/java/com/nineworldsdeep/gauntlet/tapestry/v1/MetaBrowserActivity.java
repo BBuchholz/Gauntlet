@@ -16,12 +16,12 @@ import android.widget.Spinner;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.model.TagModelItem;
+import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 import com.nineworldsdeep.gauntlet.xml.XmlUtils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
+import com.nineworldsdeep.gauntlet.model.FileNode;
+import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.xml.XmlImporter;
 
@@ -146,8 +146,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
             try {
 
                 NwdDb db = NwdDb.getInstance(this);
-                List<LocalConfigModelItem> cfg = db.getLocalConfig(this);
-                List<FileModelItem> files = db.getFiles(this);
+                List<LocalConfigNode> cfg = db.getLocalConfig(this);
+                List<FileNode> files = db.getFiles(this);
                 File destination =
                         Configuration.getXmlFile_yyyyMMddHHmmss("nwd");
 
@@ -173,8 +173,8 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 File source = XmlUtils.getMostRecentFileFromXmlFolder();
                 XmlImporter xi = Xml.getImporter(source);
 
-                List<LocalConfigModelItem> cfg = xi.getConfig();
-                List<FileModelItem> files = xi.getFiles(this);
+                List<LocalConfigNode> cfg = xi.getConfig();
+                List<FileNode> files = xi.getFiles(this);
 
                 db.importConfig(this, cfg);
                 db.importFiles(this, files);
@@ -279,12 +279,12 @@ public class MetaBrowserActivity extends AppCompatActivity {
 
         String[] tags = {"test tag 1", "test tag 2", "test tag 3"};
 
-        FileModelItem file = new FileModelItem(
+        FileNode file = new FileNode(
                 TapestryUtils.getCurrentDeviceName(), filePath);
 
         for(String tag : tags){
 
-            TagModelItem tmi = new TagModelItem(file, tag);
+            TagNode tmi = new TagNode(file, tag);
 
             db.linkTagToFile(TapestryUtils.getCurrentDeviceName(),
                              filePath,

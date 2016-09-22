@@ -3,10 +3,10 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
-import com.nineworldsdeep.gauntlet.model.TagModelItem;
+import com.nineworldsdeep.gauntlet.model.FileNode;
+import com.nineworldsdeep.gauntlet.model.HashNode;
+import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
+import com.nineworldsdeep.gauntlet.model.TagNode;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,9 +37,9 @@ public class XmlImporter {
         this.doc = builder.parse(source);
     }
 
-    public List<LocalConfigModelItem> getConfig() {
+    public List<LocalConfigNode> getConfig() {
 
-        List<LocalConfigModelItem> output =
+        List<LocalConfigNode> output =
                 new ArrayList<>();
 
         NodeList configItems = doc.getElementsByTagName("config-item");
@@ -55,7 +55,7 @@ public class XmlImporter {
                     (Element) configItem.getElementsByTagName("config-value")
                                         .item(0);
 
-            output.add(new LocalConfigModelItem(
+            output.add(new LocalConfigNode(
                     keyEl.getTextContent(),
                     valEl.getTextContent()));
         }
@@ -63,9 +63,9 @@ public class XmlImporter {
         return output;
     }
 
-    public List<FileModelItem> getFiles(Context context) {
+    public List<FileNode> getFiles(Context context) {
 
-        List<FileModelItem> output =
+        List<FileNode> output =
                 new ArrayList<>();
 
         NodeList fileEls = doc.getElementsByTagName("file");
@@ -84,8 +84,8 @@ public class XmlImporter {
                 String device = getValueForFirst(fileEl, "device");
                 String path = getValueForFirst(fileEl, "path");
 
-                FileModelItem fmi =
-                        new FileModelItem(device, path);
+                FileNode fmi =
+                        new FileNode(device, path);
 
                 String displayName = getValueForFirst(fileEl, "display-name");
 
@@ -110,7 +110,7 @@ public class XmlImporter {
                     String hashValue = hashEl.getAttribute("hash");
                     String hashedAt = hashEl.getAttribute("hashedAt");
 
-                    fmi.add(new HashModelItem(hashValue, hashedAt));
+                    fmi.add(new HashNode(hashValue, hashedAt));
                 }
 
                 NodeList tags = fileEl.getElementsByTagName("tag");
@@ -123,7 +123,7 @@ public class XmlImporter {
 
                         String tagValue = tagEl.getTextContent();
 
-                        fmi.add(new TagModelItem(fmi, tagValue));
+                        fmi.add(new TagNode(fmi, tagValue));
                     }
                 }
 

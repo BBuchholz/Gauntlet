@@ -10,11 +10,11 @@ import java.util.Map;
 /**
  * Created by brent on 6/14/16.
  */
-public class LocalConfigModelItem {
+public class LocalConfigNode {
 
     private String mKey, mValue;
 
-    public LocalConfigModelItem(Map<String, String> record) {
+    public LocalConfigNode(Map<String, String> record) {
 
         if(record.containsKey(NwdContract.COLUMN_LOCAL_CONFIG_KEY)){
 
@@ -27,7 +27,7 @@ public class LocalConfigModelItem {
         }
     }
 
-    public LocalConfigModelItem(String key, String value) {
+    public LocalConfigNode(String key, String value) {
 
         setKey(key);
         setValue(value);
@@ -55,7 +55,7 @@ public class LocalConfigModelItem {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        LocalConfigModelItem that = (LocalConfigModelItem) o;
+        LocalConfigNode that = (LocalConfigNode) o;
 
         return new EqualsBuilder()
                 .append(mKey, that.mKey)

@@ -8,31 +8,31 @@ import java.util.ArrayList;
 /**
  * Created by brent on 6/15/16.
  */
-public class HashModelItem {
+public class HashNode {
 
     private String mHash, mHashedAt;
-    private ArrayList<FileModelItem> mFiles =
+    private ArrayList<FileNode> mFiles =
             new ArrayList<>();
-    private ArrayList<TagModelItem> mTags =
+    private ArrayList<TagNode> mTags =
             new ArrayList<>();
 
-    public HashModelItem(String hash, String hashedAt) {
+    public HashNode(String hash, String hashedAt) {
 
         this(null, hash, hashedAt);
     }
 
-    public HashModelItem(FileModelItem file, String hashValue, String hashedAt) {
+    public HashNode(FileNode file, String hashValue, String hashedAt) {
 
         addFile(file);
         setHash(hashValue);
         setHashedAt(hashedAt);
     }
 
-    public ArrayList<FileModelItem> getFiles() {
+    public ArrayList<FileNode> getFiles() {
           return this.mFiles;
      }
 
-    public void addFile(FileModelItem file) {
+    public void addFile(FileNode file) {
 
         if(file != null && !mFiles.contains(file)){
 
@@ -40,11 +40,11 @@ public class HashModelItem {
         }
      }
 
-    public ArrayList<TagModelItem> getTags() {
+    public ArrayList<TagNode> getTags() {
           return this.mTags;
      }
 
-    public void addTag(TagModelItem tag) {
+    public void addTag(TagNode tag) {
 
         if(tag != null && !mTags.contains(tag))
 
@@ -73,7 +73,7 @@ public class HashModelItem {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        HashModelItem that = (HashModelItem) o;
+        HashNode that = (HashNode) o;
 
         return new EqualsBuilder()
                 .append(mHash, that.mHash)

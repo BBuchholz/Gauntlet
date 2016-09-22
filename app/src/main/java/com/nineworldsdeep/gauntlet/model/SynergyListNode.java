@@ -8,30 +8,22 @@ import java.util.ArrayList;
 /**
  * Created by brent on 9/1/16.
  */
-public class TagModelItem {
+public class SynergyListNode {
 
-    private String mTag;
-    private ArrayList<FileModelItem> mFiles =
+    private String mName;
+    private ArrayList<SynergyListItemNode> mItems =
             new ArrayList<>();
 
-    public TagModelItem(FileModelItem file, String tag){
-
-        mTag = tag;
-
-        addFile(file);
+    public SynergyListNode(String name){
+        mName = name;
     }
 
-    public void addFile(FileModelItem file) {
+    public void add(SynergyListItemNode item){
 
-        if(file != null && !mFiles.contains(file)) {
+        if(item != null && !mItems.contains(item)){
 
-            mFiles.add(file);
+            mItems.add(item);
         }
-    }
-
-    public String value(){
-
-        return mTag;
     }
 
     @Override
@@ -40,17 +32,17 @@ public class TagModelItem {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        TagModelItem that = (TagModelItem) o;
+        SynergyListNode that = (SynergyListNode) o;
 
         return new EqualsBuilder()
-                .append(mTag, that.mTag)
+                .append(mName, that.mName)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(mTag)
+                .append(mName)
                 .toHashCode();
     }
 }

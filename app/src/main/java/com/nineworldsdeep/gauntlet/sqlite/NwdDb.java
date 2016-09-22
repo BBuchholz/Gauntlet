@@ -4,18 +4,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
 
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
-import com.nineworldsdeep.gauntlet.model.FileModelItem;
+import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
-import com.nineworldsdeep.gauntlet.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
-import com.nineworldsdeep.gauntlet.model.TagModelItem;
+import com.nineworldsdeep.gauntlet.model.HashNode;
+import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
+import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
@@ -551,7 +550,7 @@ public class NwdDb {
      * @param filePath
      * @param tag
      */
-    private void ensureTag(String deviceName, String filePath, TagModelItem tag){
+    private void ensureTag(String deviceName, String filePath, TagNode tag){
 
         String tagValue = tag.value();
 
@@ -565,7 +564,7 @@ public class NwdDb {
         db.execSQL(DATABASE_ENSURE_TAG_FOR_FILE,
                 new String[]{deviceName, filePath, tagValue});
     }
-    public void linkTagToFile(String deviceName, String filePath, TagModelItem tag) {
+    public void linkTagToFile(String deviceName, String filePath, TagNode tag) {
 
         //open transaction
         db.beginTransaction();
@@ -1213,7 +1212,7 @@ public class NwdDb {
         linkTagsToFile(pathToTags);
     }
 
-    public List<LocalConfigModelItem> getLocalConfig(Context context) {
+    public List<LocalConfigNode> getLocalConfig(Context context) {
 
         final String DATABASE_GET_LOCAL_CONFIG =
                 "" +
@@ -1224,7 +1223,7 @@ public class NwdDb {
                         "FROM " +
                         NwdContract.TABLE_LOCAL_CONFIG;
 
-        List<LocalConfigModelItem> cfg =
+        List<LocalConfigNode> cfg =
                 new ArrayList<>();
 
         db.beginTransaction();
@@ -1252,7 +1251,7 @@ public class NwdDb {
                     Map<String, String> record =
                             cursorToRecord(c, columnNames);
 
-                    cfg.add(new LocalConfigModelItem(record));
+                    cfg.add(new LocalConfigNode(record));
 
                 } while (c.moveToNext());
 
@@ -1276,7 +1275,7 @@ public class NwdDb {
         //throw new NotImplementedException("NwdDb.getLocalConfig() not implemented");
     }
 
-    public List<FileModelItem> getFiles(Context context) {
+    public List<FileNode> getFiles(Context context) {
 
         final String DATABASE_GET_FILES =
                 "" +
@@ -1307,7 +1306,7 @@ public class NwdDb {
                         "ON f." + NwdContract.COLUMN_FILE_ID + " = " +
                             "at." + NwdContract.COLUMN_FILE_ID + " ";
 
-        List<FileModelItem> files =
+        List<FileNode> files =
                 new ArrayList<>();
 
         db.beginTransaction();
@@ -1342,7 +1341,7 @@ public class NwdDb {
                     Map<String, String> record =
                             cursorToRecord(c, columnNames);
 
-                    files.add(new FileModelItem(record));
+                    files.add(new FileNode(record));
 
                 } while (c.moveToNext());
 
@@ -1363,14 +1362,14 @@ public class NwdDb {
 
         MultiMapString fileTags = getFileTags(context);
 
-        for(FileModelItem f : files){
+        for(FileNode f : files){
 
             if(fileTags.containsKey(f.getId())){
 
                 for(String tag : fileTags.get(f.getId())){
 
                     //f.getTags().add(new TagModelItem(f, tag));
-                    f.add(new TagModelItem(f, tag));
+                    f.add(new TagNode(f, tag));
                 }
             }
         }
@@ -1440,11 +1439,11 @@ public class NwdDb {
         return fileTags;
     }
 
-    public void importConfig(Context context, List<LocalConfigModelItem> cfg) {
+    public void importConfig(Context context, List<LocalConfigNode> cfg) {
 
         db.beginTransaction();
 
-        for(LocalConfigModelItem lcmi : cfg){
+        for(LocalConfigNode lcmi : cfg){
 
             try{
 
@@ -1469,11 +1468,11 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public void importFiles(Context context, List<FileModelItem> files) {
+    public void importFiles(Context context, List<FileNode> files) {
 
         db.beginTransaction();
 
-        for(FileModelItem fmi : files){
+        for(FileNode fmi : files){
 
             String deviceDescription = fmi.getDevice();
             String filePath = fmi.getPath();
@@ -1488,11 +1487,11 @@ public class NwdDb {
 
                 if(fmi.hashCount() > 0){
 
-                    Iterator<HashModelItem> itr = fmi.getHashes();
+                    Iterator<HashNode> itr = fmi.getHashes();
 
                     while(itr.hasNext()){
 
-                        HashModelItem hmi = itr.next();
+                        HashNode hmi = itr.next();
 
                         String hash = hmi.getHash();
                         String hashedAt = hmi.getHashedAt();
@@ -1514,11 +1513,11 @@ public class NwdDb {
 
                 if(fmi.tagCount() > 0){
 
-                    Iterator<TagModelItem> itr = fmi.getTags();
+                    Iterator<TagNode> itr = fmi.getTags();
 
                     while(itr.hasNext()){
 
-                        TagModelItem tag = itr.next();
+                        TagNode tag = itr.next();
 
                         ensureTag(deviceDescription, filePath, tag);
                     }

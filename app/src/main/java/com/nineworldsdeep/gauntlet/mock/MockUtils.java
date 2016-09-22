@@ -28,12 +28,12 @@ public class MockUtils {
 
     //NEED ARRAYLISTS FOR EACH MODEL ITEM TO HOLD A FEW MOCKED COMMON ITEMS
     //eg. A couple FileModelItems to add into multiple nodes to test commonality
-    private static ArrayList<FileModelItem> mFiles = new ArrayList<>();
-    private static ArrayList<HashModelItem> mHashes = new ArrayList<>();
-    private static ArrayList<TagModelItem> mTags = new ArrayList<>();
-    private static ArrayList<LocalConfigModelItem> mLocalConfig = new ArrayList<>();
-    private static ArrayList<SynergyListModelItem> mSynergyLists = new ArrayList<>();
-    private static ArrayList<SynergyListItemModelItem> mSynergyListItems = new ArrayList<>();
+    private static ArrayList<FileNode> mFiles = new ArrayList<>();
+    private static ArrayList<HashNode> mHashes = new ArrayList<>();
+    private static ArrayList<TagNode> mTags = new ArrayList<>();
+    private static ArrayList<LocalConfigNode> mLocalConfig = new ArrayList<>();
+    private static ArrayList<SynergyListNode> mSynergyLists = new ArrayList<>();
+    private static ArrayList<SynergyListItemNode> mSynergyListItems = new ArrayList<>();
 
     static{
 
@@ -47,7 +47,7 @@ public class MockUtils {
         populateSynergyLists();
     }
 
-    private static void populateSynergyListItems(SynergyListModelItem lst) {
+    private static void populateSynergyListItems(SynergyListNode lst) {
 
         //add a random number of existing items
         int numberOfExistingToAdd = getRandomIndex(6);
@@ -71,8 +71,8 @@ public class MockUtils {
                     getRandomAdjective() + " " +
                     getRandomNoun();
 
-            SynergyListItemModelItem sli =
-                    new SynergyListItemModelItem(lst, testText);
+            SynergyListItemNode sli =
+                    new SynergyListItemNode(lst, testText);
 
             lst.add(sli);
             mSynergyListItems.add(sli);
@@ -87,14 +87,14 @@ public class MockUtils {
                     getRandomAdjective() + " " +
                     getRandomNoun();
 
-            SynergyListItemModelItem sli =
-                    new SynergyListItemModelItem(lst, testText);
+            SynergyListItemNode sli =
+                    new SynergyListItemNode(lst, testText);
 
             lst.add(sli);
         }
     }
 
-    private static void populateTags(FileModelItem fmi) {
+    private static void populateTags(FileNode fmi) {
 
         //add a random number of existing tags
         int numberOfExistingToAdd = getRandomIndex(3);
@@ -127,7 +127,7 @@ public class MockUtils {
                         getRandomNoun();
             }
 
-            TagModelItem tmi = new TagModelItem(fmi, testTag);
+            TagNode tmi = new TagNode(fmi, testTag);
             fmi.add(tmi);
             mTags.add(tmi);
         }
@@ -150,12 +150,12 @@ public class MockUtils {
                         getRandomNoun();
             }
 
-            TagModelItem tmi = new TagModelItem(fmi, testTag);
+            TagNode tmi = new TagNode(fmi, testTag);
             fmi.add(tmi);
         }
     }
 
-    private static void populateHashes(FileModelItem fmi) {
+    private static void populateHashes(FileNode fmi) {
 
         int numberOfExistingToAdd = getRandomIndex(2);
 
@@ -174,7 +174,7 @@ public class MockUtils {
 
         for(int i = 0; i < numberOfNewSharedToAdd; i++){
 
-            HashModelItem hmi = getRandomHashModelItem(fmi);
+            HashNode hmi = getRandomHashModelItem(fmi);
 
             fmi.add(hmi);
             mHashes.add(hmi);
@@ -185,15 +185,15 @@ public class MockUtils {
 
         for(int i = 0; i < numberOfNewPrivateToAdd; i++){
 
-            HashModelItem hmi = getRandomHashModelItem(fmi);
+            HashNode hmi = getRandomHashModelItem(fmi);
 
             fmi.add(hmi);
         }
     }
 
-    private static HashModelItem getRandomHashModelItem(FileModelItem fmi) {
+    private static HashNode getRandomHashModelItem(FileNode fmi) {
 
-            return new HashModelItem(fmi,
+            return new HashNode(fmi,
                     getRandomSha1HashString(),
                     getRandomTimeStamp());
     }
@@ -237,8 +237,8 @@ public class MockUtils {
 
         for(int i = 0; i < numberToAdd; i++){
 
-            SynergyListModelItem lst =
-                    new SynergyListModelItem(
+            SynergyListNode lst =
+                    new SynergyListNode(
                             WordUtils.capitalizeFully(getRandomAdjective()) +
                                     WordUtils.capitalizeFully(getRandomNoun())
                     );
@@ -262,7 +262,7 @@ public class MockUtils {
             String path =
                     "/NWD/" + getRandomNoun() + "/" + getRandomNoun() + ".test";
 
-            FileModelItem fmi = new FileModelItem(deviceDesc, path);
+            FileNode fmi = new FileNode(deviceDesc, path);
 
             populateTags(fmi);
             populateHashes(fmi);
@@ -280,7 +280,7 @@ public class MockUtils {
             String key = getRandomNoun();
             String value = getRandomAdjective() + " " + getRandomNoun();
 
-            mLocalConfig.add(new LocalConfigModelItem(key, value));
+            mLocalConfig.add(new LocalConfigNode(key, value));
         }
     }
 

@@ -12,16 +12,16 @@ import java.util.Map;
 /**
  * Created by brent on 6/14/16.
  */
-public class FileModelItem {
+public class FileNode {
 
     private String mId;
     private String mDevice, mDisplayName, mPath,
             mAudioTranscript, mDescription, mName;
-    private ArrayList<TagModelItem> mTags = new ArrayList<>();
-    private ArrayList<HashModelItem> mHashes = new ArrayList<>();
+    private ArrayList<TagNode> mTags = new ArrayList<>();
+    private ArrayList<HashNode> mHashes = new ArrayList<>();
 
     //TODO: THIS NEEDS TO MOVE TO THE DATA MAPPER (see DATA MAPPER pattern)
-    public FileModelItem(Map<String, String> record) {
+    public FileNode(Map<String, String> record) {
 
         if(record.containsKey(NwdContract.COLUMN_FILE_ID )){
 
@@ -58,7 +58,7 @@ public class FileModelItem {
 
         if(hash != null){
 
-            add(new HashModelItem(this, hash, hashedAt));
+            add(new HashNode(this, hash, hashedAt));
         }
 
         if(record.containsKey(NwdContract.COLUMN_FILE_DESCRIPTION )){
@@ -77,7 +77,7 @@ public class FileModelItem {
         }
     }
 
-    public FileModelItem(String device, String path) {
+    public FileNode(String device, String path) {
 
         setDevice(device);
         setPath(path);
@@ -139,11 +139,11 @@ public class FileModelItem {
         this.mAudioTranscript = mAudioTranscript;
     }
 
-    public Iterator<TagModelItem> getTags() {
+    public Iterator<TagNode> getTags() {
         return mTags.iterator();
     }
 
-    public void add(TagModelItem tmi){
+    public void add(TagNode tmi){
 
         if(!mTags.contains(tmi)){
 
@@ -151,11 +151,11 @@ public class FileModelItem {
         }
     }
 
-    public Iterator<HashModelItem> getHashes() {
+    public Iterator<HashNode> getHashes() {
         return mHashes.iterator();
     }
 
-    public void add(HashModelItem hmi){
+    public void add(HashNode hmi){
 
         if(!mHashes.contains(hmi)){
 
@@ -169,7 +169,7 @@ public class FileModelItem {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        FileModelItem that = (FileModelItem) o;
+        FileNode that = (FileNode) o;
 
         return new EqualsBuilder()
                 .append(mDevice, that.mDevice)

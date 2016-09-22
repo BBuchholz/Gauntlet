@@ -3,10 +3,10 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.model.FileModelItem;
-import com.nineworldsdeep.gauntlet.model.HashModelItem;
-import com.nineworldsdeep.gauntlet.model.LocalConfigModelItem;
-import com.nineworldsdeep.gauntlet.model.TagModelItem;
+import com.nineworldsdeep.gauntlet.model.FileNode;
+import com.nineworldsdeep.gauntlet.model.HashNode;
+import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
+import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import org.w3c.dom.Document;
@@ -15,7 +15,6 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,8 +48,8 @@ public class Xml {
     }
 
     public static void exportFromDb(Context context,
-                                    List<LocalConfigModelItem> config,
-                                    List<FileModelItem> files,
+                                    List<LocalConfigNode> config,
+                                    List<FileNode> files,
                                     File destinationFile){
 
         try {
@@ -69,11 +68,11 @@ public class Xml {
     }
 
     private static Element toFilesElement(Document doc,
-                                          List<FileModelItem> files) {
+                                          List<FileNode> files) {
 
         Element filesEl = doc.createElement("files");
 
-        for(FileModelItem fmi : files){
+        for(FileNode fmi : files){
 
             filesEl.appendChild(toElement(doc, fmi));
         }
@@ -82,12 +81,12 @@ public class Xml {
     }
 
     private static Element toConfigElement(Document doc,
-                                           List<LocalConfigModelItem> config) {
+                                           List<LocalConfigNode> config) {
 
         Element cfgEl = doc.createElement("local-config");
         cfgEl.setAttribute("device", TapestryUtils.getCurrentDeviceName());
 
-        for(LocalConfigModelItem lcmi : config){
+        for(LocalConfigNode lcmi : config){
 
             cfgEl.appendChild(toElement(doc, lcmi));
         }
@@ -96,7 +95,7 @@ public class Xml {
     }
 
     private static Element toElement(Document doc,
-                                     FileModelItem fmi) {
+                                     FileNode fmi) {
 
         Element fileEl = doc.createElement("file");
 
@@ -133,17 +132,17 @@ public class Xml {
         return fileEl;
     }
 
-    private static Element createHashesElement(Document doc, FileModelItem fmi) {
+    private static Element createHashesElement(Document doc, FileNode fmi) {
 
         Element hashesEl = doc.createElement("hashes");
 
         if(fmi.getHashes() != null) {
 
-            Iterator<HashModelItem> hashes = fmi.getHashes();
+            Iterator<HashNode> hashes = fmi.getHashes();
 
             while(hashes.hasNext()){
 
-                HashModelItem hmi = hashes.next();
+                HashNode hmi = hashes.next();
 
                 hashesEl.appendChild(createHashElement(doc, hmi));
             }
@@ -152,7 +151,7 @@ public class Xml {
         return hashesEl;
     }
 
-    private static Element createHashElement(Document doc, HashModelItem hmi) {
+    private static Element createHashElement(Document doc, HashNode hmi) {
 
         Element hashEl = doc.createElement("hash");
 
@@ -167,13 +166,13 @@ public class Xml {
     }
 
     private static Element createTagsNode(Document doc,
-                                          Iterator<TagModelItem> tags) {
+                                          Iterator<TagNode> tags) {
 
         Element tagsEl = doc.createElement("tags");
 
         while(tags.hasNext()){
 
-            TagModelItem tag = tags.next();
+            TagNode tag = tags.next();
 
             tagsEl.appendChild(createTextElement(doc, "tag", tag.value()));
         }
@@ -192,7 +191,7 @@ public class Xml {
     }
 
     private static Element toElement(Document doc,
-                                     LocalConfigModelItem lcmi) {
+                                     LocalConfigNode lcmi) {
 
         Element cfgEl = doc.createElement("config-item");
         Element keyEl = doc.createElement("config-key");

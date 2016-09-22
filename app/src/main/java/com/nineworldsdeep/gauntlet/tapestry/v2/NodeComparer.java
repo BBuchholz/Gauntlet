@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.tapestry.v2;
 
+import com.nineworldsdeep.gauntlet.datamaps.DataMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +10,8 @@ import java.util.List;
  */
 public class NodeComparer {
 
-    public static List<NodeComparison> compare(TrueableNode leftNode,
-                                               TrueableNode rightNode,
+    public static List<NodeComparison> compare(DataMapper leftNode,
+                                               DataMapper rightNode,
                                                NodeComparisonType nct) {
 
         List<NodeComparison> lst = new ArrayList<>();

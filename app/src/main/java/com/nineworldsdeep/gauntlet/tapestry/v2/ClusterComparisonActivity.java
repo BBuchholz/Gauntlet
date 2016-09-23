@@ -1,13 +1,16 @@
 package com.nineworldsdeep.gauntlet.tapestry.v2;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NodeComparisonActivity extends AppCompatActivity {
+public class ClusterComparisonActivity extends AppCompatActivity {
 
     private List<NodeComparison> mNodeComparisons;
     private ListAdapter mCurrentAdapter;
@@ -44,7 +47,7 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
     private void populateSortSpinner() {
 
-        Spinner spSortBy = (Spinner)this.findViewById(R.id.spSortBy);
+        Spinner spSortBy = (Spinner)this.findViewById(R.id.spBlueBottom);
 
         ArrayList<String> lst = new ArrayList<>();
         lst.add("comparison result");
@@ -59,7 +62,7 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
     private void populateRelationSpinner() {
 
-        Spinner spRelation = (Spinner)this.findViewById(R.id.spRelation);
+        Spinner spRelation = (Spinner)this.findViewById(R.id.spYellowTop);
 
         ArrayList<String> lst = new ArrayList<>();
 //        lst.add("PathHash");
@@ -91,7 +94,7 @@ public class NodeComparisonActivity extends AppCompatActivity {
     private void setupRelationSpinnerListener() {
 
         final Spinner spRelation =
-                (Spinner) findViewById(R.id.spRelation);
+                (Spinner) findViewById(R.id.spYellowTop);
 
         spRelation.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -146,35 +149,77 @@ public class NodeComparisonActivity extends AppCompatActivity {
 
         mNodeComparisons = runComparisons();
 
-        for(NodeComparison fli : mNodeComparisons){
+        for(NodeComparison nc : mNodeComparisons){
 
             map = new HashMap<>();
 
-            map.put("comparisonResult", fli.getComparisonResult());
-            map.put("multilineDetails", fli.getMultilineDetails());
+            map.put("comparisonResult", nc.getComparisonResult().toString());
+            map.put("multilineDetails", nc.getMultilineDetails());
 
-            map.put("img", String.valueOf(R.mipmap.ic_nwd_media));
+            //map.put("img", String.valueOf(R.mipmap.ic_nwd_media));
+
+            map.put("background", nc.getComparisonResult().toString());
 
             lstItems.add(map);
         }
 
-        SimpleAdapter saItems =
+        ListAdapter saItems =
                 new SimpleAdapter(
                         this.getBaseContext(),
                         lstItems,
                         R.layout.relation_comparison,
-                        new String[] {"img",
+                        new String[] { //"img",
                                 "comparisonResult",
                                 "multilineDetails"},
-                        new int[] {R.id.img,
+                        new int[] { //R.id.img,
                                 R.id.comparison_result,
-                                R.id.multiline_details});
+                                R.id.multiline_details}) {
+            @Override
+            public View getView (int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                LinearLayout layout =
+                        (LinearLayout)view.findViewById(R.id.layoutColored);
+
+                NodeComparisonResult result =
+                        mNodeComparisons.get(position).getComparisonResult();
+
+                switch (result){
+                    case GreenUpsertNeither:
+                        layout.setBackgroundColor(Color.parseColor("#97f7ad"));
+                        break;
+                    case PurpleUpsertBlueLeft:
+                        layout.setBackgroundColor(Color.parseColor("#a797f7"));
+                        break;
+                    case RedUpsertBoth:
+                        layout.setBackgroundColor(Color.parseColor("#f79797"));
+                        break;
+                    case OrangeUpsertYellowRight:
+                        layout.setBackgroundColor(Color.parseColor("#f7ce97"));
+                        break;
+                }
+
+                return view;
+            }
+        };
+
+//        SimpleAdapter saItems =
+//                new SimpleAdapter(
+//                        this.getBaseContext(),
+//                        lstItems,
+//                        R.layout.relation_comparison,
+//                        new String[] {"img",
+//                                "comparisonResult",
+//                                "multilineDetails"},
+//                        new int[] {R.id.img,
+//                                R.id.comparison_result,
+//                                R.id.multiline_details});
 
         return saItems;
     }
 
     public NodeComparisonType getSelectedComparisonType() {
-        Spinner spRelation = (Spinner)findViewById(R.id.spRelation);
+        Spinner spRelation = (Spinner)findViewById(R.id.spYellowTop);
 
         return NodeComparisonType.valueOf(spRelation.getSelectedItem().toString());
     }

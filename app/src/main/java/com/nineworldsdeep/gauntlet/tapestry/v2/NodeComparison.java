@@ -5,22 +5,22 @@ package com.nineworldsdeep.gauntlet.tapestry.v2;
  */
 public class NodeComparison {
 
-    private String comparisonResult;
-    private String multilineDetails;
+    private NodeComparisonResult mComparisonResult;
+    private String mMultilineDetails;
 
-    public NodeComparison(String comparisonResult, String multilineDetails){
+    public NodeComparison(NodeComparisonResult comparisonResult, String multilineDetails){
 
-        this.comparisonResult = comparisonResult;
-        this.multilineDetails = multilineDetails;
+        this.mComparisonResult = comparisonResult;
+        this.mMultilineDetails = multilineDetails;
     }
 
-    public String getComparisonResult() {
+    public NodeComparisonResult getComparisonResult() {
 
-        return comparisonResult;
+        return mComparisonResult;
     }
 
     public String getMultilineDetails() {
 
-        return multilineDetails;
+        return mMultilineDetails;
     }
 }

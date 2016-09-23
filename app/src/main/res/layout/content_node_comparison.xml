@@ -10,21 +10,23 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.nineworldsdeep.gauntlet.tapestry.v2.NodeComparisonActivity"
+    tools:context="com.nineworldsdeep.gauntlet.tapestry.v2.ClusterComparisonActivity"
     tools:showIn="@layout/activity_node_comparison">
 
     <Spinner
-        android:id="@+id/spRelation"
+        android:id="@+id/spYellowTop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:background="#e4f797"/>
 
     <Spinner
-        android:id="@+id/spSortBy"
+        android:id="@+id/spBlueBottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/spRelation"/>
+        android:layout_below="@id/spYellowTop"
+        android:background="#97baf7"/>
 
     <!--<ListView android:id="@id/lvItems"-->
         <!--android:layout_height="fill_parent"-->
@@ -36,7 +38,7 @@
         android:layout_height="match_parent"
         android:id="@+id/layoutListView"
         android:orientation="vertical"
-        android:layout_below="@+id/spSortBy">
+        android:layout_below="@+id/spBlueBottom">
 
         <ListView
             android:layout_width="match_parent"

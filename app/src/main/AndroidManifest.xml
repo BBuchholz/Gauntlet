@@ -378,7 +378,7 @@
         <activity android:name=".tapestry.v2.fileSubset.FileNodeDisplayActivity">
         </activity>
         <activity
-            android:name=".tapestry.v2.NodeComparisonActivity"
+            android:name=".tapestry.v2.ClusterComparisonActivity"
             android:label="@string/title_activity_node_comparison"
             android:parentActivityName=".core.HomeListActivity"
             android:theme="@style/AppTheme.NoActionBar">

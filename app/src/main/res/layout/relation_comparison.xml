@@ -5,21 +5,22 @@
     android:layout_height="wrap_content"
     >
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:padding="10px"
-        />
+    <!--<ImageView-->
+        <!--android:id="@+id/img"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:padding="10px"-->
+        <!--/>-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="10px"
-        android:layout_weight="1"
+                  android:id="@+id/layoutColored"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:paddingLeft="10px"
+                  android:layout_weight="1"
         >
 
         <TextView android:id="@+id/comparison_result"
@@ -33,7 +34,6 @@
             android:id="@+id/multiline_details"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:singleLine="false"
             />
 
     </LinearLayout>

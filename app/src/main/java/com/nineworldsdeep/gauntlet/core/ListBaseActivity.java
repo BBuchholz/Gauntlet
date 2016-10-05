@@ -34,6 +34,21 @@ public abstract class ListBaseActivity extends DbBaseActivity {
     protected void onResume() {
         super.onResume();
         refreshLayout();
+
+//        if (mListState != null)
+//            getListView().onRestoreInstanceState(mListState);
+//        mListState = null;
+
+        restoreInstanceState();
+    }
+
+    protected void storeInstanceState(){
+
+        mListState = getListView().onSaveInstanceState();
+    }
+
+    protected void restoreInstanceState(){
+
         if (mListState != null)
             getListView().onRestoreInstanceState(mListState);
         mListState = null;

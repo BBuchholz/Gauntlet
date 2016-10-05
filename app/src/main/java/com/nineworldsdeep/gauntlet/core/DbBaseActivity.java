@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-public class DbBaseActivity extends AppCompatActivity {
+public abstract class DbBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -71,4 +71,5 @@
     </string>
     <string name="menu_go_to_audio">Go To Audio</string>
     <string name="title_activity_quick_tag">QuickTagActivity</string>
+    <string name="title_activity_transfer">TransferActivity</string>
 </resources>

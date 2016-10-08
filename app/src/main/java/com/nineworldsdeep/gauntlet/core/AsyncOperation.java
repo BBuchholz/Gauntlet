@@ -7,23 +7,22 @@ import android.os.Build;
  * Created by brent on 10/5/16.
  */
 
-public abstract class AsyncOperationCommand
+public abstract class AsyncOperation
         extends AsyncTask<Void, String, String> {
 
     protected IStatusEnabledActivity statusEnabledActivity;
     protected String operationVerb;
-    protected String commandText;
+//    protected String commandText;
 
-    public AsyncOperationCommand(IStatusEnabledActivity statusActivity,
-                                 String operationVerb,
-                                 String commandText){
+    public AsyncOperation(IStatusEnabledActivity statusActivity,
+                          String operationVerb){
 
         this.statusEnabledActivity = statusActivity;
         this.operationVerb = operationVerb;
-        this.commandText = commandText;
+//        this.commandText = commandText;
     }
 
-    public void executeCommand(){
+    public void executeAsync(){
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -79,12 +78,6 @@ public abstract class AsyncOperationCommand
         //Utils.toast(AudioListV2Activity.this, text[0]);
         if(text.length > 0)
         statusEnabledActivity.updateStatus(text[0]);
-    }
-
-    @Override
-    public String toString(){
-
-        return this.commandText;
     }
 
     protected abstract void runOperation();

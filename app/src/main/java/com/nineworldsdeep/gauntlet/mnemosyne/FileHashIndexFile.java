@@ -4,6 +4,7 @@ import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.synergy.v2.LineItemListFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,5 +34,17 @@ public class FileHashIndexFile extends LineItemListFile {
         }
 
         return lst;
+    }
+
+    public HashMap<String, String> getPathToHashMap() {
+
+        HashMap<String, String> pathToHash = new HashMap<>();
+
+        for(FileHashFragment fhf : getFileHashFragments()){
+
+            pathToHash.put(fhf.getPath(), fhf.getHash());
+        }
+
+        return pathToHash;
     }
 }

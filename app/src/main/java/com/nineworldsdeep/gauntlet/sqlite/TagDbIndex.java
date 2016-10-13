@@ -60,10 +60,10 @@ public class TagDbIndex {
 
             File f = new File(path);
 
-            if(f.getAbsolutePath().contains(".jpg")){
-
-                boolean testingBreakpoint = true;
-            }
+//            if(f.getAbsolutePath().contains(".jpg")){
+//
+//                boolean testingBreakpoint = true;
+//            }
 
             if(f.exists()) {
 
@@ -82,7 +82,7 @@ public class TagDbIndex {
         return output;
     }
 
-    private static HashMap<String, String>
+    public static HashMap<String, String>
         convertPathTagMultiMapToPathTagStringHashMap(
             MultiMapString pathToTags) {
 

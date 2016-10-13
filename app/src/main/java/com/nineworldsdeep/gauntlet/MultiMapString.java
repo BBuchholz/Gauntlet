@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.text.TextUtils;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,9 +30,22 @@ public class MultiMapString {
         }
     }
 
+    public void put(String key, Collection<String> values){
+
+        for(String val : values){
+
+            put(key, val);
+        }
+    }
+
     public Set<String> get(String key){
 
         return stringToStringList.get(key);
+    }
+
+    public String getAsCommaString(String key){
+
+        return TextUtils.join(", ", get(key));
     }
 
     public void put(String key, String value){

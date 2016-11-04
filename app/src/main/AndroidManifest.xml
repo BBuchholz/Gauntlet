@@ -208,6 +208,15 @@
                 android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity"/>
         </activity>
         <activity
+            android:name=".synergy.v5.SynergyV5ArchiveActivity"
+            android:label="@string/title_activity_synergy_v5_archive"
+            android:parentActivityName=".synergy.v5.SynergyV5ArchivesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v2.SynergyArchivesActivity"/>
+        </activity>
+        <activity
             android:name=".mnemosyne.ImageDisplayActivity"
             android:label="@string/title_activity_image_display"
             android:parentActivityName=".mnemosyne.ImageListV2Activity"
@@ -281,6 +290,15 @@
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
         <activity
+            android:name=".synergy.v5.SynergyV5MainActivity"
+            android:label="SynergyV5MainActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
+        </activity>
+        <activity
             android:name=".synergy.v3.SynergyListActivity"
             android:label="SynergyListActivity"
             android:parentActivityName=".synergy.v3.SynergyV3MainActivity">
@@ -296,6 +314,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
+        </activity>
+        <activity
+            android:name=".synergy.v5.SynergyArchivesActivity"
+            android:label="SynergyV5ArchivesActivity"
+            android:parentActivityName=".synergy.v5.SynergyV5MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity"/>
         </activity>
         <activity
             android:name=".synergy.v3.SynergyTemplatesActivity"

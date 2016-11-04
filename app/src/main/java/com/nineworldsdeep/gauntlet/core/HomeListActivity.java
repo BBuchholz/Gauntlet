@@ -23,6 +23,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNamedNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
@@ -71,6 +72,7 @@ public class HomeListActivity extends ListBaseActivity {
 
         addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
         addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
+        addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
         addNavigateActivityCommand("Images", ImageListV2Activity.class);
         addNavigateActivityCommand("Audio", AudioListV2Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);

@@ -26,6 +26,7 @@
     <string name="title_activity_synergy_master_archive">SynergyMasterArchiveActivity</string>
     <string name="title_activity_synergy_master_template">SynergyMasterTemplateActivity</string>
     <string name="title_activity_synergy_template">SynergyTemplateActivity</string>
+    <string name="title_activity_synergy_v5_archive">SynergyV5ArchiveActivity</string>
     <string name="title_activity_synergy_archive">SynergyArchiveActivity</string>
     <string name="title_activity_muse_main">MuseMainActivity</string>
     <string name="title_activity_muse_clef">MuseClefActivity</string>

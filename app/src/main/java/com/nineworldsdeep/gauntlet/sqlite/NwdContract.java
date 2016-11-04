@@ -35,4 +35,29 @@ public class NwdContract {
     public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
     public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
     public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+
+    public static final String CREATE_SYNERGY_LIST = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_LIST_CREATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_LIST_UPDATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_ITEM = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_ITEM_CREATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_ITEM_UPDATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_LIST_ITEM = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_LIST_ITEM_UPDATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_TO_DO = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_TO_DO_CREATED_TRIGGER = "NOT-IMPLEMENTED";
+
+    public static final String CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER = "NOT-IMPLEMENTED";
+
 }

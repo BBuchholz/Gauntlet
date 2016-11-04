@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 4; //change to 5 when ready
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -254,8 +254,26 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        createV4Tables(db);
+        createSynergyV5Subset(db);
+    }
+
+    private void createV4Tables(SQLiteDatabase db) {
+
         // all of these are "CREATE IF NOT EXISTS" statements
         // to prevent accidental overwrites
+        db.execSQL(DATABASE_CREATE_DISPLAY_NAME);
+        db.execSQL(DATABASE_CREATE_PATH);
+        db.execSQL(DATABASE_CREATE_HASH);
+        db.execSQL(DATABASE_CREATE_DEVICE);
+        db.execSQL(DATABASE_CREATE_TAG);
+        db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
+        db.execSQL(DATABASE_CREATE_FILE);
+        db.execSQL(DATABASE_CREATE_FILE_TAGS);
+        db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
+    }
+
+    private void dropAllPreV4Tables(SQLiteDatabase db){
 
         db.execSQL(DATABASE_DROP_FILE_TAGS);
         db.execSQL(DATABASE_DROP_AUDIO_TRANSCRIPT);
@@ -266,33 +284,48 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_DROP_DEVICE);
         db.execSQL(DATABASE_DROP_TAG);
         db.execSQL(DATABASE_DROP_LOCAL_CONFIG);
-
-        db.execSQL(DATABASE_CREATE_DISPLAY_NAME);
-        db.execSQL(DATABASE_CREATE_PATH);
-        db.execSQL(DATABASE_CREATE_HASH);
-        db.execSQL(DATABASE_CREATE_DEVICE);
-        db.execSQL(DATABASE_CREATE_TAG);
-        db.execSQL(DATABASE_CREATE_LOCAL_CONFIG);
-        db.execSQL(DATABASE_CREATE_FILE);
-        db.execSQL(DATABASE_CREATE_FILE_TAGS);
-        db.execSQL(DATABASE_CREATE_AUDIO_TRANSCRIPT);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+//      //online example
+//      if (oldVersion < 3) {
+//          db.execSQL(DATABASE_ALTER_TABLE_2);
+//      }
+
         if (oldVersion < 4) {
 
             //we made some changes that were not column adds, lets drop all
+            dropAllPreV4Tables(db);
 
             onCreate(db);
         }
 
-//        if (oldVersion < 3) {
-//            db.execSQL(DATABASE_ALTER_TABLE_2);
-//        }
+        if (oldVersion < 5) {
 
-        //TODO
+            createSynergyV5Subset(db);
+        }
+
+    }
+
+    private void createSynergyV5Subset(SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_SYNERGY_ITEM);
+        db.execSQL(NwdContract.CREATE_SYNERGY_ITEM_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_ITEM_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER);
+
     }
 }

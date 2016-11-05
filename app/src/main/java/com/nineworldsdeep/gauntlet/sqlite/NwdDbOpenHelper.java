@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4; //change to 5 when ready
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -299,7 +299,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             //we made some changes that were not column adds, lets drop all
             dropAllPreV4Tables(db);
 
-            onCreate(db);
+            createV4Tables(db);
         }
 
         if (oldVersion < 5) {

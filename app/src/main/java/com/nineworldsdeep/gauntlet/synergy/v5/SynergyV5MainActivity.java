@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListOrdering;
 
@@ -188,7 +189,15 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 //            etNewItem.setText("");
 //            readItems();
 
-            Utils.toast(this, "SynergyV5List.addItem() goes here");
+            SynergyV5List synLst = new SynergyV5List(itemText);
+
+            NwdDb.getInstance(this).save(synLst);
+
+            etNewItem.setText("");
+
+            Utils.toast(this, "List: " + synLst.getListName() + " saved.");
+
+            readItems();
         }
     }
 
@@ -392,7 +401,6 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         alertDialog.show();
     }
 
-
     private void readItems(){
         readItems((ListView)findViewById(R.id.lvItems));
     }
@@ -400,7 +408,9 @@ public class SynergyV5MainActivity extends ListBaseActivity {
     @Override
     protected void readItems(ListView lvItems) {
 
-        List<ListEntry> lst = SynergyV5Utils.getAllListEntries();
+        List<ListEntry> lst =
+                SynergyV5Utils.getAllListEntries(this,
+                        NwdDb.getInstance(this));
 
         if(ordering == SynergyListOrdering.ByItemCountDescending){
 

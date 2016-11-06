@@ -16,6 +16,7 @@ import com.nineworldsdeep.gauntlet.model.HashNode;
 import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import java.io.File;
@@ -1542,4 +1543,120 @@ public class NwdDb {
 
         db.endTransaction();
     }
+
+    public void save(SynergyV5List synLst) {
+
+        db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
+                new String[]{synLst.getListName()});
+    }
+
+    public List<String> synergyV5GetActiveListNames(Context c) {
+
+        ArrayList<String> listNames = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SYNERGY_V5_SELECT_ACTIVE_LISTS,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_NAME
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    listNames.add(
+                            record.get(
+                                    NwdContract.COLUMN_SYNERGY_LIST_NAME));
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception getting active list names: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return listNames;
+    }
+
+    //region templates
+
+//    public List<Object> template(Context c) {
+//
+//        ArrayList<Object> lst = new ArrayList<>();
+//
+//        db.beginTransaction();
+//
+//        try{
+//
+//            String[] args =
+//                    new String[]{};
+//
+//            Cursor cursor =
+//                    db.rawQuery(
+//                        NwdContract.SOME_QUERY,
+//                        args);
+//
+//            String[] columnNames =
+//                    new String[]{
+//                            NwdContract.COLUMN1,
+//                            NwdContract.COLUMN2,
+//                            etc
+//                    };
+//
+//            if(cursor.getCount() > 0){
+//
+//                cursor.moveToFirst();
+//
+//                do {
+//
+//                    Map<String, String> record =
+//                            cursorToRecord(cursor, columnNames);
+//
+//                } while (cursor.moveToNext());
+//
+//                cursor.close();
+//            }
+//
+//            db.setTransactionSuccessful();
+//
+//        }catch (Exception ex){
+//
+//            Utils.toast(c, "Exception: " +
+//                    ex.getMessage());
+//
+//        }finally {
+//
+//            db.endTransaction();
+//        }
+//
+//        return lst;
+//    }
+
+    //endregion
 }

@@ -4,7 +4,8 @@ package com.nineworldsdeep.gauntlet.sqlite;
  * Created by brent on 5/27/16.
  */
 public class NwdContract {
-    //tables
+
+    //region tables
     public static final String TABLE_DISPLAY_NAME = "DisplayName";
     public static final String TABLE_PATH = "Path";
     public static final String TABLE_HASH = "Hash";
@@ -19,8 +20,9 @@ public class NwdContract {
     public static final String TABLE_SYNERGY_LIST_ITEM = "SynergyListItem";
     public static final String TABLE_SYNERGY_ITEM = "SynergyItem";
     public static final String TABLE_SYNERGY_TO_DO = "SynergyToDo";
+    //endregion
 
-    //columns
+    //region columns
     public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
     public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
     public static final String COLUMN_PATH_ID = "PathId";
@@ -44,7 +46,7 @@ public class NwdContract {
 
     public static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
     public static final String COLUMN_SYNERGY_LIST_NAME = "SynergyListName";
-    public static final String COLUMN_SYNERGY_LIST_ACTIVATE_AT = "SynergyListActivatedAt";
+    public static final String COLUMN_SYNERGY_LIST_ACTIVATED_AT = "SynergyListActivatedAt";
     public static final String COLUMN_SYNERGY_LIST_SHELVED_AT = "SynergyListShelvedAt";
     public static final String COLUMN_SYNERGY_LIST_CREATED_AT = "SynergyListCreatedAt";
     public static final String COLUMN_SYNERGY_LIST_UPDATED_AT = "SynergyListUpdatedAt";
@@ -65,14 +67,15 @@ public class NwdContract {
     public static final String COLUMN_SYNERGY_TO_DO_ARCHIVED_AT = "SynergyToDoArchivedAt";
     public static final String COLUMN_SYNERGY_TO_DO_CREATED_AT = "SynergyToDoCreatedAt";
     public static final String COLUMN_SYNERGY_TO_DO_UPDATED_AT = "SynergyToDoUpdatedAt";
+    //endregion
 
-
+    //region SynergyV5_DDL
     public static final String CREATE_SYNERGY_LIST =
 
         "CREATE TABLE " + TABLE_SYNERGY_LIST + " ( "
             + COLUMN_SYNERGY_LIST_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
             + COLUMN_SYNERGY_LIST_NAME + " TEXT NOT NULL UNIQUE, "
-            + COLUMN_SYNERGY_LIST_ACTIVATE_AT + " TEXT NOT NULL, "
+            + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " TEXT NOT NULL, "
             + COLUMN_SYNERGY_LIST_SHELVED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_CREATED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_UPDATED_AT + " TEXT "
@@ -86,7 +89,7 @@ public class NwdContract {
             + "UPDATE " + TABLE_SYNERGY_LIST + "  "
                 + "SET " + COLUMN_SYNERGY_LIST_CREATED_AT + " = CURRENT_TIMESTAMP,  "
                        + COLUMN_SYNERGY_LIST_UPDATED_AT + " = CURRENT_TIMESTAMP, "
-                       + COLUMN_SYNERGY_LIST_ACTIVATE_AT + " = CURRENT_TIMESTAMP "
+                       + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " = CURRENT_TIMESTAMP "
                 + "WHERE " + TABLE_SYNERGY_LIST + "." + COLUMN_SYNERGY_LIST_ID + " = NEW." + COLUMN_SYNERGY_LIST_ID + "; "
             + "END ";
 
@@ -204,4 +207,25 @@ public class NwdContract {
                 + "WHERE " + TABLE_SYNERGY_TO_DO + "." + COLUMN_SYNERGY_TO_DO_ID + " = NEW." + COLUMN_SYNERGY_TO_DO_ID + "; "
             + "END ";
 
+    //endregion
+
+    //region SynergyV5_Queries
+
+    public static final String SYNERGY_V5_SELECT_ACTIVE_LISTS =
+
+            "SELECT " + COLUMN_SYNERGY_LIST_NAME + " "
+            + "FROM " + TABLE_SYNERGY_LIST + " "
+            + "WHERE " + COLUMN_SYNERGY_LIST_SHELVED_AT + " IS NULL "
+            + "   OR " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " > " +
+                         COLUMN_SYNERGY_LIST_SHELVED_AT + "; ";
+
+    public static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST + " "
+            + "	(" + COLUMN_SYNERGY_LIST_NAME + ", " +
+                     COLUMN_SYNERGY_LIST_ACTIVATED_AT + ") "
+            + "VALUES "
+            + "	(?, CURRENT_TIMESTAMP); ";
+
+    //endregion
 }

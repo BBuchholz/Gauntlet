@@ -7,8 +7,12 @@ import java.util.List;
  * Created by brent on 11/4/16.
  */
 public class SynergyV5List {
+
+    private String mListName;
+
     public SynergyV5List(String listName) {
 
+        mListName = listName;
     }
 
     public void save() {
@@ -23,7 +27,7 @@ public class SynergyV5List {
     }
 
     public String getListName() {
-        return null;
+        return mListName;
     }
 
     public SynergyV5ListItem replace(int pos, ArrayList<SynergyV5ListItem> sliList) {

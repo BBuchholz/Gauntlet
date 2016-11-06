@@ -307,6 +307,14 @@
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
+            android:name=".synergy.v5.SynergyV5ListActivity"
+            android:label="SynergyV5ListActivity"
+            android:parentActivityName=".synergy.v5.SynergyV5MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity"/>
+        </activity>
+        <activity
             android:name=".synergy.v3.SynergyArchivesActivity"
             android:label="SynergyArchivesActivity"
             android:parentActivityName=".synergy.v3.SynergyV3MainActivity"
@@ -316,7 +324,7 @@
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
-            android:name=".synergy.v5.SynergyArchivesActivity"
+            android:name=".synergy.v5.SynergyV5ArchivesActivity"
             android:label="SynergyV5ArchivesActivity"
             android:parentActivityName=".synergy.v5.SynergyV5MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -390,8 +398,8 @@
         </activity>
         <!-- <activity android:name=".core.ListBaseActivity"> -->
         <!-- </activity> -->
-        <activity android:name=".core.DbBaseActivity">
-        </activity>
+        <!--<activity android:name=".core.DbBaseActivity">-->
+        <!--</activity>-->
         <activity
             android:name=".core.HomeListActivity"
             android:label="@string/title_activity_home_list"

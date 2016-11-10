@@ -23,6 +23,9 @@ public class NwdContract {
     //endregion
 
     //region columns
+
+    //region V4a
+
     public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
     public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
     public static final String COLUMN_PATH_ID = "PathId";
@@ -44,6 +47,8 @@ public class NwdContract {
     public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
     public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
 
+    //endregion
+
     public static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
     public static final String COLUMN_SYNERGY_LIST_NAME = "SynergyListName";
     public static final String COLUMN_SYNERGY_LIST_ACTIVATED_AT = "SynergyListActivatedAt";
@@ -52,30 +57,37 @@ public class NwdContract {
     public static final String COLUMN_SYNERGY_LIST_UPDATED_AT = "SynergyListUpdatedAt";
 
     public static final String COLUMN_SYNERGY_LIST_ITEM_ID = "SynergyListItemId";
-    public static final String COLUMN_SYNERGY_ITEM_ID = "SynergyItemId";
     public static final String COLUMN_SYNERGY_LIST_ITEM_CREATED_AT = "SynergyListItemCreatedAt";
     public static final String COLUMN_SYNERGY_LIST_ITEM_UPDATED_AT  = "SynergyListItemUpdatedAt";
+    public static final String COLUMN_SYNERGY_LIST_ITEM_POSITION = "SynergyListItemPosition";
 
+    public static final String COLUMN_SYNERGY_ITEM_ID = "SynergyItemId";
     public static final String COLUMN_SYNERGY_ITEM_VALUE = "SynergyItemValue";
     public static final String COLUMN_SYNERGY_ITEM_CREATED_AT = "SynergyItemCreatedAt";
     public static final String COLUMN_SYNERGY_ITEM_UPDATED_AT = "SynergyItemUpdatedAt";
 
     public static final String COLUMN_SYNERGY_TO_DO_ID = "SynergyToDoId";
-    public static final String COLUMN_SYNERGY_TO_DO_POSTION = "SynergyToDoPostion";
     public static final String COLUMN_SYNERGY_TO_DO_ACTIVATED_AT = "SynergyToDoActivatedAt";
     public static final String COLUMN_SYNERGY_TO_DO_COMPLETED_AT = "SynergyToDoCompletedAt";
     public static final String COLUMN_SYNERGY_TO_DO_ARCHIVED_AT = "SynergyToDoArchivedAt";
     public static final String COLUMN_SYNERGY_TO_DO_CREATED_AT = "SynergyToDoCreatedAt";
     public static final String COLUMN_SYNERGY_TO_DO_UPDATED_AT = "SynergyToDoUpdatedAt";
+
     //endregion
 
     //region SynergyV5_DDL
+
+    public static final String DROP_SYNERGY_LIST = "DROP TABLE SynergyList;";
+    public static final String DROP_SYNERGY_TO_DO = "DROP TABLE SynergyToDo;";
+    public static final String DROP_SYNERGY_LIST_ITEM =
+            "DROP TABLE SynergyListItem;";
+
     public static final String CREATE_SYNERGY_LIST =
 
         "CREATE TABLE " + TABLE_SYNERGY_LIST + " ( "
             + COLUMN_SYNERGY_LIST_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
             + COLUMN_SYNERGY_LIST_NAME + " TEXT NOT NULL UNIQUE, "
-            + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " TEXT NOT NULL, "
+            + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_SHELVED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_CREATED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_UPDATED_AT + " TEXT "
@@ -143,9 +155,10 @@ public class NwdContract {
             + COLUMN_SYNERGY_LIST_ITEM_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
             + COLUMN_SYNERGY_LIST_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SYNERGY_LIST + " (" + COLUMN_SYNERGY_LIST_ID + "),  "
             + COLUMN_SYNERGY_ITEM_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SYNERGY_ITEM + " (" + COLUMN_SYNERGY_ITEM_ID + "), "
+            + COLUMN_SYNERGY_LIST_ITEM_POSITION + " INTEGER, "
             + COLUMN_SYNERGY_LIST_ITEM_CREATED_AT + " TEXT, "
             + COLUMN_SYNERGY_LIST_ITEM_UPDATED_AT + " TEXT,  "
-            + "	UNIQUE(" + COLUMN_SYNERGY_LIST_ID + ", " + COLUMN_SYNERGY_ITEM_ID + ", " + COLUMN_SYNERGY_LIST_ITEM_CREATED_AT + ") "
+            + "	UNIQUE(" + COLUMN_SYNERGY_LIST_ID + ", " + COLUMN_SYNERGY_ITEM_ID + ") "
             + ") ";
 
     public static final String CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER =
@@ -175,9 +188,9 @@ public class NwdContract {
 
             "CREATE TABLE " + TABLE_SYNERGY_TO_DO + " ( "
             + "" + COLUMN_SYNERGY_TO_DO_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
-            + "" + COLUMN_SYNERGY_LIST_ITEM_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SYNERGY_LIST_ITEM + " (" + COLUMN_SYNERGY_LIST_ITEM_ID + "),  "
-            + "" + COLUMN_SYNERGY_TO_DO_POSTION + " INTEGER, "
-            + "" + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " TEXT NOT NULL, "
+            + "" + COLUMN_SYNERGY_LIST_ITEM_ID + " INTEGER NOT NULL REFERENCES " +
+                    TABLE_SYNERGY_LIST_ITEM + " (" + COLUMN_SYNERGY_LIST_ITEM_ID + "),  "
+            + "" + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " TEXT, "
             + "" + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + " TEXT, "
             + "" + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " TEXT, "
             + "" + COLUMN_SYNERGY_TO_DO_CREATED_AT + " TEXT, "
@@ -222,10 +235,49 @@ public class NwdContract {
     public static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST + " "
-            + "	(" + COLUMN_SYNERGY_LIST_NAME + ", " +
-                     COLUMN_SYNERGY_LIST_ACTIVATED_AT + ") "
+            + "	(" + COLUMN_SYNERGY_LIST_NAME + ") "
             + "VALUES "
-            + "	(?, CURRENT_TIMESTAMP); ";
+            + "	(?); ";
+
+    public static final String SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X =
+
+            "SELECT " + COLUMN_SYNERGY_LIST_ID + " "
+            + "FROM " + TABLE_SYNERGY_LIST + " "
+            + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
+
+    public static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_ITEM + " "
+            + "	(" + COLUMN_SYNERGY_ITEM_VALUE + ") "
+            + "VALUES "
+            + "	(?); ";
+
+    public static final String SYNERGY_V5_SELECT_ID_FOR_ITEM_VALUE_X =
+
+            "SELECT " + COLUMN_SYNERGY_ITEM_ID + " "
+            + "FROM " + TABLE_SYNERGY_ITEM + " "
+            + "WHERE " + COLUMN_SYNERGY_ITEM_VALUE + " = ? ; ";
+
+    public static final String SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST_ITEM + " "
+            + "	(" + COLUMN_SYNERGY_LIST_ID + ",  "
+            + "	 " + COLUMN_SYNERGY_ITEM_ID + ",  "
+            + "	 " + COLUMN_SYNERGY_LIST_ITEM_POSITION +  ") "
+            + "VALUES "
+            + "	(?, ?, ?); ";
+
+    public static final String
+            SYNERGY_V5_SELECT_ITEM_VALUES_BY_POSITION_FOR_LIST_ID_X =
+
+            "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
+            + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
+            + "	    sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + " "
+            + "FROM " + TABLE_SYNERGY_LIST_ITEM + " sli "
+            + "JOIN " + TABLE_SYNERGY_ITEM + " si "
+            + "ON sli." + COLUMN_SYNERGY_ITEM_ID +
+                    " = si." + COLUMN_SYNERGY_ITEM_ID + " "
+            + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? ; ";
 
     //endregion
 }

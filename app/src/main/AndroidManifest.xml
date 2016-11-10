@@ -342,6 +342,15 @@
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
+            android:name=".synergy.v5.SynergyV5TemplatesActivity"
+            android:label="SynergyV5TemplatesActivity"
+            android:parentActivityName=".synergy.v5.SynergyV5MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity"/>
+        </activity>
+        <activity
             android:name=".synergy.v3.SynergyTemplateActivity"
             android:label="@string/title_activity_synergy_template"
             android:parentActivityName=".synergy.v3.SynergyTemplatesActivity"

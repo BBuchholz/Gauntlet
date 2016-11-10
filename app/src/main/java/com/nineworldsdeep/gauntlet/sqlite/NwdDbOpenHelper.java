@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -307,6 +307,34 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             createSynergyV5Subset(db);
         }
 
+        if (oldVersion < 10){
+
+            modSynergyTablesCorrectionOne(db);
+        }
+
+    }
+
+    private void modSynergyTablesCorrectionOne(SQLiteDatabase db){
+
+        //drop tables that needed modification
+        db.execSQL(NwdContract.DROP_SYNERGY_TO_DO);
+        db.execSQL(NwdContract.DROP_SYNERGY_LIST_ITEM);
+        db.execSQL(NwdContract.DROP_SYNERGY_LIST);
+
+        //recreate tables
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO);
+
+        //createdAt triggers
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_CREATED_TRIGGER);
+
+        //updatedAt triggers
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_UPDATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_LIST_ITEM_UPDATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER);
     }
 
     private void createSynergyV5Subset(SQLiteDatabase db) {

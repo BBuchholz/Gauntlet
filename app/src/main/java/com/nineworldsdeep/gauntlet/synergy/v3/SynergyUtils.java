@@ -43,7 +43,7 @@ public class SynergyUtils {
 
         SynergyTemplateFile stf = new SynergyTemplateFile(trimmedName);
 
-        //stf.loadItems(); //if we wanted to preserve existing, we would uncomment this.
+        //stf.load(); //if we wanted to preserve existing, we would uncomment this.
 
         for(SynergyListItem sli : templateList.getItems()){
 

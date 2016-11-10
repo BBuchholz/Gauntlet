@@ -64,7 +64,7 @@ public class TagIndex {
 //    public void load(){
 //
 //        TagIndexFile tif = new TagIndexFile();
-//        tif.loadItems();
+//        tif.load();
 //
 //        for(FileTagFragment ftf : tif.getFileTagFragments()){
 //

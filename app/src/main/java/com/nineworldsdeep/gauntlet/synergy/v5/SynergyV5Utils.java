@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v5;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 
@@ -64,8 +65,9 @@ public class SynergyV5Utils {
     }
 
 
-    public static List<String> getAllTemplateNames() {
-        return null;
+    public static List<String> getAllTemplateNames(Context c) {
+        Utils.toast(c, "templates not yet implemented");
+        return new ArrayList<String>();
     }
 
     public static void queueFromTemplate(SynergyV5Template stf, int position) {

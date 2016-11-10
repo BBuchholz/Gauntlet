@@ -70,7 +70,7 @@ public class FileHashIndex {
 //    public void load(){
 //
 //        FileHashIndexFile fhif = new FileHashIndexFile();
-//        fhif.loadItems();
+//        fhif.load();
 //
 //        for(FileHashFragment fhf : fhif.getFileHashFragments()){
 //

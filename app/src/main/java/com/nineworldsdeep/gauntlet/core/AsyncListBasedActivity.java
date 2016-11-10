@@ -121,8 +121,8 @@ public abstract class AsyncListBasedActivity extends ListBaseActivity {
     @Override
     protected final void readItems(ListView lv){
 
-        //Async List Activities use loadItems() with return type ListAdapter
-        throw new UnsupportedOperationException("use loadItems() with AsyncList");
+        //Async List Activities use load() with return type ListAdapter
+        throw new UnsupportedOperationException("use load() with AsyncList");
     }
 
     protected abstract ListAdapter loadItems();

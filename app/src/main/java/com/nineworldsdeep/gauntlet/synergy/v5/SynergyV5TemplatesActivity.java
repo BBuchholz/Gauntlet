@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 public class SynergyV5TemplatesActivity extends AppCompatActivity {
 
@@ -84,7 +85,7 @@ public class SynergyV5TemplatesActivity extends AppCompatActivity {
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1,
-                        SynergyV5Utils.getAllTemplateNames()));
+                        SynergyV5Utils.getAllTemplateNames(this)));
     }
 
     private void promptConfirmGenFromTemplate(String templateName){
@@ -122,7 +123,7 @@ public class SynergyV5TemplatesActivity extends AppCompatActivity {
             SynergyV5List newList =
                     SynergyV5Utils.generateFromTemplate(templateName,
                             timestampedListName);
-            newList.save();
+            newList.save(this, NwdDb.getInstance(this));
             Utils.toast(getApplicationContext(), timestampedListName + " created");
         }
 

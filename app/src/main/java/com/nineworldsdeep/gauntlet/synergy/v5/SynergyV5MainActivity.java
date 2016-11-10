@@ -83,11 +83,6 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         if (id == R.id.action_show_archive){
             startActivity(new Intent(this, SynergyV5ArchivesActivity.class));
             return true;
@@ -108,7 +103,8 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
         if(id == R.id.action_push_all){
 
-            pushAll();
+            Utils.toast(this, "push all N/A for V5");
+            //pushAll();
             return true;
         }
 
@@ -137,21 +133,21 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         }
     }
 
-    private void pushAll() {
-
-        List<String> listNames = new ArrayList<>();
-
-        for(ListEntry le : currentListEntries){
-
-            if(Utils.containsTimeStamp(le.getListName())){
-                listNames.add(le.getListName());
-            }
-        }
-
-        SynergyV5Utils.pushAll(listNames);
-
-        refreshLayout();
-    }
+//    private void pushAll() {
+//
+//        List<String> listNames = new ArrayList<>();
+//
+//        for(ListEntry le : currentListEntries){
+//
+//            if(Utils.containsTimeStamp(le.getListName())){
+//                listNames.add(le.getListName());
+//            }
+//        }
+//
+//        SynergyV5Utils.pushAll(listNames);
+//
+//        refreshLayout();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,14 +180,14 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
 //            SynergyListFile slf =
 //                    new SynergyListFile(itemText);
-//            slf.loadItems(); //just in case it already exists
+//            slf.load(); //just in case it already exists
 //            slf.save();
 //            etNewItem.setText("");
 //            readItems();
 
             SynergyV5List synLst = new SynergyV5List(itemText);
 
-            NwdDb.getInstance(this).save(synLst);
+            NwdDb.getInstance(this).save(this, synLst);
 
             etNewItem.setText("");
 
@@ -213,19 +209,18 @@ public class SynergyV5MainActivity extends ListBaseActivity {
                                     long id) {
 
                 //get selected list name
-                ListEntry selectedList = (ListEntry) lvItems.getItemAtPosition(idx);
+                ListEntry selectedList =
+                        (ListEntry) lvItems.getItemAtPosition(idx);
 
                 Intent intent = new Intent(view.getContext(),
                         SynergyV5ListActivity.class);
                 intent.putExtra(EXTRA_SYNERGYMAIN_LISTNAME,
                                 selectedList.getListName());
                 startActivity(intent);
-
             }
         });
     }
 
-    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public void onCreateContextMenu(ContextMenu menu,
                                     View v,
@@ -247,7 +242,6 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
     }
 
-    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 

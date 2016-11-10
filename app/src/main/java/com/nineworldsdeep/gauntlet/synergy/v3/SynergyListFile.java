@@ -215,7 +215,7 @@ public class SynergyListFile {
 
         }catch(IOException ex){
 
-            Utils.log("loadItems() Exception: " + ex.getMessage());
+            Utils.log("load() Exception: " + ex.getMessage());
         }
     }
 

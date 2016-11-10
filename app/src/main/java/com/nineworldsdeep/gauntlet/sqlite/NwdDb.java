@@ -17,6 +17,7 @@ import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import java.io.File;
@@ -945,6 +946,65 @@ public class NwdDb {
         return displayName;
     }
 
+    public int getIdForSynergyV5ListName(Context c, String listName){
+
+        int id = -1;
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            listName
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_ID
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    //this method will grab the last entry, if multiple returned
+                    //though list name is unique, so it should never matter
+                    String idString =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_ID);
+
+                    id = Integer.parseInt(idString);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception retrieving list id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return id;
+    }
+
     public void linkFilesToDisplayNames(List<FileListItem> fileListItems) {
 
 //        if(!db.isOpen()){
@@ -1544,11 +1604,114 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public void save(SynergyV5List synLst) {
+    public void save(Context context, SynergyV5List synLst) {
 
-        db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
-                new String[]{synLst.getListName()});
+        //populate list id if not set, creating list if !exists
+        if(synLst.getListId() < 1){
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
+                    new String[]{synLst.getListName()});
+
+            synLst.setListId(
+                    getIdForSynergyV5ListName(context,
+                            synLst.getListName()));
+        }
+
+        // for each SynergyV5ListItem,
+        // do the same (populate item id, ensure, etc.)
+        for(int i = 0; i < synLst.getItems().size(); i++){
+
+            SynergyV5ListItem sli = synLst.get(i);
+            save(context, synLst, sli, i);
+        }
     }
+
+    private void save(Context context,
+                      SynergyV5List lst,
+                      SynergyV5ListItem sli,
+                      int position){
+
+        if(lst.getListId() < 1){
+
+            Utils.toast(context, "SynergyV5List Id not set");
+        }
+
+        if(sli.getItemId() < 1){
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_ITEM_VALUE_X,
+                    new String[]{sli.getItemValue()});
+
+            sli.setItemId(
+                    getIdForSynergyV5ItemValue(context, sli.getItemValue()));
+        }
+
+        db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z,
+                new String[]{
+                        Integer.toString(lst.getListId()),
+                        Integer.toString(sli.getItemId()),
+                        Integer.toString(position)
+                });
+    }
+
+    public int getIdForSynergyV5ItemValue(Context context, String itemValue){
+
+        int id = -1;
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            itemValue
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.SYNERGY_V5_SELECT_ID_FOR_ITEM_VALUE_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_ITEM_ID
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    //this method will grab the last entry, if multiple returned
+                    //though list name is unique, so it should never matter
+                    String idString =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_ID);
+
+                    id = Integer.parseInt(idString);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(context, "Exception retrieving item id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return id;
+    }
+
 
     public List<String> synergyV5GetActiveListNames(Context c) {
 
@@ -1604,6 +1767,84 @@ public class NwdDb {
         return listNames;
     }
 
+    public void load(Context context, SynergyV5List lst) {
+
+        //calling save() which will insert the list name
+        //if it doesn't exist and will also populate the id.
+        save(context, lst);
+
+        //get all items for list
+        synergyV5PopulateListItems(context, lst);
+    }
+
+    public void synergyV5PopulateListItems(Context c,
+                                           SynergyV5List lst) {
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(lst.getListId())
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+        NwdContract.SYNERGY_V5_SELECT_ITEM_VALUES_BY_POSITION_FOR_LIST_ID_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_ITEM_VALUE,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    String itemIdString, itemValue, positionString;
+
+                    itemIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_ID);
+
+                    itemValue =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_VALUE);
+
+                    positionString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION);
+
+                    SynergyV5ListItem sli = new SynergyV5ListItem(itemValue);
+                    sli.setItemId(Integer.parseInt(itemIdString));
+                    lst.add(Integer.parseInt(positionString), sli);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+
     //region templates
 
 //    public List<Object> template(Context c) {
@@ -1615,7 +1856,11 @@ public class NwdDb {
 //        try{
 //
 //            String[] args =
-//                    new String[]{};
+//                    new String[]{
+//                            ARG_1,
+//                            ARG_2,
+//                            etc
+//                    };
 //
 //            Cursor cursor =
 //                    db.rawQuery(
@@ -1624,8 +1869,8 @@ public class NwdDb {
 //
 //            String[] columnNames =
 //                    new String[]{
-//                            NwdContract.COLUMN1,
-//                            NwdContract.COLUMN2,
+//                            NwdContract.RESULT_SET_COLUMN1,
+//                            NwdContract.RESULT_SET_COLUMN2,
 //                            etc
 //                    };
 //

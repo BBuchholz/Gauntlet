@@ -1,5 +1,10 @@
 package com.nineworldsdeep.gauntlet.synergy.v5;
 
+import android.content.Context;
+
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +14,19 @@ import java.util.List;
 public class SynergyV5List {
 
     private String mListName;
+    private int mListId;
+    private ArrayList<SynergyV5ListItem> mItems;
 
     public SynergyV5List(String listName) {
 
         mListName = listName;
+        mListId = -1;
+        mItems = new ArrayList<>();
     }
 
-    public void save() {
+    public void save(Context context, NwdDb db) {
+
+        db.save(context, this);
     }
 
     public boolean exists() {
@@ -23,14 +34,15 @@ public class SynergyV5List {
     }
 
     public SynergyV5ListItem get(int position) {
-        return null;
+        return mItems.get(position);
     }
 
     public String getListName() {
         return mListName;
     }
 
-    public SynergyV5ListItem replace(int pos, ArrayList<SynergyV5ListItem> sliList) {
+    public SynergyV5ListItem replace(int pos,
+                                     ArrayList<SynergyV5ListItem> sliList) {
 
         return null;
     }
@@ -64,15 +76,47 @@ public class SynergyV5List {
 
     }
 
-    public void loadItems() {
+    public void load(Context context, NwdDb db) {
 
+        db.load(context, this);
     }
 
     public List<SynergyV5ListItem> getItems() {
-        return new ArrayList<>();
+
+        return mItems;
     }
 
-    public void add(int addItemIndex, String itemText) {
+    public void add(int position, SynergyV5ListItem sli) {
 
+        if(isNotDuplicate(sli)){
+
+            mItems.add(position, sli);
+        }
+    }
+
+    private boolean isNotDuplicate(SynergyV5ListItem sli) {
+
+        boolean exists = false;
+
+        for(SynergyV5ListItem existingListItem : mItems){
+
+            String existingValue = existingListItem.getItemValue();
+
+            if(existingValue.equalsIgnoreCase(sli.getItemValue())){
+
+                exists = true;
+            }
+        }
+
+        return !exists;
+    }
+
+    public int getListId() {
+        return mListId;
+    }
+
+
+    public void setListId(int listId) {
+        this.mListId = listId;
     }
 }

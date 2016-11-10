@@ -23,6 +23,7 @@ import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -62,7 +63,7 @@ public class SynergyV5ListActivity
 
         String listName =
                 intent.getStringExtra(
-                        SynergyV5MainActivity.EXTRA_SYNERGYMAIN_LISTNAME); //TODO: this EXTRA should be in this class, refactor when you have time to test
+                        SynergyV5MainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
 
         setTitle(listName);
 
@@ -430,7 +431,7 @@ public class SynergyV5ListActivity
                     // need to specify false for archiveOne() or else
                     // remove gets called twice if sliList has only one item
                     mSlf.archiveOne(mSlf.replace(pos, sliList), false);
-                    mSlf.save();
+                    mSlf.save(this, NwdDb.getInstance(this));
                     refreshListItems();
 
                 }
@@ -456,7 +457,7 @@ public class SynergyV5ListActivity
                 // need to specify false for archiveOne() or else
                 // remove gets called twice if sliList has only one item
                 mSlf.archiveOne(mSlf.replace(pos, lst), false);
-                mSlf.save();
+                mSlf.save(this, NwdDb.getInstance(this));
                 refreshListItems();
             }
         }
@@ -478,7 +479,7 @@ public class SynergyV5ListActivity
         }
 
         mSlf.move(pos, moveTo);
-        mSlf.save();
+        mSlf.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
 
@@ -500,7 +501,7 @@ public class SynergyV5ListActivity
         }
 
         mSlf.move(pos, moveTo);
-        mSlf.save();
+        mSlf.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
 
@@ -516,7 +517,7 @@ public class SynergyV5ListActivity
         }
 
         mSlf.move(pos, moveTo);
-        mSlf.save();
+        mSlf.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -537,7 +538,7 @@ public class SynergyV5ListActivity
         }
 
         mSlf.move(pos, moveTo);
-        mSlf.save();
+        mSlf.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -872,7 +873,8 @@ public class SynergyV5ListActivity
     private void writeItems() {
 
         if(mSlf != null){
-            mSlf.save();
+
+            mSlf.save(this, NwdDb.getInstance(this));
         }
     }
 
@@ -884,7 +886,7 @@ public class SynergyV5ListActivity
     @Override
     protected void readItems(ListView lvItems) {
 
-        mSlf.loadItems();
+        mSlf.load(this, NwdDb.getInstance(this));
 
         setListViewAdapter(lvItems);
     }
@@ -914,7 +916,7 @@ public class SynergyV5ListActivity
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
-            mSlf.add(getAddItemIndex(), itemText);
+            mSlf.add(getAddItemIndex(), new SynergyV5ListItem(itemText));
             etNewItem.setText("");
             writeItems();
             refreshListItems();

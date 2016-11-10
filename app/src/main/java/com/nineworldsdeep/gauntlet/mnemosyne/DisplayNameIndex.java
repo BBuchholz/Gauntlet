@@ -66,7 +66,7 @@ public class DisplayNameIndex {
 //    public void load(){
 //
 //        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
-//        dnif.loadItems();
+//        dnif.load();
 //
 //        for(FileListItem ili : dnif.getFileListItems()){
 //

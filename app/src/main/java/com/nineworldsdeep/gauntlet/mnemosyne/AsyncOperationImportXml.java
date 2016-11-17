@@ -1,17 +1,14 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
-import android.app.Activity;
-
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
-import com.nineworldsdeep.gauntlet.core.IStatusEnabledActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 
 /**
  * Created by brent on 10/5/16.
  */
 public class AsyncOperationImportXml extends AsyncOperation {
 
-    public AsyncOperationImportXml(IStatusEnabledActivity statusActivity) {
+    public AsyncOperationImportXml(IStatusActivity statusActivity) {
         super(statusActivity, "Importing XML");
     }
 

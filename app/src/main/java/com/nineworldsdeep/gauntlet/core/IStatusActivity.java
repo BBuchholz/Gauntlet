@@ -6,7 +6,7 @@ import android.app.Activity;
  * Created by brent on 10/5/16.
  */
 
-public interface IStatusEnabledActivity {
+public interface IStatusActivity {
 
     void updateStatus(String status);
     Activity getAsActivity();

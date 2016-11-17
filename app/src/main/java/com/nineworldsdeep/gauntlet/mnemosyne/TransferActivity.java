@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.core.AsyncListBasedActivity;
 import com.nineworldsdeep.gauntlet.core.AsyncCommand;
-import com.nineworldsdeep.gauntlet.core.IStatusEnabledActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 
 import java.util.ArrayList;
 
 public class TransferActivity extends AsyncListBasedActivity
-        implements IStatusEnabledActivity {
+        implements IStatusActivity {
 
     private ArrayList<AsyncCommand> cmds =
             new ArrayList<>();
@@ -60,7 +60,8 @@ public class TransferActivity extends AsyncListBasedActivity
         cmds.clear();
 
         cmds.add(new AsyncCommandImportXml(this));
-        cmds.add(new AsynCommandImportHashTagIndex(this));
+        cmds.add(new AsyncCommandImportHashTagIndex(this));
+        cmds.add(new AsyncCommandImportSynergyV3ToV5(this));
         cmds.add(new AsyncCommandExportDb(this));
         cmds.add(new AsyncCommandBridgeTables(this));
         cmds.add(new AsynCommandExportXml(this));

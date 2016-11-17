@@ -1,14 +1,14 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.core.AsyncCommand;
-import com.nineworldsdeep.gauntlet.core.IStatusEnabledActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 
 /**
  * Created by brent on 10/8/16.
  */
-public class AsynCommandImportHashTagIndex extends AsyncCommand {
+public class AsyncCommandImportHashTagIndex extends AsyncCommand {
 
-    public AsynCommandImportHashTagIndex(IStatusEnabledActivity statusEnabledActivity) {
+    public AsyncCommandImportHashTagIndex(IStatusActivity statusEnabledActivity) {
         super(statusEnabledActivity, "Import Hash Tag Index");
     }
 

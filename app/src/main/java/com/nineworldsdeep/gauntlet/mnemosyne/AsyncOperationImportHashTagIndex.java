@@ -4,9 +4,8 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusEnabledActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class AsyncOperationImportHashTagIndex extends AsyncOperation {
 
-    public AsyncOperationImportHashTagIndex(IStatusEnabledActivity statusActivity) {
+    public AsyncOperationImportHashTagIndex(IStatusActivity statusActivity) {
         super(statusActivity, "Importing Hash Tag Indexes");
     }
 

@@ -44,7 +44,6 @@ public class SynergyV3MainActivity extends ListBaseActivity {
     public SynergyListOrdering ordering;
     private List<ListEntry> currentListEntries;
 
-
     public void setOrdering(SynergyListOrdering ordering) {
         this.ordering = ordering;
         String orderName = "";
@@ -392,7 +391,6 @@ public class SynergyV3MainActivity extends ListBaseActivity {
         // show it
         alertDialog.show();
     }
-
 
     private void readItems(){
         readItems((ListView)findViewById(R.id.lvItems));

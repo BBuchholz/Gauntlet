@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -206,7 +207,7 @@ public class Xml {
         return cfgEl;
     }
 
-    private static void write(File destinationFile, Document doc)
+    public static void write(File destinationFile, Document doc)
             throws TransformerException {
 
         TransformerFactory transformerFactory =
@@ -217,10 +218,14 @@ public class Xml {
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(destinationFile);
 
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(
+                "{http://xml.apache.org/xslt}indent-amount", "2");
+
         transformer.transform(source, result);
     }
 
-    private static Document createDocument(String rootTag)
+    public static Document createDocument(String rootTag)
             throws ParserConfigurationException {
 
         DocumentBuilderFactory docFactory =

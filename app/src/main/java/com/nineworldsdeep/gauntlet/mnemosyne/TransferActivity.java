@@ -60,10 +60,10 @@ public class TransferActivity extends AsyncListBasedActivity
         cmds.clear();
 
         cmds.add(new AsyncCommandImportXml(this));
-        cmds.add(new AsynCommandExportXml(this));
+        cmds.add(new AsynCommandImportHashTagIndex(this));
         cmds.add(new AsyncCommandExportDb(this));
         cmds.add(new AsyncCommandBridgeTables(this));
-        cmds.add(new AsynCommandImportHashTagIndex(this));
+        cmds.add(new AsynCommandExportXml(this));
 
         return new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, cmds);

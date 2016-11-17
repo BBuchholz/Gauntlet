@@ -9,14 +9,13 @@ import com.nineworldsdeep.gauntlet.core.IStatusEnabledActivity;
 public class AsynCommandExportXml extends AsyncCommand {
 
     public AsynCommandExportXml(IStatusEnabledActivity statusEnabledActivity) {
-        super(statusEnabledActivity, "Import Hash Tag Index");
+        super(statusEnabledActivity, "Export XML");
     }
 
     @Override
     public void executeCommand() {
 
-        AsyncOperationImportHashTagIndex op =
-                new AsyncOperationImportHashTagIndex(statusActivity);
+        AsyncOperationExportXml op = new AsyncOperationExportXml(statusActivity);
         op.executeAsync();
     }
 }

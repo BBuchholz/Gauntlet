@@ -18,10 +18,10 @@ public class Tags {
         ArrayList<String> lst = new ArrayList<>();
 
         //default tags
-        lst.add("lyricBit");
-        lst.add("rhythmBit");
-        lst.add("nwdPlanning");
-        lst.add("topics and rants");
+//        lst.add("lyricBit");
+//        lst.add("rhythmBit");
+//        lst.add("nwdPlanning");
+//        lst.add("topics and rants");
 
         SynergyListFile slf = new SynergyListFile("Tags-Frequent");
 

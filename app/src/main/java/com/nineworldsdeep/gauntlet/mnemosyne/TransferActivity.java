@@ -59,7 +59,7 @@ public class TransferActivity extends AsyncListBasedActivity
         //SEE AudioListV2Activity FOR EXAMPLE OF MORE COMPLEX IMPLEMENTATION
         cmds.clear();
 
-        cmds.add(new AsyncCommandImportXml(this));
+        cmds.add(new AsyncCommandImportSynergyV5FromXml(this));
         cmds.add(new AsyncCommandImportHashTagIndex(this));
         cmds.add(new AsyncCommandImportSynergyV3ToV5(this));
         cmds.add(new AsyncCommandExportDb(this));

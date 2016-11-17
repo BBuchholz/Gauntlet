@@ -94,6 +94,12 @@ public class SynergyV5List {
         }
     }
 
+    public void add(SynergyV5ListItem v5ListItem){
+
+        int position = mItems.size();
+        add(position, v5ListItem);
+    }
+
     private boolean isNotDuplicate(SynergyV5ListItem sli) {
 
         boolean exists = false;

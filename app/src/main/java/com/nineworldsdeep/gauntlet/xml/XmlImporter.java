@@ -7,6 +7,8 @@ import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.HashNode;
 import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.model.TagNode;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,11 +76,6 @@ public class XmlImporter {
 
             try {
 
-                //testing
-                if(i == 138){
-                    String s = "breakpoint";
-                }
-
                 Element fileEl = (Element) fileEls.item(i);
 
                 String device = getValueForFirst(fileEl, "device");
@@ -137,6 +134,40 @@ public class XmlImporter {
         }
 
         return output;
+    }
+
+    public List<SynergyV5List> getSynergyV5Lists(){
+
+        List<SynergyV5List> v5Lists = new ArrayList<>();
+
+        NodeList listEls = doc.getElementsByTagName("synergyList");
+
+        for(int i = 0; i < listEls.getLength(); i++){
+
+            Element v5ListEl = (Element) listEls.item(i);
+
+            String listName = v5ListEl.getAttribute("listName");
+
+            SynergyV5List v5List = new SynergyV5List(listName);
+
+            NodeList v5ListItemEls = v5ListEl.getElementsByTagName("synergyItem");
+
+            for(int j = 0; j < v5ListItemEls.getLength(); j++){
+
+                Element listItemEl = (Element) v5ListItemEls.item(j);
+
+                String itemValue = getValueForFirst(listItemEl, "itemValue");
+
+                SynergyV5ListItem v5ListItem =
+                        new SynergyV5ListItem(itemValue);
+
+                v5List.add(v5ListItem);
+            }
+
+            v5Lists.add(v5List);
+        }
+
+        return v5Lists;
     }
 
     /**

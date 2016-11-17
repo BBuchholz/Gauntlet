@@ -322,6 +322,22 @@ public class Configuration {
         return new File(getXmlDirectory(), fileName);
     }
 
+    public static List<File> getXmlFilesBySuffix(String suffix){
+
+        String[] exts = {"xml"};
+        List<File> lst = new ArrayList<>();
+
+        for(File f : FileUtils.listFiles(getXmlDirectory(), exts, false)){
+
+            if(FilenameUtils.removeExtension(f.getName()).endsWith(suffix)){
+
+                lst.add(f);
+            }
+        }
+
+        return lst;
+    }
+
     public static File getXmlDirectory() {
 
         return getDirectoryStoragePath("/NWD/xml");

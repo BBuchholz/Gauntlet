@@ -63,6 +63,8 @@ public class AsyncOperationImportHashTagIndex extends AsyncOperation {
         allCurrentFiles.addAll(screenshotFolderFiles);
         allCurrentFiles.addAll(voicememosFolderFiles);
 
+        publishProgress("files gathered, hashing files...");
+
         FileHashIndexFile fhi = new FileHashIndexFile();
         fhi.loadItems();
 
@@ -86,6 +88,8 @@ public class AsyncOperationImportHashTagIndex extends AsyncOperation {
                 }
             }
         }
+
+        publishProgress("path to hash map populated...");
 
         MultiMapString hashToTags = new MultiMapString();
         ArrayList<File> toBeConsumed = new ArrayList<>();
@@ -121,6 +125,8 @@ public class AsyncOperationImportHashTagIndex extends AsyncOperation {
             }
         }
 
+        publishProgress("hash to tags map populated...");
+
         MultiMapString pathToTags = new MultiMapString();
 
         for(String path : pathToHash.keySet()){
@@ -133,7 +139,11 @@ public class AsyncOperationImportHashTagIndex extends AsyncOperation {
             }
         }
 
+        publishProgress("linking tags to files in database...");
+
         db.linkTagsToFile(pathToTags);
+
+        publishProgress("consuming imported files...");
 
         //consume imported
         for(File f : toBeConsumed){

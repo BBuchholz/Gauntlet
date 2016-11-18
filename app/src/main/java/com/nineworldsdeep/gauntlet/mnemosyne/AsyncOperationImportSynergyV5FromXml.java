@@ -36,7 +36,7 @@ public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
         db.open();
 
         List<File> synergyV5XmlFiles =
-                Configuration.getXmlFilesBySuffix("nwd-synergy-v5");
+                Configuration.getIncomingXmlFilesBySuffix("nwd-synergy-v5");
 
         for(File f : synergyV5XmlFiles){
 

@@ -309,7 +309,7 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/pdfs");
     }
 
-    public static File getXmlFile_yyyyMMddHHmmss(String suffix) {
+    public static File getIncomingXmlFile_yyyyMMddHHmmss(String suffix) {
 
         String fileName = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss()
                         + "-" + suffix + ".xml";
@@ -319,15 +319,28 @@ public class Configuration {
             fileName = "test-" + fileName;
         }
 
-        return new File(getXmlDirectory(), fileName);
+        return new File(getIncomingXmlDirectory(), fileName);
     }
 
-    public static List<File> getXmlFilesBySuffix(String suffix){
+    public static File getOutgoingXmlFile_yyyyMMddHHmmss(String suffix) {
+
+        String fileName = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss()
+                        + "-" + suffix + ".xml";
+
+        if(isInTestMode()){
+
+            fileName = "test-" + fileName;
+        }
+
+        return new File(getOutgoingXmlDirectory(), fileName);
+    }
+
+    public static List<File> getIncomingXmlFilesBySuffix(String suffix){
 
         String[] exts = {"xml"};
         List<File> lst = new ArrayList<>();
 
-        for(File f : FileUtils.listFiles(getXmlDirectory(), exts, false)){
+        for(File f : FileUtils.listFiles(getIncomingXmlDirectory(), exts, false)){
 
             if(FilenameUtils.removeExtension(f.getName()).endsWith(suffix)){
 
@@ -341,6 +354,16 @@ public class Configuration {
     public static File getXmlDirectory() {
 
         return getDirectoryStoragePath("/NWD/xml");
+    }
+
+    public static File getIncomingXmlDirectory() {
+
+        return getDirectoryStoragePath("/NWD/xml/incoming");
+    }
+
+    public static File getOutgoingXmlDirectory() {
+
+        return getDirectoryStoragePath("/NWD/xml/outgoing");
     }
 
     public static boolean shuffleFragments() {

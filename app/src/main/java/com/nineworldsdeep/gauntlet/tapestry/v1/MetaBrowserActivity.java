@@ -149,7 +149,7 @@ public class MetaBrowserActivity extends AppCompatActivity {
                 List<LocalConfigNode> cfg = db.getLocalConfig(this);
                 List<FileNode> files = db.getFiles(this);
                 File destination =
-                        Configuration.getXmlFile_yyyyMMddHHmmss("nwd");
+                        Configuration.getOutgoingXmlFile_yyyyMMddHHmmss("nwd");
 
                 Xml.exportFromDb(this, cfg, files, destination);
 

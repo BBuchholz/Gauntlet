@@ -79,7 +79,7 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
             publishProgress("writing to file...");
 
             File outputFile =
-                Configuration.getXmlFile_yyyyMMddHHmmss("nwd-synergy-v5");
+                Configuration.getOutgoingXmlFile_yyyyMMddHHmmss("nwd-synergy-v5");
 
             Xml.write(outputFile, doc);
 

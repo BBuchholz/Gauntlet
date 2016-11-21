@@ -14,18 +14,50 @@
     tools:ctx="com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity"
     tools:showIn="@layout/activity_image_grid">
 
-    <GridView
-        android:id="@+id/gvImageGrid"
+    <!--<GridView-->
+        <!--android:id="@+id/gvImageGrid"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:columnWidth="100dp"-->
+        <!--android:drawSelectorOnTop="true"-->
+        <!--android:gravity="center"-->
+        <!--android:numColumns="auto_fit"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:verticalSpacing="5dp"-->
+        <!--android:focusable="true"-->
+        <!--android:clickable="true"/>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/tvStatus">
+
+        <GridView
+            android:id="@+id/gvImageGrid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:columnWidth="100dp"
+            android:drawSelectorOnTop="true"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"
+            android:focusable="true"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:columnWidth="100dp"
-        android:drawSelectorOnTop="true"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp"
-        android:focusable="true"
-        android:clickable="true"/>
+        android:text=""
+        android:id="@+id/tvStatus"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

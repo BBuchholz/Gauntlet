@@ -22,11 +22,25 @@ public class ImageGridItem {
 		this.mTagString = tagString;
 	}
 
-	public ImageGridItem(FileListItem fli){
-		this(fli.getFile(),
-                BitmapFactory.decodeFile(fli.getFile().getAbsolutePath()),
-				fli.getTags());
-	}
+	public static ImageGridItem From(FileListItem fli){
+
+        Bitmap b = null;
+
+        try{
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+
+            b = BitmapFactory.decodeFile(
+                    fli.getFile().getAbsolutePath(), options);
+
+        }catch(Exception ex){
+
+            //do nothing
+        }
+
+        return new ImageGridItem(fli.getFile(), b, fli.getTags());
+    }
 
 	public Bitmap getImage() {
 

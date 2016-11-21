@@ -51,7 +51,16 @@ public class ImageGridAdapter extends ArrayAdapter {
 
 		ImageGridItem item = mImageGridItems.get(position);
 		holder.tvTagString.setText(item.getTags());
-		holder.ivImage.setImageBitmap(item.getImage());
+
+		if(item.getImage() != null) {
+
+			holder.ivImage.setImageBitmap(item.getImage());
+
+		}else{
+
+			holder.ivImage.setImageResource(R.mipmap.ic_nwd_junction);
+		}
+
 		return row;
 	}
 

@@ -105,7 +105,10 @@ public class MnemoSyneUtils {
 
         for(FileListItem fli : getImageListItems(pathToTagString, dir)){
 
-            lst.add(new ImageGridItem(fli));
+            if(fli.getFile().isFile()) {
+
+                lst.add(ImageGridItem.From(fli));
+            }
         }
 
         return lst;
@@ -168,7 +171,8 @@ public class MnemoSyneUtils {
         return filterList(unfiltered, timeStampFilters);
     }
 
-    private static String replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(String stringWithTimeStampPrefix) {
+    private static String replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(
+            String stringWithTimeStampPrefix) {
 
         Matcher m = Pattern.compile("\\d{4}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}[-_.]*\\d{2}")
                 .matcher(stringWithTimeStampPrefix);

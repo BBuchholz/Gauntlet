@@ -182,191 +182,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
             return true;
 
         }
-//        else if(id == R.id.action_seed){
-//
-//            String currentDevice = TapestryUtils.getCurrentDeviceName();
-//
-//            if(currentDevice == null) {
-//                //prompt for one
-//                LayoutInflater li = LayoutInflater.from(this);
-//                View promptsView = li.inflate(R.layout.prompt, null);
-//
-//                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
-//
-//                AlertDialog.Builder alertDialogBuilder =
-//                        new AlertDialog.Builder(this);
-//
-//                // set prompts.xml to alertdialog builder
-//                alertDialogBuilder.setView(promptsView);
-//
-//                final EditText userInput = (EditText) promptsView
-//                        .findViewById(R.id.editTextDialogUserInput);
-//
-//                // set dialog message
-//                alertDialogBuilder
-//                        .setCancelable(false)
-//                        .setPositiveButton("OK",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//
-//                                        String name = userInput.getText().toString();
-//
-//                                        //prevent hyphens, which are used for junctions
-//                                        name = name.replace("-", "_");
-//
-//                                        ConfigFile f = new ConfigFile();
-//                                        f.setDeviceName(name);
-//                                        f.save();
-//                                    }
-//                                })
-//                        .setNegativeButton("Cancel",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//
-//                // create alert dialog
-//                AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//                // show it
-//                alertDialog.show();
-//
-//                Utils.toast(this, "seed discarded");
-//
-//            }else{
-//
-//                String currentGardenName = TapestryUtils.getCurrentGardenName(currentDevice);
-//
-//                TapestryUtils
-//                        .linkNodeToImagePath(currentGardenName,
-//                                ili.getFile().getAbsolutePath());
-//
-//                Utils.toast(this, "seed planted: " + currentGardenName);
-//            }
-//
-//            return true;
-//
-//        } else if(id == R.id.action_seed_new){
-//
-//            String currentDevice = TapestryUtils.getCurrentDeviceName();
-//
-//            if(currentDevice == null) {
-//                //prompt for one
-//                LayoutInflater li = LayoutInflater.from(this);
-//                View promptsView = li.inflate(R.layout.prompt, null);
-//
-//                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
-//
-//                AlertDialog.Builder alertDialogBuilder =
-//                        new AlertDialog.Builder(this);
-//
-//                // set prompts.xml to alertdialog builder
-//                alertDialogBuilder.setView(promptsView);
-//
-//                final EditText userInput = (EditText) promptsView
-//                        .findViewById(R.id.editTextDialogUserInput);
-//
-//                // set dialog message
-//                alertDialogBuilder
-//                        .setCancelable(false)
-//                        .setPositiveButton("OK",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//
-//                                        String name = userInput.getText().toString();
-//
-//                                        //prevent hyphens, which are used for junctions
-//                                        name = name.replace("-", "_");
-//
-//                                        ConfigFile f = new ConfigFile();
-//                                        f.setDeviceName(name);
-//                                        f.save();
-//                                    }
-//                                })
-//                        .setNegativeButton("Cancel",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//
-//                // create alert dialog
-//                AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//                // show it
-//                alertDialog.show();
-//
-//                Utils.toast(this, "seed discarded");
-//
-//            }else{
-//
-//                String currentGardenName = TapestryUtils.getNewGardenName(currentDevice);
-//
-//                TapestryUtils
-//                        .linkNodeToImagePath(currentGardenName,
-//                                ili.getFile().getAbsolutePath());
-//
-//                Utils.toast(this, "seed planted: " + currentGardenName);
-//            }
-//
-//            return true;
-//
-//        } else if (id == R.id.action_link_to_node){
-//
-//            LayoutInflater li = LayoutInflater.from(ImageDisplayActivity.this);
-//            View promptsView = li.inflate(R.layout.prompt, null);
-//
-//            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//            tv.setText("Enter Node Name: ");
-//
-//            android.app.AlertDialog.Builder alertDialogBuilder =
-//                    new android.app.AlertDialog.Builder(ImageDisplayActivity.this);
-//
-//            // set prompts.xml to alertdialog builder
-//            alertDialogBuilder.setView(promptsView);
-//
-//            final EditText userInput = (EditText) promptsView
-//                    .findViewById(R.id.editTextDialogUserInput);
-//
-//            // set dialog message
-//            alertDialogBuilder
-//                    .setCancelable(false)
-//                    .setPositiveButton("OK",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//
-//                                    // get list name from userInput and move
-//                                    String processedName =
-//                                            TapestryUtils.processNodeName(
-//                                                    userInput.getText().toString());
-//
-//                                    TapestryUtils
-//                                            .linkNodeToImagePath(processedName,
-//                                                    ili.getFile().getAbsolutePath());
-//
-//                                    Utils.toast(ImageDisplayActivity.this, "linked");
-//
-//                                }
-//                            })
-//                    .setNegativeButton("Cancel",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//            // create alert dialog
-//            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//            // show it
-//            alertDialog.show();
-//
-//            return true;
-//
-//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -408,12 +223,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     Uri uri = Uri.fromFile(new File(path));
                     Intent imageIntent = new Intent(Intent.ACTION_VIEW);
                     imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    imageIntent.setDataAndType(uri, "image/*");
+                    imageIntent.setDataAndType(uri, "ivImage/*");
 
                     try{
                         startActivity(imageIntent);
                     }catch (ActivityNotFoundException ex){
-                        Utils.toast(v.getContext(), "error opening image");
+                        Utils.toast(v.getContext(), "error opening ivImage");
                     }
 
                     return true;
@@ -422,29 +237,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         }else{
 
-            Utils.toast(this, "image path null");
+            Utils.toast(this, "ivImage path null");
         }
     }
-
-
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
 
     @Override
     protected void onResume() {
@@ -452,10 +247,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
         super.onResume();
 
         NwdDb.getInstance(this).open();
-
-        //assignDb();
-
-        //moved to assignDb() //db.open();
     }
 
     @Override

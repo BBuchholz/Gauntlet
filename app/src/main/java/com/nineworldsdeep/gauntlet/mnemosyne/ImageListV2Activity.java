@@ -52,34 +52,6 @@ public class ImageListV2Activity extends AppCompatActivity {
     private static final String LIST_STATE = "listState";
     private Parcelable mListState = null;
 
-    //private NwdDb db;
-
-//    private void assignDb(){
-//
-//        if(db == null || db.needsTestModeRefresh()){
-//
-//            if(Configuration.isInTestMode()){
-//
-//                //use external db in folder NWD/sqlite
-//                db = new NwdDb(this, "test");
-//
-//            }else {
-//
-//                //use internal app db
-//                db = new NwdDb(this);
-//            }
-//        }
-//
-//        db.open();
-//    }
-
-//    @Override
-//    protected void onPause() {
-//
-//        super.onPause();
-//        NwdDb.getInstance(this).close();
-//    }
-
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
@@ -92,9 +64,7 @@ public class ImageListV2Activity extends AppCompatActivity {
         //assignDb();
         NwdDb.getInstance(this).open();
         refreshLayout();
-//        if (mListState != null)
-//            getListView().onRestoreInstanceState(mListState);
-//        mListState = null;
+
     }
 
     @Override
@@ -155,14 +125,8 @@ public class ImageListV2Activity extends AppCompatActivity {
             setTitle("NWD Images");
         }
 
-        //refreshLayout();
     }
 
-//    @Override
-//    protected void onRestart(){
-//        super.onRestart();
-//        refreshLayout();
-//    }
 
     private void refreshLayout() {
 
@@ -292,8 +256,6 @@ public class ImageListV2Activity extends AppCompatActivity {
     }
 
     private ListAdapter loadItems() {
-
-        //ListView lvItems = (ListView) findViewById(R.id.lvItems);
 
         ArrayList<HashMap<String, String>> lstItems =
                 new ArrayList<HashMap<String, String>>();
@@ -509,7 +471,7 @@ public class ImageListV2Activity extends AppCompatActivity {
                 NwdDb db = NwdDb.getInstance(this);
 
                 //we specifically call this with "ignorePreviouslyHashed"
-                //as false, because image files get marked up regularily
+                //as false, because ivImage files get marked up regularily
                 //enough that their hashes change often.
                 int count = //fhi.countAndStoreSHA1Hashes(f, 0, false);
                         FileHashDbIndex.countAndStoreSHA1Hashes(f, false, db);

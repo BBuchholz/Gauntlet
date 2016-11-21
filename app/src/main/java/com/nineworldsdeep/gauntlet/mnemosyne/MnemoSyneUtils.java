@@ -38,49 +38,7 @@ public class MnemoSyneUtils {
             File dir,
             List<String> timeStampFilters){
 
-       List<FileListItem> unfiltered = getImageListItems(pathToTagString, dir);
-//
-//        if(dir == null){
-//
-//            lst.addAll(getImageListItemsFromPaths(pathToTagString,
-//                    getTopImageFolders()));
-//
-//        }else{
-//
-//            lst.addAll(getFileListItems(pathToTagString, dir, imageExts));
-//        }
-//
-//        return lst;
-
-//        List<FileListItem> lst = new ArrayList<>();
-//        if(timeStampFilters != null){
-//
-//            for(FileListItem fli : unfiltered){
-//
-//                String fileName = fli.getFile().getName();
-//                String convertedFileName =
-//                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
-//
-//                boolean found = false;
-//                int i = 0;
-//
-//                while(!found && i < timeStampFilters.size()){
-//
-//                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
-//
-//                        lst.add(fli);
-//                    }
-//
-//                    i++;
-//                }
-//            }
-//        }
-//        else
-//        {
-//            lst = unfiltered;
-//        }
-//
-//        return lst;
+        List<FileListItem> unfiltered = getImageListItems(pathToTagString, dir);
 
         return filterList(unfiltered, timeStampFilters);
     }
@@ -134,6 +92,20 @@ public class MnemoSyneUtils {
         }else{
 
             lst.addAll(getFileListItems(pathToTagString, dir, imageExts));
+        }
+
+        return lst;
+    }
+
+    public static ArrayList<ImageGridItem> getImageGridItems(
+            HashMap<String,String> pathToTagString,
+            File dir){
+
+        ArrayList<ImageGridItem> lst = new ArrayList<>();
+
+        for(FileListItem fli : getImageListItems(pathToTagString, dir)){
+
+            lst.add(new ImageGridItem(fli));
         }
 
         return lst;

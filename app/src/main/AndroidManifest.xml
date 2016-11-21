@@ -407,8 +407,8 @@
         </activity>
         <!-- <activity android:name=".core.ListBaseActivity"> -->
         <!-- </activity> -->
-        <!--<activity android:name=".core.DbBaseActivity">-->
-        <!--</activity>-->
+        <!-- <activity android:name=".core.DbBaseActivity"> -->
+        <!-- </activity> -->
         <activity
             android:name=".core.HomeListActivity"
             android:label="@string/title_activity_home_list"
@@ -447,6 +447,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
+        <activity
+            android:name=".mnemosyne.ImageGridActivity"
+            android:label="@string/title_activity_image_grid"
+            android:parentActivityName=".mnemosyne.ImageListV2Activity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
         </activity>
     </application>
 

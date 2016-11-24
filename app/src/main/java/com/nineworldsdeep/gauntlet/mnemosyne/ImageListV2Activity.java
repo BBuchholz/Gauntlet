@@ -19,9 +19,11 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -134,6 +136,55 @@ public class ImageListV2Activity extends AppCompatActivity {
         ail.execute();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_image_list_v2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+
+            case R.id.action_go_to_synergy:
+
+                NavigateActivityCommand.navigateTo(
+                        SynergyV3MainActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_pdfs:
+
+                NavigateActivityCommand.navigateTo(
+                        PdfListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_main:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_player:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioDisplayActivity.class, this);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String> {
 

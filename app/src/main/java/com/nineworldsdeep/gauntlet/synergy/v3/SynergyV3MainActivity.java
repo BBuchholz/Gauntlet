@@ -22,6 +22,11 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v2.SynergyListFile;
 //import com.nineworldsdeep.gauntlet.synergy.v2.SynergyUtils;
@@ -79,41 +84,97 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
+//        int id = item.getItemId();
+
+//        if (id == R.id.action_show_archive){
+//            startActivity(new Intent(this, SynergyArchivesActivity.class));
+//            return true;
+//        }
+//
+//        if (id == R.id.action_show_templates){
+//            startActivity(new Intent(this, SynergyTemplatesActivity.class));
+//            return true;
+//        }
+//
+//        if (id == R.id.action_toggle_sort){
+//
+//            incrementOrderingSelection();
+//            refreshLayout();
+//
 //            return true;
 //        }
 
-        if (id == R.id.action_show_archive){
-            startActivity(new Intent(this, SynergyArchivesActivity.class));
-            return true;
+//        if(id == R.id.action_push_all){
+//
+//            pushAll();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()){
+
+            case R.id.action_show_archive:
+
+                startActivity(new Intent(this, SynergyArchivesActivity.class));
+
+                return true;
+
+            case R.id.action_show_templates:
+
+                startActivity(new Intent(this, SynergyTemplatesActivity.class));
+
+                return true;
+
+            case R.id.action_toggle_sort:
+
+                incrementOrderingSelection();
+                refreshLayout();
+
+                return true;
+
+            case R.id.action_push_all:
+
+                pushAll();
+
+                return true;
+
+            case R.id.action_go_to_pdfs:
+
+                NavigateActivityCommand.navigateTo(
+                        PdfListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_images:
+
+                NavigateActivityCommand.navigateTo(
+                        ImageListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_main:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_player:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioDisplayActivity.class, this);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
-
-        if (id == R.id.action_show_templates){
-            startActivity(new Intent(this, SynergyTemplatesActivity.class));
-            return true;
-        }
-
-        if (id == R.id.action_toggle_sort){
-
-            incrementOrderingSelection();
-            refreshLayout();
-
-            return true;
-        }
-
-        if(id == R.id.action_push_all){
-
-            pushAll();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void incrementOrderingSelection() {

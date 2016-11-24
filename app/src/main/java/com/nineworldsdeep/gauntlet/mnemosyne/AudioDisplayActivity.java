@@ -22,9 +22,11 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -128,182 +130,381 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_set_display_name) {
+//
+//            LayoutInflater li = LayoutInflater.from(this);
+//            View promptsView = li.inflate(R.layout.prompt, null);
+//
+//            AlertDialog.Builder alertDialogBuilder =
+//                    new AlertDialog.Builder(this);
+//
+//            alertDialogBuilder.setView(promptsView);
+//
+//            final EditText userInput = (EditText) promptsView
+//                    .findViewById(R.id.editTextDialogUserInput);
+//
+//            String currentValue = "";
+//
+//            //don't prepopulate if it's just returning the file name
+//            if(!ame.getDisplayName()
+//                    .equalsIgnoreCase(ame.getFile().getName())){
+//
+//                currentValue = ame.getDisplayName();
+//            }
+//
+//            if(!Utils.stringIsNullOrWhitespace(currentValue)){
+//                userInput.setText(currentValue);
+//            }
+//
+//            // set dialog message
+//            alertDialogBuilder
+//                    .setCancelable(false)
+//                    .setPositiveButton("OK",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog,int id) {
+//                                    // get user input and set it to result
+//                                    // edit text
+//                                    try {
+//
+//                                        DisplayNameDbIndex
+//                                                .setDisplayNameAndExportFile(
+//                                                        ame.getPath(),
+//                                                        userInput.getText()
+//                                                                .toString(),
+//                                                        NwdDb.getInstance(AudioDisplayActivity.this));
+//
+//                                        //DisplayNameIndex.getInstance().save();
+//                                        updateMediaInfo();
+//
+//                                    } catch (Exception e) {
+//
+//                                        Utils.toast(AudioDisplayActivity.this,
+//                                                "error setting display name: " +
+//                                        e.getMessage());
+//                                    }
+//                                }
+//                            })
+//                    .setNegativeButton("Cancel",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog,int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//
+//            // create alert dialog
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//            // show it
+//            alertDialog.show();
+//
+//
+//            return true;
+//
+//        } else if (id == R.id.action_set_tag_string) {
+//
+//            LayoutInflater li = LayoutInflater.from(this);
+//            View promptsView = li.inflate(R.layout.prompt, null);
+//
+//            AlertDialog.Builder alertDialogBuilder =
+//                    new AlertDialog.Builder(this);
+//
+//            alertDialogBuilder.setView(promptsView);
+//
+//            final EditText userInput = (EditText) promptsView
+//                    .findViewById(R.id.editTextDialogUserInput);
+//
+//            String currentValue = ame.getTags();
+//
+//            if(!Utils.stringIsNullOrWhitespace(currentValue)){
+//                userInput.setText(currentValue);
+//            }
+//
+//            // set dialog message
+//            alertDialogBuilder
+//                    .setCancelable(false)
+//                    .setPositiveButton("OK",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog,int id) {
+//
+//                                    // get user input and set it to result
+//                                    // edit text
+//
+////                                    ili.setTagString(userInput.getItem().toString());
+////                                    TagIndex.getInstance().save();
+//                                    try {
+//
+//                                        NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
+//
+//                                        ame.setAndSaveTagString(
+//                                                userInput.getText().toString(),
+//                                                db);
+//
+//                                        TagDbIndex.getMergedPathToTagStringMap(false, true, db);
+//
+//                                        updateMediaInfo();
+//
+//                                    } catch (Exception e) {
+//
+//                                        Utils.toast(AudioDisplayActivity.this,
+//                                                "error setting tag string: " +
+//                                        e.getMessage());
+//                                    }
+//                                }
+//                            })
+//                    .setNegativeButton("Cancel",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog,int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//
+//            // create alert dialog
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//            // show it
+//            alertDialog.show();
+//
+//            return true;
+//
+//        } else if(id == R.id.action_reset_player){
+//
+//            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+//
+//            String msg = "Reset Player? (Playlist will be emptied)";
+//
+//            builder.setTitle("Reset Player")
+//                    .setMessage(msg)
+//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                            try{
+//
+//                                mMediaPlayerSingleton.resetPlayer();
+//                                setNowPlaying(null);
+//                                refreshLayout();
+//
+//                            }catch(Exception ex){
+//
+//                                Utils.toast(getApplicationContext(),
+//                                        "error resetting player: " +
+//                                                ex.getMessage());
+//                            }
+//                        }
+//                    })
+//                    .setNegativeButton("No", null)
+//                    .show();
+//
+//            return true;
+//
+//        }
 
-        //noinspection SimplifiableIfStatement
+        switch (item.getItemId()){
 
-        if (id == R.id.action_set_display_name) {
+            case R.id.action_set_display_name:
 
-            LayoutInflater li = LayoutInflater.from(this);
-            View promptsView = li.inflate(R.layout.prompt, null);
+                LayoutInflater li = LayoutInflater.from(this);
+                View promptsView = li.inflate(R.layout.prompt, null);
 
-            AlertDialog.Builder alertDialogBuilder =
-                    new AlertDialog.Builder(this);
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(this);
 
-            alertDialogBuilder.setView(promptsView);
+                alertDialogBuilder.setView(promptsView);
 
-            final EditText userInput = (EditText) promptsView
-                    .findViewById(R.id.editTextDialogUserInput);
+                final EditText userInput1 = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
 
-            String currentValue = "";
+                String currentValue = "";
 
-            //don't prepopulate if it's just returning the file name
-            if(!ame.getDisplayName()
-                    .equalsIgnoreCase(ame.getFile().getName())){
+                //don't prepopulate if it's just returning the file name
+                if(!ame.getDisplayName()
+                        .equalsIgnoreCase(ame.getFile().getName())){
 
-                currentValue = ame.getDisplayName();
-            }
+                    currentValue = ame.getDisplayName();
+                }
 
-            if(!Utils.stringIsNullOrWhitespace(currentValue)){
-                userInput.setText(currentValue);
-            }
+                if(!Utils.stringIsNullOrWhitespace(currentValue)){
+                    userInput1.setText(currentValue);
+                }
 
-            // set dialog message
-            alertDialogBuilder
-                    .setCancelable(false)
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
-                                    // get user input and set it to result
-                                    // edit text
-                                    try {
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        try {
 
-                                        DisplayNameDbIndex
-                                                .setDisplayNameAndExportFile(
-                                                        ame.getPath(),
-                                                        userInput.getText()
-                                                                .toString(),
-                                                        NwdDb.getInstance(AudioDisplayActivity.this));
+                                            DisplayNameDbIndex
+                                                    .setDisplayNameAndExportFile(
+                                                            ame.getPath(),
+                                                            userInput1.getText()
+                                                                    .toString(),
+                                                            NwdDb.getInstance(AudioDisplayActivity.this));
 
-                                        //DisplayNameIndex.getInstance().save();
-                                        updateMediaInfo();
+                                            //DisplayNameIndex.getInstance().save();
+                                            updateMediaInfo();
 
-                                    } catch (Exception e) {
+                                        } catch (Exception e) {
 
-                                        Utils.toast(AudioDisplayActivity.this,
-                                                "error setting display name: " +
-                                        e.getMessage());
+                                            Utils.toast(AudioDisplayActivity.this,
+                                                    "error setting display name: " +
+                                            e.getMessage());
+                                        }
                                     }
-                                }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
-
-
-            return true;
-
-        } else if (id == R.id.action_set_tag_string) {
-
-            LayoutInflater li = LayoutInflater.from(this);
-            View promptsView = li.inflate(R.layout.prompt, null);
-
-            AlertDialog.Builder alertDialogBuilder =
-                    new AlertDialog.Builder(this);
-
-            alertDialogBuilder.setView(promptsView);
-
-            final EditText userInput = (EditText) promptsView
-                    .findViewById(R.id.editTextDialogUserInput);
-
-            String currentValue = ame.getTags();
-
-            if(!Utils.stringIsNullOrWhitespace(currentValue)){
-                userInput.setText(currentValue);
-            }
-
-            // set dialog message
-            alertDialogBuilder
-                    .setCancelable(false)
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
-
-                                    // get user input and set it to result
-                                    // edit text
-
-//                                    ili.setTagString(userInput.getItem().toString());
-//                                    TagIndex.getInstance().save();
-                                    try {
-
-                                        NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
-
-                                        ame.setAndSaveTagString(
-                                                userInput.getText().toString(),
-                                                db);
-
-                                        TagDbIndex.getMergedPathToTagStringMap(false, true, db);
-
-                                        updateMediaInfo();
-
-                                    } catch (Exception e) {
-
-                                        Utils.toast(AudioDisplayActivity.this,
-                                                "error setting tag string: " +
-                                        e.getMessage());
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
                                     }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+
+                return true;
+
+            case R.id.action_set_tag_string:
+
+                li = LayoutInflater.from(this);
+                promptsView = li.inflate(R.layout.prompt, null);
+
+                alertDialogBuilder =
+                        new AlertDialog.Builder(this);
+
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput2 = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                currentValue = ame.getTags();
+
+                if(!Utils.stringIsNullOrWhitespace(currentValue)){
+                    userInput2.setText(currentValue);
+                }
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                        // get user input and set it to result
+                                        // edit text
+
+    //                                    ili.setTagString(userInput.getItem().toString());
+    //                                    TagIndex.getInstance().save();
+                                        try {
+
+                                            NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
+
+                                            ame.setAndSaveTagString(
+                                                    userInput2.getText().toString(),
+                                                    db);
+
+                                            TagDbIndex.getMergedPathToTagStringMap(false, true, db);
+
+                                            updateMediaInfo();
+
+                                        } catch (Exception e) {
+
+                                            Utils.toast(AudioDisplayActivity.this,
+                                                    "error setting tag string: " +
+                                            e.getMessage());
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                return true;
+
+            case R.id.action_reset_player:
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+
+                String msg = "Reset Player? (Playlist will be emptied)";
+
+                builder.setTitle("Reset Player")
+                        .setMessage(msg)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                try{
+
+                                    mMediaPlayerSingleton.resetPlayer();
+                                    setNowPlaying(null);
+                                    refreshLayout();
+
+                                }catch(Exception ex){
+
+                                    Utils.toast(getApplicationContext(),
+                                            "error resetting player: " +
+                                                    ex.getMessage());
                                 }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
-
-            return true;
-
-        } else if(id == R.id.action_reset_player){
-
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-
-            String msg = "Reset Player? (Playlist will be emptied)";
-
-            builder.setTitle("Reset Player")
-                    .setMessage(msg)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            try{
-
-                                mMediaPlayerSingleton.resetPlayer();
-                                setNowPlaying(null);
-                                refreshLayout();
-
-                            }catch(Exception ex){
-
-                                Utils.toast(getApplicationContext(),
-                                        "error resetting player: " +
-                                                ex.getMessage());
                             }
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
 
-            return true;
+                return true;
 
+            case R.id.action_go_to_synergy:
+
+                NavigateActivityCommand.navigateTo(
+                        SynergyV3MainActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_pdfs:
+
+                NavigateActivityCommand.navigateTo(
+                        PdfListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_images:
+
+                NavigateActivityCommand.navigateTo(
+                        ImageListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_main:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioListV2Activity.class, this
+                );
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void setNowPlaying(AudioMediaEntry ame){

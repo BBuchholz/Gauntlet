@@ -2,7 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity">
-    <item android:id="@+id/action_remove_marked_audio"
-        android:title="@string/menu_remove_marked_audio"
+
+    <item android:id="@+id/action_go_to_synergy"
+        android:title="@string/menu_go_to_synergy"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_pdfs"
+        android:title="@string/menu_go_to_pdfs"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_images"
+        android:title="@string/menu_go_to_images_main"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_audio_player"
+        android:title="@string/menu_go_to_audio_player"
         app:showAsAction="ifRoom|withText"/>
 </menu>

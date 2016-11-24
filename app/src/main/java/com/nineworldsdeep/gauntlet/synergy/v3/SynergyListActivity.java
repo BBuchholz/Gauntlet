@@ -20,9 +20,12 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
+import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.synergy.v2.SplitItemActivity;
 
 import java.util.ArrayList;
@@ -552,241 +555,314 @@ public class SynergyListActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            return true;
-
-        } else if (id == R.id.action_archive){
-
-            if(!SynergyUtils.isActiveQueue(mSlf.getListName())){
-
-                promptConfirmArchive();
-
-            }else{
-
-                Utils.toast(this, "Archive not valid for active queue, " +
-                        "use Shelve All instead.");
-            }
-
-            return true;
-
-        } else if (id == R.id.action_update_template){
-
-            promptUpdateTemplate();
-            return true;
-
-        } else if (id == R.id.action_toggle_shuffle_fragments){
-
-            Configuration.toggleShuffleFragments();
-            refreshLayout();
-            return true;
-
-        } else if (id == R.id.action_push){
-
-            promptConfirmPush();
-            return true;
-
-        } else if (id == R.id.action_shelveAll){
-
-            promptShelveAll();
-            return true;
-
-//        } else if(id == R.id.action_seed){
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
 //
-//            String currentDevice = TapestryUtils.getCurrentDeviceName();
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
 //
-//            if(currentDevice == null) {
+//            return true;
 //
-//                //TODO: attempt to encapsulate common prompts into class Prompt
-//                //see:
-//                // http://stackoverflow.com/a/22049950/670768
+//        } else if (id == R.id.action_archive){
 //
-//                //prompt for one
-//                LayoutInflater li = LayoutInflater.from(this);
-//                View promptsView = li.inflate(R.layout.prompt, null);
+//            if(!SynergyUtils.isActiveQueue(mSlf.getListName())){
 //
-//                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
-//
-//                android.app.AlertDialog.Builder alertDialogBuilder =
-//                        new android.app.AlertDialog.Builder(this);
-//
-//                // set prompts.xml to alertdialog builder
-//                alertDialogBuilder.setView(promptsView);
-//
-//                final EditText userInput = (EditText) promptsView
-//                        .findViewById(R.id.editTextDialogUserInput);
-//
-//                // set dialog message
-//                alertDialogBuilder
-//                        .setCancelable(false)
-//                        .setPositiveButton("OK",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//
-//                                        String name = userInput.getText().toString();
-//
-//                                        //prevent hyphens, which are used for junctions
-//                                        name = name.replace("-", "_");
-//
-//                                        ConfigFile f = new ConfigFile();
-//                                        f.setDeviceName(name);
-//                                        f.save();
-//                                    }
-//                                })
-//                        .setNegativeButton("Cancel",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//
-//                // create alert dialog
-//                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//                // show it
-//                alertDialog.show();
-//
-//                Utils.toast(this, "seed discarded");
+//                promptConfirmArchive();
 //
 //            }else{
 //
-//                String currentGardenName = TapestryUtils.getCurrentGardenName(currentDevice);
-//
-//                TapestryUtils.linkNodeToSynergyList(currentGardenName,
-//                                                    mSlf.getListName());
-//
-//                Utils.toast(this, "seed planted: " + currentGardenName);
+//                Utils.toast(this, "Archive not valid for active queue, " +
+//                        "use Shelve All instead.");
 //            }
 //
 //            return true;
 //
-//        } else if(id == R.id.action_seed_new){
+//        } else if (id == R.id.action_update_template){
 //
-//            String currentDevice = TapestryUtils.getCurrentDeviceName();
-//
-//            if(currentDevice == null) {
-//                //prompt for one
-//                LayoutInflater li = LayoutInflater.from(this);
-//                View promptsView = li.inflate(R.layout.prompt, null);
-//
-//                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
-//
-//                android.app.AlertDialog.Builder alertDialogBuilder =
-//                        new android.app.AlertDialog.Builder(this);
-//
-//                // set prompts.xml to alertdialog builder
-//                alertDialogBuilder.setView(promptsView);
-//
-//                final EditText userInput = (EditText) promptsView
-//                        .findViewById(R.id.editTextDialogUserInput);
-//
-//                // set dialog message
-//                alertDialogBuilder
-//                        .setCancelable(false)
-//                        .setPositiveButton("OK",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//
-//                                        String name = userInput.getText().toString();
-//
-//                                        //prevent hyphens, which are used for junctions
-//                                        name = name.replace("-", "_");
-//
-//                                        ConfigFile f = new ConfigFile();
-//                                        f.setDeviceName(name);
-//                                        f.save();
-//                                    }
-//                                })
-//                        .setNegativeButton("Cancel",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//
-//                // create alert dialog
-//                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//                // show it
-//                alertDialog.show();
-//
-//                Utils.toast(this, "seed discarded");
-//
-//            }else{
-//
-//                String currentGardenName = TapestryUtils.getNewGardenName(currentDevice);
-//
-//                TapestryUtils.linkNodeToSynergyList(currentGardenName,
-//                                                    mSlf.getListName());
-//
-//                Utils.toast(this, "seed planted: " + currentGardenName);
-//            }
-//
+//            promptUpdateTemplate();
 //            return true;
 //
-//        } else if (id == R.id.action_link_to_node){
+//        } else if (id == R.id.action_toggle_shuffle_fragments){
 //
-//            LayoutInflater li = LayoutInflater.from(SynergyListActivity.this);
-//            View promptsView = li.inflate(R.layout.prompt, null);
-//
-//            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//            tv.setText("Enter Node Name: ");
-//
-//            android.app.AlertDialog.Builder alertDialogBuilder =
-//                    new android.app.AlertDialog.Builder(SynergyListActivity.this);
-//
-//            // set prompts.xml to alertdialog builder
-//            alertDialogBuilder.setView(promptsView);
-//
-//            final EditText userInput = (EditText) promptsView
-//                    .findViewById(R.id.editTextDialogUserInput);
-//
-//            // set dialog message
-//            alertDialogBuilder
-//                    .setCancelable(false)
-//                    .setPositiveButton("OK",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//
-//                                    // get list name from userInput and move
-//                                    String processedName =
-//                                            TapestryUtils.processNodeName(
-//                                                    userInput.getText().toString());
-//
-//                                    TapestryUtils
-//                                            .linkNodeToSynergyList(processedName,
-//                                                    mSlf.getListName());
-//
-//                                    Utils.toast(SynergyListActivity.this, "linked");
-//
-//                                }
-//                            })
-//                    .setNegativeButton("Cancel",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//            // create alert dialog
-//            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//            // show it
-//            alertDialog.show();
-//
+//            Configuration.toggleShuffleFragments();
+//            refreshLayout();
 //            return true;
+//
+//        } else if (id == R.id.action_push){
+//
+//            promptConfirmPush();
+//            return true;
+//
+//        } else if (id == R.id.action_shelveAll){
+//
+//            promptShelveAll();
+//            return true;
+//
+////        } else if(id == R.id.action_seed){
+////
+////            String currentDevice = TapestryUtils.getCurrentDeviceName();
+////
+////            if(currentDevice == null) {
+////
+////                //TODO: attempt to encapsulate common prompts into class Prompt
+////                //see:
+////                // http://stackoverflow.com/a/22049950/670768
+////
+////                //prompt for one
+////                LayoutInflater li = LayoutInflater.from(this);
+////                View promptsView = li.inflate(R.layout.prompt, null);
+////
+////                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+////                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+////
+////                android.app.AlertDialog.Builder alertDialogBuilder =
+////                        new android.app.AlertDialog.Builder(this);
+////
+////                // set prompts.xml to alertdialog builder
+////                alertDialogBuilder.setView(promptsView);
+////
+////                final EditText userInput = (EditText) promptsView
+////                        .findViewById(R.id.editTextDialogUserInput);
+////
+////                // set dialog message
+////                alertDialogBuilder
+////                        .setCancelable(false)
+////                        .setPositiveButton("OK",
+////                                new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialog, int id) {
+////
+////                                        String name = userInput.getText().toString();
+////
+////                                        //prevent hyphens, which are used for junctions
+////                                        name = name.replace("-", "_");
+////
+////                                        ConfigFile f = new ConfigFile();
+////                                        f.setDeviceName(name);
+////                                        f.save();
+////                                    }
+////                                })
+////                        .setNegativeButton("Cancel",
+////                                new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialog, int id) {
+////                                        dialog.cancel();
+////                                    }
+////                                });
+////
+////                // create alert dialog
+////                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+////
+////                // show it
+////                alertDialog.show();
+////
+////                Utils.toast(this, "seed discarded");
+////
+////            }else{
+////
+////                String currentGardenName = TapestryUtils.getCurrentGardenName(currentDevice);
+////
+////                TapestryUtils.linkNodeToSynergyList(currentGardenName,
+////                                                    mSlf.getListName());
+////
+////                Utils.toast(this, "seed planted: " + currentGardenName);
+////            }
+////
+////            return true;
+////
+////        } else if(id == R.id.action_seed_new){
+////
+////            String currentDevice = TapestryUtils.getCurrentDeviceName();
+////
+////            if(currentDevice == null) {
+////                //prompt for one
+////                LayoutInflater li = LayoutInflater.from(this);
+////                View promptsView = li.inflate(R.layout.prompt, null);
+////
+////                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+////                tv.setText("No Device Set, Enter Device Name, Then Try Again: ");
+////
+////                android.app.AlertDialog.Builder alertDialogBuilder =
+////                        new android.app.AlertDialog.Builder(this);
+////
+////                // set prompts.xml to alertdialog builder
+////                alertDialogBuilder.setView(promptsView);
+////
+////                final EditText userInput = (EditText) promptsView
+////                        .findViewById(R.id.editTextDialogUserInput);
+////
+////                // set dialog message
+////                alertDialogBuilder
+////                        .setCancelable(false)
+////                        .setPositiveButton("OK",
+////                                new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialog, int id) {
+////
+////                                        String name = userInput.getText().toString();
+////
+////                                        //prevent hyphens, which are used for junctions
+////                                        name = name.replace("-", "_");
+////
+////                                        ConfigFile f = new ConfigFile();
+////                                        f.setDeviceName(name);
+////                                        f.save();
+////                                    }
+////                                })
+////                        .setNegativeButton("Cancel",
+////                                new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialog, int id) {
+////                                        dialog.cancel();
+////                                    }
+////                                });
+////
+////                // create alert dialog
+////                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+////
+////                // show it
+////                alertDialog.show();
+////
+////                Utils.toast(this, "seed discarded");
+////
+////            }else{
+////
+////                String currentGardenName = TapestryUtils.getNewGardenName(currentDevice);
+////
+////                TapestryUtils.linkNodeToSynergyList(currentGardenName,
+////                                                    mSlf.getListName());
+////
+////                Utils.toast(this, "seed planted: " + currentGardenName);
+////            }
+////
+////            return true;
+////
+////        } else if (id == R.id.action_link_to_node){
+////
+////            LayoutInflater li = LayoutInflater.from(SynergyListActivity.this);
+////            View promptsView = li.inflate(R.layout.prompt, null);
+////
+////            TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+////            tv.setText("Enter Node Name: ");
+////
+////            android.app.AlertDialog.Builder alertDialogBuilder =
+////                    new android.app.AlertDialog.Builder(SynergyListActivity.this);
+////
+////            // set prompts.xml to alertdialog builder
+////            alertDialogBuilder.setView(promptsView);
+////
+////            final EditText userInput = (EditText) promptsView
+////                    .findViewById(R.id.editTextDialogUserInput);
+////
+////            // set dialog message
+////            alertDialogBuilder
+////                    .setCancelable(false)
+////                    .setPositiveButton("OK",
+////                            new DialogInterface.OnClickListener() {
+////                                public void onClick(DialogInterface dialog,int id) {
+////
+////                                    // get list name from userInput and move
+////                                    String processedName =
+////                                            TapestryUtils.processNodeName(
+////                                                    userInput.getText().toString());
+////
+////                                    TapestryUtils
+////                                            .linkNodeToSynergyList(processedName,
+////                                                    mSlf.getListName());
+////
+////                                    Utils.toast(SynergyListActivity.this, "linked");
+////
+////                                }
+////                            })
+////                    .setNegativeButton("Cancel",
+////                            new DialogInterface.OnClickListener() {
+////                                public void onClick(DialogInterface dialog,int id) {
+////                                    dialog.cancel();
+////                                }
+////                            });
+////
+////            // create alert dialog
+////            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+////
+////            // show it
+////            alertDialog.show();
+////
+////            return true;
+//
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
+        switch(item.getItemId()){
+
+            case R.id.action_archive:
+
+                if(!SynergyUtils.isActiveQueue(mSlf.getListName())){
+
+                    promptConfirmArchive();
+
+                }else{
+
+                    Utils.toast(this, "Archive not valid for active queue, " +
+                            "use Shelve All instead.");
+                }
+
+                return true;
+
+            case R.id.action_update_template:
+
+                promptUpdateTemplate();
+                return true;
+
+            case R.id.action_toggle_shuffle_fragments:
+
+                Configuration.toggleShuffleFragments();
+                refreshLayout();
+                return true;
+
+            case R.id.action_push:
+
+                promptConfirmPush();
+                return true;
+
+            case R.id.action_shelveAll:
+
+                promptShelveAll();
+                return true;
+
+            case R.id.action_go_to_pdfs:
+
+                NavigateActivityCommand.navigateTo(
+                        PdfListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_images:
+
+                NavigateActivityCommand.navigateTo(
+                        ImageListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_main:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_player:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioDisplayActivity.class, this);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void promptUpdateTemplate() {

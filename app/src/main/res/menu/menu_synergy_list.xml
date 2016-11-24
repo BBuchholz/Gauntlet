@@ -16,16 +16,20 @@
     <item android:id="@+id/action_update_template"
         android:title="@string/menu_update_template"
         app:showAsAction="ifRoom|withText"/>
-    <!--<item android:id="@+id/action_seed"-->
-        <!--android:title="Seed"-->
-        <!--app:showAsAction="ifRoom|withText"/>-->
-    <!--<item android:id="@+id/action_seed_new"-->
-        <!--android:title="Seed New"-->
-        <!--app:showAsAction="ifRoom|withText"/>-->
-    <!--<item android:id="@+id/action_link_to_node"-->
-        <!--android:title="@string/menu_link_to_node"-->
-        <!--app:showAsAction="ifRoom|withText"/>-->
     <item android:id="@+id/action_toggle_shuffle_fragments"
           android:title="@string/toggle_frag_shuffle"
           app:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_go_to_pdfs"
+        android:title="@string/menu_go_to_pdfs"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_images"
+        android:title="@string/menu_go_to_images_main"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_audio_main"
+        android:title="@string/menu_go_to_audio_main"
+        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_audio_player"
+        android:title="@string/menu_go_to_audio_player"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

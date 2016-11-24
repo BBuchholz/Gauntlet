@@ -22,6 +22,7 @@ import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -134,15 +135,43 @@ public class PdfListActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if (id == R.id.action_go_to_audio) {
+        switch(id) {
 
-            NavigateActivityCommand.navigateTo(
-                    AudioDisplayActivity.class, this);
+            case R.id.action_go_to_synergy:
 
-            return true;
+                NavigateActivityCommand.navigateTo(
+                        SynergyV3MainActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_images:
+
+                NavigateActivityCommand.navigateTo(
+                        ImageListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_main:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioListV2Activity.class, this
+                );
+
+                return true;
+
+            case R.id.action_go_to_audio_player:
+
+                NavigateActivityCommand.navigateTo(
+                        AudioDisplayActivity.class, this);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void refreshLayout() {

@@ -74,4 +74,9 @@
     <string name="title_activity_quick_tag">QuickTagActivity</string>
     <string name="title_activity_transfer">TransferActivity</string>
     <string name="title_activity_image_grid">ImageGridActivity</string>
+    <string name="menu_go_to_synergy">Go To Synergy</string>
+    <string name="menu_go_to_pdfs">Go To PDFs</string>
+    <string name="menu_go_to_images_main">Go To Images</string>
+    <string name="menu_go_to_audio_main">Go To Audio</string>
+    <string name="menu_go_to_audio_player">Go To Audio Player</string>
 </resources>

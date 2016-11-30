@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/etNewItem"
         android:inputType="textMultiLine|textCapSentences"
-        android:lines="3"
+        android:lines="20"
         android:minLines="1"
         android:hint="Enter a new item"
         android:layout_alignParentLeft="true"

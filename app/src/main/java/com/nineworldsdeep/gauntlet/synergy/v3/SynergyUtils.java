@@ -1,5 +1,9 @@
 package com.nineworldsdeep.gauntlet.synergy.v3;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.synergy.v2.*;
@@ -30,6 +34,14 @@ public class SynergyUtils {
         String output = sdf.format(dt);
 
         return output;
+    }
+
+    public static void copyToClipboard(Context ctx, String stringLabel, String stringToCopy){
+
+        ClipboardManager clipboard =
+                (ClipboardManager) ctx.getSystemService(ctx.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(stringLabel, stringToCopy);
+        clipboard.setPrimaryClip(clip);
     }
 
 

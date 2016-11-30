@@ -53,6 +53,7 @@ public class SynergyListActivity
     private static final int MENU_CONTEXT_OPEN_VM_AUDIO = 16;
     private static final int MENU_CONTEXT_OPEN_MEDIA_IMAGES = 17;
     private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
+    private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 19;
 
     private SynergyListFile mSlf;
 
@@ -151,6 +152,8 @@ public class SynergyListActivity
         menu.setHeaderTitle(title);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD, Menu.NONE, "Copy itemValue to Clipboard");
 
         if(SynergyUtils.isActiveQueue(mSlf.getListName())){
 
@@ -326,9 +329,25 @@ public class SynergyListActivity
 
                 return true;
 
+            case MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD:
+
+                copyListNameToClipboard(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+        private void copyListNameToClipboard(int position) {
+
+        String text = mSlf.get(position).getItem();
+        String label = "synergy-list-name";
+
+        SynergyUtils.copyToClipboard(this, label, text);
+
+        Utils.toast(this, "[" + text + "] copied to clipboard.");
     }
 
     private void editItem(int position) {

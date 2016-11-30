@@ -85,34 +85,6 @@ public class SynergyV3MainActivity extends ListBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
-
-//        if (id == R.id.action_show_archive){
-//            startActivity(new Intent(this, SynergyArchivesActivity.class));
-//            return true;
-//        }
-//
-//        if (id == R.id.action_show_templates){
-//            startActivity(new Intent(this, SynergyTemplatesActivity.class));
-//            return true;
-//        }
-//
-//        if (id == R.id.action_toggle_sort){
-//
-//            incrementOrderingSelection();
-//            refreshLayout();
-//
-//            return true;
-//        }
-
-//        if(id == R.id.action_push_all){
-//
-//            pushAll();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-
         switch (item.getItemId()){
 
             case R.id.action_show_archive:
@@ -334,10 +306,13 @@ public class SynergyV3MainActivity extends ListBaseActivity {
     private void copyListNameToClipboard(int position) {
 
         String listName = currentListEntries.get(position).getListName();
+        String label = "synergy-list-name";
 
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("synergy-list-name", listName);
-        clipboard.setPrimaryClip(clip);
+//        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+//        ClipData clip = ClipData.newPlainText(label, listName);
+//        clipboard.setPrimaryClip(clip);
+
+        SynergyUtils.copyToClipboard(this, label, listName);
 
         Utils.toast(this, "[" + listName + "] copied to clipboard.");
     }

@@ -245,6 +245,15 @@ public class NwdContract {
             + "FROM " + TABLE_SYNERGY_LIST + " "
             + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
 
+    public static final String
+            SYNERGY_V5_SELECT_ID_ACTIVATED_AT_SHELVED_AT_FOR_LIST_NAME =
+
+        "SELECT " + COLUMN_SYNERGY_LIST_ID + ", "
+                  + COLUMN_SYNERGY_LIST_ACTIVATED_AT + ", "
+                  + COLUMN_SYNERGY_LIST_SHELVED_AT + " "
+        + "FROM " + TABLE_SYNERGY_LIST + " "
+        + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
+
     public static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_ITEM + " "

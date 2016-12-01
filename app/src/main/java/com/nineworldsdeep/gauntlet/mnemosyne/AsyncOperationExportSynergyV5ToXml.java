@@ -6,6 +6,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
@@ -60,6 +61,12 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
                 Element synergyListEl = doc.createElement("synergyList");
                 synergyListEl.setAttribute("listName", v5List.getListName());
+                synergyListEl.setAttribute("activatedAt",
+                                           TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                                v5List.getActivatedAt()));
+                synergyListEl.setAttribute("shelvedAt",
+                                           TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                                v5List.getShelvedAt()));
                 synergySubsetEl.appendChild(synergyListEl);
 
                 for(int i = 0; i < v5List.getItems().size(); i++){

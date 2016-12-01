@@ -6,6 +6,7 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public class SynergyV5List {
 
     private String mListName;
     private int mListId;
+    private Date mActivatedAt;
+    private Date mShelvedAt;
     private ArrayList<SynergyV5ListItem> mItems;
 
     public SynergyV5List(String listName) {
@@ -121,8 +124,42 @@ public class SynergyV5List {
         return mListId;
     }
 
-
     public void setListId(int listId) {
         this.mListId = listId;
+    }
+
+    public Date getActivatedAt(){
+        return mActivatedAt;
+    }
+
+    public Date getShelvedAt(){
+        return mShelvedAt;
+    }
+
+    /**
+     * will resolve conflicts, newest date will always take precedence
+     * passing null values allowed as well to just set one or the other
+     * null values always resolve to the non-null value (unless both null)
+     * @param activatedAt
+     * @param shelvedAt
+     */
+    public void setTimeStamps(Date activatedAt, Date shelvedAt){
+
+        if(activatedAt != null){
+
+            if(mActivatedAt == null || mActivatedAt.compareTo(activatedAt) < 0){
+                //mActivated is older or null
+                mActivatedAt = activatedAt;
+            }
+        }
+
+        if(shelvedAt != null){
+
+            if(mShelvedAt == null || mShelvedAt.compareTo(shelvedAt) < 0){
+                //mShelved at is older
+                mShelvedAt = shelvedAt;
+            }
+        }
+
     }
 }

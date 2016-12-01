@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.model.FileNode;
@@ -25,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -946,6 +948,81 @@ public class NwdDb {
         return displayName;
     }
 
+    public void populateIdAndTimeStampsForSynergyV5ListName(Context c,
+                                                            SynergyV5List lst){
+
+        db.beginTransaction();
+
+        try{
+
+            String listName = lst.getListName();
+
+            String[] args =
+                    new String[]{
+                           listName
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+        NwdContract.SYNERGY_V5_SELECT_ID_ACTIVATED_AT_SHELVED_AT_FOR_LIST_NAME,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_ID,
+                            NwdContract.COLUMN_SYNERGY_LIST_ACTIVATED_AT,
+                            NwdContract.COLUMN_SYNERGY_LIST_SHELVED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    //this method will grab the last entry, if multiple returned
+                    //though list name is unique, so it should never matter
+                    String idString =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_ID);
+
+                    String activatedString =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_ACTIVATED_AT);
+                    String shelvedString =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_SHELVED_AT);
+
+                    Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    activatedString);
+
+                    Date shelved =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    shelvedString);
+
+                    lst.setListId(Integer.parseInt(idString));
+                    lst.setTimeStamps(activated, shelved);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception retrieving list id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+    }
+
     public int getIdForSynergyV5ListName(Context c, String listName){
 
         int id = -1;
@@ -1612,9 +1689,11 @@ public class NwdDb {
             db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
                     new String[]{synLst.getListName()});
 
-            synLst.setListId(
-                    getIdForSynergyV5ListName(context,
-                            synLst.getListName()));
+//            synLst.setListId(
+//                    getIdForSynergyV5ListName(context,
+//                            synLst.getListName()));
+
+            populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
         }
 
         // for each SynergyV5ListItem,
@@ -1775,6 +1854,9 @@ public class NwdDb {
 
         //get all items for list
         synergyV5PopulateListItems(context, lst);
+
+//        //resolve activateAt and shelvedAt values
+//        synergyV5PopulateListTimeStamps(context, lst);
     }
 
     public void synergyV5PopulateListItems(Context c,

@@ -188,6 +188,9 @@ public class SynergyListActivity
                     Menu.NONE, "Open Screenshots");
         }
 
+        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
+                Menu.NONE, "Move To List");
+
         if(mSlf.getListName().startsWith("Fragments")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LYRICS_ID,
@@ -215,8 +218,6 @@ public class SynergyListActivity
                     Menu.NONE, "Move To Fragments");
         }
 
-        menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
-                Menu.NONE, "Move To List");
 
         menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
                 Menu.NONE, "Split Item");
@@ -1042,7 +1043,7 @@ public class SynergyListActivity
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
 
-        userInput.setText(mSlf.getListName() + "-");
+        userInput.setText(Configuration.getMostRecentMoveToList());
         userInput.setSelection(userInput.getText().length());
 
         // set dialog message
@@ -1057,9 +1058,13 @@ public class SynergyListActivity
                                         Utils.processName(
                                                 userInput.getText().toString());
 
+                                Configuration.setMostRecentMoveToList(processedName);
+
                                 SynergyUtils.move(mSlf, position, processedName);
 
                                 Utils.toast(getApplicationContext(), "moved to " + processedName);
+
+                                readItems();
                             }
                         })
                 .setNegativeButton("Cancel",

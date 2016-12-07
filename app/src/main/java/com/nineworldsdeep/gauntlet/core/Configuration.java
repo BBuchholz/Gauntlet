@@ -22,6 +22,7 @@ public class Configuration {
     private static boolean _testMode = false;
     private static boolean _deleteDatabaseForDevelopment = false;
     private static boolean _shuffleFragments = false;
+    private static String _mostRecentMoveToList = "Fragments"; //default
 
     public static boolean isInTestMode() {
         return _testMode;
@@ -42,6 +43,14 @@ public class Configuration {
 
         //TODO: disable for release version
         _deleteDatabaseForDevelopment = deleteDbForDev;
+    }
+
+    public static void setMostRecentMoveToList(String listName){
+        _mostRecentMoveToList = listName;
+    }
+
+    public static String getMostRecentMoveToList(){
+        return _mostRecentMoveToList;
     }
 
     public static File getSynergyDirectory(){

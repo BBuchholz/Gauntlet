@@ -89,6 +89,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/images");
     }
 
+    public static File getMidiDirectory(){
+
+        return getDirectoryStoragePath("/NWD-AUX/midi");
+    }
+
     public static File getAudioDirectory() {
 
         return getDirectoryStoragePath("/NWD-MEDIA/audio");
@@ -105,6 +110,11 @@ public class Configuration {
         //logic to migrate all metadata before we change
         //the configuration
         return getSdDirectoryStoragePath("/NWD-MEDIA");
+    }
+
+    public static File getCausticSongExportsDirectory(){
+
+        return getDirectoryStoragePath("/caustic/songs/export");
     }
 
     public static List<String> getAllSynergyListNames(){

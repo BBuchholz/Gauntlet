@@ -131,18 +131,6 @@ public class AudioListV2Activity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//
-//        super.onResume();
-//
-//        NwdDb.getInstance(this).open();
-//
-//        //assignDb();
-//
-//        //moved to assignDb() //db.open();
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -453,6 +441,15 @@ public class AudioListV2Activity extends AppCompatActivity {
         FileListItem fli = mFileListItems.get(position);
         File f = fli.getFile();
 
+        //translate to midi file name
+        String fileNameWithoutPathOrExtension =
+                FilenameUtils.getBaseName(f.getAbsolutePath());
+
+        String midiFileName = fileNameWithoutPathOrExtension + ".mid";
+
+        File possibleMidiFile =
+                new File(mCurrentDir, midiFileName);
+
         String msg = "";
 
         if(f.exists()){
@@ -463,13 +460,9 @@ public class AudioListV2Activity extends AppCompatActivity {
                         new File(destinationDirectory,
                                 FilenameUtils.getName(f.getAbsolutePath()));
 
-//                NwdDb db = NwdDb.getInstance(this);
-//
-//                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-//                        destination.getAbsolutePath(), db);
-//
-//                MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-//                        destination.getAbsolutePath(), db);
+                File destMidi =
+                        new File(Configuration.getMidiDirectory(),
+                                 midiFileName);
 
                 NwdDb db = NwdDb.getInstance(this);
 
@@ -483,6 +476,13 @@ public class AudioListV2Activity extends AppCompatActivity {
                         destination.getAbsolutePath(), dbPathToTagsMap, db);
 
                 f.renameTo(destination);
+
+                if(possibleMidiFile.exists()){
+
+                    possibleMidiFile.renameTo(destMidi);
+
+                    Utils.toast(this, "found and moved midi file");
+                }
 
                 msg = "file moved";
 

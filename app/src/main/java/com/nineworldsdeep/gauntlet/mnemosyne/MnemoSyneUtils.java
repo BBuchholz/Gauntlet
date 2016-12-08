@@ -137,36 +137,6 @@ public class MnemoSyneUtils {
             List<String> timeStampFilters){
 
         List<FileListItem> unfiltered = getAudioListItems(pathToTagString, dir);
-//
-//        List<FileListItem> lst = new ArrayList<>();
-//        if(timeStampFilters != null){
-//
-//            for(FileListItem fli : unfiltered){
-//
-//                String fileName = fli.getFile().getName();
-//                String convertedFileName =
-//                        MnemoSyneUtils.replace_yyyy_MM_dd_hh_mm_ss_With_yyyyMMddhhmmss(fileName);
-//
-//                boolean found = false;
-//                int i = 0;
-//
-//                while(!found && i < timeStampFilters.size()){
-//
-//                    if(convertedFileName.startsWith(timeStampFilters.get(i))){
-//
-//                        lst.add(fli);
-//                    }
-//
-//                    i++;
-//                }
-//            }
-//        }
-//        else
-//        {
-//            lst = unfiltered;
-//        }
-//
-//        return lst;
 
         return filterList(unfiltered, timeStampFilters);
     }
@@ -308,10 +278,16 @@ public class MnemoSyneUtils {
         lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
 
         File externalMusic = Configuration.getSdCardMediaMusicDirectory();
+        File causticSongExports = Configuration.getCausticSongExportsDirectory();
 
         if(externalMusic != null) {
 
             lst.add(externalMusic.getAbsolutePath());
+        }
+
+        if(causticSongExports != null){
+
+            lst.add(causticSongExports.getAbsolutePath());
         }
 
         return lst;

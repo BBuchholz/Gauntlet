@@ -11,6 +11,7 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ToDo;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5Utils;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 
@@ -76,10 +77,33 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
                     synergyListEl.appendChild(synergyItemEl);
 
+                    SynergyV5ListItem sli = v5List.get(i);
+
                     Element itemValueEl = doc.createElement("itemValue");
-                    itemValueEl.setTextContent(v5List.get(i).getItemValue());
+                    itemValueEl.setTextContent(sli.getItemValue());
 
                     synergyItemEl.appendChild(itemValueEl);
+
+                    SynergyV5ToDo toDo = sli.getToDo();
+
+                    if(toDo != null){
+
+                        Element toDoEl = doc.createElement("toDo");
+
+                        toDoEl.setAttribute("activatedAt",
+                                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                        toDo.getActivatedAt()));
+
+                        toDoEl.setAttribute("completedAt",
+                                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                        toDo.getCompletedAt()));
+
+                        toDoEl.setAttribute("archivedAt",
+                                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                        toDo.getArchivedAt()));
+
+                        synergyItemEl.appendChild(toDoEl);
+                    }
                 }
             }
 

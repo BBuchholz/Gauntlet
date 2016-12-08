@@ -156,7 +156,7 @@ public class SynergyV5List {
         if(shelvedAt != null){
 
             if(mShelvedAt == null || mShelvedAt.compareTo(shelvedAt) < 0){
-                //mShelved at is older
+                //mShelvedAt at is older
                 mShelvedAt = shelvedAt;
             }
         }

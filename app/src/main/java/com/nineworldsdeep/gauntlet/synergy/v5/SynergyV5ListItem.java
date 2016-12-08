@@ -7,6 +7,16 @@ public class SynergyV5ListItem {
 
     private String mItemValue;
     private int mItemId;
+    private int mListItemId;
+    private SynergyV5ToDo mToDo;
+
+    public SynergyV5ToDo getToDo() {
+        return mToDo;
+    }
+
+    public void setToDo(SynergyV5ToDo toDo) {
+        this.mToDo = toDo;
+    }
 
     public SynergyV5ListItem(String itemValue) {
 
@@ -41,6 +51,14 @@ public class SynergyV5ListItem {
 
     public void setItemId(int itemId) {
         this.mItemId = itemId;
+    }
+
+    public int getListItemId() {
+        return mListItemId;
+    }
+
+    public void setListItemId(int listItemId) {
+        this.mListItemId = listItemId;
     }
 
     @Override

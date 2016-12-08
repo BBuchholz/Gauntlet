@@ -19,12 +19,14 @@ import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ToDo;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1683,18 +1685,49 @@ public class NwdDb {
 
     public void save(Context context, SynergyV5List synLst) {
 
+//        //populate list id if not set, creating list if !exists
+//        if(synLst.getListId() < 1){
+//
+//            String listName = synLst.getListName();
+//            String activated =
+//                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                            synLst.getActivatedAt());
+//            String shelved =
+//                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                            synLst.getShelvedAt());
+//
+//            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
+//                    new String[]{listName});
+//
+//            //ensure current timestamps
+//            db.execSQL(
+// NwdContract.SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z,
+//                    new String[]{activated, shelved, listName});
+//
+//            populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
+//        }
+
+        String listName = synLst.getListName();
+        String activated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                        synLst.getActivatedAt());
+        String shelved =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                        synLst.getShelvedAt());
+
         //populate list id if not set, creating list if !exists
         if(synLst.getListId() < 1){
 
             db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
-                    new String[]{synLst.getListName()});
-
-//            synLst.setListId(
-//                    getIdForSynergyV5ListName(context,
-//                            synLst.getListName()));
-
-            populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
+                    new String[]{listName});
         }
+
+        //ensure current timestamps
+        db.execSQL(
+ NwdContract.SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z,
+                    new String[]{activated, shelved, listName});
+
+        populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
 
         // for each SynergyV5ListItem,
         // do the same (populate item id, ensure, etc.)
@@ -1873,14 +1906,20 @@ public class NwdDb {
 
             Cursor cursor =
                     db.rawQuery(
-        NwdContract.SYNERGY_V5_SELECT_ITEM_VALUES_BY_POSITION_FOR_LIST_ID_X,
+        NwdContract
+            .SYNERGY_V5_SELECT_LIST_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X,
                         args);
 
             String[] columnNames =
                     new String[]{
                             NwdContract.COLUMN_SYNERGY_ITEM_ID,
                             NwdContract.COLUMN_SYNERGY_ITEM_VALUE,
-                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT
                     };
 
             if(cursor.getCount() > 0){
@@ -1892,7 +1931,14 @@ public class NwdDb {
                     Map<String, String> record =
                             cursorToRecord(cursor, columnNames);
 
-                    String itemIdString, itemValue, positionString;
+                    String itemIdString,
+                            itemValue,
+                            positionString,
+                            listItemIdString,
+                            toDoIdString,
+                            toDoActivatedAtString,
+                            toDoCompletedAtString,
+                            toDoArchivedAtString;
 
                     itemIdString =
                             record.get(NwdContract.COLUMN_SYNERGY_ITEM_ID);
@@ -1904,8 +1950,53 @@ public class NwdDb {
                             record.get(
                                 NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION);
 
+                    listItemIdString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID
+                            );
+
+                    toDoIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_TO_DO_ID);
+
+                    toDoActivatedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT);
+
+                    toDoCompletedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT);
+
+                    toDoArchivedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT);
+
                     SynergyV5ListItem sli = new SynergyV5ListItem(itemValue);
                     sli.setItemId(Integer.parseInt(itemIdString));
+                    sli.setListItemId(Integer.parseInt(listItemIdString));
+
+                    if(toDoIdString != null){
+
+                        //has to do item
+                        SynergyV5ToDo toDo = new SynergyV5ToDo();
+                        toDo.setToDoId(Integer.parseInt(toDoIdString));
+
+                        Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoActivatedAtString);
+
+                        Date completed =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoCompletedAtString);
+
+                        Date archived =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoArchivedAtString);
+
+                        toDo.setTimeStamps(activated, completed, archived);
+
+                        sli.setToDo(toDo);
+                    }
+
                     lst.add(Integer.parseInt(positionString), sli);
 
                 } while (cursor.moveToNext());

@@ -222,7 +222,7 @@ public class NwdContract {
 
     //endregion
 
-    //region SynergyV5_Queries
+    //region SynergyV5_SELECT
 
     public static final String SYNERGY_V5_SELECT_ACTIVE_LISTS =
 
@@ -287,6 +287,37 @@ public class NwdContract {
             + "ON sli." + COLUMN_SYNERGY_ITEM_ID +
                     " = si." + COLUMN_SYNERGY_ITEM_ID + " "
             + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? ; ";
+
+    public static final String
+            SYNERGY_V5_SELECT_LIST_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
+
+            "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
+            + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
+            + "	    sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + ", "
+            + "     sli." + COLUMN_SYNERGY_LIST_ITEM_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + ", "
+            + "     std." +COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
+            + "FROM " + TABLE_SYNERGY_LIST_ITEM + " sli "
+            + "JOIN " + TABLE_SYNERGY_ITEM + " si "
+            + "ON sli." + COLUMN_SYNERGY_ITEM_ID + " = si." + COLUMN_SYNERGY_ITEM_ID + " "
+            + "LEFT JOIN " + TABLE_SYNERGY_TO_DO + " std "
+            + "ON sli." + COLUMN_SYNERGY_LIST_ITEM_ID + " = std." + COLUMN_SYNERGY_LIST_ITEM_ID + " "
+            + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? "
+            +    "ORDER BY sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + "; ";
+
+    //endregion
+
+    //region SynergyV5_UPDATE
+
+    public static final String
+            SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z =
+
+            "UPDATE " + TABLE_SYNERGY_LIST + " "
+            + "SET " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_SYNERGY_LIST_ACTIVATED_AT + ", ''), ?), "
+            + "	   " + COLUMN_SYNERGY_LIST_SHELVED_AT + " = MAX(IFNULL(" + COLUMN_SYNERGY_LIST_SHELVED_AT + ", ''), ?) "
+            + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ?; ";
 
     //endregion
 }

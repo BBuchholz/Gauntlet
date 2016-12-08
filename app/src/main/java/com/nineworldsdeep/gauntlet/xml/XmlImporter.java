@@ -3,12 +3,14 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.HashNode;
 import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ToDo;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,7 +19,9 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -136,7 +140,7 @@ public class XmlImporter {
         return output;
     }
 
-    public List<SynergyV5List> getSynergyV5Lists(){
+    public List<SynergyV5List> getSynergyV5Lists() throws ParseException {
 
         List<SynergyV5List> v5Lists = new ArrayList<>();
 
@@ -147,8 +151,18 @@ public class XmlImporter {
             Element v5ListEl = (Element) listEls.item(i);
 
             String listName = v5ListEl.getAttribute("listName");
+            String activatedAtString = v5ListEl.getAttribute("activatedAt");
+            String shelvedAtString = v5ListEl.getAttribute("shelvedAt");
+
+            Date activated =
+                    TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(activatedAtString);
+
+            Date shelved =
+                    TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(shelvedAtString);
 
             SynergyV5List v5List = new SynergyV5List(listName);
+
+            v5List.setTimeStamps(activated, shelved);
 
             NodeList v5ListItemEls = v5ListEl.getElementsByTagName("synergyItem");
 
@@ -158,8 +172,39 @@ public class XmlImporter {
 
                 String itemValue = getValueForFirst(listItemEl, "itemValue");
 
+                Element toDoEl = getFirst(listItemEl, "toDo");
+
                 SynergyV5ListItem v5ListItem =
                         new SynergyV5ListItem(itemValue);
+
+                if(toDoEl != null){
+
+                    String toDoActivatedAtString =
+                            toDoEl.getAttribute("activatedAt");
+                    String toDoCompletedAtString =
+                            toDoEl.getAttribute("completedAt");
+                    String toDoArchivedAtString =
+                            toDoEl.getAttribute("archivedAt");
+
+                    Date toDoActivated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoActivatedAtString
+                            );
+                    Date toDoCompleted =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoCompletedAtString
+                            );
+                    Date toDoArchived =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoArchivedAtString
+                            );
+
+                    SynergyV5ToDo toDo = new SynergyV5ToDo();
+
+                    toDo.setTimeStamps(toDoActivated, toDoCompleted, toDoArchived);
+
+                    v5ListItem.setToDo(toDo);
+                }
 
                 v5List.add(v5ListItem);
             }
@@ -180,16 +225,23 @@ public class XmlImporter {
     private String getValueForFirst(Element parentEl,
                                     String childName){
 
-        Element displayNameEl =
-                (Element) parentEl.getElementsByTagName(childName).item(0);
+//        Element firstEl =
+//                (Element) parentEl.getElementsByTagName(childName).item(0);
+
+        Element firstEl = getFirst(parentEl, childName);
 
         String output = null;
 
-        if(displayNameEl != null){
+        if(firstEl != null){
 
-            output = displayNameEl.getTextContent();
+            output = firstEl.getTextContent();
         }
 
         return output;
+    }
+
+    private Element getFirst(Element parentEl, String childName){
+
+        return (Element) parentEl.getElementsByTagName(childName).item(0);
     }
 }

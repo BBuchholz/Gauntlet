@@ -195,7 +195,7 @@ public class NwdContract {
             + "" + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " TEXT, "
             + "" + COLUMN_SYNERGY_TO_DO_CREATED_AT + " TEXT, "
             + "" + COLUMN_SYNERGY_TO_DO_UPDATED_AT + " TEXT,  "
-            + "UNIQUE(" + COLUMN_SYNERGY_LIST_ITEM_ID + ", " + COLUMN_SYNERGY_TO_DO_CREATED_AT + ") "
+            + "UNIQUE(" + COLUMN_SYNERGY_LIST_ITEM_ID + ") "
         + ") ";
 
     public static final String CREATE_SYNERGY_TO_DO_CREATED_TRIGGER =

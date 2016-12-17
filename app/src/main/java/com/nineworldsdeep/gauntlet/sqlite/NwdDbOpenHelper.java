@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -312,6 +312,21 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             modSynergyTablesCorrectionOne(db);
         }
 
+        if (oldVersion < 11){
+
+            dropAndRecreateSynergyToDoDbV11(db);
+        }
+
+    }
+
+    private void dropAndRecreateSynergyToDoDbV11(SQLiteDatabase db){
+
+        db.execSQL(NwdContract.DROP_SYNERGY_TO_DO);
+
+        //script has been modified
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER);
     }
 
     private void modSynergyTablesCorrectionOne(SQLiteDatabase db){

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,20 +90,6 @@ public class SynergyV5List {
 
     public void add(int position, SynergyV5ListItem sli) {
 
-        if(isNotDuplicate(sli)){
-
-            mItems.add(position, sli);
-        }
-    }
-
-    public void add(SynergyV5ListItem v5ListItem){
-
-        int position = mItems.size();
-        add(position, v5ListItem);
-    }
-
-    private boolean isNotDuplicate(SynergyV5ListItem sli) {
-
         boolean exists = false;
 
         for(SynergyV5ListItem existingListItem : mItems){
@@ -114,10 +99,21 @@ public class SynergyV5List {
             if(existingValue.equalsIgnoreCase(sli.getItemValue())){
 
                 exists = true;
+                existingListItem.merge(sli);
             }
         }
 
-        return !exists;
+        if(!exists){
+
+            mItems.add(position, sli);
+
+        }
+    }
+
+    public void add(SynergyV5ListItem v5ListItem){
+
+        int position = mItems.size();
+        add(position, v5ListItem);
     }
 
     public int getListId() {

@@ -232,13 +232,6 @@ public class NwdContract {
             + "   OR " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " > " +
                          COLUMN_SYNERGY_LIST_SHELVED_AT + "; ";
 
-    public static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
-
-            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST + " "
-            + "	(" + COLUMN_SYNERGY_LIST_NAME + ") "
-            + "VALUES "
-            + "	(?); ";
-
     public static final String SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X =
 
             "SELECT " + COLUMN_SYNERGY_LIST_ID + " "
@@ -254,27 +247,19 @@ public class NwdContract {
         + "FROM " + TABLE_SYNERGY_LIST + " "
         + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
 
-    public static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
+    public static final String
+            SYNERGY_V5_SELECT_LIST_ITEM_ID_FOR_LIST_ID_ITEM_ID_X_Y =
 
-            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_ITEM + " "
-            + "	(" + COLUMN_SYNERGY_ITEM_VALUE + ") "
-            + "VALUES "
-            + "	(?); ";
+            "SELECT " + COLUMN_SYNERGY_LIST_ITEM_ID + " "
+            + "FROM " + TABLE_SYNERGY_LIST_ITEM + " "
+            + "WHERE " + COLUMN_SYNERGY_LIST_ID + " = ?  "
+            + "AND " + COLUMN_SYNERGY_ITEM_ID + " = ? ; ";
 
     public static final String SYNERGY_V5_SELECT_ID_FOR_ITEM_VALUE_X =
 
             "SELECT " + COLUMN_SYNERGY_ITEM_ID + " "
             + "FROM " + TABLE_SYNERGY_ITEM + " "
             + "WHERE " + COLUMN_SYNERGY_ITEM_VALUE + " = ? ; ";
-
-    public static final String SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z =
-
-            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST_ITEM + " "
-            + "	(" + COLUMN_SYNERGY_LIST_ID + ",  "
-            + "	 " + COLUMN_SYNERGY_ITEM_ID + ",  "
-            + "	 " + COLUMN_SYNERGY_LIST_ITEM_POSITION +  ") "
-            + "VALUES "
-            + "	(?, ?, ?); ";
 
     public static final String
             SYNERGY_V5_SELECT_ITEM_VALUES_BY_POSITION_FOR_LIST_ID_X =
@@ -309,6 +294,44 @@ public class NwdContract {
 
     //endregion
 
+    //region SynergyV5_INSERT
+
+    public static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST + " "
+            + "	(" + COLUMN_SYNERGY_LIST_NAME + ") "
+            + "VALUES "
+            + "	(?); ";
+
+    public static final String SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST_ITEM + " "
+            + "	(" + COLUMN_SYNERGY_LIST_ID + ",  "
+            + "	 " + COLUMN_SYNERGY_ITEM_ID + ",  "
+            + "	 " + COLUMN_SYNERGY_LIST_ITEM_POSITION +  ") "
+            + "VALUES "
+            + "	(?, ?, ?); ";
+
+    public static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_ITEM + " "
+            + "	(" + COLUMN_SYNERGY_ITEM_VALUE + ") "
+            + "VALUES "
+            + "	(?); ";
+
+    public static final String
+            SYNERGY_V5_ENSURE_TO_DO_FOR_LIST_ITEM_ID_ID_AC_CO_AR =
+
+            "INSERT OR IGNORE INTO " + TABLE_SYNERGY_TO_DO + "  "
+            + "	(" + COLUMN_SYNERGY_LIST_ITEM_ID + ", "
+            + "	 " + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + ", "
+            + "	 " + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + ", "
+            + "	 " + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + ")  "
+            + "VALUES  "
+            + "	(?, ?, ?, ?); ";
+
+    //endregion
+
     //region SynergyV5_UPDATE
 
     public static final String
@@ -318,6 +341,25 @@ public class NwdContract {
             + "SET " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_SYNERGY_LIST_ACTIVATED_AT + ", ''), ?), "
             + "	   " + COLUMN_SYNERGY_LIST_SHELVED_AT + " = MAX(IFNULL(" + COLUMN_SYNERGY_LIST_SHELVED_AT + ", ''), ?) "
             + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ?; ";
+
+    public static final String
+            SYNERGY_V5_UPDATE_POSITION_FOR_LIST_ITEM_ID_X_Y =
+
+            "UPDATE " + TABLE_SYNERGY_LIST_ITEM + " "
+            + "SET " + COLUMN_SYNERGY_LIST_ITEM_POSITION + " = ? "
+            + "WHERE " + COLUMN_SYNERGY_LIST_ITEM_ID + " = ? ; ";
+
+    public static final String
+            SYNERGY_V5_UPDATE_TO_DO_WHERE_LIST_ITEM_ID_AC_CO_AR_ID =
+
+            "UPDATE " + TABLE_SYNERGY_TO_DO + "  "
+            + "SET " + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT
+                    + " = MAX(IFNULL(" + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + ", ''), ?), "
+            + "	   " + COLUMN_SYNERGY_TO_DO_COMPLETED_AT
+                    + " = MAX(IFNULL(" + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + ", ''), ?), "
+            + "	   " + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT
+                    + " = MAX(IFNULL(" + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + ", ''), ?) "
+            + "WHERE " + COLUMN_SYNERGY_LIST_ITEM_ID + " = ?; ";
 
     //endregion
 }

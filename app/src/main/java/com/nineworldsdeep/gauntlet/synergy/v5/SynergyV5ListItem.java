@@ -66,4 +66,34 @@ public class SynergyV5ListItem {
 
         return mItemValue;
     }
+
+    public void merge(SynergyV5ListItem sli) {
+
+        if(sli.getItemValue().equalsIgnoreCase(mItemValue)){
+
+            if(sli.getItemId() > mItemId){
+
+                mItemId = sli.getItemId();
+            }
+
+            if(sli.getListItemId() > mListItemId){
+
+                mListItemId = sli.getListItemId();
+            }
+
+            if(mToDo == null){
+
+                mToDo = sli.getToDo();
+
+            }else if (sli.getToDo() != null){
+
+                SynergyV5ToDo toDo = sli.getToDo();
+
+                mToDo.setTimeStamps(toDo.getActivatedAt(),
+                                    toDo.getCompletedAt(),
+                                    toDo.getArchivedAt());
+            }
+
+        }
+    }
 }

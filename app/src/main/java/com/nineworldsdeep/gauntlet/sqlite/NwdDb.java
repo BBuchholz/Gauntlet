@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1729,6 +1728,11 @@ public class NwdDb {
 
         populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
 
+        //MOVED FROM INSIDE load(context, synergyList)
+        //TESTING, MOVE BACK IF PROBLEMS
+        //get all items for list
+        synergyV5PopulateListItems(context, synLst);
+
         // for each SynergyV5ListItem,
         // do the same (populate item id, ensure, etc.)
         for(int i = 0; i < synLst.getItems().size(); i++){
@@ -1745,7 +1749,8 @@ public class NwdDb {
 
         if(lst.getListId() < 1){
 
-            Utils.toast(context, "SynergyV5List Id not set");
+            Utils.toast(context, "SynergyV5List Id not set, item skipped");
+            return;
         }
 
         if(sli.getItemId() < 1){
@@ -1757,12 +1762,121 @@ public class NwdDb {
                     getIdForSynergyV5ItemValue(context, sli.getItemValue()));
         }
 
-        db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z,
+        if(sli.getListItemId() < 1) {
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z,
+                    new String[]{
+                            Integer.toString(lst.getListId()),
+                            Integer.toString(sli.getItemId()),
+                            Integer.toString(position)
+                    });
+
+            sli.setListItemId(
+                    getListItemId(context, lst.getListId(), sli.getItemId()));
+        }
+
+        db.execSQL(NwdContract.SYNERGY_V5_UPDATE_POSITION_FOR_LIST_ITEM_ID_X_Y,
                 new String[]{
-                        Integer.toString(lst.getListId()),
-                        Integer.toString(sli.getItemId()),
-                        Integer.toString(position)
+                        Integer.toString(position),
+                        Integer.toString(sli.getListItemId())
                 });
+
+        //need to check for SynergyToDo and save
+        SynergyV5ToDo toDo = sli.getToDo();
+
+        if(toDo != null){
+
+            String activated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getActivatedAt());
+            String completed =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getCompletedAt());
+            String archived =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getArchivedAt());
+
+            db.execSQL(
+
+                NwdContract.SYNERGY_V5_ENSURE_TO_DO_FOR_LIST_ITEM_ID_ID_AC_CO_AR,
+                new String[]{
+                        Integer.toString(sli.getListItemId()),
+                        activated,
+                        completed,
+                        archived
+                }
+            );
+
+            db.execSQL(
+
+        NwdContract.SYNERGY_V5_UPDATE_TO_DO_WHERE_LIST_ITEM_ID_AC_CO_AR_ID,
+                new String[]{
+                        activated,
+                        completed,
+                        archived,
+                        Integer.toString(sli.getListItemId())
+                }
+            );
+
+
+        }
+    }
+
+    public int getListItemId(Context context, int listId, int itemId){
+
+        int id = -1;
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(listId),
+                            Integer.toString(itemId)
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+            NwdContract.SYNERGY_V5_SELECT_LIST_ITEM_ID_FOR_LIST_ID_ITEM_ID_X_Y,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    //this method will grab the last entry, if multiple returned
+                    //though list name is unique, so it should never matter
+                    String idString =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID);
+
+                    id = Integer.parseInt(idString);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(context, "Exception retrieving list item id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return id;
     }
 
     public int getIdForSynergyV5ItemValue(Context context, String itemValue){
@@ -1885,8 +1999,8 @@ public class NwdDb {
         //if it doesn't exist and will also populate the id.
         save(context, lst);
 
-        //get all items for list
-        synergyV5PopulateListItems(context, lst);
+        //MOVED LOAD LIST ITEMS TO SAVE METHOD ABOVE
+        //TESTING, MOVE BACK IF PROBLEMS
 
 //        //resolve activateAt and shelvedAt values
 //        synergyV5PopulateListTimeStamps(context, lst);

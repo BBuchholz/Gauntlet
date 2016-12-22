@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
@@ -140,6 +141,13 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
                 NavigateActivityCommand.navigateTo(
                         AudioDisplayActivity.class, this);
+
+                return true;
+
+            case R.id.action_go_to_home_screen:
+
+                NavigateActivityCommand.navigateTo(
+                        HomeListActivity.class, this);
 
                 return true;
 

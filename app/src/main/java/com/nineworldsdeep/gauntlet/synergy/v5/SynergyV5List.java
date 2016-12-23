@@ -54,7 +54,8 @@ public class SynergyV5List {
     }
 
     public int size() {
-        return 0;
+
+        return mItems.size();
     }
 
     public void move(int currentPosition, int moveToPosition) {

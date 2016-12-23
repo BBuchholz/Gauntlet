@@ -264,6 +264,7 @@ public class SynergyV5ListActivity
                 moveDown(info.position);
 
                 return true;
+
             case MENU_CONTEXT_MOVE_TO_LIST_ID:
 
                 moveToList(info.position);
@@ -454,29 +455,18 @@ public class SynergyV5ListActivity
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }
     }
-
     private void moveToBottom(int pos) {
 
+        int moveTo = mSynLst.size() - 1;
 
-        Utils.toast(this, "not implemented");
+        mSynLst.move(pos, moveTo);
+        mSynLst.save(this, NwdDb.getInstance(this));
 
-//        int moveTo = getAddItemIndex() - 1;
-//
-//        if(SynergyV5Utils.listItemIsCompleted(mSynLst.get(pos))){
-//
-//            moveTo = mSynLst.size() - 1;
-//        }
-//
-//        mSynLst.move(pos, moveTo);
-//        mSynLst.save(this, NwdDb.getInstance(this));
-//
-//        refreshListItems();
+        refreshListItems();
 
     }
 
     private void moveDown(int pos) {
-
-        Utils.toast(this, "in progress");
 
         int moveTo = pos + 1;
 
@@ -489,7 +479,6 @@ public class SynergyV5ListActivity
         mSynLst.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
-
     }
 
     private void moveToTop(int pos) {
@@ -504,24 +493,17 @@ public class SynergyV5ListActivity
 
     private void moveUp(int pos) {
 
-        Utils.toast(this, "not implemented");
-//        int moveTo = pos - 1;
-//
-//        if(SynergyV5Utils.listItemIsCompleted(mSynLst.get(pos)) &&
-//                moveTo > getAddItemIndex()){
-//
-//            moveTo = getAddItemIndex();
-//        }
-//
-//        if(moveTo < 0){
-//
-//            moveTo = 0;
-//        }
-//
-//        mSynLst.move(pos, moveTo);
-//        mSynLst.save(this, NwdDb.getInstance(this));
-//
-//        refreshListItems();
+        int moveTo = pos - 1;
+
+        if(moveTo < 0){
+
+            moveTo = 0;
+        }
+
+        mSynLst.move(pos, moveTo);
+        mSynLst.save(this, NwdDb.getInstance(this));
+
+        refreshListItems();
     }
 
     @Override

@@ -51,7 +51,7 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_OPEN_MEDIA_IMAGES = 17;
     private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
 
-    private SynergyV5List mSlf;
+    private SynergyV5List mSynLst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class SynergyV5ListActivity
 
         setTitle(listName);
 
-        mSlf = new SynergyV5List(listName);
+        mSynLst = new SynergyV5List(listName);
 
         refreshLayout();
     }
@@ -92,8 +92,6 @@ public class SynergyV5ListActivity
                 //get selected list name
                 SynergyV5ListItem selectedItem =
                         (SynergyV5ListItem) lvItems.getItemAtPosition(idx);
-
-
 
                 if(selectedItem.getItemValue().toLowerCase().startsWith("see ")){
 
@@ -143,23 +141,14 @@ public class SynergyV5ListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = mSlf.get(info.position).getItemValue();
+        String title = mSynLst.get(info.position).getItemValue();
 
         menu.setHeaderTitle(title);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
-        if(SynergyV5Utils.isActiveQueue(mSlf.getListName())){
-
-            menu.add(Menu.NONE, MENU_CONTEXT_SHELVE_ID, Menu.NONE, "Shelve");
-
-        }else{
-
-            menu.add(Menu.NONE, MENU_CONTEXT_QUEUE_ID, Menu.NONE, "Queue");
-        }
-
         Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
-                .matcher(mSlf.get(info.position).getItemValue());
+                .matcher(mSynLst.get(info.position).getItemValue());
 
         if (vmMatcher.find()) {
 
@@ -171,7 +160,7 @@ public class SynergyV5ListActivity
         }
 
         Matcher imgMatcher = Pattern.compile("\\(\\bhas Image: \\d{4,14}\\b\\)")
-            .matcher(mSlf.get(info.position).getItemValue());
+            .matcher(mSynLst.get(info.position).getItemValue());
 
         if (imgMatcher.find()) {
 
@@ -182,7 +171,7 @@ public class SynergyV5ListActivity
                     Menu.NONE, "Open Screenshots");
         }
 
-        if(mSlf.getListName().startsWith("Fragments")){
+        if(mSynLst.getListName().startsWith("Fragments")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LYRICS_ID,
                     Menu.NONE, "Move To Lyrics");
@@ -203,7 +192,7 @@ public class SynergyV5ListActivity
 
         }
 
-        if(mSlf.getListName().startsWith("Lyric")){
+        if(mSynLst.getListName().startsWith("Lyric")){
 
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FRAGMENTS_ID,
                     Menu.NONE, "Move To Fragments");
@@ -231,12 +220,6 @@ public class SynergyV5ListActivity
             case MENU_CONTEXT_COMPLETION_STATUS_ID:
 
                 toggleCompletionStatusAtPosition(info.position);
-
-                return true;
-
-            case MENU_CONTEXT_SHELVE_ID:
-
-                shelvePosition(info.position);
 
                 return true;
 
@@ -330,20 +313,21 @@ public class SynergyV5ListActivity
 
     private void editItem(int position) {
 
-        Intent intent = new Intent(this, SynergyV5EditItemActivity.class);
-
-        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
-        intent.putExtra(SynergyV5EditItemActivity.STRING_SYNERGY_V5_ITEM_VALUE,
-                mSlf.get(position).getItemValue());
-
-        startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
+        Utils.toast(this, "not implemented");
+//        Intent intent = new Intent(this, SynergyV5EditItemActivity.class);
+//
+//        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
+//        intent.putExtra(SynergyV5EditItemActivity.STRING_SYNERGY_V5_ITEM_VALUE,
+//                mSynLst.get(position).getItemValue());
+//
+//        startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
     }
 
     private void openAudio(int position, boolean mediaNotVoiceMemos){
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mSlf.get(position).getItemValue());
+                        .extractTimeStampFilters(mSynLst.get(position).getItemValue());
 
         Intent intent = new Intent(this, AudioListV2Activity.class);
 
@@ -372,7 +356,7 @@ public class SynergyV5ListActivity
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mSlf.get(position).getItemValue());
+                        .extractTimeStampFilters(mSynLst.get(position).getItemValue());
 
         Intent intent = new Intent(this, ImageListV2Activity.class);
 
@@ -398,13 +382,15 @@ public class SynergyV5ListActivity
     }
 
     private void splitItem(int position) {
-        Intent intent = new Intent(this, SynergyV5SplitItemActivity.class);
 
-        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
-        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
-                mSlf.get(position).getItemValue());
-
-        startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
+        Utils.toast(this, "not implemented");
+//        Intent intent = new Intent(this, SynergyV5SplitItemActivity.class);
+//
+//        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
+//        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
+//                mSynLst.get(position).getItemValue());
+//
+//        startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
     }
 
     @Override
@@ -430,8 +416,8 @@ public class SynergyV5ListActivity
 
                     // need to specify false for archiveOne() or else
                     // remove gets called twice if sliList has only one item
-                    mSlf.archiveOne(mSlf.replace(pos, sliList), false);
-                    mSlf.save(this, NwdDb.getInstance(this));
+                    mSynLst.archiveOne(mSynLst.replace(pos, sliList), false);
+                    mSynLst.save(this, NwdDb.getInstance(this));
                     refreshListItems();
 
                 }
@@ -456,8 +442,8 @@ public class SynergyV5ListActivity
 
                 // need to specify false for archiveOne() or else
                 // remove gets called twice if sliList has only one item
-                mSlf.archiveOne(mSlf.replace(pos, lst), false);
-                mSlf.save(this, NwdDb.getInstance(this));
+                mSynLst.archiveOne(mSynLst.replace(pos, lst), false);
+                mSynLst.save(this, NwdDb.getInstance(this));
                 refreshListItems();
             }
         }
@@ -471,37 +457,36 @@ public class SynergyV5ListActivity
 
     private void moveToBottom(int pos) {
 
-        int moveTo = getAddItemIndex() - 1;
 
-        if(SynergyV5Utils.listItemIsCompleted(mSlf.get(pos))){
+        Utils.toast(this, "not implemented");
 
-            moveTo = mSlf.size() - 1;
-        }
-
-        mSlf.move(pos, moveTo);
-        mSlf.save(this, NwdDb.getInstance(this));
-
-        refreshListItems();
+//        int moveTo = getAddItemIndex() - 1;
+//
+//        if(SynergyV5Utils.listItemIsCompleted(mSynLst.get(pos))){
+//
+//            moveTo = mSynLst.size() - 1;
+//        }
+//
+//        mSynLst.move(pos, moveTo);
+//        mSynLst.save(this, NwdDb.getInstance(this));
+//
+//        refreshListItems();
 
     }
 
     private void moveDown(int pos) {
 
+        Utils.toast(this, "in progress");
+
         int moveTo = pos + 1;
 
-        if(!SynergyV5Utils.listItemIsCompleted(mSlf.get(pos)) &&
-                moveTo > getAddItemIndex()){
+        if(moveTo > mSynLst.size() - 1){
 
-            moveTo = getAddItemIndex();
+            moveTo = mSynLst.size() - 1;
         }
 
-        if(moveTo > mSlf.size() - 1){
-
-            moveTo = mSlf.size() - 1;
-        }
-
-        mSlf.move(pos, moveTo);
-        mSlf.save(this, NwdDb.getInstance(this));
+        mSynLst.move(pos, moveTo);
+        mSynLst.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
 
@@ -511,36 +496,32 @@ public class SynergyV5ListActivity
 
         int moveTo = 0;
 
-        if(SynergyV5Utils.listItemIsCompleted(mSlf.get(pos))){
-
-            moveTo = getAddItemIndex();
-        }
-
-        mSlf.move(pos, moveTo);
-        mSlf.save(this, NwdDb.getInstance(this));
+        mSynLst.move(pos, moveTo);
+        mSynLst.save(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
 
     private void moveUp(int pos) {
 
-        int moveTo = pos - 1;
-
-        if(SynergyV5Utils.listItemIsCompleted(mSlf.get(pos)) &&
-                moveTo > getAddItemIndex()){
-
-            moveTo = getAddItemIndex();
-        }
-
-        if(moveTo < 0){
-
-            moveTo = 0;
-        }
-
-        mSlf.move(pos, moveTo);
-        mSlf.save(this, NwdDb.getInstance(this));
-
-        refreshListItems();
+        Utils.toast(this, "not implemented");
+//        int moveTo = pos - 1;
+//
+//        if(SynergyV5Utils.listItemIsCompleted(mSynLst.get(pos)) &&
+//                moveTo > getAddItemIndex()){
+//
+//            moveTo = getAddItemIndex();
+//        }
+//
+//        if(moveTo < 0){
+//
+//            moveTo = 0;
+//        }
+//
+//        mSynLst.move(pos, moveTo);
+//        mSynLst.save(this, NwdDb.getInstance(this));
+//
+//        refreshListItems();
     }
 
     @Override
@@ -564,7 +545,7 @@ public class SynergyV5ListActivity
 
         } else if (id == R.id.action_archive){
 
-            if(!SynergyV5Utils.isActiveQueue(mSlf.getListName())){
+            if(!SynergyV5Utils.isActiveQueue(mSynLst.getListName())){
 
                 promptConfirmArchive();
 
@@ -592,11 +573,6 @@ public class SynergyV5ListActivity
             promptConfirmPush();
             return true;
 
-        } else if (id == R.id.action_shelveAll){
-
-            promptShelveAll();
-            return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -606,7 +582,7 @@ public class SynergyV5ListActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSlf.getListName());
+        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSynLst.getListName());
 
         String msg = "Update Template: " + trimmedName + "?";
 
@@ -615,30 +591,8 @@ public class SynergyV5ListActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SynergyV5Utils.updateTemplate(trimmedName, mSlf);
+                        SynergyV5Utils.updateTemplate(trimmedName, mSynLst);
                         Utils.toast(getApplicationContext(), "template updated");
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
-    }
-
-    private void promptShelveAll() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Shelve All")
-                .setMessage("Shelve All Categorized Items?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        while(mSlf.hasCategorizedItems()){
-
-                            int pos =
-                                    mSlf.getFirstCategorizedItemPosition();
-                            shelvePosition(pos);
-                        }
-
                     }
                 })
                 .setNegativeButton("No", null)
@@ -650,7 +604,7 @@ public class SynergyV5ListActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         //disabling archive all expired, causing usability issues, this is the easiest way
-        //final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(mSlf.getListName());
+        //final boolean expired = Utils.isTimeStampExpired_yyyyMMdd(mSynLst.getListName());
         final boolean expired = false;
 
         String msg;
@@ -668,9 +622,9 @@ public class SynergyV5ListActivity
                 .setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SynergyV5Utils.archive(mSlf.getListName(), expired);
+                        SynergyV5Utils.archive(mSynLst.getListName(), expired);
                         Utils.toast(getApplicationContext(), "tasks archived");
-                        //readItems(mSlf.getListName());
+                        //readItems(mSynLst.getListName());
                         readItems();
                     }
                 })
@@ -680,21 +634,21 @@ public class SynergyV5ListActivity
 
     private void promptConfirmPush(){
 
-        if(Utils.containsTimeStamp(mSlf.getListName())){
+        if(Utils.containsTimeStamp(mSynLst.getListName())){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             final String pushToName =
-                    Utils.incrementTimeStampInString_yyyyMMdd(mSlf.getListName());
+                    Utils.incrementTimeStampInString_yyyyMMdd(mSynLst.getListName());
 
             builder.setTitle("Push Tasks")
                     .setMessage("Push tasks to " + pushToName + "?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            String pushed = SynergyV5Utils.push(mSlf.getListName());
+                            String pushed = SynergyV5Utils.push(mSynLst.getListName());
                             Utils.toast(getApplicationContext(),
                                     "tasks pushed to " + pushed);
-                            //readItems(mSlf.getListName());
+                            //readItems(mSynLst.getListName());
                             readItems();
                         }
                     })
@@ -711,12 +665,12 @@ public class SynergyV5ListActivity
     private void queuePosition(int position) {
 
         //let's try to allow queing from timestamped lists, as active queue isn't one of them anymore
-//        if(!Utils.containsTimeStamp(mSlf.getListName()) && !mSlf.getListName().startsWith("000-")){
+//        if(!Utils.containsTimeStamp(mSynLst.getListName()) && !mSynLst.getListName().startsWith("000-")){
 
-        if(!SynergyV5Utils.isActiveQueue(mSlf.getListName())){
+        if(!SynergyV5Utils.isActiveQueue(mSynLst.getListName())){
 
             //Utils.toast(this, "queueToActive position " + position);
-            mSlf.queueToActive(position);
+            mSynLst.queueToActive(position);
             Utils.toast(this, "queued");
             refreshListItems();
 
@@ -728,153 +682,98 @@ public class SynergyV5ListActivity
 
     private void moveToLyrics(final int position){
 
-        SynergyV5Utils.move(mSlf, position, "Lyrics");
-        Utils.toast(getApplicationContext(), "moved to Lyrics");
-        refreshLayout();
+        Utils.toast(this, "not implemented");
+//        SynergyV5Utils.move(mSynLst, position, "Lyrics");
+//        Utils.toast(getApplicationContext(), "moved to Lyrics");
+//        refreshLayout();
     }
 
     private void moveToFragments(final int position){
 
-        SynergyV5Utils.move(mSlf, position, "Fragments");
-        Utils.toast(getApplicationContext(), "moved to Fragments");
-        refreshLayout();
+        Utils.toast(this, "not implemented");
+//        SynergyV5Utils.move(mSynLst, position, "Fragments");
+//        Utils.toast(getApplicationContext(), "moved to Fragments");
+//        refreshLayout();
     }
 
     private void moveToList(final int position) {
 
-        //Adapted from:
-        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-        // get prompts.xml view
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.prompt, null);
 
-        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-        tv.setText("Enter listName: ");
+        Utils.toast(this, "not implemented");
 
-        android.app.AlertDialog.Builder alertDialogBuilder =
-                new android.app.AlertDialog.Builder(this);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        userInput.setText(mSlf.getListName() + "-");
-        userInput.setSelection(userInput.getText().length());
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-
-                                // get list name from userInput and move
-                                String processedName =
-                                        Utils.processName(
-                                                userInput.getText().toString());
-
-                                SynergyV5Utils.move(mSlf, position, processedName);
-
-                                Utils.toast(getApplicationContext(), "moved to " + processedName);
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-    }
-
-    private void shelvePosition(final int position) {
-
-        if(SynergyV5Utils.isActiveQueue(mSlf.getListName())){
-
-            Utils.toast(this, "shelve position " + position);
-            String category = mSlf.get(position).getCategory();
-
-            if(Utils.stringIsNullOrWhitespace(category)){
-
-                LayoutInflater li = LayoutInflater.from(this);
-                View promptsView = li.inflate(R.layout.prompt, null);
-
-                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-                tv.setText("Enter category: ");
-
-                android.app.AlertDialog.Builder alertDialogBuilder =
-                        new android.app.AlertDialog.Builder(this);
-
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(promptsView);
-
-                final EditText userInput = (EditText) promptsView
-                        .findViewById(R.id.editTextDialogUserInput);
-
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-
-                                        // get category from userInput and shelve
-                                        mSlf.shelve(position, userInput.getText().toString());
-                                        Utils.toast(getApplicationContext(), "shelved");
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create alert dialog
-                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-
-            }else {
-
-                mSlf.shelve(position, category);
-                Utils.toast(this, "shelved");
-            }
-
-            refreshListItems();
-
-        }else{
-            Utils.toast(this, "Shelve only applies to timestamped lists");
-        }
+//        //Adapted from:
+//        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+//        // get prompts.xml view
+//        LayoutInflater li = LayoutInflater.from(this);
+//        View promptsView = li.inflate(R.layout.prompt, null);
+//
+//        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+//        tv.setText("Enter listName: ");
+//
+//        android.app.AlertDialog.Builder alertDialogBuilder =
+//                new android.app.AlertDialog.Builder(this);
+//
+//        // set prompts.xml to alertdialog builder
+//        alertDialogBuilder.setView(promptsView);
+//
+//        final EditText userInput = (EditText) promptsView
+//                .findViewById(R.id.editTextDialogUserInput);
+//
+//        userInput.setText(mSynLst.getListName() + "-");
+//        userInput.setSelection(userInput.getText().length());
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//
+//                                // get list name from userInput and move
+//                                String processedName =
+//                                        Utils.processName(
+//                                                userInput.getText().toString());
+//
+//                                SynergyV5Utils.move(mSynLst, position, processedName);
+//
+//                                Utils.toast(getApplicationContext(), "moved to " + processedName);
+//                            }
+//                        })
+//                .setNegativeButton("Cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // create alert dialog
+//        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
     }
 
     private void toggleCompletionStatusAtPosition(int position){
 
-        if(!mSlf.get(position).isCompleted()){
+        Utils.toast(this, "not implemented");
 
-            mSlf.get(position).markCompleted();
-            moveToBottom(position);
-
-        }else{
-
-            mSlf.get(position).markIncomplete();
-            moveToTop(position);
-        }
+//        if(!mSynLst.get(position).isCompleted()){
+//
+//            mSynLst.get(position).markCompleted();
+//            moveToBottom(position);
+//
+//        }else{
+//
+//            mSynLst.get(position).markIncomplete();
+//            moveToTop(position);
+//        }
     }
 
     private void writeItems() {
 
-        if(mSlf != null){
+        if(mSynLst != null){
 
-            mSlf.save(this, NwdDb.getInstance(this));
+            mSynLst.save(this, NwdDb.getInstance(this));
         }
     }
 
@@ -886,7 +785,7 @@ public class SynergyV5ListActivity
     @Override
     protected void readItems(ListView lvItems) {
 
-        mSlf.load(this, NwdDb.getInstance(this));
+        mSynLst.load(this, NwdDb.getInstance(this));
 
         setListViewAdapter(lvItems);
     }
@@ -900,7 +799,7 @@ public class SynergyV5ListActivity
 
         lvItems.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                mSlf.getItems()));
+                mSynLst.getItems()));
     }
 
     private void refreshListItems(){
@@ -916,7 +815,7 @@ public class SynergyV5ListActivity
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
-            mSlf.add(getAddItemIndex(), new SynergyV5ListItem(itemText));
+            mSynLst.add(new SynergyV5ListItem(itemText));
             etNewItem.setText("");
             writeItems();
             refreshListItems();
@@ -927,14 +826,4 @@ public class SynergyV5ListActivity
         }
     }
 
-    private int getAddItemIndex(){
-        //this method is used to add new items above completed items, but still at bottom of list
-        int idx = mSlf.size();
-
-//        while(idx > 0 && mSlf.get(idx - 1).startsWith("completed={"))
-        while(idx > 0 && SynergyV5Utils.listItemIsCompleted(mSlf.get(idx - 1)))
-            idx--;
-
-        return idx;
-    }
 }

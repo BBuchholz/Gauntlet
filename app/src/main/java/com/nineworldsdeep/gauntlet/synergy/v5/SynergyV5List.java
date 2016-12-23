@@ -59,6 +59,7 @@ public class SynergyV5List {
 
     public void move(int currentPosition, int moveToPosition) {
 
+        mItems.add(moveToPosition, mItems.remove(currentPosition));
     }
 
     public boolean hasCategorizedItems() {

@@ -36,10 +36,6 @@ public class SynergyV5ListItem {
 
     }
 
-    public String getCategory() {
-        return null;
-    }
-
     public String getItemValue() {
 
         return mItemValue;

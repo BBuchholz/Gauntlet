@@ -35,7 +35,7 @@ public class AsyncOperationImportSynergyV3ToV5 extends AsyncOperation {
 
             for(SynergyListItem sli : slf.getItems()){
 
-                int position = v5List.getItems().size();
+                int position = v5List.getAllItems().size();
 
                 SynergyV5ListItem v5ListItem =
                         new SynergyV5ListItem(sli.getItem());

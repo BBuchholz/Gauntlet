@@ -2,7 +2,6 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import android.content.Context;
 
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IStatusActivity;
@@ -70,7 +69,7 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
                                                 v5List.getShelvedAt()));
                 synergySubsetEl.appendChild(synergyListEl);
 
-                for(int i = 0; i < v5List.getItems().size(); i++){
+                for(int i = 0; i < v5List.getAllItems().size(); i++){
 
                     Element synergyItemEl = doc.createElement("synergyItem");
                     synergyItemEl.setAttribute("position", Integer.toString(i));

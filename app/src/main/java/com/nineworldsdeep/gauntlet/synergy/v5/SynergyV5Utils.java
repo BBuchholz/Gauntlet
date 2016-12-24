@@ -99,7 +99,19 @@ public class SynergyV5Utils {
         return null;
     }
 
-    public static void move(SynergyV5List mSlf, int position, String fragments) {
+    public static void move(SynergyV5List sourceList,
+                            int sourcePosition,
+                            String processedTargetListName,
+                            NwdDb db,
+                            Context context) {
 
+        SynergyV5ListItem item = sourceList.archive(sourcePosition);
+        SynergyV5List lst = new SynergyV5List(processedTargetListName);
+        //lst.save(context, db); //may need this, testing
+        //activate new item, in case it is already in the db in a different state
+        item.activate();
+        lst.add(item);
+        lst.save(context, db);
+        sourceList.save(context, db);
     }
 }

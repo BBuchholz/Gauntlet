@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.synergy.v5;
 
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
+
 /**
  * Created by brent on 11/4/16.
  */
@@ -25,15 +27,45 @@ public class SynergyV5ListItem {
     }
 
     public boolean isCompleted() {
-        return false;
+
+        return ensureToDo().isCompleted();
     }
 
-    public void markCompleted() {
+    public boolean isActive() {
 
+        if(getToDo() == null){
+
+            return true;
+
+        }else{
+
+            return getToDo().isActive();
+        }
     }
 
-    public void markIncomplete() {
+    public void complete() {
 
+        ensureToDo().setTimeStamps(null, TimeStamp.now(), null);
+    }
+
+    public void activate() {
+
+        ensureToDo().setTimeStamps(TimeStamp.now(), null, null);
+    }
+
+    public void archive() {
+
+        ensureToDo().setTimeStamps(null, null, TimeStamp.now());
+    }
+
+    private SynergyV5ToDo ensureToDo(){
+
+        if(mToDo == null){
+
+            mToDo = new SynergyV5ToDo();
+        }
+
+        return mToDo;
     }
 
     public String getItemValue() {
@@ -92,4 +124,5 @@ public class SynergyV5ListItem {
 
         }
     }
+
 }

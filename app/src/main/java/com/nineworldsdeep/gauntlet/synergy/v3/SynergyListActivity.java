@@ -1025,9 +1025,6 @@ public class SynergyListActivity
 
     private void moveToList(final int position) {
 
-        //Adapted from:
-        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-        // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
 

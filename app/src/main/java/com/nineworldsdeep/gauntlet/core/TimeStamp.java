@@ -57,4 +57,9 @@ public class TimeStamp {
 
         return sdf.parse(yyyy_MM_dd_hh_mm_ss_UTC);
     }
+
+    public static Date now(){
+
+        return new Date();
+    }
 }

@@ -64,4 +64,82 @@ public class SynergyV5ToDo {
         }
 
     }
+
+    public boolean isCompleted() {
+
+        if(mCompletedAt == null){
+
+            return false;
+
+        }else if(mActivatedAt == null){
+
+            return true;
+
+        }else{
+
+            return mCompletedAt.compareTo(mActivatedAt) > 0;
+        }
+    }
+
+    public boolean isActive() {
+
+        if(mActivatedAt == null &&
+                (mCompletedAt != null ||
+                 mArchivedAt != null)){
+
+            //if active is null and either of the other two are non-null,
+            //its not active
+            return false;
+
+        }else{
+
+            boolean activeGreaterThanCompleted = true;
+            boolean activeGreaterThanArchived = true;
+
+            if(mCompletedAt != null){
+
+                activeGreaterThanCompleted =
+                    mActivatedAt.compareTo(mCompletedAt) >= 0;
+            }
+
+            if(mArchivedAt != null){
+
+                activeGreaterThanArchived =
+                    mActivatedAt.compareTo(mArchivedAt) >= 0;
+            }
+
+            return activeGreaterThanCompleted && activeGreaterThanArchived;
+        }
+    }
+
+    public SynergyV5ToDo getCopy() {
+
+
+
+        SynergyV5ToDo newCopy =
+                new SynergyV5ToDo();
+
+        Date newActivated = null;
+        Date newCompleted = null;
+        Date newArchived = null;
+
+        if(mActivatedAt != null){
+
+            newActivated = new Date(mActivatedAt.getTime());
+        }
+
+        if(mCompletedAt != null){
+
+            newCompleted = new Date(mCompletedAt.getTime());
+        }
+
+        if(mArchivedAt != null){
+
+            newArchived = new Date(mArchivedAt.getTime());
+        }
+
+        newCopy.setTimeStamps(newActivated, newCompleted, newArchived);
+
+        return newCopy;
+    }
 }

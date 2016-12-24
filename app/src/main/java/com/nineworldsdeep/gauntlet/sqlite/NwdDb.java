@@ -1735,7 +1735,7 @@ public class NwdDb {
 
         // for each SynergyV5ListItem,
         // do the same (populate item id, ensure, etc.)
-        for(int i = 0; i < synLst.getItems().size(); i++){
+        for(int i = 0; i < synLst.getAllItems().size(); i++){
 
             SynergyV5ListItem sli = synLst.get(i);
             save(context, synLst, sli, i);

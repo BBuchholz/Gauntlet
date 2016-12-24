@@ -7,6 +7,7 @@ import java.util.List;
  * Created by brent on 11/4/16.
  */
 public class SynergyV5Archive {
+
     public SynergyV5Archive(String archiveName) {
 
     }

@@ -205,8 +205,7 @@ public class NwdContract {
             + "BEGIN "
             + "UPDATE " + TABLE_SYNERGY_TO_DO + "  "
                 + "SET " + COLUMN_SYNERGY_TO_DO_CREATED_AT + " = CURRENT_TIMESTAMP,  "
-                       + "" + COLUMN_SYNERGY_TO_DO_UPDATED_AT + " = CURRENT_TIMESTAMP, "
-                       + "" + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " = CURRENT_TIMESTAMP "
+                       + "" + COLUMN_SYNERGY_TO_DO_UPDATED_AT + " = CURRENT_TIMESTAMP "
                 + "WHERE " + TABLE_SYNERGY_TO_DO + "." + COLUMN_SYNERGY_TO_DO_ID + " = NEW." + COLUMN_SYNERGY_TO_DO_ID + "; "
             + "END ";
 

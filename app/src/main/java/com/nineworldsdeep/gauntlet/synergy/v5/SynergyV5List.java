@@ -51,6 +51,7 @@ public class SynergyV5List {
 
     public void archiveOne(SynergyV5ListItem replace, boolean b) {
 
+
     }
 
     public int size() {
@@ -85,9 +86,25 @@ public class SynergyV5List {
         db.load(context, this);
     }
 
-    public List<SynergyV5ListItem> getItems() {
+    public List<SynergyV5ListItem> getAllItems() {
 
         return mItems;
+    }
+
+    public ArrayList<SynergyV5ListItem> getActiveItems() {
+
+        ArrayList<SynergyV5ListItem> filteredItems =
+                new ArrayList<>();
+
+        for(SynergyV5ListItem sli : getAllItems()){
+
+            if(sli.isActive()){
+
+                filteredItems.add(sli);
+            }
+        }
+
+        return filteredItems;
     }
 
     public void add(int position, SynergyV5ListItem sli) {
@@ -159,5 +176,25 @@ public class SynergyV5List {
             }
         }
 
+    }
+
+    public SynergyV5ListItem archive(int position) {
+
+        SynergyV5ListItem currentSli = mItems.get(position);
+
+        //create new item so archiving original will not affect it\
+        SynergyV5ListItem sli = new SynergyV5ListItem(currentSli.getItemValue());
+        sli.setItemId(currentSli.getItemId());
+
+        SynergyV5ToDo toDo = currentSli.getToDo();
+
+        if(toDo != null){
+
+            sli.setToDo(toDo.getCopy());
+        }
+
+        currentSli.archive();
+
+        return sli;
     }
 }

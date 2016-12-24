@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet.synergy.v5;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -680,59 +681,61 @@ public class SynergyV5ListActivity
 
     private void moveToList(final int position) {
 
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
 
-        Utils.toast(this, "not implemented");
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText("Enter listName: ");
 
-//        //Adapted from:
-//        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-//        // get prompts.xml view
-//        LayoutInflater li = LayoutInflater.from(this);
-//        View promptsView = li.inflate(R.layout.prompt, null);
-//
-//        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-//        tv.setText("Enter listName: ");
-//
-//        android.app.AlertDialog.Builder alertDialogBuilder =
-//                new android.app.AlertDialog.Builder(this);
-//
-//        // set prompts.xml to alertdialog builder
-//        alertDialogBuilder.setView(promptsView);
-//
-//        final EditText userInput = (EditText) promptsView
-//                .findViewById(R.id.editTextDialogUserInput);
-//
-//        userInput.setText(mSynLst.getListName() + "-");
-//        userInput.setSelection(userInput.getText().length());
-//
-//        // set dialog message
-//        alertDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton("OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog,int id) {
-//
-//                                // get list name from userInput and move
-//                                String processedName =
-//                                        Utils.processName(
-//                                                userInput.getText().toString());
-//
-//                                SynergyV5Utils.move(mSynLst, position, processedName);
-//
-//                                Utils.toast(getApplicationContext(), "moved to " + processedName);
-//                            }
-//                        })
-//                .setNegativeButton("Cancel",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog,int id) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        // create alert dialog
-//        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // show it
-//        alertDialog.show();
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        userInput.setText(Configuration.getMostRecentMoveToList());
+        userInput.setSelection(userInput.getText().length());
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                // get list name from userInput and move
+                                String processedName =
+                                        Utils.processName(
+                                                userInput.getText().toString());
+
+                                Configuration.setMostRecentMoveToList(processedName);
+
+                                Context context = getApplicationContext();
+
+                                SynergyV5Utils.move(mSynLst,
+                                        position,
+                                        processedName,
+                                        NwdDb.getInstance(context),
+                                        context);
+
+                                Utils.toast(getApplicationContext(), "moved to " + processedName);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     private void toggleCompletionStatusAtPosition(int position){
@@ -781,7 +784,7 @@ public class SynergyV5ListActivity
 
         lvItems.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                mSynLst.getItems()));
+                mSynLst.getActiveItems()));
     }
 
     private void refreshListItems(){
@@ -790,6 +793,7 @@ public class SynergyV5ListActivity
     }
 
     public void onAddItemClick(View view) {
+
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
 
@@ -797,7 +801,10 @@ public class SynergyV5ListActivity
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
-            mSynLst.add(new SynergyV5ListItem(itemText));
+            SynergyV5ListItem newItem = new SynergyV5ListItem(itemText);
+            //activate in case its already in the database in a different status
+            newItem.activate();
+            mSynLst.add(newItem);
             etNewItem.setText("");
             writeItems();
             refreshListItems();

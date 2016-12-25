@@ -125,4 +125,18 @@ public class SynergyV5ListItem {
         }
     }
 
+    public SynergyV5ListItem getCopy() {
+
+        SynergyV5ListItem newSli = new SynergyV5ListItem(getItemValue());
+        //we know the item value will be the same, but we cannot be
+        //sure of list, so we only set the item id for the copy
+        newSli.setItemId(getItemId());
+
+        if(getToDo() != null){
+
+            newSli.setToDo(getToDo().getCopy());
+        }
+
+        return newSli;
+    }
 }

@@ -100,16 +100,19 @@ public class SynergyV5Utils {
     }
 
     public static void move(SynergyV5List sourceList,
-                            int sourcePosition,
+                            SynergyV5ListItem item,
                             String processedTargetListName,
                             NwdDb db,
                             Context context) {
 
-        SynergyV5ListItem item = sourceList.archive(sourcePosition);
         SynergyV5List lst = new SynergyV5List(processedTargetListName);
-        //lst.save(context, db); //may need this, testing
-        //activate new item, in case it is already in the db in a different state
+
+        SynergyV5ListItem toBeArchived =
+                sourceList.getItemByItemValue(item.getItemValue());
+
         item.activate();
+        toBeArchived.archive();
+
         lst.add(item);
         lst.save(context, db);
         sourceList.save(context, db);

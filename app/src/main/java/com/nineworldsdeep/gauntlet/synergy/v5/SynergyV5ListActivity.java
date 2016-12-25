@@ -665,18 +665,34 @@ public class SynergyV5ListActivity
 
     private void moveToLyrics(final int position){
 
-        Utils.toast(this, "not implemented");
-//        SynergyV5Utils.move(mSynLst, position, "Lyrics");
-//        Utils.toast(getApplicationContext(), "moved to Lyrics");
-//        refreshLayout();
+        SynergyV5ListItem sli =
+                mSynLst.getCopyForActivePosition(position);
+
+        SynergyV5Utils.move(mSynLst,
+                sli,
+                "Lyrics",
+                NwdDb.getInstance(this),
+                this);
+
+        Utils.toast(getApplicationContext(), "moved to Lyrics");
+
+        refreshLayout();
     }
 
     private void moveToFragments(final int position){
 
-        Utils.toast(this, "not implemented");
-//        SynergyV5Utils.move(mSynLst, position, "Fragments");
-//        Utils.toast(getApplicationContext(), "moved to Fragments");
-//        refreshLayout();
+        SynergyV5ListItem sli =
+                mSynLst.getCopyForActivePosition(position);
+
+        SynergyV5Utils.move(mSynLst,
+                sli,
+                "Fragments",
+                NwdDb.getInstance(this),
+                this);
+
+        Utils.toast(getApplicationContext(), "moved to Fragments");
+
+        refreshLayout();
     }
 
     private void moveToList(final int position) {
@@ -715,13 +731,19 @@ public class SynergyV5ListActivity
 
                                 Context context = getApplicationContext();
 
+                                SynergyV5ListItem sli =
+                                        mSynLst.getCopyForActivePosition(position);
+
                                 SynergyV5Utils.move(mSynLst,
-                                        position,
+                                        sli,
                                         processedName,
                                         NwdDb.getInstance(context),
                                         context);
 
-                                Utils.toast(getApplicationContext(), "moved to " + processedName);
+                                Utils.toast(getApplicationContext(),
+                                        "moved to " + processedName);
+
+                                refreshLayout();
                             }
                         })
                 .setNegativeButton("Cancel",

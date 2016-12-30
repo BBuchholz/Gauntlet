@@ -1682,29 +1682,7 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public void save(Context context, SynergyV5List synLst) {
-
-//        //populate list id if not set, creating list if !exists
-//        if(synLst.getListId() < 1){
-//
-//            String listName = synLst.getListName();
-//            String activated =
-//                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-//                            synLst.getActivatedAt());
-//            String shelved =
-//                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-//                            synLst.getShelvedAt());
-//
-//            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
-//                    new String[]{listName});
-//
-//            //ensure current timestamps
-//            db.execSQL(
-// NwdContract.SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z,
-//                    new String[]{activated, shelved, listName});
-//
-//            populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
-//        }
+    public void sync(Context context, SynergyV5List synLst) {
 
         String listName = synLst.getListName();
         String activated =
@@ -1738,11 +1716,11 @@ public class NwdDb {
         for(int i = 0; i < synLst.getAllItems().size(); i++){
 
             SynergyV5ListItem sli = synLst.get(i);
-            save(context, synLst, sli, i);
+            sync(context, synLst, sli, i);
         }
     }
 
-    private void save(Context context,
+    private void sync(Context context,
                       SynergyV5List lst,
                       SynergyV5ListItem sli,
                       int position){
@@ -1781,7 +1759,7 @@ public class NwdDb {
                         Integer.toString(sli.getListItemId())
                 });
 
-        //need to check for SynergyToDo and save
+        //need to check for SynergyToDo and sync
         SynergyV5ToDo toDo = sli.getToDo();
 
         if(toDo != null){
@@ -1993,18 +1971,18 @@ public class NwdDb {
         return listNames;
     }
 
-    public void load(Context context, SynergyV5List lst) {
-
-        //calling save() which will insert the list name
-        //if it doesn't exist and will also populate the id.
-        save(context, lst);
-
-        //MOVED LOAD LIST ITEMS TO SAVE METHOD ABOVE
-        //TESTING, MOVE BACK IF PROBLEMS
-
-//        //resolve activateAt and shelvedAt values
-//        synergyV5PopulateListTimeStamps(context, lst);
-    }
+//    public void load(Context context, SynergyV5List lst) {
+//
+//        //calling sync() which will insert the list name
+//        //if it doesn't exist and will also populate the id.
+//        sync(context, lst);
+//
+//        //MOVED LOAD LIST ITEMS TO SAVE METHOD ABOVE
+//        //TESTING, MOVE BACK IF PROBLEMS
+//
+////        //resolve activateAt and shelvedAt values
+////        synergyV5PopulateListTimeStamps(context, lst);
+//    }
 
     public void synergyV5PopulateListItems(Context c,
                                            SynergyV5List lst) {

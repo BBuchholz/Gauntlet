@@ -123,7 +123,7 @@ public class SynergyV5TemplatesActivity extends AppCompatActivity {
             SynergyV5List newList =
                     SynergyV5Utils.generateFromTemplate(templateName,
                             timestampedListName);
-            newList.save(this, NwdDb.getInstance(this));
+            newList.sync(this, NwdDb.getInstance(this));
             Utils.toast(getApplicationContext(), timestampedListName + " created");
         }
 

@@ -94,7 +94,7 @@ public class TapestryNamedNode {
         // NOTE:
         //
         // loadLinks should stay privately accessible, as an
-        // empty node which then calls save() would
+        // empty node which then calls sync() would
         // overwrite everything.
         // thus we always want to loadToDbFromFile the items
         // in the constructor
@@ -176,7 +176,7 @@ public class TapestryNamedNode {
     public void save() {
 
         if(isJunctionNode()){
-            return; //disable save for junction nodes
+            return; //disable sync for junction nodes
         }
 
         try{
@@ -195,7 +195,7 @@ public class TapestryNamedNode {
 
         }catch (Exception ex){
 
-            Utils.log("TapestryNode.save() error: " + ex.getMessage());
+            Utils.log("TapestryNode.sync() error: " + ex.getMessage());
         }
     }
 

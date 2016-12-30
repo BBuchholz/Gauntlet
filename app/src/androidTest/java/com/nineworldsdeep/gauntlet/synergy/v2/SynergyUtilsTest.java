@@ -54,7 +54,7 @@ public class SynergyUtilsTest extends TestCase {
         queueFile.add("::Testing:: - Test item 2");
         queueFile.add("Test item 3");
 
-        //save test data
+        //sync test data
         queueFile.save();
 
         //push

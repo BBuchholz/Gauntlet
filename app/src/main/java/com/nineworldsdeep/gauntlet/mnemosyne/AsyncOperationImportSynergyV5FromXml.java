@@ -11,13 +11,9 @@ import com.nineworldsdeep.gauntlet.xml.Xml;
 import com.nineworldsdeep.gauntlet.xml.XmlImporter;
 
 import org.apache.commons.io.FilenameUtils;
-import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by brent on 10/5/16.
@@ -54,7 +50,7 @@ public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
 
                     publishProgress("saving list [" + lst.getListName() + "]");
 
-                    lst.save(ctx, db);
+                    lst.sync(ctx, db);
                 }
 
             } catch (Exception ex) {

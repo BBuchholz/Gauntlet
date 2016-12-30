@@ -101,7 +101,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                                 "error setting display name: " +
                                         e.getMessage());
                                     }
-                                    //DisplayNameIndex.getInstance().save();
+                                    //DisplayNameIndex.getInstance().sync();
                                 }
                             })
                     .setNegativeButton("Cancel",

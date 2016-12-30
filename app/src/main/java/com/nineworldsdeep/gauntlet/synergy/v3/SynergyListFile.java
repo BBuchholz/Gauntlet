@@ -78,7 +78,7 @@ public class SynergyListFile {
 
         }catch(IOException ex){
 
-            Utils.log("save error: " + ex.getMessage());
+            Utils.log("sync error: " + ex.getMessage());
         }
     }
 

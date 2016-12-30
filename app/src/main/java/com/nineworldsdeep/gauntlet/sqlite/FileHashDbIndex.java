@@ -48,7 +48,7 @@ public class FileHashDbIndex {
 
     private static void saveToFile(HashMap<String, String> pathToHashMap) {
 
-        //save a copy with the db files included
+        //sync a copy with the db files included
         FileHashIndexFile fhif = new FileHashIndexFile();
 
         for(Map.Entry<String,String> ent : pathToHashMap.entrySet()){

@@ -49,7 +49,7 @@ public class TagIndex {
 //        pathToTagString.put(path, tags);
 //    }
 //
-//    public void save() {
+//    public void sync() {
 //
 //        TagIndexFile tif = new TagIndexFile();
 //
@@ -58,7 +58,7 @@ public class TagIndex {
 //            tif.addTagString(ent.getKey(), ent.getValue());
 //        }
 //
-//        tif.save();
+//        tif.sync();
 //    }
 //
 //    public void load(){

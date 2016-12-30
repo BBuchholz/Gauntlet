@@ -87,7 +87,7 @@ public class DisplayNameDbIndex {
 
     private static void saveToFile(HashMap<String, String> pathToNameMap) {
 
-        //save a copy with the db files included
+        //sync a copy with the db files included
         DisplayNameIndexFile dnif = new DisplayNameIndexFile();
 
         for(Map.Entry<String,String> ent : pathToNameMap.entrySet()){
@@ -114,7 +114,7 @@ public class DisplayNameDbIndex {
 //        db.linkFileToDisplayName(path, displayName);
 //    }
 
-//    public void save() {
+//    public void sync() {
 //
 //        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
 //
@@ -123,7 +123,7 @@ public class DisplayNameDbIndex {
 //            dnif.addDisplayName(ent.getValue(), ent.getKey());
 //        }
 //
-//        dnif.save();
+//        dnif.sync();
 //
 //    }
 

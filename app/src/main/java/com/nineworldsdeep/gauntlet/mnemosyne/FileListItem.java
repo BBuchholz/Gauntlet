@@ -95,7 +95,7 @@ public class FileListItem {
         processPath(db);
     }
 
-    //TODO: make private, use set and save
+    //TODO: make private, use set and sync
     public void setDisplayName(String displayName, NwdDb db) throws Exception {
 
         db.linkFileToDisplayName(file.getAbsolutePath(), displayName);

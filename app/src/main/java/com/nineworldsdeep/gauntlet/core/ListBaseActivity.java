@@ -59,7 +59,7 @@ public abstract class ListBaseActivity extends DbBaseActivity {
         ListView lvItems = getListView();
 
         // http://stackoverflow.com/a/8276140/670768
-        //save position info
+        //sync position info
         int index = lvItems.getFirstVisiblePosition();
         View v = lvItems.getChildAt(0);
         int top = (v == null) ? 0 : v.getTop();

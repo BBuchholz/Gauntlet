@@ -309,7 +309,7 @@ public class SynergyListFileTest extends TestCase {
         assertFalse(saf.getItems().contains(sli2));
         assertFalse(saf.getItems().contains(sli3));
 
-        //slf.archiveOne(sli2); //should save internally...
+        //slf.archiveOne(sli2); //should sync internally...
 
         saf.loadItems();      //...so this should include the newly archived item
 

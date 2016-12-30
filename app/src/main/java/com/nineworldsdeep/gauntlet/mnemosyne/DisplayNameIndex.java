@@ -50,7 +50,7 @@ public class DisplayNameIndex {
 //        pathToName.put(path, displayName);
 //    }
 //
-//    public void save() {
+//    public void sync() {
 //
 //        DisplayNameIndexFile dnif = new DisplayNameIndexFile();
 //
@@ -59,7 +59,7 @@ public class DisplayNameIndex {
 //            dnif.addDisplayName(ent.getValue(), ent.getKey());
 //        }
 //
-//        dnif.save();
+//        dnif.sync();
 //
 //    }
 //

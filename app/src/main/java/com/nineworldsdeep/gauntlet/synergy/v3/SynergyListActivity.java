@@ -660,7 +660,7 @@ public class SynergyListActivity
 ////
 ////                                        ConfigFile f = new ConfigFile();
 ////                                        f.setDeviceName(name);
-////                                        f.save();
+////                                        f.sync();
 ////                                    }
 ////                                })
 ////                        .setNegativeButton("Cancel",
@@ -725,7 +725,7 @@ public class SynergyListActivity
 ////
 ////                                        ConfigFile f = new ConfigFile();
 ////                                        f.setDeviceName(name);
-////                                        f.save();
+////                                        f.sync();
 ////                                    }
 ////                                })
 ////                        .setNegativeButton("Cancel",

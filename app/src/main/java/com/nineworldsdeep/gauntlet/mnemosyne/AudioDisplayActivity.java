@@ -176,7 +176,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 //                                                                .toString(),
 //                                                        NwdDb.getInstance(AudioDisplayActivity.this));
 //
-//                                        //DisplayNameIndex.getInstance().save();
+//                                        //DisplayNameIndex.getInstance().sync();
 //                                        updateMediaInfo();
 //
 //                                    } catch (Exception e) {
@@ -233,7 +233,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 //                                    // edit text
 //
 ////                                    ili.setTagString(userInput.getItem().toString());
-////                                    TagIndex.getInstance().save();
+////                                    TagIndex.getInstance().sync();
 //                                    try {
 //
 //                                        NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);
@@ -346,7 +346,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                                                     .toString(),
                                                             NwdDb.getInstance(AudioDisplayActivity.this));
 
-                                            //DisplayNameIndex.getInstance().save();
+                                            //DisplayNameIndex.getInstance().sync();
                                             updateMediaInfo();
 
                                         } catch (Exception e) {
@@ -403,7 +403,7 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
                                         // edit text
 
     //                                    ili.setTagString(userInput.getItem().toString());
-    //                                    TagIndex.getInstance().save();
+    //                                    TagIndex.getInstance().sync();
                                         try {
 
                                             NwdDb db = NwdDb.getInstance(AudioDisplayActivity.this);

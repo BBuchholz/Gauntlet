@@ -526,7 +526,7 @@ public class ImageListV2Activity extends AppCompatActivity {
                 //enough that their hashes change often.
                 int count = //fhi.countAndStoreSHA1Hashes(f, 0, false);
                         FileHashDbIndex.countAndStoreSHA1Hashes(f, false, db);
-//                fhi.save();
+//                fhi.sync();
 
                 if(count != 1){
 
@@ -568,7 +568,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 //                    count++;
 //                }
 //
-//                fhi.save();
+//                fhi.sync();
 //                String msg = count + " file hashes stored";
 //
 //                Utils.toast(this, msg);
@@ -585,7 +585,7 @@ public class ImageListV2Activity extends AppCompatActivity {
 //                String hash = Utils.computeSHA1(f.getAbsolutePath());
 //                FileHashIndex fhi = FileHashIndex.getInstance();
 //                fhi.storeHash(f.getAbsolutePath(), hash);
-//                fhi.save();
+//                fhi.sync();
 //
 //                Utils.toast(this, "hash stored for file");
 //

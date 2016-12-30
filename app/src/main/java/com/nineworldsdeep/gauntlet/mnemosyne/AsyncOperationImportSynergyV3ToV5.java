@@ -43,7 +43,7 @@ public class AsyncOperationImportSynergyV3ToV5 extends AsyncOperation {
                 v5List.add(position, v5ListItem);
             }
 
-            v5List.save(statusEnabledActivity.getAsActivity(), db);
+            v5List.sync(statusEnabledActivity.getAsActivity(), db);
         }
     }
 }

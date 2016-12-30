@@ -57,7 +57,7 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
                 SynergyV5List v5List = new SynergyV5List(listName);
 
-                v5List.load(ctx, db);
+                v5List.sync(ctx, db);
 
                 Element synergyListEl = doc.createElement("synergyList");
                 synergyListEl.setAttribute("listName", v5List.getListName());

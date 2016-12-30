@@ -419,7 +419,7 @@ public class SynergyV5ListActivity
                     // need to specify false for archiveOne() or else
                     // remove gets called twice if sliList has only one item
                     mSynLst.archiveOne(mSynLst.replace(pos, sliList), false);
-                    mSynLst.save(this, NwdDb.getInstance(this));
+                    mSynLst.sync(this, NwdDb.getInstance(this));
                     refreshListItems();
 
                 }
@@ -445,7 +445,7 @@ public class SynergyV5ListActivity
                 // need to specify false for archiveOne() or else
                 // remove gets called twice if sliList has only one item
                 mSynLst.archiveOne(mSynLst.replace(pos, lst), false);
-                mSynLst.save(this, NwdDb.getInstance(this));
+                mSynLst.sync(this, NwdDb.getInstance(this));
                 refreshListItems();
             }
         }
@@ -461,7 +461,7 @@ public class SynergyV5ListActivity
         int moveTo = mSynLst.size() - 1;
 
         mSynLst.move(pos, moveTo);
-        mSynLst.save(this, NwdDb.getInstance(this));
+        mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
 
@@ -477,7 +477,7 @@ public class SynergyV5ListActivity
         }
 
         mSynLst.move(pos, moveTo);
-        mSynLst.save(this, NwdDb.getInstance(this));
+        mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -487,7 +487,7 @@ public class SynergyV5ListActivity
         int moveTo = 0;
 
         mSynLst.move(pos, moveTo);
-        mSynLst.save(this, NwdDb.getInstance(this));
+        mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -502,7 +502,7 @@ public class SynergyV5ListActivity
         }
 
         mSynLst.move(pos, moveTo);
-        mSynLst.save(this, NwdDb.getInstance(this));
+        mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -780,7 +780,7 @@ public class SynergyV5ListActivity
 
         if(mSynLst != null){
 
-            mSynLst.save(this, NwdDb.getInstance(this));
+            mSynLst.sync(this, NwdDb.getInstance(this));
         }
     }
 
@@ -792,7 +792,7 @@ public class SynergyV5ListActivity
     @Override
     protected void readItems(ListView lvItems) {
 
-        mSynLst.load(this, NwdDb.getInstance(this));
+        mSynLst.sync(this, NwdDb.getInstance(this));
 
         setListViewAdapter(lvItems);
     }

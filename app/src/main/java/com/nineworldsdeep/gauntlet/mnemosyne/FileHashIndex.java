@@ -52,10 +52,10 @@ public class FileHashIndex {
 //
 //        String path = file.getAbsolutePath();
 //        storeHash(path, Utils.computeSHA1(path));
-//        save();
+//        sync();
 //    }
 //
-//    public void save() {
+//    public void sync() {
 //
 //        FileHashIndexFile fhif = new FileHashIndexFile();
 //
@@ -64,7 +64,7 @@ public class FileHashIndex {
 //            fhif.addFileHash(ent.getKey(), ent.getValue());
 //        }
 //
-//        fhif.save();
+//        fhif.sync();
 //    }
 //
 //    public void load(){

@@ -1,7 +1,6 @@
 package com.nineworldsdeep.gauntlet.synergy.v5;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -114,7 +113,7 @@ public class SynergyV5Utils {
         toBeArchived.archive();
 
         lst.add(item);
-        lst.save(context, db);
-        sourceList.save(context, db);
+        lst.sync(context, db);
+        sourceList.sync(context, db);
     }
 }

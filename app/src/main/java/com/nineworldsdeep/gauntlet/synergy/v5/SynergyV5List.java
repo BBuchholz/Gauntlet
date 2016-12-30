@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,9 +29,9 @@ public class SynergyV5List {
         mPositionToActiveItem = new HashMap<>();
     }
 
-    public void save(Context context, NwdDb db) {
+    public void sync(Context context, NwdDb db) {
 
-        db.save(context, this);
+        db.sync(context, this);
     }
 
     public boolean exists() {
@@ -86,10 +84,10 @@ public class SynergyV5List {
 
     }
 
-    public void load(Context context, NwdDb db) {
-
-        db.load(context, this);
-    }
+//    public void load(Context context, NwdDb db) {
+//
+//        db.sync(context, this);
+//    }
 
     public List<SynergyV5ListItem> getAllItems() {
 

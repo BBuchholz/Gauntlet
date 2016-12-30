@@ -24,7 +24,6 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListOrdering;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -181,13 +180,13 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 //            SynergyListFile slf =
 //                    new SynergyListFile(itemText);
 //            slf.load(); //just in case it already exists
-//            slf.save();
+//            slf.sync();
 //            etNewItem.setText("");
 //            readItems();
 
             SynergyV5List synLst = new SynergyV5List(itemText);
 
-            NwdDb.getInstance(this).save(this, synLst);
+            NwdDb.getInstance(this).sync(this, synLst);
 
             etNewItem.setText("");
 

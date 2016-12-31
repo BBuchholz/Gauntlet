@@ -84,23 +84,15 @@ public class SynergyV5ToDo {
     public boolean isActive() {
 
         if(mActivatedAt == null &&
-                (mCompletedAt != null ||
-                 mArchivedAt != null)){
+                (mArchivedAt != null)){
 
-            //if active is null and either of the other two are non-null,
+            //if active is null and archive is non-null,
             //its not active
             return false;
 
         }else{
 
-            boolean activeGreaterThanCompleted = true;
             boolean activeGreaterThanArchived = true;
-
-            if(mCompletedAt != null){
-
-                activeGreaterThanCompleted =
-                    mActivatedAt.compareTo(mCompletedAt) >= 0;
-            }
 
             if(mArchivedAt != null){
 
@@ -108,7 +100,7 @@ public class SynergyV5ToDo {
                     mActivatedAt.compareTo(mArchivedAt) >= 0;
             }
 
-            return activeGreaterThanCompleted && activeGreaterThanArchived;
+            return activeGreaterThanArchived;
         }
     }
 

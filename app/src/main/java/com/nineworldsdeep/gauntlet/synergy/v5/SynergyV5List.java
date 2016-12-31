@@ -19,14 +19,15 @@ public class SynergyV5List {
     private Date mActivatedAt;
     private Date mShelvedAt;
     private ArrayList<SynergyV5ListItem> mItems;
-    private HashMap<Integer, SynergyV5ListItem> mPositionToActiveItem;
+    //private HashMap<Integer, SynergyV5ListItem> mPositionToActiveItem;
 
     public SynergyV5List(String listName) {
 
         mListName = listName;
         mListId = -1;
         mItems = new ArrayList<>();
-        mPositionToActiveItem = new HashMap<>();
+
+        //mPositionToActiveItem = new HashMap<>();
     }
 
     public void sync(Context context, NwdDb db) {
@@ -99,7 +100,7 @@ public class SynergyV5List {
         ArrayList<SynergyV5ListItem> filteredItems =
                 new ArrayList<>();
 
-        mPositionToActiveItem.clear();
+//        mPositionToActiveItem.clear();
 
         int currentIndex = -1;
 
@@ -107,42 +108,90 @@ public class SynergyV5List {
 
             if(sli.isActive()){
 
-                currentIndex++;
+                //if completed, put to bottom
+                if(sli.isCompleted()){
 
-                filteredItems.add(currentIndex, sli);
+                    filteredItems.add(filteredItems.size(), sli);
 
-                mPositionToActiveItem.put(currentIndex, sli);
+                    // wrong index: mPositionToActiveItem.put(filteredItems.size(), sli);
+
+                }else {
+
+                    // we only increment if not completed, to keep
+                    // track of where the completed items start
+
+                    currentIndex++;
+                    filteredItems.add(currentIndex, sli);
+
+//                    mPositionToActiveItem.put(currentIndex, sli);
+                }
             }
         }
 
         return filteredItems;
     }
 
-    public SynergyV5ListItem getCopyForActivePosition(int position){
+    public SynergyV5ListItem getCopyForItemValue(String itemValue){
 
-        return mPositionToActiveItem.get(position).getCopy();
+        SynergyV5ListItem item = getByItemValue(itemValue);
+
+        if(item != null){
+
+            item = item.getCopy();
+        }
+
+        return item;
     }
 
-    public void add(int position, SynergyV5ListItem sli) {
-
-        boolean exists = false;
+    public SynergyV5ListItem getByItemValue(String itemValue){
 
         for(SynergyV5ListItem existingListItem : mItems){
 
             String existingValue = existingListItem.getItemValue();
 
-            if(existingValue.equalsIgnoreCase(sli.getItemValue())){
+            if(existingValue.equalsIgnoreCase(itemValue)){
 
-                exists = true;
-                existingListItem.merge(sli);
+                return existingListItem;
             }
         }
 
-        if(!exists){
+        return null;
+    }
+
+//    public SynergyV5ListItem getCopyForActivePosition(int position){
+//
+//        return mPositionToActiveItem.get(position).getCopy();
+//    }
+
+    public void add(int position, SynergyV5ListItem sli) {
+
+        SynergyV5ListItem existingItem = getByItemValue(sli.getItemValue());
+
+        if(existingItem != null){
+
+            existingItem.merge(sli);
+
+        }else{
 
             mItems.add(position, sli);
-
         }
+
+//        for(SynergyV5ListItem existingListItem : mItems){
+//
+//            String existingValue = existingListItem.getItemValue();
+//
+//            if(existingValue.equalsIgnoreCase(sli.getItemValue())){
+//
+//                exists = true;
+//                existingListItem.merge(sli);
+//            }
+//        }
+//
+//        if(!exists){
+//
+//            mItems.add(position, sli);
+//
+//        }
     }
 
     public void add(SynergyV5ListItem v5ListItem){

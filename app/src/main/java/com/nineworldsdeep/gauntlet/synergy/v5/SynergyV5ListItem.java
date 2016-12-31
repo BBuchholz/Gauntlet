@@ -33,14 +33,14 @@ public class SynergyV5ListItem {
 
     public boolean isActive() {
 
-        if(getToDo() == null){
+        boolean active = true;
 
-            return true;
+        if(getToDo() != null){
 
-        }else{
-
-            return getToDo().isActive();
+            active = getToDo().isActive();
         }
+
+        return active;
     }
 
     public void complete() {

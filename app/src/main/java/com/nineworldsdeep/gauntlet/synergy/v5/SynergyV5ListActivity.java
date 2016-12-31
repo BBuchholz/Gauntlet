@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.synergy.v5;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,6 +31,8 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.R.attr.data;
 
 public class SynergyV5ListActivity
         extends ListBaseActivity{
@@ -53,6 +57,7 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
 
     private SynergyV5List mSynLst;
+    private ArrayList<SynergyV5ListItem> mActiveItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class SynergyV5ListActivity
         setTitle(listName);
 
         mSynLst = new SynergyV5List(listName);
+        mActiveItems = new ArrayList<>();
 
         refreshLayout();
     }
@@ -142,14 +148,14 @@ public class SynergyV5ListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = mSynLst.get(info.position).getItemValue();
+        String title = mActiveItems.get(info.position).getItemValue();
 
         menu.setHeaderTitle(title);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
         Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
-                .matcher(mSynLst.get(info.position).getItemValue());
+                .matcher(mActiveItems.get(info.position).getItemValue());
 
         if (vmMatcher.find()) {
 
@@ -161,7 +167,7 @@ public class SynergyV5ListActivity
         }
 
         Matcher imgMatcher = Pattern.compile("\\(\\bhas Image: \\d{4,14}\\b\\)")
-            .matcher(mSynLst.get(info.position).getItemValue());
+            .matcher(mActiveItems.get(info.position).getItemValue());
 
         if (imgMatcher.find()) {
 
@@ -315,7 +321,7 @@ public class SynergyV5ListActivity
 
     private void editItem(int position) {
 
-        Utils.toast(this, "not implemented");
+        Utils.toast(this, "in progress");
 //        Intent intent = new Intent(this, SynergyV5EditItemActivity.class);
 //
 //        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
@@ -329,7 +335,7 @@ public class SynergyV5ListActivity
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mSynLst.get(position).getItemValue());
+                        .extractTimeStampFilters(mActiveItems.get(position).getItemValue());
 
         Intent intent = new Intent(this, AudioListV2Activity.class);
 
@@ -358,7 +364,7 @@ public class SynergyV5ListActivity
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mSynLst.get(position).getItemValue());
+                        .extractTimeStampFilters(mActiveItems.get(position).getItemValue());
 
         Intent intent = new Intent(this, ImageListV2Activity.class);
 
@@ -385,7 +391,7 @@ public class SynergyV5ListActivity
 
     private void splitItem(int position) {
 
-        Utils.toast(this, "not implemented");
+        Utils.toast(this, "in progress");
 //        Intent intent = new Intent(this, SynergyV5SplitItemActivity.class);
 //
 //        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
@@ -606,7 +612,7 @@ public class SynergyV5ListActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         SynergyV5Utils.archive(mSynLst.getListName(), expired);
-                        Utils.toast(getApplicationContext(), "tasks archived");
+                        Utils.toast(getApplicationContext(), "in progress");
                         //readItems(mSynLst.getListName());
                         readItems();
                     }
@@ -665,34 +671,46 @@ public class SynergyV5ListActivity
 
     private void moveToLyrics(final int position){
 
-        SynergyV5ListItem sli =
-                mSynLst.getCopyForActivePosition(position);
+        SynergyV5ListItem itemAtPosition =
+                mActiveItems.get(position);
 
-        SynergyV5Utils.move(mSynLst,
-                sli,
-                "Lyrics",
-                NwdDb.getInstance(this),
-                this);
+        if(itemAtPosition != null) {
 
-        Utils.toast(getApplicationContext(), "moved to Lyrics");
+            SynergyV5ListItem sli =
+                    mSynLst.getCopyForItemValue(itemAtPosition.getItemValue());
 
-        refreshLayout();
+            SynergyV5Utils.move(mSynLst,
+                    sli,
+                    "Lyrics",
+                    NwdDb.getInstance(this),
+                    this);
+
+            Utils.toast(getApplicationContext(), "moved to Lyrics");
+
+            refreshLayout();
+        }
     }
 
     private void moveToFragments(final int position){
 
-        SynergyV5ListItem sli =
-                mSynLst.getCopyForActivePosition(position);
+        SynergyV5ListItem itemAtPosition =
+                mActiveItems.get(position);
 
-        SynergyV5Utils.move(mSynLst,
-                sli,
-                "Fragments",
-                NwdDb.getInstance(this),
-                this);
+        if(itemAtPosition != null) {
 
-        Utils.toast(getApplicationContext(), "moved to Fragments");
+            SynergyV5ListItem sli =
+                    mSynLst.getCopyForItemValue(itemAtPosition.getItemValue());
 
-        refreshLayout();
+            SynergyV5Utils.move(mSynLst,
+                    sli,
+                    "Fragments",
+                    NwdDb.getInstance(this),
+                    this);
+
+            Utils.toast(getApplicationContext(), "moved to Fragments");
+
+            refreshLayout();
+        }
     }
 
     private void moveToList(final int position) {
@@ -731,19 +749,31 @@ public class SynergyV5ListActivity
 
                                 Context context = getApplicationContext();
 
-                                SynergyV5ListItem sli =
-                                        mSynLst.getCopyForActivePosition(position);
+                                SynergyV5ListItem itemAtPosition =
+                                        mActiveItems.get(position);
 
-                                SynergyV5Utils.move(mSynLst,
-                                        sli,
-                                        processedName,
-                                        NwdDb.getInstance(context),
-                                        context);
+                                if(itemAtPosition != null) {
 
-                                Utils.toast(getApplicationContext(),
-                                        "moved to " + processedName);
+                                    SynergyV5ListItem sli =
+                                            mSynLst.getCopyForItemValue(
+                                                    itemAtPosition.getItemValue());
 
-                                refreshLayout();
+                                    SynergyV5Utils.move(mSynLst,
+                                            sli,
+                                            processedName,
+                                            NwdDb.getInstance(context),
+                                            context);
+
+                                    Utils.toast(getApplicationContext(),
+                                            "moved to " + processedName);
+
+                                    refreshLayout();
+
+                                }else{
+
+                                    Utils.toast(getApplicationContext(),
+                                            "item null");
+                                }
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -762,7 +792,20 @@ public class SynergyV5ListActivity
 
     private void toggleCompletionStatusAtPosition(int position){
 
-        Utils.toast(this, "not implemented");
+        SynergyV5ListItem item = mActiveItems.get(position);
+
+        if(item != null && item.isCompleted()){
+
+            item.activate();
+
+        }else{
+
+            item.complete();
+        }
+
+        mSynLst.sync(this, NwdDb.getInstance(this));
+
+        refreshLayout();
 
 //        if(!mSynLst.get(position).isCompleted()){
 //
@@ -804,9 +847,37 @@ public class SynergyV5ListActivity
 
     private void setListViewAdapter(ListView lvItems) {
 
-        lvItems.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                mSynLst.getActiveItems()));
+        mActiveItems = mSynLst.getActiveItems();
+
+        final ArrayAdapter adapter =
+                new ArrayAdapter(this,
+                        android.R.layout.simple_list_item_1,
+                        mActiveItems){
+
+            public View getView(int position, View convertView, ViewGroup parent){
+
+                SynergyV5ListItem currentItem = mActiveItems.get(position);
+
+                TextView txtView = new TextView(getContext());
+                txtView.setText(currentItem.getItemValue());
+                txtView.setTextSize(18);
+                txtView.setPadding(15,15,15,15);
+
+                if(currentItem.isCompleted()){
+
+                    txtView.setPaintFlags(
+                            Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                }
+
+                return txtView;
+            }
+        };
+
+        lvItems.setAdapter(adapter);
+
+//        lvItems.setAdapter(new ArrayAdapter<>(this,
+//                android.R.layout.simple_list_item_1,
+//                mSynLst.getActiveItems()));
     }
 
     private void refreshListItems(){

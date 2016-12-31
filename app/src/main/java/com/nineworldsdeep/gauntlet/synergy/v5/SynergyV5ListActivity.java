@@ -462,27 +462,18 @@ public class SynergyV5ListActivity
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
         }
     }
+
     private void moveToBottom(int pos) {
 
-        int moveTo = mSynLst.size() - 1;
-
-        mSynLst.move(pos, moveTo);
+        mSynLst.moveToBottom(mActiveItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
-
     }
 
     private void moveDown(int pos) {
 
-        int moveTo = pos + 1;
-
-        if(moveTo > mSynLst.size() - 1){
-
-            moveTo = mSynLst.size() - 1;
-        }
-
-        mSynLst.move(pos, moveTo);
+        mSynLst.moveDown(mActiveItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -490,9 +481,7 @@ public class SynergyV5ListActivity
 
     private void moveToTop(int pos) {
 
-        int moveTo = 0;
-
-        mSynLst.move(pos, moveTo);
+        mSynLst.moveToTop(mActiveItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -500,14 +489,7 @@ public class SynergyV5ListActivity
 
     private void moveUp(int pos) {
 
-        int moveTo = pos - 1;
-
-        if(moveTo < 0){
-
-            moveTo = 0;
-        }
-
-        mSynLst.move(pos, moveTo);
+        mSynLst.moveUp(mActiveItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();

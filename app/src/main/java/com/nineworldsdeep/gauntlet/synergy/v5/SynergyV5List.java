@@ -63,9 +63,94 @@ public class SynergyV5List {
         return mItems.size();
     }
 
-    public void move(int currentPosition, int moveToPosition) {
+    //this stays private, doesn't account for item status
+    private void move(int currentPosition, int moveToPosition) {
 
         mItems.add(moveToPosition, mItems.remove(currentPosition));
+    }
+
+    public void moveToTop(String itemValue){
+
+        int idx = getItemPositionByItemValue(itemValue);
+
+        if(idx > -1){
+
+            move(idx, 0);
+        }
+    }
+
+    public void moveToBottom(String itemValue){
+
+        int idx = getItemPositionByItemValue(itemValue);
+
+        if(idx > -1){
+
+            move(idx, mItems.size() - 1);
+        }
+    }
+
+    public void moveDown(String itemValue){
+
+        int idx = getItemPositionByItemValue(itemValue);
+
+        int nextIdx = mItems.size() - 1;
+
+        if(idx > -1){
+
+            SynergyV5ListItem found = mItems.get(idx);
+
+            for(int i = mItems.size() - 1; i > -1; i--){
+
+                SynergyV5ListItem itm = mItems.get(i);
+
+                if(itm.getItemValue().equalsIgnoreCase(found.getItemValue())){
+
+                    //reached item to move down
+                    break;
+                }
+
+                if(i >= idx &&
+                   itm.isCompleted() == found.isCompleted() &&
+                   itm.isActive() == found.isActive()){
+
+                    nextIdx = i;
+                }
+            }
+        }
+
+        move(idx, nextIdx);
+    }
+
+    public void moveUp(String itemValue){
+
+        int idx = getItemPositionByItemValue(itemValue);
+
+        int prevIdx = 0;
+
+        if(idx > -1){
+
+            SynergyV5ListItem found = mItems.get(idx);
+
+            for(int i = 0; i < mItems.size(); i++){
+
+                SynergyV5ListItem itm = mItems.get(i);
+
+                if(itm.getItemValue().equalsIgnoreCase(found.getItemValue())){
+
+                    //reached item to move up
+                    break;
+                }
+
+                if(i <= idx &&
+                   itm.isCompleted() == found.isCompleted() &&
+                   itm.isActive() == found.isActive()){
+
+                    prevIdx = i;
+                }
+            }
+        }
+
+        move(idx, prevIdx);
     }
 
     public boolean hasCategorizedItems() {
@@ -145,17 +230,39 @@ public class SynergyV5List {
 
     public SynergyV5ListItem getByItemValue(String itemValue){
 
-        for(SynergyV5ListItem existingListItem : mItems){
+//        for(SynergyV5ListItem existingListItem : mItems){
+//
+//            String existingValue = existingListItem.getItemValue();
+//
+//            if(existingValue.equalsIgnoreCase(itemValue)){
+//
+//                return existingListItem;
+//            }
+//        }
 
-            String existingValue = existingListItem.getItemValue();
+        int idx = getItemPositionByItemValue(itemValue);
 
-            if(existingValue.equalsIgnoreCase(itemValue)){
+        if(idx > -1){
 
-                return existingListItem;
-            }
+            return mItems.get(idx);
         }
 
         return null;
+    }
+
+    private int getItemPositionByItemValue(String itemValue){
+
+        for(int i = 0; i < mItems.size(); i++){
+
+            String existingValue = mItems.get(i).getItemValue();
+
+            if(existingValue.equalsIgnoreCase(itemValue)){
+
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 //    public SynergyV5ListItem getCopyForActivePosition(int position){

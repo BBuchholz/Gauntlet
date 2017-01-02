@@ -55,6 +55,7 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_OPEN_VM_AUDIO = 16;
     private static final int MENU_CONTEXT_OPEN_MEDIA_IMAGES = 17;
     private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
+    private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 19;
 
     private SynergyV5List mSynLst;
     private ArrayList<SynergyV5ListItem> mActiveItems;
@@ -153,6 +154,8 @@ public class SynergyV5ListActivity
         menu.setHeaderTitle(title);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD, Menu.NONE, "Copy itemValue to Clipboard");
 
         Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
                 .matcher(mActiveItems.get(info.position).getItemValue());
@@ -314,9 +317,25 @@ public class SynergyV5ListActivity
 
                 return true;
 
+            case MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD:
+
+                copyListNameToClipboard(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void copyListNameToClipboard(int position) {
+
+        String text = mActiveItems.get(position).getItemValue();
+        String label = "synergy-list-name";
+
+        SynergyV5Utils.copyToClipboard(this, label, text);
+
+        Utils.toast(this, "[" + text + "] copied to clipboard.");
     }
 
     private void editItem(int position) {

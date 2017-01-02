@@ -341,7 +341,7 @@ public class SynergyListActivity
         }
     }
 
-        private void copyListNameToClipboard(int position) {
+    private void copyListNameToClipboard(int position) {
 
         String text = mSlf.get(position).getItem();
         String label = "synergy-list-name";

@@ -245,6 +245,11 @@ public class Configuration {
         return getDirectoryStoragePath("/Download");
     }
 
+    public static File getMemesDirectory() {
+
+        return getDirectoryStoragePath("/NWD-MEDIA/images/memes");
+    }
+
     public static File getTapestryDirectory() {
 
         return getDirectoryStoragePath("/NWD/tapestry");

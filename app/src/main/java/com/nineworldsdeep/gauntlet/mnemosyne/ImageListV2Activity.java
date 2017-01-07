@@ -44,6 +44,7 @@ public class ImageListV2Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS = 4;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 5;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_MEMES = 6;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -383,6 +384,7 @@ public class ImageListV2Activity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA, Menu.NONE, "Move to Camera");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_MEMES, Menu.NONE, "Move to memes");
         }
 
     }
@@ -422,10 +424,23 @@ public class ImageListV2Activity extends AppCompatActivity {
 
                 moveToDownloads(info.position);
 
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_MEMES:
+
+                moveToMemes(info.position);
+
+                return true;
+
             default:
 
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToMemes(int position){
+
+        moveFile(position, Configuration.getMemesDirectory());
     }
 
     private void moveToDownloads(int position){

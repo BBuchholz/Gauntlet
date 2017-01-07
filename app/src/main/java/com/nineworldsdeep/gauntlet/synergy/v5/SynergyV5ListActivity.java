@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.Extras;
@@ -31,8 +32,6 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.R.attr.data;
 
 public class SynergyV5ListActivity
         extends ListBaseActivity{
@@ -58,12 +57,14 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 19;
 
     private SynergyV5List mSynLst;
-    private ArrayList<SynergyV5ListItem> mActiveItems;
+    private ArrayList<SynergyV5ListItem> mCurrentItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_synergy_list_v5);
+
+        populateStatusSpinner();
 
         //set listName
         Intent intent = getIntent();
@@ -75,9 +76,23 @@ public class SynergyV5ListActivity
         setTitle(listName);
 
         mSynLst = new SynergyV5List(listName);
-        mActiveItems = new ArrayList<>();
+        mCurrentItems = new ArrayList<>();
 
         refreshLayout();
+    }
+
+    private void populateStatusSpinner() {
+
+        Spinner spListItemStatus = (Spinner)this.findViewById(R.id.spListItemStatus);
+
+        ArrayList<String> lst = new ArrayList<>();
+        lst.add("Active");
+        lst.add("Archived");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, lst);
+
+        spListItemStatus.setAdapter(adapter);
     }
 
     @Override
@@ -149,7 +164,7 @@ public class SynergyV5ListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = mActiveItems.get(info.position).getItemValue();
+        String title = mCurrentItems.get(info.position).getItemValue();
 
         menu.setHeaderTitle(title);
 
@@ -158,7 +173,7 @@ public class SynergyV5ListActivity
         menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD, Menu.NONE, "Copy itemValue to Clipboard");
 
         Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
-                .matcher(mActiveItems.get(info.position).getItemValue());
+                .matcher(mCurrentItems.get(info.position).getItemValue());
 
         if (vmMatcher.find()) {
 
@@ -170,7 +185,7 @@ public class SynergyV5ListActivity
         }
 
         Matcher imgMatcher = Pattern.compile("\\(\\bhas Image: \\d{4,14}\\b\\)")
-            .matcher(mActiveItems.get(info.position).getItemValue());
+            .matcher(mCurrentItems.get(info.position).getItemValue());
 
         if (imgMatcher.find()) {
 
@@ -330,7 +345,7 @@ public class SynergyV5ListActivity
 
     private void copyListNameToClipboard(int position) {
 
-        String text = mActiveItems.get(position).getItemValue();
+        String text = mCurrentItems.get(position).getItemValue();
         String label = "synergy-list-name";
 
         SynergyV5Utils.copyToClipboard(this, label, text);
@@ -354,7 +369,7 @@ public class SynergyV5ListActivity
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mActiveItems.get(position).getItemValue());
+                        .extractTimeStampFilters(mCurrentItems.get(position).getItemValue());
 
         Intent intent = new Intent(this, AudioListV2Activity.class);
 
@@ -383,7 +398,7 @@ public class SynergyV5ListActivity
 
         String timeStampFilters =
                 MnemoSyneUtils
-                        .extractTimeStampFilters(mActiveItems.get(position).getItemValue());
+                        .extractTimeStampFilters(mCurrentItems.get(position).getItemValue());
 
         Intent intent = new Intent(this, ImageListV2Activity.class);
 
@@ -484,7 +499,7 @@ public class SynergyV5ListActivity
 
     private void moveToBottom(int pos) {
 
-        mSynLst.moveToBottom(mActiveItems.get(pos).getItemValue());
+        mSynLst.moveToBottom(mCurrentItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -492,7 +507,7 @@ public class SynergyV5ListActivity
 
     private void moveDown(int pos) {
 
-        mSynLst.moveDown(mActiveItems.get(pos).getItemValue());
+        mSynLst.moveDown(mCurrentItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -500,7 +515,7 @@ public class SynergyV5ListActivity
 
     private void moveToTop(int pos) {
 
-        mSynLst.moveToTop(mActiveItems.get(pos).getItemValue());
+        mSynLst.moveToTop(mCurrentItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -508,7 +523,7 @@ public class SynergyV5ListActivity
 
     private void moveUp(int pos) {
 
-        mSynLst.moveUp(mActiveItems.get(pos).getItemValue());
+        mSynLst.moveUp(mCurrentItems.get(pos).getItemValue());
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
@@ -673,7 +688,7 @@ public class SynergyV5ListActivity
     private void moveToLyrics(final int position){
 
         SynergyV5ListItem itemAtPosition =
-                mActiveItems.get(position);
+                mCurrentItems.get(position);
 
         if(itemAtPosition != null) {
 
@@ -695,7 +710,7 @@ public class SynergyV5ListActivity
     private void moveToFragments(final int position){
 
         SynergyV5ListItem itemAtPosition =
-                mActiveItems.get(position);
+                mCurrentItems.get(position);
 
         if(itemAtPosition != null) {
 
@@ -751,7 +766,7 @@ public class SynergyV5ListActivity
                                 Context context = getApplicationContext();
 
                                 SynergyV5ListItem itemAtPosition =
-                                        mActiveItems.get(position);
+                                        mCurrentItems.get(position);
 
                                 if(itemAtPosition != null) {
 
@@ -793,7 +808,7 @@ public class SynergyV5ListActivity
 
     private void toggleCompletionStatusAtPosition(int position){
 
-        SynergyV5ListItem item = mActiveItems.get(position);
+        SynergyV5ListItem item = mCurrentItems.get(position);
 
         if(item != null && item.isCompleted()){
 
@@ -839,6 +854,28 @@ public class SynergyV5ListActivity
         mSynLst.sync(this, NwdDb.getInstance(this));
 
         setListViewAdapter(lvItems);
+        setupSpinnerListener();
+    }
+
+    private void setupSpinnerListener() {
+
+        final Spinner spStatus =
+                (Spinner) findViewById(R.id.spListItemStatus);
+
+        spStatus.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                refreshLayout();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //do nothing
+            }
+        });
     }
 
     private void readItems(){
@@ -848,16 +885,28 @@ public class SynergyV5ListActivity
 
     private void setListViewAdapter(ListView lvItems) {
 
-        mActiveItems = mSynLst.getActiveItems();
+        Spinner spListItemStatus =
+                (Spinner)findViewById(R.id.spListItemStatus);
+
+        String currentStatus = spListItemStatus.getSelectedItem().toString();
+
+        if(currentStatus.equalsIgnoreCase("archived")){
+
+            mCurrentItems = mSynLst.getArchivedItems();
+
+        }else{
+
+            mCurrentItems = mSynLst.getActiveItems();
+        }
 
         final ArrayAdapter adapter =
                 new ArrayAdapter(this,
                         android.R.layout.simple_list_item_1,
-                        mActiveItems){
+                        mCurrentItems){
 
             public View getView(int position, View convertView, ViewGroup parent){
 
-                SynergyV5ListItem currentItem = mActiveItems.get(position);
+                SynergyV5ListItem currentItem = mCurrentItems.get(position);
 
                 TextView txtView = new TextView(getContext());
                 txtView.setText(currentItem.getItemValue());

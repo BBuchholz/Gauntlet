@@ -210,50 +210,74 @@ public class SynergyV5List {
         mActivatedAt = TimeStamp.now();
     }
 
-//    public void load(Context context, NwdDb db) {
-//
-//        db.sync(context, this);
-//    }
+
 
     public List<SynergyV5ListItem> getAllItems() {
 
         return mItems;
     }
 
-    public ArrayList<SynergyV5ListItem> getActiveItems() {
+    private ArrayList<SynergyV5ListItem> getItems(boolean activeNotArchived){
 
-        ArrayList<SynergyV5ListItem> filteredItems =
-                new ArrayList<>();
-
-//        mPositionToActiveItem.clear();
+       ArrayList<SynergyV5ListItem> filteredItems =
+            new ArrayList<>();
 
         int currentIndex = -1;
 
         for(SynergyV5ListItem sli : getAllItems()){
 
-            if(sli.isActive()){
+            if(sli.isActive() == activeNotArchived){
 
                 //if completed, put to bottom
                 if(sli.isCompleted()){
 
                     filteredItems.add(filteredItems.size(), sli);
 
-                    // wrong index: mPositionToActiveItem.put(filteredItems.size(), sli);
-
                 }else {
-
-                    // we only increment if not completed, to keep
-                    // track of where the completed items start
 
                     currentIndex++;
                     filteredItems.add(currentIndex, sli);
 
-//                    mPositionToActiveItem.put(currentIndex, sli);
                 }
             }
         }
 
         return filteredItems;
+    }
+
+    public ArrayList<SynergyV5ListItem> getArchivedItems() {
+
+        return getItems(false);
+    }
+
+    public ArrayList<SynergyV5ListItem> getActiveItems() {
+
+        return getItems(true);
+
+//        ArrayList<SynergyV5ListItem> filteredItems =
+//                new ArrayList<>();
+//
+//        int currentIndex = -1;
+//
+//        for(SynergyV5ListItem sli : getAllItems()){
+//
+//            if(sli.isActive()){
+//
+//                //if completed, put to bottom
+//                if(sli.isCompleted()){
+//
+//                    filteredItems.add(filteredItems.size(), sli);
+//
+//                }else {
+//
+//                    currentIndex++;
+//                    filteredItems.add(currentIndex, sli);
+//
+//                }
+//            }
+//        }
+//
+//        return filteredItems;
     }
 
     public SynergyV5ListItem getCopyForItemValue(String itemValue){

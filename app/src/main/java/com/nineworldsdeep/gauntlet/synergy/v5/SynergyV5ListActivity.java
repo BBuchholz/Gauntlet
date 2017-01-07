@@ -63,7 +63,7 @@ public class SynergyV5ListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_synergy_list);
+        setContentView(R.layout.activity_synergy_list_v5);
 
         //set listName
         Intent intent = getIntent();

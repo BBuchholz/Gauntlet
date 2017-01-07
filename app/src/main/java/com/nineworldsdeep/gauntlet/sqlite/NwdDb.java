@@ -1929,7 +1929,7 @@ public class NwdDb {
 
             Cursor cursor =
                     db.rawQuery(
-                            NwdContract.SYNERGY_V5_SELECT_ARCHIVE_LISTS,
+                            NwdContract.SYNERGY_V5_SELECT_SHELVED_LISTS,
                             args);
 
             String[] columnNames =

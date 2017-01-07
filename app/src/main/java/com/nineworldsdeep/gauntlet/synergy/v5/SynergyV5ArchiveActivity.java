@@ -25,7 +25,7 @@ public class SynergyV5ArchiveActivity extends AppCompatActivity {
 
         String archiveName =
                 intent.getStringExtra(
-                        SynergyV5ArchivesActivity.EXTRA_ARCHIVENAME);
+                        SynergyV5ShelvedActivity.EXTRA_ARCHIVENAME);
 
         readItems(archiveName);
     }

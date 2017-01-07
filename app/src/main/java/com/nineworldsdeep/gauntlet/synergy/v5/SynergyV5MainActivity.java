@@ -71,7 +71,7 @@ public class SynergyV5MainActivity extends ListBaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_synergy_main, menu);
+        getMenuInflater().inflate(R.menu.menu_synergy_main_v5, menu);
         return true;
     }
 
@@ -82,15 +82,15 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_show_archive){
-            startActivity(new Intent(this, SynergyV5ArchivesActivity.class));
+        if (id == R.id.action_show_shelved){
+            startActivity(new Intent(this, SynergyV5ShelvedActivity.class));
             return true;
         }
 
-        if (id == R.id.action_show_templates){
-            startActivity(new Intent(this, SynergyV5TemplatesActivity.class));
-            return true;
-        }
+//        if (id == R.id.action_show_templates){
+//            startActivity(new Intent(this, SynergyV5TemplatesActivity.class));
+//            return true;
+//        }
 
         if (id == R.id.action_toggle_sort){
 
@@ -100,12 +100,12 @@ public class SynergyV5MainActivity extends ListBaseActivity {
             return true;
         }
 
-        if(id == R.id.action_push_all){
-
-            Utils.toast(this, "push all N/A for V5");
-            //pushAll();
-            return true;
-        }
+//        if(id == R.id.action_push_all){
+//
+//            Utils.toast(this, "push all N/A for V5");
+//            //pushAll();
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

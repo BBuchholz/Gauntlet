@@ -447,6 +447,17 @@ public class SynergyV5List {
         return outputItem;
     }
 
+    public void archiveCompleted() {
+
+        for(SynergyV5ListItem sli : mItems){
+
+            if(sli.isCompleted()){
+
+                sli.archive();
+            }
+        }
+    }
+
 //    public SynergyV5ListItem archive(int position) {
 //
 //        SynergyV5ListItem currentSli = mItems.get(position);

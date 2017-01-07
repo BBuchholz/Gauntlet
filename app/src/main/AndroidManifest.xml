@@ -210,7 +210,7 @@
         <activity
             android:name=".synergy.v5.SynergyV5ArchiveActivity"
             android:label="@string/title_activity_synergy_v5_archive"
-            android:parentActivityName=".synergy.v5.SynergyV5ArchivesActivity"
+            android:parentActivityName=".synergy.v5.SynergyV5ShelvedActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -324,7 +324,7 @@
                 android:value="com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity"/>
         </activity>
         <activity
-            android:name=".synergy.v5.SynergyV5ArchivesActivity"
+            android:name=".synergy.v5.SynergyV5ShelvedActivity"
             android:label="SynergyV5ArchivesActivity"
             android:parentActivityName=".synergy.v5.SynergyV5MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

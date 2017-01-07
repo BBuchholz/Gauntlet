@@ -88,7 +88,7 @@ public class SynergyV3MainActivity extends ListBaseActivity {
 
         switch (item.getItemId()){
 
-            case R.id.action_show_archive:
+            case R.id.action_show_archives:
 
                 startActivity(new Intent(this, SynergyArchivesActivity.class));
 

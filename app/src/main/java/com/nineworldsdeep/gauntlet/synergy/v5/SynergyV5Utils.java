@@ -95,10 +95,6 @@ public class SynergyV5Utils {
 
     }
 
-    public static void archive(String listName, boolean expired) {
-
-    }
-
     public static String push(String listName) {
         return null;
     }

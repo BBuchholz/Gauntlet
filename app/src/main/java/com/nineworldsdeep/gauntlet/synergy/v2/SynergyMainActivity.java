@@ -39,7 +39,7 @@ public class SynergyMainActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_show_archive){
+        if (id == R.id.action_show_archives){
             startActivity(new Intent(this, SynergyArchivesActivity.class));
             return true;
         }

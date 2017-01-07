@@ -17,7 +17,7 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 
-public class SynergyV5ArchivesActivity extends AppCompatActivity {
+public class SynergyV5ShelvedActivity extends AppCompatActivity {
 
     public static final String EXTRA_ARCHIVENAME =
             "com.nineworldsdeep.gauntlet.SYNERGY_ARCHIVENAME";

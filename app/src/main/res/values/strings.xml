@@ -17,7 +17,8 @@
     <string name="menu_archive">Archive</string>
     <string name="menu_push">Push</string>
     <string name="menu_show_templates">Templates</string>
-    <string name="menu_show_archives">Archives</string>
+    <string name="menu_shelved">Shelved</string>
+    <string name="menu_archives">Archives</string>
     <string name="change_tuning">Change Tuning</string>
     <string name="set_num_strings">Set Number of Strings</string>
     <string name="set_fret_range">Set Fret Range</string>

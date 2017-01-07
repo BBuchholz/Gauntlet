@@ -55,6 +55,8 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_OPEN_MEDIA_IMAGES = 17;
     private static final int MENU_CONTEXT_OPEN_VM_SCREENSHOTS = 18;
     private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 19;
+    private static final int MENU_CONTEXT_ACTIVATE = 20;
+    private static final int MENU_CONTEXT_ARCHIVE = 21;
 
     private SynergyV5List mSynLst;
     private ArrayList<SynergyV5ListItem> mCurrentItems;
@@ -170,6 +172,16 @@ public class SynergyV5ListActivity
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
+
+        if(getSelectedStatus().equalsIgnoreCase("archived")){
+
+            menu.add(Menu.NONE, MENU_CONTEXT_ACTIVATE, Menu.NONE, "Activate");
+
+        }else{
+
+            menu.add(Menu.NONE, MENU_CONTEXT_ARCHIVE, Menu.NONE, "Archive");
+        }
+
         menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD, Menu.NONE, "Copy itemValue to Clipboard");
 
         Matcher vmMatcher = Pattern.compile("\\(\\bhas VoiceMemo: \\d{4,14}\\b\\)")
@@ -245,6 +257,18 @@ public class SynergyV5ListActivity
             case MENU_CONTEXT_COMPLETION_STATUS_ID:
 
                 toggleCompletionStatusAtPosition(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_ACTIVATE:
+
+                activate(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_ARCHIVE:
+
+                archive(info.position);
 
                 return true;
 
@@ -341,6 +365,13 @@ public class SynergyV5ListActivity
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private String getSelectedStatus(){
+
+        Spinner spStatus = (Spinner)findViewById(R.id.spListItemStatus);
+
+        return spStatus.getSelectedItem().toString();
     }
 
     private void copyListNameToClipboard(int position) {
@@ -532,7 +563,7 @@ public class SynergyV5ListActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_synergy_list, menu);
+        getMenuInflater().inflate(R.menu.menu_synergy_list_v5, menu);
         return true;
     }
 
@@ -550,22 +581,22 @@ public class SynergyV5ListActivity
 
         } else if (id == R.id.action_archive){
 
-            if(!SynergyV5Utils.isActiveQueue(mSynLst.getListName())){
+//            if(!SynergyV5Utils.isActiveQueue(mSynLst.getListName())){
 
-                promptConfirmArchive();
+            promptConfirmArchive();
 
-            }else{
-
-                Utils.toast(this, "Archive not valid for active queue, " +
-                        "use Shelve All instead.");
-            }
+//            }else{
+//
+//                Utils.toast(this, "Archive not valid for active queue, " +
+//                        "use Shelve All instead.");
+//            }
 
             return true;
 
-        } else if (id == R.id.action_update_template){
-
-            promptUpdateTemplate();
-            return true;
+//        } else if (id == R.id.action_update_template){
+//
+//            promptUpdateTemplate();
+//            return true;
 
         } else if (id == R.id.action_toggle_shuffle_fragments){
 
@@ -573,10 +604,10 @@ public class SynergyV5ListActivity
             refreshLayout();
             return true;
 
-        } else if (id == R.id.action_push){
-
-            promptConfirmPush();
-            return true;
+//        } else if (id == R.id.action_push){
+//
+//            promptConfirmPush();
+//            return true;
 
         }
 
@@ -627,8 +658,12 @@ public class SynergyV5ListActivity
                 .setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SynergyV5Utils.archive(mSynLst.getListName(), expired);
-                        Utils.toast(getApplicationContext(), "in progress");
+
+                        Context ctx = getApplicationContext();
+                        mSynLst.archiveCompleted();
+                        mSynLst.sync(ctx, NwdDb.getInstance(ctx));
+
+                        //Utils.toast(getApplicationContext(), "in progress");
                         //readItems(mSynLst.getListName());
                         readItems();
                     }
@@ -823,16 +858,30 @@ public class SynergyV5ListActivity
 
         refreshLayout();
 
-//        if(!mSynLst.get(position).isCompleted()){
-//
-//            mSynLst.get(position).markCompleted();
-//            moveToBottom(position);
-//
-//        }else{
-//
-//            mSynLst.get(position).markIncomplete();
-//            moveToTop(position);
-//        }
+    }
+
+    private void activate(int position){
+
+        SynergyV5ListItem item = mCurrentItems.get(position);
+
+        item.activate();
+
+        mSynLst.sync(this, NwdDb.getInstance(this));
+
+        refreshLayout();
+
+    }
+
+        private void archive(int position){
+
+        SynergyV5ListItem item = mCurrentItems.get(position);
+
+        item.archive();
+
+        mSynLst.sync(this, NwdDb.getInstance(this));
+
+        refreshLayout();
+
     }
 
     private void writeItems() {
@@ -885,10 +934,7 @@ public class SynergyV5ListActivity
 
     private void setListViewAdapter(ListView lvItems) {
 
-        Spinner spListItemStatus =
-                (Spinner)findViewById(R.id.spListItemStatus);
-
-        String currentStatus = spListItemStatus.getSelectedItem().toString();
+        String currentStatus = getSelectedStatus();
 
         if(currentStatus.equalsIgnoreCase("archived")){
 

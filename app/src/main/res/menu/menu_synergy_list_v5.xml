@@ -2,16 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_push"
-        android:title="@string/menu_push"
-        app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_archive"
         android:title="@string/menu_archive"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_update_template"
-        android:title="@string/menu_update_template"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_toggle_shuffle_fragments"
           android:title="@string/toggle_frag_shuffle"

@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.synergy.v5;
 
 import android.content.Context;
 
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
@@ -31,6 +32,33 @@ public class SynergyV5List {
     }
 
     public void sync(Context context, NwdDb db) {
+
+        //check for timestamped list
+        //if isTimeStamped
+        //  first, shelve list, and sync (with timestamped name)
+        //
+        //  clear list id, change name, and activate list
+        //  sync again
+
+        if(SynergyV5Utils.isTimeStampedList(this)){
+
+            //load if not
+            db.sync(context, this);
+
+            shelve();
+
+            db.sync(context, this);
+
+            mListId = -1;
+            mListName = SynergyV5Utils.stripTimeStamp(mListName);
+
+            for(SynergyV5ListItem sli : getAllItems()){
+
+                sli.clearIds();
+            }
+
+            activate();
+        }
 
         db.sync(context, this);
     }
@@ -166,8 +194,20 @@ public class SynergyV5List {
 
     }
 
-    public void shelve(int position, String category) {
+    /**
+     * shelves list
+     */
+    public void shelve() {
 
+        mShelvedAt = TimeStamp.now();
+    }
+
+    /**
+     * activates list
+     */
+    public void activate() {
+
+        mActivatedAt = TimeStamp.now();
     }
 
 //    public void load(Context context, NwdDb db) {

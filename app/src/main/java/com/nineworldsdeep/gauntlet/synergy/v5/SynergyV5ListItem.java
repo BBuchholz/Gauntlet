@@ -139,4 +139,10 @@ public class SynergyV5ListItem {
 
         return newSli;
     }
+
+    public void clearIds() {
+
+        mItemId = -1;
+        mListItemId = -1;
+    }
 }

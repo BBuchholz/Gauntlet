@@ -228,8 +228,17 @@ public class NwdContract {
             "SELECT " + COLUMN_SYNERGY_LIST_NAME + " "
             + "FROM " + TABLE_SYNERGY_LIST + " "
             + "WHERE " + COLUMN_SYNERGY_LIST_SHELVED_AT + " IS NULL "
-            + "   OR " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " > " +
-                         COLUMN_SYNERGY_LIST_SHELVED_AT + "; ";
+            + "   OR " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " >= " +
+                         COLUMN_SYNERGY_LIST_SHELVED_AT + " "
+            + "ORDER BY " + COLUMN_SYNERGY_LIST_NAME + "; ";
+
+    public static final String SYNERGY_V5_SELECT_ARCHIVE_LISTS =
+
+            "SELECT " + COLUMN_SYNERGY_LIST_NAME + " "
+            + "FROM " + TABLE_SYNERGY_LIST + " "
+            + "WHERE " + COLUMN_SYNERGY_LIST_SHELVED_AT + " IS NULL "
+            + "   OR " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " < " + COLUMN_SYNERGY_LIST_SHELVED_AT + " "
+            + "ORDER BY " + COLUMN_SYNERGY_LIST_NAME + "; ";
 
     public static final String SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X =
 

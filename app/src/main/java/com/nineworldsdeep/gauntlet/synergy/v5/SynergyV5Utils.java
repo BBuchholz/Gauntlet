@@ -8,7 +8,10 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,14 +50,14 @@ public class SynergyV5Utils {
         return lst;
     }
 
-    private static List<String> getAllListNames(Context c, NwdDb db) {
+    private static ArrayList<String> getAllListNames(Context c, NwdDb db) {
 
         return db.synergyV5GetActiveListNames(c);
     }
 
-    public static List<String> getAllArchiveNames() {
+    public static ArrayList<String> getAllArchiveNames(Context c, NwdDb db) {
 
-        return new ArrayList<>();
+        return db.synergyV5GetArchiveListNames(c);
     }
 
     public static SynergyV5List generateFromTemplate(String templateName, String timestampedListName) {
@@ -66,7 +69,7 @@ public class SynergyV5Utils {
     }
 
 
-    public static List<String> getAllTemplateNames(Context c) {
+    public static ArrayList<String> getAllTemplateNames(Context c) {
         Utils.toast(c, "templates not yet implemented");
         return new ArrayList<String>();
     }
@@ -127,5 +130,28 @@ public class SynergyV5Utils {
                 (ClipboardManager) ctx.getSystemService(ctx.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(stringLabel, stringToCopy);
         clipboard.setPrimaryClip(clip);
+    }
+
+    public static boolean isTimeStampedList(SynergyV5List synLst) {
+
+        return Utils.containsTimeStamp(synLst.getListName());
+    }
+
+    public static String stripTimeStamp(String listName) {
+
+        Date originalTimeStamp = Utils.extractTimeStamp_yyyyMMdd(listName);
+
+        if(originalTimeStamp == null){
+
+            return listName;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+        String timeStamp = sdf.format(originalTimeStamp);
+
+        timeStamp += "-";
+
+        return listName.replace(timeStamp, "");
     }
 }

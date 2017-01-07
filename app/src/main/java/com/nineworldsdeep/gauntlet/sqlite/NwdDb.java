@@ -1916,8 +1916,62 @@ public class NwdDb {
         return id;
     }
 
+    public ArrayList<String> synergyV5GetArchiveListNames(Context c) {
 
-    public List<String> synergyV5GetActiveListNames(Context c) {
+        ArrayList<String> listNames = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SYNERGY_V5_SELECT_ARCHIVE_LISTS,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_NAME
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    listNames.add(
+                            record.get(
+                                    NwdContract.COLUMN_SYNERGY_LIST_NAME));
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception getting active list names: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return listNames;
+    }
+
+
+    public ArrayList<String> synergyV5GetActiveListNames(Context c) {
 
         ArrayList<String> listNames = new ArrayList<>();
 

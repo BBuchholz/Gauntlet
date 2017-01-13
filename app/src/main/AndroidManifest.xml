@@ -457,6 +457,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
         </activity>
+        <activity
+            android:name=".mnemosyne.v5.ImageBrowserActivity"
+            android:label="ImageBrowserActivity"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/MaterialDesignActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
     </application>
 
 </manifest>

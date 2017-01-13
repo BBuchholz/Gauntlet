@@ -36,7 +36,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
             "com.nineworldsdeep.gauntlet.IMAGEDISPLAY_IMAGE_PATH";
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_image_display, menu);
         return true;
     }
@@ -223,12 +223,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     Uri uri = Uri.fromFile(new File(path));
                     Intent imageIntent = new Intent(Intent.ACTION_VIEW);
                     imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    imageIntent.setDataAndType(uri, "ivImage/*");
+                    imageIntent.setDataAndType(uri, "image/*");
 
                     try{
                         startActivity(imageIntent);
                     }catch (ActivityNotFoundException ex){
-                        Utils.toast(v.getContext(), "error opening ivImage");
+                        Utils.toast(v.getContext(), "error opening ivImage: " + ex.getMessage());
                     }
 
                     return true;

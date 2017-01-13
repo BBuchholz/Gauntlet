@@ -16,6 +16,7 @@ import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.model.HashNode;
 import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
 import com.nineworldsdeep.gauntlet.model.TagNode;
+import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
@@ -1970,6 +1971,69 @@ public class NwdDb {
         return listNames;
     }
 
+    public ArrayList<ListEntry> synergyV5GetActiveListEntries(Context c){
+
+        ArrayList<ListEntry> lst = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                NwdContract.SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_LIST_NAME,
+                            NwdContract.COLUMN_COUNT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    String listName =
+                            record.get(NwdContract.COLUMN_SYNERGY_LIST_NAME);
+
+                    int count =
+                            Integer.parseInt(
+                                    record.get(NwdContract.COLUMN_COUNT));
+
+                    ListEntry entry = new ListEntry();
+                    entry.setListName(listName);
+                    entry.setItemCount(count);
+
+                    lst.add(entry);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception getting active list entries: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return lst;
+    }
 
     public ArrayList<String> synergyV5GetActiveListNames(Context c) {
 

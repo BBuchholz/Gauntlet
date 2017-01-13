@@ -49,6 +49,8 @@ public class NwdContract {
 
     //endregion
 
+    public static final String COLUMN_COUNT = "Count";
+
     public static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
     public static final String COLUMN_SYNERGY_LIST_NAME = "SynergyListName";
     public static final String COLUMN_SYNERGY_LIST_ACTIVATED_AT = "SynergyListActivatedAt";
@@ -222,6 +224,24 @@ public class NwdContract {
     //endregion
 
     //region SynergyV5_SELECT
+
+    public static final String
+            SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS =
+
+                "SELECT sl." + COLUMN_SYNERGY_LIST_NAME + ", COUNT(*) AS '" + COLUMN_COUNT + "' "
+                + "FROM " + TABLE_SYNERGY_LIST + " sl "
+                + "JOIN " + TABLE_SYNERGY_LIST_ITEM + " sli "
+                + "ON sl." + COLUMN_SYNERGY_LIST_ID + " = sli." + COLUMN_SYNERGY_LIST_ID + " "
+                + "LEFT JOIN " + TABLE_SYNERGY_TO_DO + " std "
+                + "ON sli." + COLUMN_SYNERGY_LIST_ITEM_ID + " = std." + COLUMN_SYNERGY_LIST_ITEM_ID + " "
+                + "WHERE (sl." + COLUMN_SYNERGY_LIST_SHELVED_AT + " IS NULL  "
+                + "   OR sl." + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " >= sl." + COLUMN_SYNERGY_LIST_SHELVED_AT + ") "
+                + "AND (std." + COLUMN_SYNERGY_TO_DO_ID + " IS NULL  "
+                + "	OR (std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " >= std." + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + " "
+                + "		AND std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " >= std." + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + ") "
+                + "	) "
+                + "GROUP BY sl." + COLUMN_SYNERGY_LIST_NAME + " "
+                + "ORDER BY sl." + COLUMN_SYNERGY_LIST_NAME + "; ";
 
     public static final String SYNERGY_V5_SELECT_ACTIVE_LISTS =
 

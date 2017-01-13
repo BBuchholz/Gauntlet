@@ -34,18 +34,20 @@ public class SynergyV5Utils {
 
     public static List<ListEntry> getAllListEntries(Context c, NwdDb db){
 
-        List<ListEntry> lst = new ArrayList<>();
+        List<ListEntry> lst = db.synergyV5GetActiveListEntries(c);
 
-        for(String listName : getAllListNames(c, db)){
-
-            ListEntry le = new ListEntry();
-            le.setListName(listName);
-            //we will change the query to count list items as well
-            //then we can get rid of getAllListNames() in favor of this
-            //one
-            le.setItemCount(0);
-            lst.add(le);
-        }
+//        List<ListEntry> lst = new ArrayList<>();
+//
+//        for(String listName : getAllListNames(c, db)){
+//
+//            ListEntry le = new ListEntry();
+//            le.setListName(listName);
+//            //we will change the query to count list items as well
+//            //then we can get rid of getAllListNames() in favor of this
+//            //one
+//            le.setItemCount(0);
+//            lst.add(le);
+//        }
 
         return lst;
     }

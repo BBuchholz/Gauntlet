@@ -30,6 +30,6 @@
         android:title="@string/menu_go_to_audio_player"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_go_to_home_screen"
-          android:title="@string/go_to_home_screen"
+          android:title="@string/home"
           app:showAsAction="ifRoom|withText"/>
 </menu>

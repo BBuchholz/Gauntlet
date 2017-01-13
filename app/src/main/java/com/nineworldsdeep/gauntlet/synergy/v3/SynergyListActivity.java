@@ -69,7 +69,7 @@ public class SynergyListActivity
                 intent.getStringExtra(
                         SynergyV3MainActivity.EXTRA_SYNERGYMAIN_LISTNAME); //TODO: this EXTRA should be in this class, refactor when you have time to test
 
-        setTitle(listName);
+        setTitle(listName + "(V3)");
 
         mSlf = new SynergyListFile(listName);
 
@@ -606,7 +606,7 @@ public class SynergyListActivity
 //
 //        } else if (id == R.id.action_toggle_shuffle_fragments){
 //
-//            Configuration.toggleShuffleFragments();
+//            Configuration.toggleV3ShuffleFragments();
 //            refreshLayout();
 //            return true;
 //
@@ -834,7 +834,7 @@ public class SynergyListActivity
 
             case R.id.action_toggle_shuffle_fragments:
 
-                Configuration.toggleShuffleFragments();
+                Configuration.toggleV3ShuffleFragments();
                 refreshLayout();
                 return true;
 

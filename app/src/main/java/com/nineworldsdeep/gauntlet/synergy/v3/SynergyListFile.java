@@ -228,7 +228,7 @@ public class SynergyListFile {
         // list name, for now this is a hack
         if((listName.equalsIgnoreCase("Fragments") ||
                 listName.equalsIgnoreCase("Lyrics"))
-            && Configuration.shuffleFragments()){
+            && Configuration.shuffleV3Fragments()){
 
             Collections.shuffle(items);
             return items;

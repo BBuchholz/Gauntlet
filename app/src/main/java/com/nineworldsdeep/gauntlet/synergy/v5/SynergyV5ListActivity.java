@@ -23,7 +23,9 @@ import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
@@ -75,7 +77,7 @@ public class SynergyV5ListActivity
                 intent.getStringExtra(
                         SynergyV5MainActivity.EXTRA_SYNERGYMAIN_LISTNAME);
 
-        setTitle(listName);
+        setTitle(listName + "(V5)");
 
         mSynLst = new SynergyV5List(listName);
         mCurrentItems = new ArrayList<>();
@@ -155,8 +157,6 @@ public class SynergyV5ListActivity
         });
     }
 
-    //adapted from:
-    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public void onCreateContextMenu(ContextMenu menu,
                                     View v,
@@ -238,11 +238,11 @@ public class SynergyV5ListActivity
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
                 Menu.NONE, "Move To List");
 
-        menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
-                Menu.NONE, "Split Item");
-
-        menu.add(Menu.NONE, MENU_CONTEXT_EDIT_ITEM,
-                Menu.NONE, "Edit Item");
+//        menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
+//                Menu.NONE, "Split Item");
+//
+//        menu.add(Menu.NONE, MENU_CONTEXT_EDIT_ITEM,
+//                Menu.NONE, "Edit Item");
     }
 
     //adapted from:
@@ -562,53 +562,28 @@ public class SynergyV5ListActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_synergy_list_v5, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            return true;
-
-        } else if (id == R.id.action_archive){
-
-//            if(!SynergyV5Utils.isActiveQueue(mSynLst.getListName())){
+        if (id == R.id.action_archive){
 
             promptConfirmArchive();
-
-//            }else{
-//
-//                Utils.toast(this, "Archive not valid for active queue, " +
-//                        "use Shelve All instead.");
-//            }
-
             return true;
+        }
 
-//        } else if (id == R.id.action_update_template){
-//
-//            promptUpdateTemplate();
-//            return true;
+        if (id == R.id.action_go_to_home_screen){
 
-        } else if (id == R.id.action_toggle_shuffle_fragments){
-
-            Configuration.toggleShuffleFragments();
-            refreshLayout();
+            NavigateActivityCommand.navigateTo(
+                    HomeListActivity.class, this
+            );
             return true;
-
-//        } else if (id == R.id.action_push){
-//
-//            promptConfirmPush();
-//            return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -670,36 +645,6 @@ public class SynergyV5ListActivity
                 })
                 .setNegativeButton("No", null)
                 .show();
-    }
-
-    private void promptConfirmPush(){
-
-        if(Utils.containsTimeStamp(mSynLst.getListName())){
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            final String pushToName =
-                    Utils.incrementTimeStampInString_yyyyMMdd(mSynLst.getListName());
-
-            builder.setTitle("Push Tasks")
-                    .setMessage("Push tasks to " + pushToName + "?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            String pushed = SynergyV5Utils.push(mSynLst.getListName());
-                            Utils.toast(getApplicationContext(),
-                                    "tasks pushed to " + pushed);
-                            //readItems(mSynLst.getListName());
-                            readItems();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-
-        }else{
-
-            Utils.toast(getApplicationContext(),
-                    "push only affects timestamped lists");
-        }
     }
 
     private void queuePosition(int position) {
@@ -872,7 +817,7 @@ public class SynergyV5ListActivity
 
     }
 
-        private void archive(int position){
+    private void archive(int position){
 
         SynergyV5ListItem item = mCurrentItems.get(position);
 
@@ -986,7 +931,7 @@ public class SynergyV5ListActivity
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
 
-        itemText = Utils.removeHardReturns(itemText);
+        //itemText = Utils.removeHardReturns(itemText);
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 

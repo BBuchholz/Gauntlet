@@ -5,25 +5,13 @@
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
     <item android:id="@+id/action_toggle_sort"
-        android:title="Toggle Sort"
+        android:title="@string/toggle_sort"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_show_shelved"
         android:title="@string/menu_shelved"
         app:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/action_go_to_pdfs"
-        android:title="@string/menu_go_to_pdfs"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_images"
-        android:title="@string/menu_go_to_images_main"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_audio_main"
-        android:title="@string/menu_go_to_audio_main"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_audio_player"
-        android:title="@string/menu_go_to_audio_player"
-        app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_go_to_home_screen"
-          android:title="@string/go_to_home_screen"
+          android:title="@string/home"
           app:showAsAction="ifRoom|withText"/>
 </menu>

@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListOrdering;
@@ -65,7 +67,7 @@ public class SynergyV5MainActivity extends ListBaseActivity {
                 break;
         }
 
-        setTitle("Synergy (" + orderName + ")");
+        setTitle("V5(" + orderName + ")");
     }
 
     @Override
@@ -87,11 +89,6 @@ public class SynergyV5MainActivity extends ListBaseActivity {
             return true;
         }
 
-//        if (id == R.id.action_show_templates){
-//            startActivity(new Intent(this, SynergyV5TemplatesActivity.class));
-//            return true;
-//        }
-
         if (id == R.id.action_toggle_sort){
 
             incrementOrderingSelection();
@@ -100,12 +97,13 @@ public class SynergyV5MainActivity extends ListBaseActivity {
             return true;
         }
 
-//        if(id == R.id.action_push_all){
-//
-//            Utils.toast(this, "push all N/A for V5");
-//            //pushAll();
-//            return true;
-//        }
+        if (id == R.id.action_go_to_home_screen){
+
+            NavigateActivityCommand.navigateTo(
+                    HomeListActivity.class, this
+            );
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,22 +130,6 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         }
     }
 
-//    private void pushAll() {
-//
-//        List<String> listNames = new ArrayList<>();
-//
-//        for(ListEntry le : currentListEntries){
-//
-//            if(Utils.containsTimeStamp(le.getListName())){
-//                listNames.add(le.getListName());
-//            }
-//        }
-//
-//        SynergyV5Utils.pushAll(listNames);
-//
-//        refreshLayout();
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,7 +138,7 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTitle("Synergy V5");
+        setTitle("V5");
         setOrdering(SynergyListOrdering.ByNameAscending);
 
         refreshLayout();

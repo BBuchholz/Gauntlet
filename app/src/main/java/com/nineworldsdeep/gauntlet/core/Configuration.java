@@ -21,7 +21,7 @@ public class Configuration {
 
     private static boolean _testMode = false;
     private static boolean _deleteDatabaseForDevelopment = false;
-    private static boolean _shuffleFragments = false;
+    private static boolean _shuffleV3Fragments = false;
     private static String _mostRecentMoveToList = "Fragments"; //default
 
     public static boolean isInTestMode() {
@@ -390,13 +390,13 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD/xml/outgoing");
     }
 
-    public static boolean shuffleFragments() {
+    public static boolean shuffleV3Fragments() {
 
-        return _shuffleFragments;
+        return _shuffleV3Fragments;
     }
 
-    public static void toggleShuffleFragments() {
+    public static void toggleV3ShuffleFragments() {
 
-        _shuffleFragments = !_shuffleFragments;
+        _shuffleV3Fragments = !_shuffleV3Fragments;
     }
 }

@@ -73,7 +73,7 @@ public class SynergyV3MainActivity extends ListBaseActivity {
                 break;
         }
 
-        setTitle("Synergy (" + orderName + ")");
+        setTitle("V3(" + orderName + ")");
     }
 
     @Override
@@ -203,7 +203,7 @@ public class SynergyV3MainActivity extends ListBaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTitle("Synergy V3");
+        setTitle("V3");
         setOrdering(SynergyListOrdering.ByNameAscending);
 
         refreshLayout();

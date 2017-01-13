@@ -80,7 +80,8 @@
     <string name="menu_go_to_images_main">Go To Images</string>
     <string name="menu_go_to_audio_main">Go To Audio</string>
     <string name="menu_go_to_audio_player">Go To Audio Player</string>
-    <string name="go_to_home_screen">Go To Home Screen</string>
+    <string name="home">Home</string>
     <string name="enter_a_new_item">Enter a new item</string>
     <string name="add_item">Add Item</string>
+    <string name="toggle_sort">Toggle Sort</string>
 </resources>

@@ -223,7 +223,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     Uri uri = Uri.fromFile(new File(path));
                     Intent imageIntent = new Intent(Intent.ACTION_VIEW);
                     imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    imageIntent.setDataAndType(uri, "image/*");
+                    imageIntent.setDataAndType(uri, "iemage/*");
 
                     try{
                         startActivity(imageIntent);

@@ -84,4 +84,7 @@
     <string name="enter_a_new_item">Enter a new item</string>
     <string name="add_item">Add Item</string>
     <string name="toggle_sort">Toggle Sort</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

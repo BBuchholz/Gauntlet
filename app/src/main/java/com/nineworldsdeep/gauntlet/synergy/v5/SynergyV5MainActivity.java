@@ -35,9 +35,10 @@ public class SynergyV5MainActivity extends ListBaseActivity {
     public static final String EXTRA_SYNERGYMAIN_LISTNAME =
             "com.nineworldsdeep.gauntlet.SYNERGYMAINACTIVITY_LISTNAME";
 
-    private static final int MENU_CONTEXT_COPY_LIST = 1;
-    private static final int MENU_CONTEXT_RENAME_LIST = 2;
+//    private static final int MENU_CONTEXT_COPY_LIST = 1;
+//    private static final int MENU_CONTEXT_RENAME_LIST = 2;
     private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 3;
+    private static final int MENU_CONTEXT_SHELVE_LIST = 4;
 
     //public static boolean ORDER_BY_COUNT = false;
     public SynergyListOrdering ordering;
@@ -215,8 +216,10 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
         menu.setHeaderTitle(title);
 
-        menu.add(Menu.NONE, MENU_CONTEXT_COPY_LIST, Menu.NONE, "Copy");
-        menu.add(Menu.NONE, MENU_CONTEXT_RENAME_LIST, Menu.NONE, "Rename");
+//        menu.add(Menu.NONE, MENU_CONTEXT_COPY_LIST, Menu.NONE, "Copy");
+//        menu.add(Menu.NONE, MENU_CONTEXT_RENAME_LIST, Menu.NONE, "Rename");
+
+        menu.add(Menu.NONE, MENU_CONTEXT_SHELVE_LIST, Menu.NONE, "Shelve");
         menu.add(Menu.NONE, MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD,
                     Menu.NONE, "Copy Name To Clipboard");
 
@@ -231,15 +234,21 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
         switch (item.getItemId()) {
 
-            case MENU_CONTEXT_COPY_LIST:
+//            case MENU_CONTEXT_COPY_LIST:
+//
+//                promptCopyListAtPosition(info.position);
+//
+//                return true;
+//
+//            case MENU_CONTEXT_RENAME_LIST:
+//
+//                promptRenameListAtPosition(info.position);
+//
+//                return true;
 
-                promptCopyListAtPosition(info.position);
+            case MENU_CONTEXT_SHELVE_LIST:
 
-                return true;
-
-            case MENU_CONTEXT_RENAME_LIST:
-
-                promptRenameListAtPosition(info.position);
+                shelveListAtPosition(info.position);
 
                 return true;
 
@@ -254,6 +263,23 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         }
     }
 
+    private void shelveListAtPosition(int position) {
+
+        String listName = currentListEntries.get(position).getListName();
+
+        SynergyV5List synLst = new SynergyV5List(listName);
+
+        //sync to retrieve or set activatedAt
+        synLst.sync(this, NwdDb.getInstance(this));
+
+        synLst.shelve();
+
+        //sync again to push change
+        synLst.sync(this, NwdDb.getInstance(this));
+
+        refreshLayout();
+    }
+
     private void copyListNameToClipboard(int position) {
 
         String listName = currentListEntries.get(position).getListName();
@@ -265,116 +291,116 @@ public class SynergyV5MainActivity extends ListBaseActivity {
         Utils.toast(this, "[" + listName + "] copied to clipboard.");
     }
 
-    private void promptRenameListAtPosition(int position) {
-
-        //Adapted from:
-        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
-        // get prompts.xml view
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.prompt, null);
-
-        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-        tv.setText("Enter listName: ");
-
-        android.app.AlertDialog.Builder alertDialogBuilder =
-                new android.app.AlertDialog.Builder(this);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        final String selectedListName = currentListEntries.get(position).getListName();
-
-        userInput.setText(selectedListName);
-        userInput.setSelection(userInput.getText().length());
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-
-                                // get list name from userInput and move
-                                String processedName =
-                                        Utils.processName(
-                                                userInput.getText().toString());
-
-                                SynergyV5Utils.rename(selectedListName, processedName);
-
-                                Utils.toast(getApplicationContext(), "renamed");
-                                refreshLayout();
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-    }
-
-    private void promptCopyListAtPosition(int position) {
-
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.prompt, null);
-
-        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-        tv.setText("Enter listName: ");
-
-        android.app.AlertDialog.Builder alertDialogBuilder =
-                new android.app.AlertDialog.Builder(this);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        final String selectedListName = currentListEntries.get(position).getListName();
-
-        userInput.setText(selectedListName);
-        userInput.setSelection(userInput.getText().length());
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-
-                                // get list name from userInput and move
-                                String processedName =
-                                        Utils.processName(
-                                                userInput.getText().toString());
-
-                                SynergyV5Utils.copy(selectedListName, processedName);
-
-                                Utils.toast(getApplicationContext(), "copied");
-                                refreshLayout();
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-    }
+//    private void promptRenameListAtPosition(int position) {
+//
+//        //Adapted from:
+//        // http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+//        // get prompts.xml view
+//        LayoutInflater li = LayoutInflater.from(this);
+//        View promptsView = li.inflate(R.layout.prompt, null);
+//
+//        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+//        tv.setText("Enter listName: ");
+//
+//        android.app.AlertDialog.Builder alertDialogBuilder =
+//                new android.app.AlertDialog.Builder(this);
+//
+//        // set prompts.xml to alertdialog builder
+//        alertDialogBuilder.setView(promptsView);
+//
+//        final EditText userInput = (EditText) promptsView
+//                .findViewById(R.id.editTextDialogUserInput);
+//
+//        final String selectedListName = currentListEntries.get(position).getListName();
+//
+//        userInput.setText(selectedListName);
+//        userInput.setSelection(userInput.getText().length());
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//
+//                                // get list name from userInput and move
+//                                String processedName =
+//                                        Utils.processName(
+//                                                userInput.getText().toString());
+//
+//                                SynergyV5Utils.rename(selectedListName, processedName);
+//
+//                                Utils.toast(getApplicationContext(), "renamed");
+//                                refreshLayout();
+//                            }
+//                        })
+//                .setNegativeButton("Cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // create alert dialog
+//        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
+//    }
+//
+//    private void promptCopyListAtPosition(int position) {
+//
+//        LayoutInflater li = LayoutInflater.from(this);
+//        View promptsView = li.inflate(R.layout.prompt, null);
+//
+//        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+//        tv.setText("Enter listName: ");
+//
+//        android.app.AlertDialog.Builder alertDialogBuilder =
+//                new android.app.AlertDialog.Builder(this);
+//
+//        // set prompts.xml to alertdialog builder
+//        alertDialogBuilder.setView(promptsView);
+//
+//        final EditText userInput = (EditText) promptsView
+//                .findViewById(R.id.editTextDialogUserInput);
+//
+//        final String selectedListName = currentListEntries.get(position).getListName();
+//
+//        userInput.setText(selectedListName);
+//        userInput.setSelection(userInput.getText().length());
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//
+//                                // get list name from userInput and move
+//                                String processedName =
+//                                        Utils.processName(
+//                                                userInput.getText().toString());
+//
+//                                SynergyV5Utils.copy(selectedListName, processedName);
+//
+//                                Utils.toast(getApplicationContext(), "copied");
+//                                refreshLayout();
+//                            }
+//                        })
+//                .setNegativeButton("Cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // create alert dialog
+//        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
+//    }
 
     private void readItems(){
         readItems((ListView)findViewById(R.id.lvItems));

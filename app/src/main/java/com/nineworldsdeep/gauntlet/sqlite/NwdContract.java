@@ -228,9 +228,9 @@ public class NwdContract {
     public static final String
             SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS =
 
-                "SELECT sl." + COLUMN_SYNERGY_LIST_NAME + ", COUNT(*) AS '" + COLUMN_COUNT + "' "
+                "SELECT sl." + COLUMN_SYNERGY_LIST_NAME + ", COUNT(sli." + COLUMN_SYNERGY_LIST_ITEM_ID + ") AS '" + COLUMN_COUNT + "' "
                 + "FROM " + TABLE_SYNERGY_LIST + " sl "
-                + "JOIN " + TABLE_SYNERGY_LIST_ITEM + " sli "
+                + "LEFT JOIN " + TABLE_SYNERGY_LIST_ITEM + " sli "
                 + "ON sl." + COLUMN_SYNERGY_LIST_ID + " = sli." + COLUMN_SYNERGY_LIST_ID + " "
                 + "LEFT JOIN " + TABLE_SYNERGY_TO_DO + " std "
                 + "ON sli." + COLUMN_SYNERGY_LIST_ITEM_ID + " = std." + COLUMN_SYNERGY_LIST_ITEM_ID + " "

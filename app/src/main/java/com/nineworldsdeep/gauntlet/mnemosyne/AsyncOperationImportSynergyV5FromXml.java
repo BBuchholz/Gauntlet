@@ -60,5 +60,16 @@ public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
 
         }
 
+        for(File f : synergyV5XmlFiles){
+
+            boolean successful = f.delete();
+
+            if(!successful){
+
+                publishProgress(("error deleting file: " +
+                        f.getAbsolutePath()));
+            }
+        }
+
     }
 }

@@ -2,6 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListActivity">
+
+    <item android:id="@+id/action_shuffle"
+        android:title="@string/shuffle"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_alphabetize"
+        android:title="@string/sort_a_z"
+        app:showAsAction="ifRoom|withText"/>
+
     <item android:id="@+id/action_archive"
         android:title="@string/menu_archive"
         app:showAsAction="ifRoom|withText"/>

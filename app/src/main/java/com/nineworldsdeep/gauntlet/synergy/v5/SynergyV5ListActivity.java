@@ -586,29 +586,89 @@ public class SynergyV5ListActivity
             return true;
         }
 
+        if(id == R.id.action_shuffle){
+
+            promptShuffleList();
+            return true;
+        }
+
+        if(id == R.id.action_alphabetize){
+
+            promptAlphabetize();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
-    private void promptUpdateTemplate() {
+    private void promptShuffleList() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSynLst.getListName());
+        String msg =
+                "Are you sure you want to SHUFFLE this list? " +
+                        "This action CANNOT BE UNDONE.";
 
-        String msg = "Update Template: " + trimmedName + "?";
-
-        builder.setTitle("UpdateTemplate")
+        builder.setTitle("Shuffle")
                 .setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SynergyV5Utils.updateTemplate(trimmedName, mSynLst);
-                        Utils.toast(getApplicationContext(), "template updated");
+                        mSynLst.shuffle();
+                        Utils.toast(getApplicationContext(),
+                                "list shuffled");
+
+                        refreshLayout();
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    private void promptAlphabetize() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        String msg =
+                "Are you sure you want to SORT this list A-Z? " +
+                        "This action CANNOT BE UNDONE.";
+
+        builder.setTitle("Sort A-Z")
+                .setMessage(msg)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        mSynLst.sortAZ();
+                        Utils.toast(getApplicationContext(),
+                                "list sorted");
+
+                        refreshLayout();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+//    private void promptUpdateTemplate() {
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSynLst.getListName());
+//
+//        String msg = "Update Template: " + trimmedName + "?";
+//
+//        builder.setTitle("UpdateTemplate")
+//                .setMessage(msg)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        SynergyV5Utils.updateTemplate(trimmedName, mSynLst);
+//                        Utils.toast(getApplicationContext(), "template updated");
+//                    }
+//                })
+//                .setNegativeButton("No", null)
+//                .show();
+//    }
 
     private void promptConfirmArchive(){
 

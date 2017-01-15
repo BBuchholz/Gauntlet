@@ -6,6 +6,8 @@ import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -456,6 +458,27 @@ public class SynergyV5List {
                 sli.archive();
             }
         }
+    }
+
+    public void shuffle() {
+
+        Collections.shuffle(mItems);
+    }
+
+    public void sortAZ() {
+
+        Collections.sort(mItems,
+
+                new Comparator<SynergyV5ListItem>() {
+
+                    public int compare(SynergyV5ListItem sli1,
+                                       SynergyV5ListItem sli2) {
+
+                    return sli1.getItemValue().toLowerCase().compareTo(
+                            sli2.getItemValue().toLowerCase());
+                    }
+                }
+        );
     }
 
 //    public SynergyV5ListItem archive(int position) {

@@ -1984,7 +1984,7 @@ public class NwdDb {
 
             Cursor cursor =
                     db.rawQuery(
-                NwdContract.SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS,
+                NwdContract.SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS_NEW,
                             args);
 
             String[] columnNames =

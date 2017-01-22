@@ -300,7 +300,7 @@ public class MnemoSyneUtils {
         lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
         lst.add(Configuration.getImagesDirectory().getAbsolutePath());
         lst.add(Configuration.getCameraDirectory().getAbsolutePath());
-        lst.add(Configuration.getSkitchDirectory().getAbsolutePath());
+        lst.add(Configuration.getMemesDirectory().getAbsolutePath());
 
         File f = Configuration.getScreenshotDirectory();
 

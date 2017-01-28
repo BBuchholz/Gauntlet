@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.core;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -398,5 +399,15 @@ public class Configuration {
     public static void toggleV3ShuffleFragments() {
 
         _shuffleV3Fragments = !_shuffleV3Fragments;
+    }
+
+    public static MediaDevice getLocalMediaDevice() {
+
+        //this will eventually get from the db
+        MediaDevice md = new MediaDevice();
+        md.setMediaDeviceId(1);
+        md.setMediaDeviceDescription("Demo Local Media Device");
+
+        return md;
     }
 }

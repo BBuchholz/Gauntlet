@@ -10,6 +10,7 @@ import android.widget.Spinner;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 
@@ -35,13 +36,14 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
         Spinner sp = (Spinner)this.findViewById(R.id.spMediaDevice);
 
-        ArrayList<String> lst = new ArrayList<>();
-        lst.add("logos");
-        lst.add("realm");
-        lst.add("galaxy-a");
-        lst.add("main laptop");
+        ArrayList<MediaDevice> lst = new ArrayList<>();
+        lst.add(Configuration.getLocalMediaDevice());
+//        lst.add("logos");
+//        lst.add("realm");
+//        lst.add("galaxy-a");
+//        lst.add("main laptop");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<MediaDevice> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, lst);
 
         sp.setAdapter(adapter);
@@ -116,7 +118,11 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
         if (id == R.id.action_add_media_root){
 
-            Utils.toast(this, "Selected Path: media/root/path/goes/here/");
+            String path = "media/root/path/goes/here/";
+
+
+
+            Utils.toast(this, "Selected Path: " + path);
 
             return true;
         }

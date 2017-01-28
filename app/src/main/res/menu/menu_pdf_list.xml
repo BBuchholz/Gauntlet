@@ -8,16 +8,7 @@
         <!--android:title="@string/menu_go_to_audio"-->
         <!--app:showAsAction="ifRoom|withText"/>-->
 
-    <item android:id="@+id/action_go_to_synergy"
-        android:title="@string/menu_go_to_synergy"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_images"
-        android:title="@string/menu_go_to_images_main"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_audio_main"
-        android:title="@string/menu_go_to_audio_main"
-        app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_go_to_audio_player"
-        android:title="@string/menu_go_to_audio_player"
-        app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_go_to_home_screen"
+          android:title="@string/home"
+          app:showAsAction="ifRoom|withText"/>
 </menu>

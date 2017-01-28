@@ -18,6 +18,7 @@ import android.widget.SimpleAdapter;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -135,43 +136,15 @@ public class PdfListActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        switch(id) {
+        if (id == R.id.action_go_to_home_screen){
 
-            case R.id.action_go_to_synergy:
-
-                NavigateActivityCommand.navigateTo(
-                        SynergyV3MainActivity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_images:
-
-                NavigateActivityCommand.navigateTo(
-                        ImageListV2Activity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_audio_main:
-
-                NavigateActivityCommand.navigateTo(
-                        AudioListV2Activity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_audio_player:
-
-                NavigateActivityCommand.navigateTo(
-                        AudioDisplayActivity.class, this);
-
-                return true;
-
-            default:
-
-                return super.onOptionsItemSelected(item);
+            NavigateActivityCommand.navigateTo(
+                    HomeListActivity.class, this
+            );
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void refreshLayout() {

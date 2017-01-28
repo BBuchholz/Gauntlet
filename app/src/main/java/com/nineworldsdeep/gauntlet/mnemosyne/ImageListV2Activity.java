@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -147,43 +148,17 @@ public class ImageListV2Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-        switch (item.getItemId()){
+        int id = item.getItemId();
 
-            case R.id.action_go_to_synergy:
+        if (id == R.id.action_go_to_home_screen){
 
-                NavigateActivityCommand.navigateTo(
-                        SynergyV3MainActivity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_pdfs:
-
-                NavigateActivityCommand.navigateTo(
-                        PdfListActivity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_audio_main:
-
-                NavigateActivityCommand.navigateTo(
-                        AudioListV2Activity.class, this
-                );
-
-                return true;
-
-            case R.id.action_go_to_audio_player:
-
-                NavigateActivityCommand.navigateTo(
-                        AudioDisplayActivity.class, this);
-
-                return true;
-
-            default:
-
-                return super.onOptionsItemSelected(item);
+            NavigateActivityCommand.navigateTo(
+                    HomeListActivity.class, this
+            );
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
 
     }
 

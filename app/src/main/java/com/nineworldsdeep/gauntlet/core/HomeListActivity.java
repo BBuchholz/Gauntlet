@@ -22,14 +22,14 @@ import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageBrowserActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNamedNodeActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
-import com.nineworldsdeep.gauntlet.tapestry.v2.ClusterComparisonActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +80,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Audio", AudioListV2Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
+        addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
         //addNavigateActivityCommand("Compare Nodes", ClusterComparisonActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);

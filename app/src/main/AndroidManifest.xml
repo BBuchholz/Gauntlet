@@ -458,10 +458,19 @@
                 android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
         </activity>
         <activity
-            android:name=".mnemosyne.v5.ImageBrowserActivity"
+            android:name=".mnemosyne.v5.demo.ImageBrowserActivity"
             android:label="ImageBrowserActivity"
             android:parentActivityName=".core.HomeListActivity"
             android:theme="@style/MaterialDesignActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
+        <activity
+            android:name=".mnemosyne.v5.MnemosyneV5ScanActivity"
+            android:label="@string/title_activity_mnemosyne_v5_scan"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>

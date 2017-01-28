@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.mnemosyne.v5;
+package com.nineworldsdeep.gauntlet.mnemosyne.v5.demo;
 
 
 import android.content.Context;

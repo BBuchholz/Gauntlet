@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.mnemosyne.v5;
+package com.nineworldsdeep.gauntlet.mnemosyne.v5.demo;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;

@@ -1,6 +1,12 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,10 +19,14 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MnemosyneV5ScanActivity extends AppCompatActivity {
+
+    private static final int SELECT_DIRECTORY_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +130,15 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
             String path = "media/root/path/goes/here/";
 
+            Intent i = new Intent(this, FilePickerActivity.class);
 
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+            i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
 
-            Utils.toast(this, "Selected Path: " + path);
+            i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory());
+
+            startActivityForResult(i, SELECT_DIRECTORY_CODE);
 
             return true;
         }
@@ -130,4 +146,44 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SELECT_DIRECTORY_CODE &&
+                resultCode == Activity.RESULT_OK) {
+
+            if (data.getBooleanExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false)) {
+
+                // For JellyBean and above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                    ClipData clip = data.getClipData();
+
+                    if (clip != null) {
+
+                        for (int i = 0; i < clip.getItemCount(); i++) {
+
+                            Uri uri = clip.getItemAt(i).getUri();
+
+                            //handle multiples when and if implemented
+                        }
+                    }
+                }
+
+            } else {
+
+                Uri uri = data.getData();
+
+                File f = new File(uri.getPath());
+                Utils.toast(this, "Selected path: " + f.getAbsolutePath());
+            }
+
+        } else {
+
+            Utils.toast(this, "Nothing selected...");
+        }
+
+    }
+
 }

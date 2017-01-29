@@ -14,26 +14,11 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
         new HashMap<>();
-
-    // Since I plan to use my previous naming convention that is in place for the NWD ecosystem
-    // we will be using "AS _id" in our statements when we get to that bridge
-    //
-    // BELOW QUOTED FROM:
-    // http://stackoverflow.com/questions/3192064/about-id-field-in-android-sqlite
-    //
-    // "_id is useful when you are using the enhanced Adapters which make use of a
-    // Cursor (e.g. ResourceCursorAdapter). It's used by these adapters to provide
-    // an ID which can be used to refer to the specific row in the table which relates
-    // the the item in whatever the adapter is being used for (e.g. a row in a ListView).
-    //
-    // "It's not necessary if you're not going to be using classes which need an _id
-    // column in a cursor, and you can also use "as _id" to make another column appear
-    // as though it's called _id in your cursor." - stack overflow user: Al Sutton
 
     private static final String DATABASE_CREATE_DISPLAY_NAME =
 
@@ -322,6 +307,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             dropAndRecreateSynergyToDoDbV12(db);
         }
 
+        if (oldVersion < 13){
+
+            createMnemosyneV5Subset(db);
+        }
+
     }
 
     private void dropAndRecreateSynergyToDoDbV11(SQLiteDatabase db){
@@ -385,5 +375,44 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER);
 
+    }
+
+    private void createMnemosyneV5Subset(SQLiteDatabase db){
+
+        db.execSQL(NwdContract.CREATE_MEDIA_TAG);
+        db.execSQL(NwdContract.CREATE_MEDIA_TAG_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_TAG_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE);
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPT);
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPT_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPT_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_PATH);
+        db.execSQL(NwdContract.CREATE_MEDIA_PATH_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_PATH_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_ROOT);
+        db.execSQL(NwdContract.CREATE_MEDIA_ROOT_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_ROOT_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA);
+        db.execSQL(NwdContract.CREATE_MEDIA_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE_PATH);
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE_PATH_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_DEVICE_PATH_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPTION);
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPTION_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_TRANSCRIPTION_UPDATED_TRIGGER);
+
+        db.execSQL(NwdContract.CREATE_MEDIA_TAGGING);
+        db.execSQL(NwdContract.CREATE_MEDIA_TAGGING_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_MEDIA_TAGGING_UPDATED_TRIGGER);
     }
 }

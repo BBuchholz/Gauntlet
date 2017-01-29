@@ -411,4 +411,349 @@ public class NwdContract {
             + "WHERE " + COLUMN_SYNERGY_LIST_ITEM_ID + " = ?; ";
 
     //endregion
+
+    public static final String TABLE_MEDIA_TRANSCRIPTION = "MediaTranscription";
+
+    public static final String TABLE_MEDIA_DEVICE = "MediaDevice";
+    public static final String TABLE_MEDIA_ROOT = "MediaRoot";
+    public static final String TABLE_MEDIA_PATH = "MediaPath";
+    public static final String TABLE_MEDIA = "Media";
+    public static final String TABLE_MEDIA_DEVICE_PATH = "MediaDevicePath";
+    public static final String TABLE_MEDIA_TAG = "MediaTag";
+    public static final String TABLE_MEDIA_TAGGING = "MediaTagging";
+    public static final String TABLE_MEDIA_TRANSCRIPT = "MediaTranscript";
+
+    public static final String COLUMN_MEDIA_ROOT_ID = "MediaRootId";
+    public static final String COLUMN_MEDIA_ROOT_PATH = "MediaRootPath";
+    public static final String COLUMN_MEDIA_DEVICE_ID = "MediaDeviceId";
+    public static final String COLUMN_MEDIA_DEVICE_DESCRIPTION = "MediaDeviceDescription";
+    public static final String COLUMN_MEDIA_PATH_VALUE = "MediaPathValue";
+    public static final String COLUMN_MEDIA_FILE_NAME = "MediaFileName";
+    public static final String COLUMN_MEDIA_ID = "MediaId";
+    public static final String COLUMN_MEDIA_PATH_ID = "MediaPathId";
+    public static final String COLUMN_MEDIA_HASH = "MediaHash";
+    public static final String COLUMN_MEDIA_TAG_ID = "MediaTagId";
+    public static final String COLUMN_MEDIA_TAG_VALUE = "MediaTagValue";
+    public static final String COLUMN_MEDIA_DESCRIPTION = "MediaDescription";
+
+    public static final String COLUMN_MEDIA_TRANSCRIPT_ID = "MediaTranscriptId";
+    public static final String COLUMN_MEDIA_TRANSCRIPT_VALUE = "MediaTranscriptValue";
+    public static final String COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME = "MediaTranscriptBeginTime";
+    public static final String COLUMN_MEDIA_TRANSCRIPT_END_TIME = "MediaTranscriptEndTime";
+    public static final String COLUMN_MEDIA_TRANSCRIPT_CREATED_AT = "MediaTranscriptCreatedAt";
+    public static final String COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT = "MediaTranscriptUpdatedAt";
+    public static final String COLUMN_MEDIA_TRANSCRIPTION_ID = "MediaTranscriptionId";
+    public static final String COLUMN_MEDIA_TRANSCRIPTION_CREATED_AT = "MediaTranscriptionCreatedAt";
+    public static final String COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT = "MediaTranscriptionUpdatedAt";
+    public static final String COLUMN_MEDIA_CREATED_AT = "MediaCreatedAt";
+    public static final String COLUMN_MEDIA_UPDATED_AT = "MediaUpdatedAt";
+    public static final String COLUMN_MEDIA_ROOT_CREATED_AT = "MediaRootCreatedAt";
+    public static final String COLUMN_MEDIA_ROOT_UPDATED_AT = "MediaRootUpdatedAt";
+    public static final String COLUMN_MEDIA_PATH_CREATED_AT = "MediaPathCreatedAt";
+    public static final String COLUMN_MEDIA_PATH_UPDATED_AT = "MediaPathUpdatedAt";
+    public static final String COLUMN_MEDIA_DEVICE_PATH_ID = "MediaDevicePathId";
+    public static final String COLUMN_MEDIA_DEVICE_PATH_CREATED_AT = "MediaDevicePathCreatedAt";
+    public static final String COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT = "MediaDevicePathUpdatedAt";
+    public static final String COLUMN_MEDIA_DEVICE_CREATED_AT = "MediaDeviceCreatedAt";
+    public static final String COLUMN_MEDIA_DEVICE_UPDATED_AT = "MediaDeviceUpdatedAt";
+
+    public static final String COLUMN_MEDIA_TAGGING_ID = "MediaTaggingId";
+    public static final String COLUMN_MEDIA_TAGGING_TAGGED_AT = "MediaTaggingTaggedAt";
+    public static final String COLUMN_MEDIA_TAGGING_UNTAGGED_AT = "MediaTaggingUntaggedAt";
+    public static final String COLUMN_MEDIA_TAGGING_CREATED_AT = "MediaTaggingCreatedAt";
+    public static final String COLUMN_MEDIA_TAGGING_UPDATED_AT = "MediaTaggingUpdatedAt";
+    public static final String COLUMN_MEDIA_TAG_CREATED_AT = "MediaTagCreatedAt";
+    public static final String COLUMN_MEDIA_TAG_UPDATED_AT = "MediaTagUpdatedAt";
+
+    public static final String CREATE_MEDIA_TAG =
+
+            "CREATE TABLE " + TABLE_MEDIA_TAG + " ( " +
+            "	" + COLUMN_MEDIA_TAG_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_TAG_VALUE + " TEXT NOT NULL UNIQUE, " +
+            "	" + COLUMN_MEDIA_TAG_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TAG_UPDATED_AT + " TEXT " +
+            ") ";
+
+    public static final String CREATE_MEDIA_TAG_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TAG + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_TAG + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TAG + "  " +
+            "	SET " + COLUMN_MEDIA_TAG_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_TAG_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TAG + "." + COLUMN_MEDIA_TAG_ID + " = NEW." + COLUMN_MEDIA_TAG_ID + "; " +
+            "END ";
+
+    public static final String CREATE_MEDIA_TAG_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TAG + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_TAG + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TAG + "  " +
+            "	SET " + COLUMN_MEDIA_TAG_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TAG + "." + COLUMN_MEDIA_TAG_ID + " = NEW." + COLUMN_MEDIA_TAG_ID + "; " +
+            "END " ;
+
+
+    public static final String CREATE_MEDIA_DEVICE =
+
+            "CREATE TABLE " + TABLE_MEDIA_DEVICE + " ( " +
+            "	" + COLUMN_MEDIA_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_DEVICE_DESCRIPTION + " TEXT NOT NULL UNIQUE, " +
+            "	" + COLUMN_MEDIA_DEVICE_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_DEVICE_UPDATED_AT + " TEXT " +
+            ") " ;
+
+    public static final String CREATE_MEDIA_DEVICE_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_DEVICE + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_DEVICE + "  " +
+            "	SET " + COLUMN_MEDIA_DEVICE_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_DEVICE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_DEVICE + "." + COLUMN_MEDIA_DEVICE_ID + " = NEW." + COLUMN_MEDIA_DEVICE_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_DEVICE_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_DEVICE + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_DEVICE + "  " +
+            "	SET " + COLUMN_MEDIA_DEVICE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_DEVICE + "." + COLUMN_MEDIA_DEVICE_ID + " = NEW." + COLUMN_MEDIA_DEVICE_ID + "; " +
+            "END " ;
+
+
+    public static final String CREATE_MEDIA_TRANSCRIPT =
+
+            "CREATE TABLE " + TABLE_MEDIA_TRANSCRIPT + " ( " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_VALUE + " TEXT, " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME + " TEXT,  " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_END_TIME + " TEXT,  " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT + " TEXT,  " +
+            "	UNIQUE(" + COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME + ", " + COLUMN_MEDIA_TRANSCRIPT_END_TIME + ") " +
+            ") " ;
+
+    public static final String CREATE_MEDIA_TRANSCRIPT_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPT + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_TRANSCRIPT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TRANSCRIPT + "  " +
+            "	SET " + COLUMN_MEDIA_TRANSCRIPT_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TRANSCRIPT + "." + COLUMN_MEDIA_TRANSCRIPT_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPT_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_TRANSCRIPT_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPT + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_TRANSCRIPT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TRANSCRIPT + "  " +
+            "	SET " + COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TRANSCRIPT + "." + COLUMN_MEDIA_TRANSCRIPT_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPT_ID + "; " +
+            "END " ;
+
+
+    public static final String CREATE_MEDIA_PATH =
+
+            "CREATE TABLE " + TABLE_MEDIA_PATH + " ( " +
+            "	" + COLUMN_MEDIA_PATH_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_PATH_VALUE + " TEXT NOT NULL UNIQUE, " +
+            "	" + COLUMN_MEDIA_PATH_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_PATH_UPDATED_AT + " TEXT " +
+            ") ";
+
+    public static final String CREATE_MEDIA_PATH_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_PATH + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_PATH + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_PATH + "  " +
+            "	SET " + COLUMN_MEDIA_PATH_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_PATH_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_PATH + "." + COLUMN_MEDIA_PATH_ID + " = NEW." + COLUMN_MEDIA_PATH_ID + "; " +
+            "END ";
+
+    public static final String CREATE_MEDIA_PATH_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_PATH + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_PATH + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_PATH + "  " +
+            "	SET " + COLUMN_MEDIA_PATH_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_PATH + "." + COLUMN_MEDIA_PATH_ID + " = NEW." + COLUMN_MEDIA_PATH_ID + "; " +
+            "END ";
+
+
+    public static final String CREATE_MEDIA_ROOT =
+
+            "CREATE TABLE " + TABLE_MEDIA_ROOT + " ( " +
+            "	" + COLUMN_MEDIA_ROOT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_DEVICE_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_DEVICE + " (" + COLUMN_MEDIA_DEVICE_ID + "),  " +
+            "	" + COLUMN_MEDIA_ROOT_PATH + " TEXT NOT NULL UNIQUE, " +
+            "	" + COLUMN_MEDIA_ROOT_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_ROOT_UPDATED_AT + " TEXT " +
+            ") ";
+
+    public static final String CREATE_MEDIA_ROOT_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_ROOT + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_ROOT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_ROOT + "  " +
+            "	SET " + COLUMN_MEDIA_ROOT_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_ROOT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_ROOT + "." + COLUMN_MEDIA_ROOT_ID + " = NEW." + COLUMN_MEDIA_ROOT_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_ROOT_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_ROOT + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_ROOT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_ROOT + "  " +
+            "	SET " + COLUMN_MEDIA_ROOT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_ROOT + "." + COLUMN_MEDIA_ROOT_ID + " = NEW." + COLUMN_MEDIA_ROOT_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA =
+
+            "CREATE TABLE " + TABLE_MEDIA + " ( " +
+            "	" + COLUMN_MEDIA_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_FILE_NAME + " TEXT, " +
+            "	" + COLUMN_MEDIA_DESCRIPTION + " TEXT,  " +
+            "	" + COLUMN_MEDIA_HASH + " TEXT,  " +
+            "	" + COLUMN_MEDIA_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_UPDATED_AT + " TEXT,   " +
+            "	UNIQUE(" + COLUMN_MEDIA_HASH + ") " +
+            ") ";
+
+    public static final String CREATE_MEDIA_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA + "  " +
+            "	SET " + COLUMN_MEDIA_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA + "." + COLUMN_MEDIA_ID + " = NEW." + COLUMN_MEDIA_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA + "  " +
+            "	SET " + COLUMN_MEDIA_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA + "." + COLUMN_MEDIA_ID + " = NEW." + COLUMN_MEDIA_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_DEVICE_PATH =
+
+            "CREATE TABLE " + TABLE_MEDIA_DEVICE_PATH + " ( " +
+            "	" + COLUMN_MEDIA_DEVICE_PATH_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA + " (" + COLUMN_MEDIA_ID + "),  " +
+            "	" + COLUMN_MEDIA_DEVICE_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_DEVICE + " (" + COLUMN_MEDIA_DEVICE_ID + "), " +
+            "	" + COLUMN_MEDIA_PATH_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_PATH + " (" + COLUMN_MEDIA_PATH_ID + "), " +
+            "	" + COLUMN_MEDIA_DEVICE_PATH_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT + " TEXT,  " +
+            "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_PATH_ID + ") " +
+            ") " ;
+
+    public static final String CREATE_MEDIA_DEVICE_PATH_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE_PATH + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_DEVICE_PATH + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_DEVICE_PATH + "  " +
+            "	SET " + COLUMN_MEDIA_DEVICE_PATH_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_DEVICE_PATH + "." + COLUMN_MEDIA_DEVICE_PATH_ID + " = NEW." + COLUMN_MEDIA_DEVICE_PATH_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_DEVICE_PATH_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE_PATH + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_DEVICE_PATH + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_DEVICE_PATH + "  " +
+            "	SET " + COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_DEVICE_PATH + "." + COLUMN_MEDIA_DEVICE_PATH_ID + " = NEW." + COLUMN_MEDIA_DEVICE_PATH_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_TRANSCRIPTION =
+
+            "CREATE TABLE " + TABLE_MEDIA_TRANSCRIPTION + " ( " +
+            "	" + COLUMN_MEDIA_TRANSCRIPTION_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA + " (" + COLUMN_MEDIA_ID + "),  " +
+            "	" + COLUMN_MEDIA_TRANSCRIPT_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_TRANSCRIPT + " (" + COLUMN_MEDIA_TRANSCRIPT_ID + "), " +
+            "	" + COLUMN_MEDIA_TRANSCRIPTION_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT + " TEXT,  " +
+            "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TRANSCRIPT_ID + ") " +
+            ") " ;
+
+    public static final String CREATE_MEDIA_TRANSCRIPTION_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPTION + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_TRANSCRIPTION + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TRANSCRIPTION + "  " +
+            "	SET " + COLUMN_MEDIA_TRANSCRIPTION_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TRANSCRIPTION + "." + COLUMN_MEDIA_TRANSCRIPTION_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPTION_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_TRANSCRIPTION_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPTION + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_TRANSCRIPTION + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TRANSCRIPTION + "  " +
+            "	SET " + COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TRANSCRIPTION + "." + COLUMN_MEDIA_TRANSCRIPTION_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPTION_ID + "; " +
+            "END ";
+
+    public static final String CREATE_MEDIA_TAGGING =
+
+            "CREATE TABLE " + TABLE_MEDIA_TAGGING + " ( " +
+            "	" + COLUMN_MEDIA_TAGGING_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_MEDIA_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA + " (" + COLUMN_MEDIA_ID + "),  " +
+            "	" + COLUMN_MEDIA_TAG_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_TAG + " (" + COLUMN_MEDIA_TAG_ID + "), " +
+            "	" + COLUMN_MEDIA_TAGGING_TAGGED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TAGGING_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_MEDIA_TAGGING_UPDATED_AT + " TEXT,  " +
+            "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
+            ") " ;
+
+    public static final String CREATE_MEDIA_TAGGING_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TAGGING + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_MEDIA_TAGGING + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TAGGING + "  " +
+            "	SET " + COLUMN_MEDIA_TAGGING_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_MEDIA_TAGGING_UPDATED_AT + " = CURRENT_TIMESTAMP, " +
+            "		   " + COLUMN_MEDIA_TAGGING_TAGGED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TAGGING + "." + COLUMN_MEDIA_TAGGING_ID + " = NEW." + COLUMN_MEDIA_TAGGING_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_MEDIA_TAGGING_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_MEDIA_TAGGING + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_MEDIA_TAGGING + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_MEDIA_TAGGING + "  " +
+            "	SET " + COLUMN_MEDIA_TAGGING_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_MEDIA_TAGGING + "." + COLUMN_MEDIA_TAGGING_ID + " = NEW." + COLUMN_MEDIA_TAGGING_ID + "; " +
+            "END " ;
+
 }

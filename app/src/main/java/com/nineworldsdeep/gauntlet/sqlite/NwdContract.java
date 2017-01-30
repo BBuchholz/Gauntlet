@@ -14,7 +14,7 @@ public class NwdContract {
     public static final String TABLE_TAG = "Tag";
     public static final String TABLE_FILE_TAGS = "FileTags";
     public static final String TABLE_AUDIO_TRANSCRIPT = "AudioTranscript";
-    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
+//    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
 
     public static final String TABLE_SYNERGY_LIST = "SynergyList";
     public static final String TABLE_SYNERGY_LIST_ITEM = "SynergyListItem";
@@ -43,9 +43,9 @@ public class NwdContract {
     public static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
     public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
     public static final String COLUMN_FILE_NAME = "FileName";
-    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
-    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
-    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+//    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
+//    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+//    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
 
     //endregion
 
@@ -465,6 +465,14 @@ public class NwdContract {
     public static final String COLUMN_MEDIA_TAG_CREATED_AT = "MediaTagCreatedAt";
     public static final String COLUMN_MEDIA_TAG_UPDATED_AT = "MediaTagUpdatedAt";
 
+    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
+
+    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
+    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+    public static final String COLUMN_LOCAL_CONFIG_CREATED_AT = "LocalConfigCreatedAt";
+    public static final String COLUMN_LOCAL_CONFIG_UPDATED_AT = "LocalConfigUpdatedAt";
+
     public static final String CREATE_MEDIA_TAG =
 
             "CREATE TABLE " + TABLE_MEDIA_TAG + " ( " +
@@ -756,4 +764,68 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TAGGING + "." + COLUMN_MEDIA_TAGGING_ID + " = NEW." + COLUMN_MEDIA_TAGGING_ID + "; " +
             "END " ;
 
+    public static final String CREATE_LOCAL_CONFIG_V5 =
+
+            "CREATE TABLE " + TABLE_LOCAL_CONFIG + " ( " +
+            "	" + COLUMN_LOCAL_CONFIG_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+            "	" + COLUMN_LOCAL_CONFIG_KEY + " TEXT NOT NULL UNIQUE,  " +
+            "	" + COLUMN_LOCAL_CONFIG_VALUE + " TEXT, " +
+            "	" + COLUMN_LOCAL_CONFIG_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_LOCAL_CONFIG_UPDATED_AT + " TEXT, " +
+            "	UNIQUE(" + COLUMN_LOCAL_CONFIG_KEY + ", " + COLUMN_LOCAL_CONFIG_VALUE + ") " +
+            ") " ;
+
+    public static final String CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_LOCAL_CONFIG + "CreatedAt  " +
+            "AFTER INSERT ON " + TABLE_LOCAL_CONFIG + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_LOCAL_CONFIG + "  " +
+            "	SET " + COLUMN_LOCAL_CONFIG_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_LOCAL_CONFIG_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_LOCAL_CONFIG + "." + COLUMN_LOCAL_CONFIG_ID + " = NEW." + COLUMN_LOCAL_CONFIG_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_LOCAL_CONFIG + "UpdatedAt " +
+            "AFTER UPDATE ON " + TABLE_LOCAL_CONFIG + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_LOCAL_CONFIG + "  " +
+            "	SET " + COLUMN_LOCAL_CONFIG_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_LOCAL_CONFIG + "." + COLUMN_LOCAL_CONFIG_ID + " = NEW." + COLUMN_LOCAL_CONFIG_ID + "; " +
+            "END " ;
+
+    public static final String LOCAL_CONFIG_GET_VALUE_FOR_KEY_X =
+
+            "SELECT " + COLUMN_LOCAL_CONFIG_VALUE + " " +
+            "FROM " + TABLE_LOCAL_CONFIG + " " +
+            "WHERE " + COLUMN_LOCAL_CONFIG_KEY + " = ?; ";
+
+    public static final String MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X =
+
+            "SELECT " + COLUMN_MEDIA_DEVICE_ID + ",  " +
+            "	    " + COLUMN_MEDIA_DEVICE_DESCRIPTION + " " +
+            "FROM " + TABLE_MEDIA_DEVICE + " " +
+            "WHERE " + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; " ;
+
+    public static final String INSERT_INTO_MEDIA_DEVICE =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE + " "
+            + "	(" + COLUMN_MEDIA_DEVICE_DESCRIPTION + ") "
+            + "VALUES "
+            + "	(?); " ;
+
+    public static final String MNEMOSYNE_V5_INSERT_LOCAL_CONFIG_KEY_VALUE_X_Y =
+
+            "INSERT OR IGNORE INTO " + TABLE_LOCAL_CONFIG + " " +
+            "	(" + COLUMN_LOCAL_CONFIG_KEY + ", " + COLUMN_LOCAL_CONFIG_VALUE + ") " +
+            "VALUES " +
+            "	(?, ?); ";
+
+    public static final String MNEMOSYNE_V5_UPDATE_LOCAL_CONFIG_VALUE_FOR_KEY_X_Y =
+
+            "UPDATE " + TABLE_LOCAL_CONFIG + " " +
+            "SET " + COLUMN_LOCAL_CONFIG_VALUE + " = ? " +
+            "WHERE " + COLUMN_LOCAL_CONFIG_KEY + " = ?; " ;
 }

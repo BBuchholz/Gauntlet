@@ -1,9 +1,11 @@
 package com.nineworldsdeep.gauntlet.core;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -24,6 +26,7 @@ public class Configuration {
     private static boolean _deleteDatabaseForDevelopment = false;
     private static boolean _shuffleV3Fragments = false;
     private static String _mostRecentMoveToList = "Fragments"; //default
+    private static MediaDevice localMediaDevice;
 
     public static boolean isInTestMode() {
         return _testMode;
@@ -401,13 +404,22 @@ public class Configuration {
         _shuffleV3Fragments = !_shuffleV3Fragments;
     }
 
-    public static MediaDevice getLocalMediaDevice() {
+    public static MediaDevice getLocalMediaDevice(Context c, NwdDb db) {
 
         //this will eventually get from the db
-        MediaDevice md = new MediaDevice();
-        md.setMediaDeviceId(1);
-        md.setMediaDeviceDescription("Demo Local Media Device");
+        //MediaDevice localMediaDevice = new MediaDevice();
 
-        return md;
+        if(localMediaDevice == null){
+
+            localMediaDevice = db.getLocalMediaDevice(c);
+        }
+
+        return localMediaDevice;
+    }
+
+    public static void ensureLocalMediaDevice(
+            Context c, NwdDb db, String localMediaDeviceName) {
+
+        db.ensureLocalMediaDevice(c, localMediaDeviceName);
     }
 }

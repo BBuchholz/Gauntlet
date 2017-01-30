@@ -414,5 +414,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(NwdContract.CREATE_MEDIA_TAGGING);
         db.execSQL(NwdContract.CREATE_MEDIA_TAGGING_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_MEDIA_TAGGING_UPDATED_TRIGGER);
+
+        //replace local config (not used in previous code)
+        db.execSQL(DATABASE_DROP_LOCAL_CONFIG);
+        db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5);
+        db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER);
     }
 }

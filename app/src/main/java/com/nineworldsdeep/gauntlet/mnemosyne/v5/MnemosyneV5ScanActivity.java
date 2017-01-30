@@ -2,23 +2,30 @@ package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
@@ -36,10 +43,105 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        NwdDb.getInstance(this).open();
+
+        if(Configuration.getLocalMediaDevice(this,
+                        NwdDb.getInstance(this)) == null){
+
+            promptSetLocalDeviceDescription();
+
+        }else{
+
+            refreshLayout();
+        }
+    }
+
+    private void promptSetLocalDeviceDescription(){
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText("Enter Local Device Name: ");
+
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                // get list name from userInput and move
+                                String deviceName =
+                                        userInput.getText().toString();
+
+                                deviceName = deviceName.trim().toLowerCase();
+
+                                if(!Utils.stringIsNullOrWhitespace(deviceName)) {
+
+                                    Configuration.ensureLocalMediaDevice(
+                                            MnemosyneV5ScanActivity.this,
+                                            NwdDb.getInstance(MnemosyneV5ScanActivity.this),
+                                            deviceName);
+
+                                    Utils.toast(getApplicationContext(), "stored.");
+
+                                    refreshLayout();
+
+                                }else{
+
+                                    Utils.toast(getApplicationContext(), "empty name, ignored.");
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+
+                                refreshLayout();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    private void refreshLayout(){
+
+
         populateSpinnerMediaDevice();
         populateSpinnerMediaRoot();
         populateSpinnerSourceSelectDbFs();
         populateSpinnerFileTypes();
+    }
+
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        NwdDb.getInstance(this).open();
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        NwdDb.getInstance(this).close();
     }
 
     private void populateSpinnerMediaDevice() {
@@ -47,11 +149,14 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
         Spinner sp = (Spinner)this.findViewById(R.id.spMediaDevice);
 
         ArrayList<MediaDevice> lst = new ArrayList<>();
-        lst.add(Configuration.getLocalMediaDevice());
-//        lst.add("logos");
-//        lst.add("realm");
-//        lst.add("galaxy-a");
-//        lst.add("main laptop");
+
+        MediaDevice md = Configuration.getLocalMediaDevice(
+                this, NwdDb.getInstance(this));
+
+        if(md != null){
+
+            lst.add(md);
+        }
 
         ArrayAdapter<MediaDevice> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, lst);
@@ -164,9 +269,9 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
                         for (int i = 0; i < clip.getItemCount(); i++) {
 
-                            Uri uri = clip.getItemAt(i).getUri();
-
-                            //handle multiples when and if implemented
+//                            Uri uri = clip.getItemAt(i).getUri();
+//
+//                            //handle multiples when and if implemented
                         }
                     }
                 }

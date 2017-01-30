@@ -11,6 +11,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.model.HashNode;
@@ -44,6 +45,8 @@ public class NwdDb {
     // which does so, and I like the design better that way
 
     private final static Object lock = new Object();
+    private static final String LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION =
+            "local-media-device-description";
 
     private SQLiteDatabase db;
     private NwdDbOpenHelper dbHelper;
@@ -2225,6 +2228,156 @@ public class NwdDb {
 
             db.endTransaction();
         }
+    }
+
+    /**
+     * will use LocalConfig table to look for
+     * value associated with key "local-media-device-description"
+     *
+     * if that key is not found, will return null
+     * @return
+     */
+    public String getLocalMediaDeviceDescription(Context c) {
+
+        String localMediaDeviceDescription = null;
+
+        db.beginTransaction();
+
+        try{
+
+            String configKey = LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION;
+
+            String[] args =
+                    new String[]{
+                           configKey
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.LOCAL_CONFIG_GET_VALUE_FOR_KEY_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_LOCAL_CONFIG_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                localMediaDeviceDescription =
+                        record.get(NwdContract.COLUMN_LOCAL_CONFIG_VALUE);
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception retrieving list id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return localMediaDeviceDescription;
+    }
+
+    /**
+     * will use MediaDevice table to look for
+     * description associated with key "local-media-device-description"
+     * in LocalConfig table
+     *
+     * if that key or device is not found in either table, this will return null
+     * @return
+     */
+    public MediaDevice getLocalMediaDevice(Context c) {
+
+        MediaDevice md = null;
+        String deviceDescription = getLocalMediaDeviceDescription(c);
+
+        if(deviceDescription != null){
+
+            db.beginTransaction();
+
+            try{
+
+                String[] args =
+                        new String[]{
+                               deviceDescription
+                        };
+
+                Cursor cursor =
+                        db.rawQuery(
+                            NwdContract.MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X,
+                            args);
+
+                String[] columnNames =
+                        new String[]{
+                                NwdContract.COLUMN_MEDIA_DEVICE_ID,
+                                NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
+                        };
+
+                if(cursor.getCount() > 0){
+
+                    cursor.moveToFirst();
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    int mediaDeviceId =
+                            Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
+
+                    String mediaDeviceDescription =
+                            record.get(NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
+
+                    md = new MediaDevice();
+                    md.setMediaDeviceId(mediaDeviceId);
+                    md.setMediaDeviceDescription(mediaDeviceDescription);
+
+                    cursor.close();
+                }
+
+                db.setTransactionSuccessful();
+
+            }catch (Exception ex){
+
+                Utils.toast(c, "Exception retrieving list id: " +
+                        ex.getMessage());
+
+            }finally {
+
+                db.endTransaction();
+            }
+
+        }
+
+        return md;
+    }
+
+    public void ensureLocalMediaDevice(Context c, String localMediaDeviceDescription) {
+
+        db.execSQL(NwdContract.MNEMOSYNE_V5_INSERT_LOCAL_CONFIG_KEY_VALUE_X_Y,
+                    new String[]{
+                            LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION,
+                            localMediaDeviceDescription});
+
+        db.execSQL(NwdContract.MNEMOSYNE_V5_UPDATE_LOCAL_CONFIG_VALUE_FOR_KEY_X_Y,
+                    new String[]{
+                            localMediaDeviceDescription,
+                            LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION});
+
+        db.execSQL(NwdContract.INSERT_INTO_MEDIA_DEVICE,
+                    new String[]{
+                            localMediaDeviceDescription});
     }
 
 

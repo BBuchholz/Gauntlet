@@ -49,6 +49,11 @@ public class NwdContract {
 
     //endregion
 
+    public static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT =
+            "MediaDevicePathVerifiedPresent";
+    public static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING =
+            "MediaDevicePathVerifiedMissing";
+
     public static final String COLUMN_COUNT = "Count";
 
     public static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
@@ -828,4 +833,14 @@ public class NwdContract {
             "UPDATE " + TABLE_LOCAL_CONFIG + " " +
             "SET " + COLUMN_LOCAL_CONFIG_VALUE + " = ? " +
             "WHERE " + COLUMN_LOCAL_CONFIG_KEY + " = ?; " ;
+
+    public static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_VERIFIED =
+
+            "ALTER TABLE " + TABLE_MEDIA_DEVICE_PATH +
+                    " ADD COLUMN " + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT + " TEXT; ";
+
+    public static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_MISSING =
+
+            "ALTER TABLE " + TABLE_MEDIA_DEVICE_PATH +
+                    " ADD COLUMN " + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING + " TEXT; ";
 }

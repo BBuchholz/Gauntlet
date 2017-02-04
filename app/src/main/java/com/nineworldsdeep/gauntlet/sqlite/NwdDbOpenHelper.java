@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -312,6 +312,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             createMnemosyneV5Subset(db);
         }
 
+        if (oldVersion < 14){
+
+            addColumnsDevicePathVerifiedAndMissing(db);
+        }
+
     }
 
     private void dropAndRecreateSynergyToDoDbV11(SQLiteDatabase db){
@@ -420,5 +425,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5);
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER);
+    }
+
+    private void addColumnsDevicePathVerifiedAndMissing(SQLiteDatabase db){
+
+        db.execSQL(NwdContract.MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_VERIFIED);
+        db.execSQL(NwdContract.MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_MISSING);
     }
 }

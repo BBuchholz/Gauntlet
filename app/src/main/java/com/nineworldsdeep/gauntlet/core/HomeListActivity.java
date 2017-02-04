@@ -16,6 +16,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.TestModeActivity;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
@@ -78,6 +79,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Images", ImageListV2Activity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Audio", AudioListV2Activity.class);
+        addNavigateActivityCommand("Audio Player", AudioDisplayActivity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
@@ -86,7 +88,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
         addNavigateActivityCommand("Sources", AliasListActivity.class);
         addNavigateActivityCommand("Tapestry", TapestryNamedNodeActivity.class);
-        addNavigateActivityCommand("Test", TestModeActivity.class);
+        //addNavigateActivityCommand("Test", TestModeActivity.class);
         addNavigateActivityCommand("PrevHome", MainActivity.class);
 
     }

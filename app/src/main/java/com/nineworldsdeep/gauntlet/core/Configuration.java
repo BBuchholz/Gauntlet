@@ -29,7 +29,7 @@ public class Configuration {
     private static MediaDevice localMediaDevice;
 
     public static boolean isInTestMode() {
-        return _testMode;
+        return false;
     }
 
     public static void setTestMode(boolean testMode) {
@@ -38,9 +38,7 @@ public class Configuration {
 
     public static boolean isInDeleteDatabaseForDevelopmentMode(){
 
-        //TODO: disable for release version
-        return _deleteDatabaseForDevelopment;
-        //return false;
+        return false;
     }
 
     public static void setDeleteDatabaseForDevelopment(boolean deleteDbForDev){

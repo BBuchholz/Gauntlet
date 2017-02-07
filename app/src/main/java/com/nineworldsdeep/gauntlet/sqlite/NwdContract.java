@@ -843,4 +843,25 @@ public class NwdContract {
 
             "ALTER TABLE " + TABLE_MEDIA_DEVICE_PATH +
                     " ADD COLUMN " + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING + " TEXT; ";
+
+    public static final String SELECT_FROM_MEDIA_DEVICE =
+
+            "SELECT " + NwdContract.COLUMN_MEDIA_DEVICE_ID + ", "
+                      + NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION + " "
+            + "FROM " + NwdContract.TABLE_MEDIA_DEVICE + "; ";
+
+    public static final String
+            SELECT_ID_AND_PATH_FROM_MEDIA_ROOT_FOR_DEVICE_ID =
+
+            "SELECT " + NwdContract.COLUMN_MEDIA_ROOT_ID + ", "
+                      + NwdContract.COLUMN_MEDIA_ROOT_PATH + " "
+            + "FROM " + NwdContract.TABLE_MEDIA_ROOT + " "
+            + "WHERE " + NwdContract.COLUMN_MEDIA_DEVICE_ID + " = ? ; ";
+
+    public static final String INSERT_DEVICE_ID_PATH_INTO_MEDIA_ROOT =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_ROOT + " "
+            + "	(" + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_ROOT_PATH + ") "
+            + "VALUES "
+            + "	(?, ?); " ;
 }

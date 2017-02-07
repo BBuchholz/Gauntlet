@@ -8,32 +8,37 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.async.AsyncOpGetFileSystemExtensionEntries;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class MnemosyneV5ScanActivity extends AppCompatActivity {
+public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatusActivity {
 
     private static final int SELECT_DIRECTORY_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,8 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
         }else{
 
-            refreshLayout();
+            //refreshLayout();
+            populateSpinnerMediaDevice();
         }
     }
 
@@ -122,13 +128,15 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
     private void refreshLayout(){
 
+        //commenting out because
+        //spinner selections should populate other spinners
 
-        populateSpinnerMediaDevice();
-        populateSpinnerMediaRoot();
-        populateSpinnerSourceSelectDbFs();
-        populateSpinnerFileTypes();
+//        populateSpinnerMediaDevice();
+//        populateSpinnerMediaRoot();
+//        populateSpinnerSourceSelectDbFs();
+//        populateSpinnerFileTypes();
+
     }
-
 
     @Override
     protected void onResume() {
@@ -146,71 +154,319 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
     private void populateSpinnerMediaDevice() {
 
-        Spinner sp = (Spinner)this.findViewById(R.id.spMediaDevice);
+        Spinner spMediaDevices = (Spinner)this.findViewById(R.id.spMediaDevice);
 
-        ArrayList<MediaDevice> lst = new ArrayList<>();
+//        ArrayList<MediaDevice> lst = new ArrayList<>();
+//
+//        MediaDevice md = Configuration.getLocalMediaDevice(
+//                this, NwdDb.getInstance(this));
+//
+//        if(md != null){
+//
+//            lst.add(md);
+//        }
 
-        MediaDevice md = Configuration.getLocalMediaDevice(
-                this, NwdDb.getInstance(this));
-
-        if(md != null){
-
-            lst.add(md);
-        }
+        ArrayList<MediaDevice> lst =
+                NwdDb.getInstance(this).v5GetAllMediaDevices(this);
 
         ArrayAdapter<MediaDevice> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, lst);
 
-        sp.setAdapter(adapter);
+        spMediaDevices.setAdapter(adapter);
+
+        spMediaDevices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                populateSpinnerMediaRoot();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+                clearSpinner(getMediaRootsSpinner());
+            }
+
+        });
+
+
+    }
+
+    private void clearSpinner(Spinner sp){
+
+        if(sp != null) {
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, new ArrayList<String>());
+
+            sp.setAdapter(adapter);
+        }
+    }
+
+    private void clearListView(ListView lv){
+
+        if(lv != null){
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item,
+                    new ArrayList<String>());
+
+            lv.setAdapter(adapter);
+        }
+    }
+
+    private Spinner getMediaRootsSpinner(){
+
+        return (Spinner)findViewById(R.id.spMediaRoot);
+    }
+
+    private Spinner getMediaDeviceSpinner(){
+
+        return (Spinner)findViewById(R.id.spMediaDevice);
+    }
+
+    private Spinner getSourceSelectSpinner(){
+
+        return (Spinner)findViewById(R.id.spSourceSelectDbFs);
+    }
+
+    private Spinner getFileTypesSpinner(){
+
+        return (Spinner)findViewById(R.id.spFileTypes);
+    }
+
+    private ListView getFilePathsListView(){
+
+        return (ListView)findViewById(R.id.lvItems);
+    }
+
+    private MediaDevice getSelectedMediaDevice(){
+
+        Spinner spMediaDevices = getMediaDeviceSpinner();
+
+        MediaDevice md = null;
+
+        if(spMediaDevices != null){
+
+            MediaDevice selected =
+                    (MediaDevice)spMediaDevices.getSelectedItem();
+
+            if(selected != null){
+
+                md = selected;
+            }
+        }
+
+        return md;
+    }
+
+    private MediaRoot getSelectedMediaRoot(){
+
+        Spinner spMediaRoot = getMediaRootsSpinner();
+
+        MediaRoot mediaRoot = null;
+
+        if(spMediaRoot != null){
+
+            MediaRoot selected =
+                    (MediaRoot)spMediaRoot.getSelectedItem();
+
+            if(selected != null){
+
+                mediaRoot = selected;
+            }
+        }
+
+        return mediaRoot;
+    }
+
+    private MediaScanSourceSelect getSelectedSource(){
+
+        Spinner spSource = getSourceSelectSpinner();
+
+        if(spSource != null){
+
+            return (MediaScanSourceSelect)spSource.getSelectedItem();
+
+        }else{
+
+            return null;
+        }
     }
 
     private void populateSpinnerMediaRoot() {
 
-        Spinner sp = (Spinner)this.findViewById(R.id.spMediaRoot);
+        MediaDevice md = getSelectedMediaDevice();
 
-        ArrayList<String> lst = new ArrayList<>();
-        lst.add("/NWD/");
-        lst.add("/NWD-AUX/");
-        lst.add("/NWD-MEDIA/");
-        lst.add("/NWD-SYNC/");
+        if(md != null) {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, lst);
+            Spinner spMediaRoots = getMediaRootsSpinner();
 
-        sp.setAdapter(adapter);
+//        ArrayList<String> lst = new ArrayList<>();
+//        lst.add("/NWD/");
+//        lst.add("/NWD-AUX/");
+//        lst.add("/NWD-MEDIA/");
+//        lst.add("/NWD-SYNC/");
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+//                android.R.layout.simple_spinner_item, lst);
+//
+//        sp.setAdapter(adapter);
+            NwdDb.getInstance(this).open();
+            ArrayList<MediaRoot> lst =
+                    NwdDb.getInstance(this)
+                            .v5GetMediaRootsForDeviceId(
+                                    md.getMediaDeviceId(),
+                                    this);
+
+            ArrayAdapter<MediaRoot> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, lst);
+
+            spMediaRoots.setAdapter(adapter);
+
+            spMediaRoots.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                    populateSpinnerSourceSelectDbFs();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+
+                    clearSpinner(getSourceSelectSpinner());
+                }
+
+            });
+        }
     }
 
     private void populateSpinnerSourceSelectDbFs() {
 
-        Spinner sp = (Spinner)this.findViewById(R.id.spSourceSelectDbFs);
+        Spinner spSourceSelect = (Spinner)this.findViewById(R.id.spSourceSelectDbFs);
 
-        ArrayList<String> lst = new ArrayList<>();
-        lst.add("DB");
-        lst.add("FS");
+//        ArrayList<String> lst = new ArrayList<>();
+//        lst.add("DB");
+//        lst.add("FS");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, lst);
+        ArrayList<MediaScanSourceSelect> lst = new ArrayList<>();
+        lst.add(MediaScanSourceSelect.FileSystem);
+        lst.add(MediaScanSourceSelect.Database);
 
-        sp.setAdapter(adapter);
+        ArrayAdapter<MediaScanSourceSelect> adapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        lst);
+
+        spSourceSelect.setAdapter(adapter);
+
+        spSourceSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                populateSpinnerFileTypes();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+                clearSpinner(getFileTypesSpinner());
+            }
+
+        });
     }
 
     private void populateSpinnerFileTypes() {
 
-        Spinner sp = (Spinner)this.findViewById(R.id.spFileTypes);
+        Spinner spFileTypes = (Spinner)this.findViewById(R.id.spFileTypes);
 
-        ArrayList<String> lst = new ArrayList<>();
-        lst.add(".wav");
-        lst.add(".png");
-        lst.add(".txt");
-        lst.add(".xml");
+//        ArrayList<String> lst = new ArrayList<>();
+//        lst.add(".wav");
+//        lst.add(".png");
+//        lst.add(".txt");
+//        lst.add(".xml");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, lst);
+        getStatusView().setText("");
 
-        sp.setAdapter(adapter);
+        clearListView(getFilePathsListView());
+
+        MediaRoot mediaRoot = getSelectedMediaRoot();
+
+        if(mediaRoot != null) {
+
+            MediaScanSourceSelect selectedSource = getSelectedSource();
+
+            if(selectedSource != null) {
+
+                MultiMapString extensionsToPaths = new MultiMapString();
+                ArrayList<ExtensionEntry> entries = new ArrayList<>();
+
+                try{
+
+                    switch (selectedSource){
+
+                        case FileSystem:
+
+                            extensionsToPaths =
+                                new AsyncOpGetFileSystemExtensionEntries(
+                                        this, mediaRoot.getMediaRootPath())
+                                    .executeAsync().get();
+
+                            break;
+
+                        case Database:
+
+                            //not yet implemented, see desktop
+                            //MediaMasterDisplay.GetDataBaseExtToPath(...);
+
+                            Utils.toast(this, "not implemented for db yet");
+
+                            break;
+                    }
+
+                    for(String ext : extensionsToPaths.keySet()){
+
+                        int count = extensionsToPaths.get(ext).size();
+                        entries.add(new ExtensionEntry(ext, count));
+                    }
+
+                    ArrayAdapter<ExtensionEntry> adapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_spinner_item, entries);
+
+                    spFileTypes.setAdapter(adapter);
+
+                }catch (Exception ex){
+
+                    Utils.toast(this, "error scanning files: "
+                            + ex.getMessage());
+                }
+            }
+
+            spFileTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                    populateListViewFilePaths();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+
+                    clearListView(getFilePathsListView());
+                }
+
+        });
+        }
     }
 
-        @Override
+    private void populateListViewFilePaths() {
+
+        Utils.toast(this, "populate file paths not yet implemented");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_mnemosyne_v5_scan, menu);
@@ -281,7 +537,19 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
                 Uri uri = data.getData();
 
                 File f = new File(uri.getPath());
-                Utils.toast(this, "Selected path: " + f.getAbsolutePath());
+
+                int localDeviceId =
+                        Configuration.getLocalMediaDevice(
+                                this,
+                                NwdDb.getInstance(this))
+                        .getMediaDeviceId();
+
+                NwdDb.getInstance(this).open();
+                NwdDb.getInstance(this).insertMediaRoot(this, localDeviceId, f);
+
+                Utils.toast(this, "inserted media root: " + f.getAbsolutePath());
+
+                populateSpinnerMediaRoot();
             }
 
         } else {
@@ -291,4 +559,19 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity {
 
     }
 
+    public void updateStatus(String status){
+
+        TextView tv = getStatusView();
+        tv.setText(status);
+    }
+
+    protected TextView getStatusView() {
+
+        return (TextView)findViewById(R.id.tvStatus);
+    }
+
+    @Override
+    public Activity getAsActivity() {
+        return this;
+    }
 }

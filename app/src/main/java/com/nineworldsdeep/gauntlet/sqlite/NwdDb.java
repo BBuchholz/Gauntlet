@@ -12,6 +12,8 @@ import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.model.HashNode;
@@ -2092,18 +2094,72 @@ public class NwdDb {
         return listNames;
     }
 
-//    public void load(Context context, SynergyV5List lst) {
-//
-//        //calling sync() which will insert the list name
-//        //if it doesn't exist and will also populate the id.
-//        sync(context, lst);
-//
-//        //MOVED LOAD LIST ITEMS TO SAVE METHOD ABOVE
-//        //TESTING, MOVE BACK IF PROBLEMS
-//
-////        //resolve activateAt and shelvedAt values
-////        synergyV5PopulateListTimeStamps(context, lst);
-//    }
+    public ArrayList<MediaDevice> v5GetAllMediaDevices(Context c){
+
+        ArrayList<MediaDevice> lst = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                NwdContract.SELECT_FROM_MEDIA_DEVICE,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_DEVICE_ID,
+                            NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    int deviceId =
+                            Integer.parseInt(
+                                record.get(
+                                        NwdContract.COLUMN_MEDIA_DEVICE_ID));
+
+                    String description =
+                        record.get(
+                            NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
+
+                    MediaDevice md = new MediaDevice();
+                    md.setMediaDeviceId(deviceId);
+                    md.setMediaDeviceDescription(description);
+
+                    lst.add(md);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "error getting media devices: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return lst;
+    }
+
 
     public void synergyV5PopulateListItems(Context c,
                                            SynergyV5List lst) {
@@ -2378,6 +2434,99 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_INTO_MEDIA_DEVICE,
                     new String[]{
                             localMediaDeviceDescription});
+    }
+
+    public ArrayList<MediaRoot> v5GetMediaRootsForDeviceId(
+            int mediaDeviceId, Context c) {
+
+        ArrayList<MediaRoot> lst = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(mediaDeviceId)
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                NwdContract.SELECT_ID_AND_PATH_FROM_MEDIA_ROOT_FOR_DEVICE_ID,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_ROOT_ID,
+                            NwdContract.COLUMN_MEDIA_ROOT_PATH
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    int mediaRootId =
+                            Integer.parseInt(
+                                record.get(
+                                        NwdContract.COLUMN_MEDIA_ROOT_ID));
+
+                    String mediaRootPath =
+                        record.get(
+                            NwdContract.COLUMN_MEDIA_ROOT_PATH);
+
+                    MediaRoot mr = new MediaRoot();
+                    mr.setMediaDeviceId(mediaDeviceId);
+                    mr.setMediaRootId(mediaRootId);
+                    mr.setMediaRootPath(new File(mediaRootPath));
+
+                    lst.add(mr);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "error getting media roots: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return lst;
+    }
+
+    public void insertMediaRoot(Context c, int deviceId, File rootFolder) {
+
+        if(rootFolder.isDirectory()){
+
+            try{
+
+                db.execSQL(
+                    NwdContract.INSERT_DEVICE_ID_PATH_INTO_MEDIA_ROOT,
+                    new String[]{
+                            Integer.toString(deviceId),
+                            rootFolder.getAbsolutePath()
+                    }
+                );
+
+            }catch (Exception ex){
+
+                Utils.toast(c, "error adding media root: " +
+                        ex.getMessage());
+
+            }
+        }
     }
 
 

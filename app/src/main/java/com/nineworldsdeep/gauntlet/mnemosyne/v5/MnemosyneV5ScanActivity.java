@@ -38,7 +38,8 @@ import java.util.ArrayList;
 public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatusActivity {
 
     private static final int SELECT_DIRECTORY_CODE = 1;
-
+    private MultiMapString extensionsToPaths;
+    private ArrayList<String> mCurrentPaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        extensionsToPaths = new MultiMapString();
+        mCurrentPaths = new ArrayList<>();
         NwdDb.getInstance(this).open();
 
         if(Configuration.getLocalMediaDevice(this,
@@ -178,13 +181,15 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                populateSpinnerMediaRoot();
+                populateSpinnerSourceSelectDbFs();
+                //populateSpinnerMediaRoot();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
 
-                clearSpinner(getMediaRootsSpinner());
+                clearSpinner(getSourceSelectSpinner());
+                //clearSpinner(getMediaRootsSpinner());
             }
 
         });
@@ -280,6 +285,26 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
         return mediaRoot;
     }
 
+    private ExtensionEntry getSelectedExtensionEntry(){
+
+        Spinner spFileTypes = getFileTypesSpinner();
+
+        ExtensionEntry entry = null;
+
+        if(spFileTypes != null){
+
+            ExtensionEntry selected =
+                    (ExtensionEntry)spFileTypes.getSelectedItem();
+
+            if(selected != null){
+
+                entry = selected;
+            }
+        }
+
+        return entry;
+    }
+
     private MediaScanSourceSelect getSelectedSource(){
 
         Spinner spSource = getSourceSelectSpinner();
@@ -328,13 +353,15 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                    populateSpinnerSourceSelectDbFs();
+                    populateSpinnerFileTypes();
+                    //populateSpinnerSourceSelectDbFs();
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
 
-                    clearSpinner(getSourceSelectSpinner());
+                    //clearSpinner(getSourceSelectSpinner());
+                    clearSpinner(getFileTypesSpinner());
                 }
 
             });
@@ -365,13 +392,15 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                populateSpinnerFileTypes();
+                populateSpinnerMediaRoot();
+                //populateSpinnerFileTypes();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
 
-                clearSpinner(getFileTypesSpinner());
+                clearSpinner(getMediaRootsSpinner());
+                //clearSpinner(getFileTypesSpinner());
             }
 
         });
@@ -399,7 +428,7 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
 
             if(selectedSource != null) {
 
-                MultiMapString extensionsToPaths = new MultiMapString();
+                extensionsToPaths = new MultiMapString();
                 ArrayList<ExtensionEntry> entries = new ArrayList<>();
 
                 try{
@@ -463,7 +492,24 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
 
     private void populateListViewFilePaths() {
 
-        Utils.toast(this, "populate file paths not yet implemented");
+        ExtensionEntry entry = getSelectedExtensionEntry();
+
+        mCurrentPaths = new ArrayList<>();
+
+        if (entry != null) {
+
+            ListView lvFilePaths = getFilePathsListView();
+
+            NwdDb.getInstance(this).open();
+            mCurrentPaths =
+                    extensionsToPaths.getAsArrayList(entry.getExtension());
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, mCurrentPaths);
+
+            lvFilePaths.setAdapter(adapter);
+            setupListViewListener();
+        }
     }
 
     @Override
@@ -557,6 +603,24 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
             Utils.toast(this, "Nothing selected...");
         }
 
+    }
+
+    private void setupListViewListener() {
+
+        final ListView lvItems = getFilePathsListView();
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int idx,
+                                    long id) {
+
+                String path = mCurrentPaths.get(idx);
+                Utils.toast(MnemosyneV5ScanActivity.this,
+                        "selected: " + path);
+            }
+        });
     }
 
     public void updateStatus(String status){

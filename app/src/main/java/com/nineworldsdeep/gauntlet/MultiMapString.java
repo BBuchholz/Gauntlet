@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +37,11 @@ public class MultiMapString {
 
             put(key, val);
         }
+    }
+
+    public ArrayList<String> getAsArrayList(String key){
+
+        return new ArrayList<>(get(key));
     }
 
     public Set<String> get(String key){

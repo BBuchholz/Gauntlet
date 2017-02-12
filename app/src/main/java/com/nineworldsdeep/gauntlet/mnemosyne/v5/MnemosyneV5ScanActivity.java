@@ -500,15 +500,18 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
 
             ListView lvFilePaths = getFilePathsListView();
 
-            NwdDb.getInstance(this).open();
-            mCurrentPaths =
-                    extensionsToPaths.getAsArrayList(entry.getExtension());
+            if(lvFilePaths != null) { //never true
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_1, mCurrentPaths);
+                NwdDb.getInstance(this).open();
+                mCurrentPaths =
+                        extensionsToPaths.getAsArrayList(entry.getExtension());
 
-            lvFilePaths.setAdapter(adapter);
-            setupListViewListener();
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                        android.R.layout.simple_list_item_1, mCurrentPaths);
+
+                lvFilePaths.setAdapter(adapter);
+                setupListViewListener();
+            }
         }
     }
 

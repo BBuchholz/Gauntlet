@@ -52,17 +52,24 @@
         android:orientation="vertical"
         android:layout_below="@+id/spFileTypes">
 
-        <HorizontalScrollView
+        <!--<HorizontalScrollView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1">-->
+
+            <!--<ListView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/lvItems"/>-->
+
+        <!--</HorizontalScrollView>-->
+
+        <ListView
+            android:id="@+id/lvItems"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/lvItems"/>
-
-        </HorizontalScrollView>
+            android:layout_weight="1"/>
+            <!--android:scrollbars="horizontal"/>-->
 
         <TextView
             android:layout_width="match_parent"

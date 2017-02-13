@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,14 +10,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionBarOverlayLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +40,10 @@ import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatusActivity {
 
@@ -506,8 +516,10 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 mCurrentPaths =
                         extensionsToPaths.getAsArrayList(entry.getExtension());
 
+                Collections.sort(mCurrentPaths);
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                        android.R.layout.simple_list_item_1, mCurrentPaths);
+                        R.layout.single_line_ellipsize_textview, mCurrentPaths);
 
                 lvFilePaths.setAdapter(adapter);
                 setupListViewListener();

@@ -228,7 +228,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     try{
                         startActivity(imageIntent);
                     }catch (ActivityNotFoundException ex){
-                        Utils.toast(v.getContext(), "error opening ivImage: " + ex.getMessage());
+                        Utils.toast(v.getContext(), "error opening image: " + ex.getMessage());
                     }
 
                     return true;

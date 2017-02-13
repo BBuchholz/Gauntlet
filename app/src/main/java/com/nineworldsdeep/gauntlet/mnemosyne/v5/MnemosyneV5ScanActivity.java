@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -634,6 +635,39 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 String path = mCurrentPaths.get(idx);
                 Utils.toast(MnemosyneV5ScanActivity.this,
                         "selected: " + path);
+            }
+        });
+
+        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView,
+                                           View view,
+                                           int idx,
+                                           long l) {
+
+                File f = new File(mCurrentPaths.get(idx));
+
+                if(f.exists() && f.isFile()){
+
+                    Intent target = new Intent(Intent.ACTION_VIEW);
+                    target.setDataAndType(Uri.fromFile(f),"*/*");
+                    target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                    try{
+
+                        startActivity(target);
+
+                    }catch (ActivityNotFoundException ex){
+
+                        Utils.toast(MnemosyneV5ScanActivity.this,
+                                "error opening file: " +
+                                f.getAbsolutePath());
+                    }
+
+                }
+
+                return true;
             }
         });
     }

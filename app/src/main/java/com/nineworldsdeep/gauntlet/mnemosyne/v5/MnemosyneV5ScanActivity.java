@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,6 +52,7 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
     private static final int SELECT_DIRECTORY_CODE = 1;
     private MultiMapString extensionsToPaths;
     private ArrayList<String> mCurrentPaths;
+    private String currentExtension = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,32 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
             //refreshLayout();
             populateSpinnerMediaDevice();
         }
+    }
+
+    public void onFilterButtonClick(View view){
+
+        //Utils.toast(this, "filter button pressed");
+
+        populateListViewFilePaths();
+
+        closeKeyboard();
+    }
+
+    private void closeKeyboard(){
+
+        if(this.getCurrentFocus() == null){
+
+            return;
+        }
+
+        InputMethodManager inputManager =
+            (InputMethodManager)
+                    this.getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(
+            this.getCurrentFocus().getWindowToken(),
+            InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private void promptSetLocalDeviceDescription(){
@@ -417,6 +445,16 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
         });
     }
 
+    private void clearFilter(){
+
+        EditText etFilter = (EditText)findViewById(R.id.etFilter);
+
+        if(etFilter != null){
+
+            etFilter.setText("");
+        }
+    }
+
     private void populateSpinnerFileTypes() {
 
         Spinner spFileTypes = (Spinner)this.findViewById(R.id.spFileTypes);
@@ -509,6 +547,12 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
 
         if (entry != null) {
 
+            if(currentExtension != entry.getExtension()){
+
+                currentExtension = entry.getExtension();
+                clearFilter();
+            }
+
             ListView lvFilePaths = getFilePathsListView();
 
             if(lvFilePaths != null) { //never true
@@ -516,6 +560,8 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 NwdDb.getInstance(this).open();
                 mCurrentPaths =
                         extensionsToPaths.getAsArrayList(entry.getExtension());
+
+                mCurrentPaths = applyFilter(mCurrentPaths);
 
                 Collections.sort(mCurrentPaths);
 
@@ -526,6 +572,31 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 setupListViewListener();
             }
         }
+    }
+
+    private ArrayList<String> applyFilter(ArrayList<String> pathList) {
+
+        String filter = getFilter();
+        ArrayList<String> filteredList = new ArrayList<>();
+
+        for(String path : pathList){
+
+            if(path.toLowerCase().contains(filter.toLowerCase())){
+
+                filteredList.add(path);
+            }
+        }
+
+        return filteredList;
+    }
+
+    private String getFilter() {
+
+        EditText etFilter = (EditText)findViewById(R.id.etFilter);
+        String filter = etFilter.getText().toString();
+        filter = filter.trim();
+
+        return filter;
     }
 
     @Override

@@ -651,7 +651,11 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
                 if(f.exists() && f.isFile()){
 
                     Intent target = new Intent(Intent.ACTION_VIEW);
-                    target.setDataAndType(Uri.fromFile(f),"*/*");
+
+                    String mimeType = UtilsMnemosyneV5.getMimeType(f);
+
+                    //target.setDataAndType(Uri.fromFile(f),"*/*");
+                    target.setDataAndType(Uri.fromFile(f), mimeType);
                     target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                     try{

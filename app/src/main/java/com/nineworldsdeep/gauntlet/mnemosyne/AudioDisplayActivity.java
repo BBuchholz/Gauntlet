@@ -53,6 +53,13 @@ public class AudioDisplayActivity extends AppCompatActivity implements MediaPlay
 
         super.onResume();
 
+        //trying this to fix a crash after idle issue
+        if(mMediaPlayerSingleton == null){
+
+            SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
+            mMediaPlayerSingleton = MediaPlayerSingleton.getInstance(seek);
+        }
+
         if(mMediaPlayerSingleton != null){
             mMediaPlayerSingleton.updateSeek();
         }

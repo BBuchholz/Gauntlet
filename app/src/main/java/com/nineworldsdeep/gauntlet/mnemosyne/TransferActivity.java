@@ -60,7 +60,8 @@ public class TransferActivity extends AsyncListBasedActivity
         cmds.clear();
 
         cmds.add(new AsyncCommandImportSynergyV5FromXml(this));
-        cmds.add(new AsyncCommandImportHashTagIndex(this));
+        cmds.add(new AsyncCommandImportMnemosyneV3toV4(this));
+        cmds.add(new AsyncCommandImportMnemosyneV4toV5(this));
         cmds.add(new AsyncCommandImportSynergyV3ToV5(this));
         cmds.add(new AsyncCommandExportDb(this));
         cmds.add(new AsyncCommandBridgeTables(this));

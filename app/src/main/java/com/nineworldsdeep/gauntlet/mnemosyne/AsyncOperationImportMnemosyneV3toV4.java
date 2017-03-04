@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * Created by brent on 10/5/16.
  */
-public class AsyncOperationImportHashTagIndex extends AsyncOperation {
+public class AsyncOperationImportMnemosyneV3toV4 extends AsyncOperation {
 
-    public AsyncOperationImportHashTagIndex(IStatusActivity statusActivity) {
+    public AsyncOperationImportMnemosyneV3toV4(IStatusActivity statusActivity) {
         super(statusActivity, "Importing Hash Tag Indexes");
     }
 

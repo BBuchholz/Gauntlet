@@ -12,8 +12,8 @@ public class AsyncCommandImportMnemosyneV4toV5 extends AsyncCommand {
     @Override
     public void executeCommand() {
 
-        AsyncOperationImportMnemosyneV4 op =
-                new AsyncOperationImportMnemosyneV4(statusActivity);
+        AsyncOperationImportMnemosyneV4toV5 op =
+                new AsyncOperationImportMnemosyneV4toV5(statusActivity);
         op.executeAsync();
     }
 }

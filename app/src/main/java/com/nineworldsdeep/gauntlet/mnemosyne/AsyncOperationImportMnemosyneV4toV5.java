@@ -3,17 +3,19 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.MultiMapString;
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
-import com.nineworldsdeep.gauntlet.model.FileNode;
-import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.xml.Xml;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -59,72 +61,73 @@ public class AsyncOperationImportMnemosyneV4toV5 extends AsyncOperation {
 
             publishProgress("Ensuring media tags...");
             db.ensureMediaTags(allTags);
-//
-//                StatusDetailUpdate("Indexing media tags...");
-//                Dictionary<string, Tag> tagsByTagValue = db.GetAllMediaTags();
-//
-//                Dictionary<string, string> pathToHash =
-//                    new Dictionary<string, string>();
-//
-//                int localMediaDeviceId = Configuration.DB.MediaSubset.LocalDeviceId;
-//
-//                int pathCountTotal = pathToTags.Keys.Count();
-//                int pathCountCurrent = 0;
-//
-//                foreach(var path in pathToTags.Keys)
-//                {
-//                    pathCountCurrent++;
-//
-//                    StatusDetailUpdate("hashing and storing path " + pathCountCurrent + " of " + pathCountTotal + ": " + path);
-//                    string hash = Hashes.Sha1ForFilePath(path);
-//                    pathToHash.Add(path, hash);
-//                    db.StoreHashForPath(localMediaDeviceId, path, hash);
-//                }
-//
-//                StatusDetailUpdate("indexing media by hash...");
-//                Dictionary<string, Media> hashToMedia =
-//                    db.GetAllMedia();
-//
-//                List<MediaTagging> taggings = new List<MediaTagging>();
-//
-//                pathCountTotal = pathToTags.Keys.Count();
-//                pathCountCurrent = 0;
-//
-//                foreach(string path in pathToTags.Keys)
-//                {
-//                    pathCountCurrent++;
-//
-//                    StatusDetailUpdate("processing tags for path " + pathCountCurrent + " of " + pathCountTotal + ": " + path);
-//
-//                    if (pathToHash.ContainsKey(path))
-//                    {
-//                        string pathHash = pathToHash[path];
-//
-//                        if (hashToMedia.ContainsKey(pathHash))
-//                        {
-//                            int mediaId = hashToMedia[pathHash].MediaId;
-//
-//                            foreach (string tag in pathToTags[path])
-//                            {
-//                                if (tagsByTagValue.ContainsKey(tag))
-//                                {
-//                                    int mediaTagId = tagsByTagValue[tag].TagId;
-//
-//                                    taggings.Add(new MediaTagging
-//                                    {
-//                                        MediaId = mediaId,
-//                                        MediaTagId = mediaTagId
-//                                    });
-//                                }
-//                            }
-//                        }
-//
-//                    }
-//                }
-//
-//                StatusDetailUpdate("ensuring media taggings in db...");
-//
-//                db.EnsureMediaTaggings(taggings);
+
+            publishProgress("Indexing media tags...");
+            HashMap<String, Tag> tagsByTagValue = db.getAllMediaTags();
+
+            HashMap<String, String> pathToHash =
+                new HashMap<String, String>();
+
+            int localMediaDeviceId =
+                    Configuration.getLocalMediaDevice(ctx, db).getMediaDeviceId();
+
+            int pathCountTotal = pathToTags.keySet().size();
+            int pathCountCurrent = 0;
+
+            for(String path : pathToTags.keySet())
+            {
+                pathCountCurrent++;
+
+                publishProgress("hashing and storing path " + pathCountCurrent + " of " + pathCountTotal + ": " + path);
+                String hash = Utils.computeSHA1(path);
+                pathToHash.put(path, hash);
+                db.storeHashForPath(localMediaDeviceId, path, hash);
+            }
+
+            publishProgress("indexing media by hash...");
+            HashMap<String, Media> hashToMedia = db.getAllMedia();
+
+            ArrayList<MediaTagging> taggings = new ArrayList<>();
+
+            pathCountTotal = pathToTags.keySet().size();
+            pathCountCurrent = 0;
+
+            for(String path : pathToTags.keySet())
+            {
+                pathCountCurrent++;
+
+                publishProgress("processing tags for path " + pathCountCurrent + " of " + pathCountTotal + ": " + path);
+
+                if (pathToHash.containsKey(path))
+                {
+                    String pathHash = pathToHash.get(path);
+
+                    if (hashToMedia.containsKey(pathHash))
+                    {
+                        int mediaId = hashToMedia.get(pathHash).getMediaId();
+
+                        for (String tag : pathToTags.get(path))
+                        {
+                            if (tagsByTagValue.containsKey(tag))
+                            {
+                                int mediaTagId =
+                                        tagsByTagValue.get(tag).getTagId();
+
+                                MediaTagging mt = new MediaTagging();
+                                mt.setMediaId(mediaId);
+                                mt.setMediaTagId(mediaTagId);
+
+                                taggings.add(mt);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            publishProgress("ensuring media taggings in db...");
+
+            db.ensureMediaTaggings(taggings);
 
             publishProgress("import logic in progress.");
 

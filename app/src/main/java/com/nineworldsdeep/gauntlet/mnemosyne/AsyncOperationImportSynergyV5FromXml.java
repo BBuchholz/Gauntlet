@@ -15,9 +15,6 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by brent on 10/5/16.
- */
 public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
 
     public AsyncOperationImportSynergyV5FromXml(IStatusActivity statusActivity) {

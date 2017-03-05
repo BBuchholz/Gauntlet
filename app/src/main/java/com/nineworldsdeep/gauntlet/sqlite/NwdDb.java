@@ -11,9 +11,13 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
+import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.model.HashNode;
@@ -33,6 +37,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -2527,6 +2532,39 @@ public class NwdDb {
 
             }
         }
+    }
+
+    public ArrayList<PathTagLink> getV4PathTagLinks() {
+
+        //mirrors desktop DbAdapterV4c.GetPathTagLinks()
+    }
+
+    public void ensureMediaTags(HashSet<String> allTags) {
+
+        //mirrors desktop MediaV5SubsetDb.EnsureMediaTags()
+        asdf;
+    }
+
+    public HashMap<String, Tag> getAllMediaTags() {
+
+        //mirrors desktop MediaV5SubsetDb.GetAllMediaTags()
+    }
+
+    public void storeHashForPath(int deviceId, String path, String hash) {
+
+        //mirrors desktop MediaV5SubsetDb.StoreHashForPath()
+        asdf;
+    }
+
+    public HashMap<String, Media> getAllMedia() {
+
+        //mirrors desktop MediaV5SubsetDb.GetAllMedia()
+    }
+
+    public void ensureMediaTaggings(ArrayList<MediaTagging> taggings) {
+
+        //mirrors desktop MediaV5SubsetDb.EnsureMediaTaggings()
+        asdf;
     }
 
 

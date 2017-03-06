@@ -5,9 +5,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
@@ -426,6 +428,33 @@ public class NwdDb {
             Utils.toast(context, "error exporting database: " + ex.getMessage());
         }
     }
+
+    /**
+     * writes a timestamped copy of the database
+     * to NWD/sqlite.
+     *
+     * returns the output path
+     */
+    public String export() throws Exception{
+
+
+        String timeStampedDbName =
+                SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss() +
+                        "-" + dbHelper.getDatabaseName();
+
+        File exportFile = Configuration.getSqliteDb(timeStampedDbName);
+
+        FileChannel src = new FileInputStream(dbFilePath).getChannel();
+        FileChannel dest = new FileOutputStream(exportFile).getChannel();
+
+        dest.transferFrom(src, 0, src.size());
+
+        src.close();
+        dest.close();
+
+        return "database exported: " + exportFile.getAbsolutePath();
+    }
+
 
     public void linkFileToDisplayName(String filePath, String displayName){
 
@@ -2534,37 +2563,469 @@ public class NwdDb {
         }
     }
 
-    public ArrayList<PathTagLink> getV4PathTagLinks() {
+    public ArrayList<PathTagLink> getV4PathTagLinksAsync() {
 
         //mirrors desktop DbAdapterV4c.GetPathTagLinks()
+
+        ArrayList<PathTagLink> allLinks = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                NwdContract.MNEMOSYNE_V4_GET_PATH_TAG_LINKS,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_PATH_VALUE,
+                            NwdContract.COLUMN_TAG_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    String pathValue =
+                            record.get(NwdContract.COLUMN_PATH_VALUE);
+
+                    String tagValue =
+                            record.get(NwdContract.COLUMN_TAG_VALUE);
+
+
+                    PathTagLink ptl = new PathTagLink();
+                    ptl.setPathValue(pathValue);
+                    ptl.setTagValue(tagValue);
+
+                    allLinks.add(ptl);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return allLinks;
     }
 
     public void ensureMediaTags(HashSet<String> allTags) {
 
         //mirrors desktop MediaV5SubsetDb.EnsureMediaTags()
-        asdf;
+
+        for(String tag : allTags) {
+
+            db.execSQL(NwdContract.INSERT_MEDIA_TAG_X,
+                    new String[]{tag});
+        }
     }
 
     public HashMap<String, Tag> getAllMediaTags() {
 
         //mirrors desktop MediaV5SubsetDb.GetAllMediaTags()
+
+        HashMap<String, Tag> allTags = new HashMap<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                NwdContract.SELECT_MEDIA_TAG_ID_VALUE,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_TAG_ID,
+                            NwdContract.COLUMN_MEDIA_TAG_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                    int tagId =
+                            Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_TAG_ID));
+
+                    String tagValue =
+                            record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE);
+
+                    Tag tag = new Tag();
+                    tag.setTagValue(tagValue);
+                    tag.setTagId(tagId);
+
+                    allTags.put(tagValue, tag);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return allTags;
     }
 
-    public void storeHashForPath(int deviceId, String path, String hash) {
+    public void storeHashForPath(int mediaDeviceId, String path, String hash) {
 
         //mirrors desktop MediaV5SubsetDb.StoreHashForPath()
-        asdf;
+
+        db.beginTransaction();
+
+        try {
+
+            int mediaId = getMediaIdForHash(hash, db);
+
+            if(mediaId < 1){
+
+                mediaId = ensureMediaHash(hash, db);
+
+            }else{
+
+                updateHashForMediaId(hash, mediaId, db);
+            }
+
+            int mediaPathId = ensureMediaPath(path, db);
+
+            storeMediaAtDevicePath(mediaId, mediaDeviceId, mediaPathId, db);
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    private void storeMediaAtDevicePath(int mediaId,
+                                        int mediaDeviceId,
+                                        int mediaPathId,
+                                        SQLiteDatabase db) {
+
+        String[] args = new String[] {
+                Integer.toString(mediaId),
+                Integer.toString(mediaDeviceId),
+                Integer.toString(mediaPathId)
+        };
+
+        db.execSQL(NwdContract.INSERT_MEDIA_DEVICE_PATH_MID_DID_PID, args);
+    }
+
+    private void updateHashForMediaId(String hash, int mediaId, SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.UPDATE_HASH_FOR_MEDIA_ID_X_Y,
+                new String[]{ hash, Integer.toString(mediaId) });
+    }
+
+    private int ensureMediaHash(String hash, SQLiteDatabase db) {
+
+        int id = getMediaIdForHash(hash, db);
+
+        if(id < 1){
+
+            insertOrIgnoreHashForMedia(hash, db);
+            id = getMediaIdForHash(hash, db);
+        }
+
+        return id;
+    }
+
+    private int ensureMediaPath(String path, SQLiteDatabase db) {
+
+        int id = getMediaPathId(path, db);
+
+        if(id < 1){
+
+            insertOrIgnoreMediaPath(path, db);
+            id = getMediaPathId(path, db);
+        }
+
+        return id;
+    }
+
+    private int getMediaPathId(String path, SQLiteDatabase db) {
+
+        int id = -1;
+
+        String[] args = new String[]{ path };
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_PATH_ID_FOR_PATH_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_PATH_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                id = Integer.parseInt(
+                        record.get(NwdContract.COLUMN_MEDIA_PATH_ID));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    private void insertOrIgnoreMediaPath(String path, SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.INSERT_MEDIA_PATH_X, new String[]{ path });
+    }
+
+    private void insertOrIgnoreHashForMedia(String hash, SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.INSERT_MEDIA_HASH_X, new String[]{ hash });
+    }
+
+    private int getMediaIdForHash(String hash, SQLiteDatabase db) {
+
+        int id = -1;
+
+        Media media = getMediaForHash(hash, db);
+
+        if(media != null){
+
+            id = media.getMediaId();
+        }
+
+        return id;
+    }
+
+    private Media getMediaForHash(String hash, SQLiteDatabase db) {
+
+        Media m = new Media();
+
+        m.setMediaHash(hash);
+
+        populateMediaByHash(m, db);
+
+        return m;
+    }
+
+    private void populateMediaByHash(Media m, SQLiteDatabase db) {
+
+        String[] args =
+                new String[]{ m.getMediaHash() };
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_FOR_HASH_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_ID,
+                        NwdContract.COLUMN_MEDIA_FILE_NAME,
+                        NwdContract.COLUMN_MEDIA_DESCRIPTION,
+                        NwdContract.COLUMN_MEDIA_HASH
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                int mediaId =
+                        Integer.parseInt(
+                            record.get(
+                                    NwdContract.COLUMN_MEDIA_ID));
+
+                String mediaFileName =
+                    record.get(NwdContract.COLUMN_MEDIA_FILE_NAME);
+
+                String mediaDescription =
+                    record.get(NwdContract.COLUMN_MEDIA_DESCRIPTION);
+
+                m.setMediaId(mediaId);
+                m.setMediaFileName(mediaFileName);
+                m.setMediaDescription(mediaDescription);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
     }
 
     public HashMap<String, Media> getAllMedia() {
 
         //mirrors desktop MediaV5SubsetDb.GetAllMedia()
+
+        HashMap<String, Media> allMedia = new HashMap<>();
+
+        String[] args = new String[]{};
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_WHERE_HASH_NOT_NULL_OR_WHITESPACE,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_ID,
+                        NwdContract.COLUMN_MEDIA_FILE_NAME,
+                        NwdContract.COLUMN_MEDIA_DESCRIPTION,
+                        NwdContract.COLUMN_MEDIA_HASH
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                int mediaId =
+                        Integer.parseInt(
+                            record.get(
+                                    NwdContract.COLUMN_MEDIA_ID));
+
+                String mediaFileName =
+                    record.get(NwdContract.COLUMN_MEDIA_FILE_NAME);
+
+                String mediaDescription =
+                    record.get(NwdContract.COLUMN_MEDIA_DESCRIPTION);
+
+                String mediaHash =
+                    record.get(NwdContract.COLUMN_MEDIA_HASH);
+
+                Media m = new Media();
+
+                m.setMediaId(mediaId);
+                m.setMediaDescription(mediaDescription);
+                m.setMediaFileName(mediaFileName);
+                m.setMediaHash(mediaHash);
+
+                allMedia.put(m.getMediaHash(), m);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return allMedia;
     }
 
-    public void ensureMediaTaggings(ArrayList<MediaTagging> taggings) {
+    public void ensureMediaTaggings(ArrayList<MediaTagging> taggings)
+            throws Exception {
 
         //mirrors desktop MediaV5SubsetDb.EnsureMediaTaggings()
-        asdf;
+
+        db.beginTransaction();
+
+        try {
+
+            ensureMediaTaggings(taggings, db);
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    private void ensureMediaTaggings(ArrayList<MediaTagging> taggings,
+                                     SQLiteDatabase db)
+            throws Exception {
+
+        for(MediaTagging mt : taggings){
+
+            if(mt.getMediaId() < 1 || mt.getMediaTagId() < 1){
+
+                throw new Exception("Unable to ensure MediaTagging: " +
+                        "MediaId and/or MediaTagId not set.");
+            }
+
+            insertOrIgnoreMediaTagging(mt, db);
+            updateOrIgnoreMediaTagging(mt, db);
+        }
+    }
+
+    private void updateOrIgnoreMediaTagging(MediaTagging mt, SQLiteDatabase db) {
+
+        String taggedAt =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(mt.getTaggedAt());
+
+        String untaggedAt =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(mt.getUntaggedAt());
+
+        String mediaId = Integer.toString(mt.getMediaId());
+
+        String mediaTagId = Integer.toString(mt.getMediaTagId());
+
+        String[] args = new String[]{
+                taggedAt, untaggedAt, mediaId, mediaTagId
+        };
+
+        db.execSQL(NwdContract.UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z ,
+                args);
+    }
+
+    private void insertOrIgnoreMediaTagging(MediaTagging mt, SQLiteDatabase db) {
+
+        String[] args = new String[]{
+
+                Integer.toString(mt.getMediaId()),
+                Integer.toString(mt.getMediaTagId())
+        };
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y, args);
     }
 
 

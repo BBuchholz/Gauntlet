@@ -864,4 +864,109 @@ public class NwdContract {
             + "	(" + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_ROOT_PATH + ") "
             + "VALUES "
             + "	(?, ?); " ;
+
+    public static final String MNEMOSYNE_V4_GET_PATH_TAG_LINKS =
+
+            "SELECT " +
+                NwdContract.COLUMN_PATH_VALUE + ", " +
+                NwdContract.COLUMN_TAG_VALUE + " " +
+            "FROM " + NwdContract.TABLE_PATH + " " +
+            "JOIN " + NwdContract.TABLE_FILE + " " +
+            "ON " +
+                NwdContract.TABLE_PATH + "." +
+                    NwdContract.COLUMN_PATH_ID +
+                " = " +
+                NwdContract.TABLE_FILE + "." +
+                    NwdContract.COLUMN_PATH_ID + " " +
+            "JOIN " + NwdContract.TABLE_FILE_TAGS + " " +
+            "ON " +
+                NwdContract.TABLE_FILE + "." +
+                    NwdContract.COLUMN_FILE_ID +
+                " = " +
+                NwdContract.TABLE_FILE_TAGS + "." +
+                    NwdContract.COLUMN_FILE_ID + " " +
+            "JOIN " + NwdContract.TABLE_TAG + " " +
+            "ON " +
+                NwdContract.TABLE_FILE_TAGS + "." +
+                    NwdContract.COLUMN_TAG_ID +
+                " = " +
+                NwdContract.TABLE_TAG + "." +
+                    NwdContract.COLUMN_TAG_ID + "";
+
+    public static final String INSERT_MEDIA_TAG_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_TAG + " " +
+            "	(" + COLUMN_MEDIA_TAG_VALUE + ") " +
+            "VALUES " +
+            "	(?); ";
+
+    public static final String SELECT_MEDIA_TAG_ID_VALUE =
+
+            "SELECT " + COLUMN_MEDIA_TAG_ID + ", " + COLUMN_MEDIA_TAG_VALUE + " " +
+            "FROM " + TABLE_MEDIA_TAG + ";";
+
+    public static final String SELECT_MEDIA_FOR_HASH_X =
+
+            "SELECT " + COLUMN_MEDIA_ID + ",  " +
+            "	    " + COLUMN_MEDIA_FILE_NAME + ",  " +
+            "	    " + COLUMN_MEDIA_DESCRIPTION + ",  " +
+            "	    " + COLUMN_MEDIA_HASH + " " +
+            "FROM " + TABLE_MEDIA + " " +
+            "WHERE " + COLUMN_MEDIA_HASH + " = ? ";
+
+    public static final String INSERT_MEDIA_HASH_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA + " " +
+            "	(" + COLUMN_MEDIA_HASH + ") " +
+            "VALUES " +
+            "	(?); ";
+
+    public static final String UPDATE_HASH_FOR_MEDIA_ID_X_Y =
+
+            "UPDATE " + TABLE_MEDIA + " " +
+            "SET " + COLUMN_MEDIA_HASH + " = ? " +
+            "WHERE " + COLUMN_MEDIA_ID + " = ? ";
+
+    public static final String INSERT_MEDIA_PATH_X =
+
+            "INSERT OR IGNORE INTO " + NwdContract.TABLE_MEDIA_PATH + " " +
+            "	(" + NwdContract.COLUMN_MEDIA_PATH_VALUE + ") " +
+            "VALUES " +
+            "	(?); ";
+
+    public static final String SELECT_MEDIA_PATH_ID_FOR_PATH_X =
+
+            "SELECT " + COLUMN_MEDIA_PATH_ID + " " +
+            "FROM " + TABLE_MEDIA_PATH + " " +
+            "WHERE " + COLUMN_MEDIA_PATH_VALUE + " = ?;";
+
+    public static final String INSERT_MEDIA_DEVICE_PATH_MID_DID_PID =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE_PATH + " " +
+            "	(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_PATH_ID + ") " +
+            "VALUES " +
+            "	(?, ?, ?); ";
+
+    public static final String SELECT_MEDIA_WHERE_HASH_NOT_NULL_OR_WHITESPACE =
+
+            "SELECT " + COLUMN_MEDIA_ID + ",  " +
+            "	   " + COLUMN_MEDIA_FILE_NAME + ",  " +
+            "	   " + COLUMN_MEDIA_DESCRIPTION + ",  " +
+            "	   " + COLUMN_MEDIA_HASH + " " +
+            "FROM " + TABLE_MEDIA + " " +
+            "WHERE " + COLUMN_MEDIA_HASH + " IS NOT NULL AND trim(" + COLUMN_MEDIA_HASH + ", ' ') != ''; ";
+
+    public static final String INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_TAGGING + " " +
+            "	(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
+            "VALUES " +
+            "	(?, ?); ";
+
+    public static final String UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z =
+
+            "UPDATE " + TABLE_MEDIA_TAGGING + " " +
+            "SET " + COLUMN_MEDIA_TAGGING_TAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_TAGGED_AT + ", ''), ?), " +
+            "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + ", ''), ?) " +
+            "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
 }

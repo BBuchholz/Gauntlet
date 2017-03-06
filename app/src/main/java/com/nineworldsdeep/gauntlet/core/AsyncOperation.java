@@ -33,7 +33,8 @@ public abstract class AsyncOperation
     @Override
     protected String doInBackground(Void... params) {
 
-        String result;
+        String result = null;
+        String elapsedTimeStr = "??";
 
         try{
 
@@ -48,13 +49,19 @@ public abstract class AsyncOperation
             long elapsedTime = System.nanoTime() - start;
             long milliseconds = elapsedTime / 1000000;
 
-            String elapsedTimeStr = Long.toString(milliseconds);
+            elapsedTimeStr = Long.toString(milliseconds);
 
-            result = "finished " + operationVerb + ": " + elapsedTimeStr + "ms";
 
         }catch (Exception e){
 
             result = e.getMessage();
+
+        }finally{
+
+            if(result == null){
+
+                result = "finished " + operationVerb + ": " + elapsedTimeStr + "ms";
+            }
         }
 
         return result;
@@ -63,8 +70,10 @@ public abstract class AsyncOperation
     @Override
     protected void onPostExecute(String result) {
 
-        statusEnabledActivity.updateStatus(result);
+        if(result != null) {
 
+            statusEnabledActivity.updateStatus(result);
+        }
     }
 
     @Override
@@ -80,6 +89,6 @@ public abstract class AsyncOperation
         statusEnabledActivity.updateStatus(text[0]);
     }
 
-    protected abstract void runOperation();
+    protected abstract void runOperation() throws Exception;
 
 }

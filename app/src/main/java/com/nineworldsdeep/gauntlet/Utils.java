@@ -279,6 +279,11 @@ public class Utils {
 
     public static String computeSHA1(String path) throws Exception {
 
+        File f = new File(path);
+        if(!f.exists()){
+
+            return "";
+        }
 
         //from: http://www.mkyong.com/java/how-to-generate-a-file-checksum-value-in-java/
 

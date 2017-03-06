@@ -28,20 +28,13 @@ public class AsyncOperationExportDb extends AsyncOperation {
 
         try {
 
-            NwdDb db = NwdDb.getInstance(ctx);
-            List<LocalConfigNode> cfg = db.getLocalConfig(ctx);
-            List<FileNode> files = db.getFiles(ctx);
-            File destination =
-                    Configuration.getOutgoingXmlFile_yyyyMMddHHmmss("nwd");
+            String outputPath = NwdDb.getInstance(ctx).export();
 
-            Xml.exportFromDb(ctx, cfg, files, destination);
-
-            publishProgress("exported to: " +
-                    destination.getAbsolutePath());
+            publishProgress("exported to: " + outputPath);
 
         } catch(Exception ex) {
 
-            publishProgress("Error exporting db to xml: " +
+            publishProgress("Error exporting db: " +
                     ex.getMessage());
         }
     }

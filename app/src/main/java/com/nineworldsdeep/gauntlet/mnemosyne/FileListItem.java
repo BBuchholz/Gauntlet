@@ -11,9 +11,6 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.util.HashMap;
 
-/**
- * Created by brent on 11/17/15.
- */
 public class FileListItem {
 
     private File file;

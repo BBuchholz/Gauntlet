@@ -1307,6 +1307,53 @@ public class NwdDb {
         db.endTransaction();
     }
 
+    public List<Map<String, String>> getV5PathTagRecordsForCurrentDevice(){
+
+                List<Map<String,String>> pathTags =
+                new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{TapestryUtils.getCurrentDeviceName()};
+
+            Cursor c =
+                    db.rawQuery(
+                NwdContract.MNEMOSYNE_V5_GET_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X,
+                            args);
+
+            String[] columnNames =
+                    new String[]{ NwdContract.COLUMN_MEDIA_TAG_VALUE,
+                                  NwdContract.COLUMN_MEDIA_PATH_VALUE };
+
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(c, columnNames);
+
+                    pathTags.add(record);
+
+                } while (c.moveToNext());
+
+                c.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return pathTags;
+    }
+
     public List<Map<String, String>> getPathTagRecordsForCurrentDevice() {
 
         List<Map<String,String>> pathTags =

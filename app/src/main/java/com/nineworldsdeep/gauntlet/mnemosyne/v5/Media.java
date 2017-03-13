@@ -56,4 +56,19 @@ public class Media {
     public void setMediaHash(String mediaHash) {
         this.mediaHash = mediaHash;
     }
+
+    /**
+     * uses DevicePath.getDeviceName() to add to MultiMap,
+     * key/DeviceName will be "" if not set in DevicePath
+     * @param dp
+     */
+    public void add(DevicePath dp) {
+
+        devicePaths.put(dp.getDeviceName(), dp);
+    }
+
+    public void add(MediaTagging mt) {
+
+        mediaTaggings.add(mt);
+    }
 }

@@ -1,12 +1,19 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.text.TextUtils;
+
+import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by brent on 5/10/16.
@@ -77,5 +84,50 @@ public class Tags {
         }
 
         return StringUtils.join(lst, ", ");
+    }
+
+    public static HashMap<String, String> getPathToTagStringMap(NwdDb db) {
+
+        List<Map<String, String>> records =
+                db.getV5PathTagRecordsForCurrentDevice();
+
+        MultiMapString pathToTags =
+                new MultiMapString();
+
+        for(Map<String, String> map : records){
+
+            String path = map.get(NwdContract.COLUMN_PATH_VALUE);
+            String tag = map.get(NwdContract.COLUMN_TAG_VALUE);
+
+            File f = new File(path);
+
+            if(f.exists()) {
+
+                pathToTags.put(path, tag);
+            }
+        }
+
+//        HashMap<String, String> output =
+//                convertPathTagMultiMapToPathTagStringHashMap(pathToTags);
+//
+//        return output;
+
+        return convertPathTagMultiMapToPathTagStringHashMap(pathToTags);
+    }
+
+    public static HashMap<String, String>
+        convertPathTagMultiMapToPathTagStringHashMap(
+            MultiMapString pathToTags) {
+
+        HashMap<String,String> pathToTagString =
+                new HashMap<>();
+
+        for(String path : pathToTags.keySet()){
+
+            pathToTagString.put(path,
+                    TextUtils.join(", ", pathToTags.get(path)));
+        }
+
+        return pathToTagString;
     }
 }

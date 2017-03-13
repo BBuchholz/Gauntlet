@@ -14,6 +14,17 @@ public class MediaTagging {
     private String mediaTagValue, mediaHash;
     private Date taggedAt, untaggedAt;
 
+    /**
+     * just a convenience constructor.
+     *
+     * only calls setMediaTagValue(tagValue)
+     * @param tagValue
+     */
+    public MediaTagging(String tagValue) {
+
+        setMediaTagValue(tagValue);
+    }
+
     public Date getTaggedAt() {
         return taggedAt;
     }

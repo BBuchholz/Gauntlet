@@ -100,9 +100,9 @@ public class Utils {
         return toBeRemoved;
     }
 
-    public static List<String> getAllFilePathsWithExt(File dir, String[] exts) {
+    public static ArrayList<String> getAllFilePathsWithExt(File dir, String[] exts) {
 
-        List<String> lst = new ArrayList<>();;
+        ArrayList<String> lst = new ArrayList<>();;
 
         for (File f : FileUtils.listFiles(dir, exts, false)){
 
@@ -128,9 +128,9 @@ public class Utils {
         return lst;
     }
 
-    public static List<String> getAllDirectoryPaths(File dir) {
+    public static ArrayList<String> getAllDirectoryPaths(File dir) {
 
-        List<String> lst = new ArrayList<>();;
+        ArrayList<String> lst = new ArrayList<>();
 
         for (File d : dir.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY)){
 

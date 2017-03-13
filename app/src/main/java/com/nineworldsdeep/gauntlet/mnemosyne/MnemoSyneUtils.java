@@ -428,7 +428,9 @@ public class MnemoSyneUtils {
     }
 
 
-    private static List<FileListItem> getAudioListItemsFromPaths(HashMap<String,String> pathToTagString, List<String> lst) {
+    private static List<FileListItem> getAudioListItemsFromPaths(
+            HashMap<String,String> pathToTagString,
+            List<String> lst) {
 
         List<FileListItem> newList = new ArrayList<>();
 
@@ -475,7 +477,7 @@ public class MnemoSyneUtils {
 
 //        MultiMapString pathToTags = new MultiMapString();
 //
-//        pathToTags.putCommaStringValues(fliDest.getFile().getAbsolutePath(),
+//        pathToTags.putCommaStringValues(fliDest.getMedia().getAbsolutePath(),
 //                fliSrc.getTags());
 //
 //        db.linkTagsToFile(pathToTags);

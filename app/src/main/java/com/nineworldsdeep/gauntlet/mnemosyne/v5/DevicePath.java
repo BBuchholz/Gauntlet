@@ -12,6 +12,18 @@ class DevicePath {
     private String path, deviceName;
     private Date verifiedPresent, verifiedMissing;
 
+    /**
+     * just a convenience constructor.
+     *
+     * only calls setPath(filePath) and
+     * makes no assumptions about mediaDeviceId, &c.
+     * @param filePath
+     */
+    public DevicePath(String filePath) {
+
+        setPath(filePath);
+    }
+
     public Date getVerifiedPresent() {
         return verifiedPresent;
     }
@@ -68,7 +80,7 @@ class DevicePath {
         this.deviceName = deviceName;
     }
 
-        /**
+    /**
      * will resolve conflicts, newest date will always take precedence
      * passing null values allowed as well to just set one or the other
      * null values always resolve to the non-null value (unless both null)

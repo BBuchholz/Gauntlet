@@ -70,7 +70,7 @@ public class DisplayNameIndex {
 //
 //        for(FileListItem ili : dnif.getFileListItems()){
 //
-//            pathToName.put(ili.getFile().getAbsolutePath(), ili.getDisplayName());
+//            pathToName.put(ili.getMedia().getAbsolutePath(), ili.getDisplayName());
 //        }
 //    }
 }

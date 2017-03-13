@@ -969,4 +969,22 @@ public class NwdContract {
             "SET " + COLUMN_MEDIA_TAGGING_TAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_TAGGED_AT + ", ''), ?), " +
             "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + ", ''), ?) " +
             "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
+
+    public static final String
+            MNEMOSYNE_V5_GET_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X =
+
+            "SELECT mt." + COLUMN_MEDIA_TAG_VALUE + ",  " +
+            "	   mp." + COLUMN_MEDIA_PATH_VALUE + " " +
+            "FROM " + TABLE_MEDIA_PATH + " mp " +
+            "JOIN " + TABLE_MEDIA_DEVICE_PATH + " mdp " +
+            "ON mp." + COLUMN_MEDIA_PATH_ID + " = mdp." + COLUMN_MEDIA_PATH_ID + " " +
+            "JOIN " + TABLE_MEDIA_DEVICE + " md " +
+            "ON mdp." + COLUMN_MEDIA_DEVICE_ID + " = md." + COLUMN_MEDIA_DEVICE_ID + " " +
+            "JOIN " + TABLE_MEDIA + " m " +
+            "ON mdp." + COLUMN_MEDIA_ID + " = m." + COLUMN_MEDIA_ID + " " +
+            "JOIN " + TABLE_MEDIA_TAGGING + " mtg " +
+            "ON m." + COLUMN_MEDIA_ID + " = mtg." + COLUMN_MEDIA_ID + " " +
+            "JOIN " + TABLE_MEDIA_TAG + " mt " +
+            "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + "   " +
+            "WHERE md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; ";
 }

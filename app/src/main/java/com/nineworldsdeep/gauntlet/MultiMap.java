@@ -30,6 +30,21 @@ public class MultiMap<K, V> {
         return keyToValueList.get(key);
     }
 
+    public ArrayList<V> getAll(){
+
+        ArrayList<V> allValues = new ArrayList<>();
+
+        for(K key : keyToValueList.keySet()){
+
+            for(V val : keyToValueList.get(key)){
+
+                allValues.add(val);
+            }
+        }
+
+        return allValues;
+    }
+
     public void put(K key, V value){
 
         if(key == null || value == null){

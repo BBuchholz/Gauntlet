@@ -25,7 +25,7 @@ public class XmlUtils {
         // we can later have code that will remove an import afterwards
         // and can import each in succession. for now just one
 
-        List<String> paths =
+        ArrayList<String> paths =
                 Utils.getAllFilePathsWithExt(
                         Configuration.getXmlDirectory(),
                         new String[]{"xml"});

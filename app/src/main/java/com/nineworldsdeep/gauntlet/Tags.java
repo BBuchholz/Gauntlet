@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class Tags {
 
-    public static List<String> getFrequent() {
+    public static ArrayList<String> getFrequent() {
 
         ArrayList<String> lst = new ArrayList<>();
 

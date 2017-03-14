@@ -1,17 +1,21 @@
-package com.nineworldsdeep.gauntlet.mnemosyne;
+package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.widget.SeekBar;
 
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioMediaEntry;
+import com.nineworldsdeep.gauntlet.mnemosyne.AudioPlaylist;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by brent on 11/25/15.
  */
-public class MediaPlayerSingleton{
+public class MediaPlayerSingletonV5 {
 
     // TODO: I would like to go through this tutorial and try to implement a better player from it
     // http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/
@@ -20,30 +24,30 @@ public class MediaPlayerSingleton{
     // need it to, so for now, in the interest of getting it going, I'm just leaving this linkNodes
     // here for later :)
 
-    private static MediaPlayerSingleton singleton = null;
+    private static MediaPlayerSingletonV5 singleton = null;
     private static SeekBar mSeekBar = null;
     private static Handler seekHandler = new Handler();
 
     private MediaPlayer mp;
     //private String nowPlayingPath;
-    private AudioPlaylist playlist = new AudioPlaylist();
+    private AudioPlaylistV5 playlist = new AudioPlaylistV5();
 
-    private MediaPlayerSingleton(){
+    private MediaPlayerSingletonV5(){
         //singleton constructor
         mp = new MediaPlayer();
 
     }
 
-    public static MediaPlayerSingleton getInstance(SeekBar seekBarForDisplay){
+    public static MediaPlayerSingletonV5 getInstance(SeekBar seekBarForDisplay){
 
         if(singleton == null){
 
             // this should make our lazy instantiation thread safe
-            synchronized (MediaPlayerSingleton.class){
+            synchronized (MediaPlayerSingletonV5.class){
 
                 if(singleton == null){
 
-                    singleton = new MediaPlayerSingleton();
+                    singleton = new MediaPlayerSingletonV5();
                 }
             }
         }
@@ -53,22 +57,20 @@ public class MediaPlayerSingleton{
         return singleton;
     }
 
-    public AudioMediaEntry queueAndPlayLast(HashMap<String,String> pathToTagString,
-                                            String path,
-                                            MediaPlayer.OnPreparedListener
-                                                    listener)
+    public MediaListItem queueAndPlayLast(
+                                MediaListItem mli,
+                                MediaPlayer.OnPreparedListener listener)
             throws IOException {
 
-        AudioMediaEntry ame = new AudioMediaEntry(path, pathToTagString);
-        playlist.add(ame);
+        playlist.add(mli);
         playlist.advanceToLast();
 
         play(listener);
 
-        return ame;
+        return mli;
     }
 
-    private AudioMediaEntry play(MediaPlayer.OnPreparedListener listener) throws IOException{
+    private MediaListItem play(MediaPlayer.OnPreparedListener listener) throws IOException{
 
         if(mp != null && mp.isPlaying()){
             mp.stop();
@@ -79,18 +81,18 @@ public class MediaPlayerSingleton{
         //sources, so I'm just creating a new one
         //mp = new MediaPlayer();
 
-        AudioMediaEntry ame = playlist.getCurrent();
+        MediaListItem mli = playlist.getCurrent();
 
-        if(ame != null){
+        if(mli != null){
 
             mp.reset();
-            mp.setDataSource(ame.getPath());
+            mp.setDataSource(mli.getFile().getPath());
             mp.setOnPreparedListener(listener);
             mp.setLooping(true);
             mp.prepareAsync();
         }
 
-        return ame;
+        return mli;
     }
 
     Runnable updateRunnable = new Runnable() {
@@ -112,32 +114,32 @@ public class MediaPlayerSingleton{
         seekHandler.removeCallbacks(updateRunnable);
     }
 
-    public AudioMediaEntry playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
+    public MediaListItem playPrevious(MediaPlayer.OnPreparedListener listener) throws IOException {
 
         playlist.goToPreviousTrack();
 
         return play(listener);
     }
 
-    public AudioMediaEntry playNext(MediaPlayer.OnPreparedListener listener) throws IOException {
+    public MediaListItem playNext(MediaPlayer.OnPreparedListener listener) throws IOException {
 
         playlist.goToNextTrack();
 
         return play(listener);
     }
-
-    public void queueAndPlayFromCurrent(HashMap<String,String> pathToTagString,
-                                        String path,
-                                        MediaPlayer.OnPreparedListener
-                                                listener)
-            throws IOException {
-
-        AudioMediaEntry ame = new AudioMediaEntry(path, pathToTagString);
-        playlist.add(ame);
-
-        play(listener);
-
-    }
+//
+//    public void queueAndPlayFromCurrent(HashMap<String,String> pathToTagString,
+//                                        String path,
+//                                        MediaPlayer.OnPreparedListener
+//                                                listener)
+//            throws IOException {
+//
+//        AudioMediaEntry ame = new AudioMediaEntry(path, pathToTagString);
+//        playlist.add(ame);
+//
+//        play(listener);
+//
+//    }
 
     public void stop(){
         if(mp != null && mp.isPlaying()){
@@ -145,7 +147,7 @@ public class MediaPlayerSingleton{
         }
     }
 
-    public List<AudioMediaEntry> getPlaylist() {
+    public ArrayList<MediaListItem> getPlaylist() {
 
         return playlist.getAll();
     }

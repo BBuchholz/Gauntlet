@@ -13,6 +13,8 @@ public class Media {
 
     public Media(){
 
+        mediaId = -1;
+
         mediaTaggings = new ArrayList<>();
         devicePaths = new MultiMap<>();
     }

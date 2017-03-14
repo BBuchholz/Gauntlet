@@ -2802,6 +2802,13 @@ public class NwdDb {
                 new String[]{ hash, Integer.toString(mediaId) });
     }
 
+    /**
+     *
+     *
+     * @param hash
+     * @param db
+     * @return media id for hash
+     */
     private int ensureMediaHash(String hash, SQLiteDatabase db) {
 
         int id = getMediaIdForHash(hash, db);
@@ -3073,6 +3080,56 @@ public class NwdDb {
         };
 
         db.execSQL(NwdContract.INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y, args);
+    }
+
+    public void sync(Media media) throws Exception {
+
+        db.beginTransaction();
+
+        try {
+
+            sync(media, db);
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    private void sync(Media media, SQLiteDatabase db) throws Exception {
+
+        if(Utils.stringIsNullOrWhitespace(media.getMediaHash())){
+
+            throw new Exception("either media hash must be set for media object sync to be possible");
+        }
+
+        media.setMediaId(ensureMediaHash(media.getMediaHash(), db));
+
+        if(!Utils.stringIsNullOrWhitespace(media.getMediaFileName())){
+
+            updateMediaFileNameForHash(
+                    media.getMediaHash(),
+                    media.getMediaFileName(),
+                    db);
+        }
+
+        if(!Utils.stringIsNullOrWhitespace(media.getMediaDescription())){
+
+            updateMediaDescriptionForHash(
+                    media.getMediaHash(),
+                    media.getMediaDescription(),
+                    db);
+        }
+
+        populateMediaByHash(media, db);
+
+        for(MediaTagging mt : media.getMediaTaggings()){
+
+            ensureMediaTaggings();
+        }
+        asdf;
     }
 
 

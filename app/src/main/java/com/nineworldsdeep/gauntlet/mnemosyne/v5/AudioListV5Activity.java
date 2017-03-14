@@ -264,11 +264,18 @@ public class AudioListV5Activity extends AppCompatActivity {
                 if(f.exists() && f.isFile()){
 
                     Intent intent = new Intent(view.getContext(),
-                            AudioDisplayActivity.class);
+                            AudioDisplayV5Activity.class);
+
                     intent.putExtra(
                             AudioDisplayActivity.EXTRA_AUDIOPATH,
                             f.getAbsolutePath()
                     );
+
+                    intent.putExtra(
+                            AudioDisplayActivity.EXT,
+                            f.getAbsolutePath()
+                    );
+
                     startActivity(intent);
 
                 }else if(f.exists() && f.isDirectory()){

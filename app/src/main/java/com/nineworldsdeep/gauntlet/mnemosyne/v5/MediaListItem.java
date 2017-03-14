@@ -25,10 +25,7 @@ public class MediaListItem {
 
         if(tagString != null) {
 
-            for (String tag : tagString.split(",")) {
-
-                media.add(new MediaTagging(tag.trim()));
-            }
+            setTagsFromTagString(tagString);
         }
     }
 
@@ -44,6 +41,14 @@ public class MediaListItem {
     public void addPath(String filePath){
 
         media.add(new DevicePath(filePath));
+    }
+
+    public void setTagsFromTagString(String tagString){
+
+        for (String tag : tagString.split(",")) {
+
+            media.add(new MediaTagging(tag.trim()));
+        }
     }
 
     public String getTags(){

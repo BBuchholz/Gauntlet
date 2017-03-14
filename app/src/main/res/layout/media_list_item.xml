@@ -22,6 +22,13 @@
         android:layout_weight="1"
         >
 
+        <TextView android:id="@+id/display_name"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+
         <TextView android:id="@+id/tags"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

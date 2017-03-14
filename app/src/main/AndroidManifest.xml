@@ -400,6 +400,15 @@
                 android:value=".tapestry.v1.TapestryNamedNodeActivity"/>
         </activity>
         <activity
+            android:name=".mnemosyne.v5.AudioListV5Activity"
+            android:label="@string/title_activity_audio_list_v5"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
+        </activity>
+        <activity
             android:name=".mnemosyne.AudioListV2Activity"
             android:label="@string/title_activity_audio_list_v2"
             android:parentActivityName=".MainActivity"

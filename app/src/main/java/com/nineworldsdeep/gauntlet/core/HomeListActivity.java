@@ -62,20 +62,8 @@ public class HomeListActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        //to prototype new features in test mode...
-
-        if(Configuration.isInTestMode()) {
-
-            //...add here while still in proto-phase, then...
-
-
-
-        }
-
-        //...move to here when it's ready to go live :)
-
         addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
-        addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
+        //addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
         addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
         addNavigateActivityCommand("Images", ImageListV2Activity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);

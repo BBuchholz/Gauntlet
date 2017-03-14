@@ -201,7 +201,7 @@ public class AudioListV5Activity extends AppCompatActivity {
 
             }catch (Exception e){
 
-                result = e.getMessage();
+                result = "error: " + e.getMessage();
             }
 
             return result;
@@ -310,6 +310,7 @@ public class AudioListV5Activity extends AppCompatActivity {
         for(MediaListItem mli : mMediaListItems){
 
             map = new HashMap<>();
+            map.put("displayName", mli.getFile().getName());
             map.put("tags", mli.getTags());
 
             if(mli.getFile().isDirectory()){
@@ -330,8 +331,10 @@ public class AudioListV5Activity extends AppCompatActivity {
                         lstItems,
                         R.layout.media_list_item,
                         new String[] {"img",
+                                "displayName",
                                 "tags"},
                         new int[] {R.id.img,
+                                R.id.display_name,
                                 R.id.tags});
 
         return saItems;

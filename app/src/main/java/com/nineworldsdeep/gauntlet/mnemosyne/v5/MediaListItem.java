@@ -23,9 +23,12 @@ public class MediaListItem {
         media = new Media();
         addPath(filePath);
 
-        for(String tag : tagString.split(",")) {
+        if(tagString != null) {
 
-            media.add(new MediaTagging(tag.trim()));
+            for (String tag : tagString.split(",")) {
+
+                media.add(new MediaTagging(tag.trim()));
+            }
         }
     }
 
@@ -69,7 +72,7 @@ public class MediaListItem {
 
         File f = null;
 
-        for(DevicePath dp : media.devicePaths.getAll()){
+        for(DevicePath dp : media.getDevicePaths().getAll()){
 
             File temp = new File(dp.getPath());
 

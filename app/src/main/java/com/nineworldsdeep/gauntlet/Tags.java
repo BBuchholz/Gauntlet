@@ -96,8 +96,8 @@ public class Tags {
 
         for(Map<String, String> map : records){
 
-            String path = map.get(NwdContract.COLUMN_PATH_VALUE);
-            String tag = map.get(NwdContract.COLUMN_TAG_VALUE);
+            String path = map.get(NwdContract.COLUMN_MEDIA_PATH_VALUE);
+            String tag = map.get(NwdContract.COLUMN_MEDIA_TAG_VALUE);
 
             File f = new File(path);
 

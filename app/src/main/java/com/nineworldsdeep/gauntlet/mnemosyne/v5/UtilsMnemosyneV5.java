@@ -110,11 +110,11 @@ public class UtilsMnemosyneV5 {
 
     private static ArrayList<MediaListItem> getAudioMediaListItemsFromPaths(
             HashMap<String, String> pathToTagString,
-            ArrayList<String> lst) {
+            ArrayList<String> paths) {
 
         ArrayList<MediaListItem> newList = new ArrayList<>();
 
-        for(String filePath : lst){
+        for(String filePath : paths){
 
             File f = new File(filePath);
 

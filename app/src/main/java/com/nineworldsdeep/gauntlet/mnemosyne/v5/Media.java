@@ -64,7 +64,10 @@ public class Media {
      */
     public void add(DevicePath dp) {
 
-        devicePaths.put(dp.getDeviceName(), dp);
+        String deviceName =
+                dp.getDeviceName() == null ? "" : dp.getDeviceName();
+
+        devicePaths.put(deviceName, dp);
     }
 
     public void add(MediaTagging mt) {

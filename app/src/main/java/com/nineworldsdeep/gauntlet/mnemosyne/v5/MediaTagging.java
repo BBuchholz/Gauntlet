@@ -25,6 +25,10 @@ public class MediaTagging {
         setMediaTagValue(tagValue);
     }
 
+    public MediaTagging(){
+        //intentionally empty constructor
+    }
+
     public Date getTaggedAt() {
         return taggedAt;
     }

@@ -92,4 +92,5 @@
     <string name="title_activity_mnemosyne_v5_scan">MnemosyneV5ScanActivity
     </string>
     <string name="add_media_root">Add Media Root</string>
+    <string name="title_activity_audio_list_v5">Audio List V5</string>
 </resources>

@@ -371,12 +371,21 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
                 NwdDb db = NwdDb.getInstance(AudioDisplayV5Activity.this);
 
-                currentMediaListItem.setAndSaveTagString(
-                            Tags.toggleTag(tag, currentMediaListItem.getTags()),
-                            db);
+//                currentMediaListItem.setAndSaveTagString(
+//                            Tags.toggleTag(tag, currentMediaListItem.getTags()),
+//                            db);
+//
+//                asdf;
+//                //if hasTag(tag), untag, else, tag
 
-                asdf;
-                //if hasTag(tag), untag, else, tag
+                if(currentMediaListItem.hasTag(tag)){
+
+                    currentMediaListItem.untag(tag);
+
+                }else{
+
+                    currentMediaListItem.tag(tag);
+                }
 
                 db.sync(currentMediaListItem.getMedia());
 

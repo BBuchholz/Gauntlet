@@ -987,4 +987,32 @@ public class NwdContract {
             "JOIN " + TABLE_MEDIA_TAG + " mt " +
             "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + "   " +
             "WHERE md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; ";
+
+    public static final String UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y =
+
+            "UPDATE " + TABLE_MEDIA + " " +
+            "SET " + COLUMN_MEDIA_FILE_NAME + " = ? " +
+            "WHERE " + COLUMN_MEDIA_HASH + " = ?; ";
+
+    public static final String UPDATE_MEDIA_DESCRIPTION_FOR_HASH_X_Y =
+
+            "UPDATE " + TABLE_MEDIA + " " +
+            "SET " + COLUMN_MEDIA_DESCRIPTION + " = ? " +
+            "WHERE " + COLUMN_MEDIA_HASH + " = ?; ";
+
+    public static final String SELECT_MEDIA_TAGGINGS_FOR_HASH_X =
+
+            "SELECT mt." + COLUMN_MEDIA_TAG_ID + ",  " +
+            "	   mtg." + COLUMN_MEDIA_TAGGING_ID + ",  " +
+            "	   m." + COLUMN_MEDIA_ID + ", " +
+            "	   mt." + COLUMN_MEDIA_TAG_VALUE + ",  " +
+            "	   m." + COLUMN_MEDIA_HASH + ",  " +
+            "	   mtg." + COLUMN_MEDIA_TAGGING_TAGGED_AT + ",  " +
+            "	   mtg." + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " " +
+            "FROM " + TABLE_MEDIA + " m " +
+            "JOIN " + TABLE_MEDIA_TAGGING + " mtg " +
+            "ON m." + COLUMN_MEDIA_ID + " = mtg." + COLUMN_MEDIA_ID + " " +
+            "JOIN " + TABLE_MEDIA_TAG + " mt " +
+            "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + " " +
+            "WHERE m." + COLUMN_MEDIA_HASH + " = ? ";
 }

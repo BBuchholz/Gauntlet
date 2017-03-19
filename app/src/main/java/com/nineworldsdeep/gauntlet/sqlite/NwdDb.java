@@ -5,20 +5,19 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.nineworldsdeep.gauntlet.core.AsyncOperation;
+import com.nineworldsdeep.gauntlet.MultiMap;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
@@ -36,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -3034,6 +3034,19 @@ public class NwdDb {
         }
     }
 
+    private void ensureMediaTaggings(Media media,
+                                     SQLiteDatabase db)
+            throws Exception {
+
+        //other ensure signature requires mediaId set for each
+        for(MediaTagging mt : media.getMediaTaggings()){
+
+            mt.setMediaId(media.getMediaId());
+        }
+
+        ensureMediaTaggings(media.getMediaTaggings(), db);
+    }
+
     private void ensureMediaTaggings(ArrayList<MediaTagging> taggings,
                                      SQLiteDatabase db)
             throws Exception {
@@ -3049,6 +3062,15 @@ public class NwdDb {
             insertOrIgnoreMediaTagging(mt, db);
             updateOrIgnoreMediaTagging(mt, db);
         }
+    }
+
+    private void ensureMediaDevicePaths(
+            MultiMap<String, DevicePath> devicePaths,
+            SQLiteDatabase db) {
+
+        //might need to dual signature this like ensureMediaTaggings,
+        //to use mediaId?
+        asdf;
     }
 
     private void updateOrIgnoreMediaTagging(MediaTagging mt, SQLiteDatabase db) {
@@ -3102,7 +3124,7 @@ public class NwdDb {
 
         if(Utils.stringIsNullOrWhitespace(media.getMediaHash())){
 
-            throw new Exception("either media hash must be set for media object sync to be possible");
+            throw new Exception("media hash must be set for media object sync to be possible");
         }
 
         media.setMediaId(ensureMediaHash(media.getMediaHash(), db));
@@ -3125,13 +3147,116 @@ public class NwdDb {
 
         populateMediaByHash(media, db);
 
-        for(MediaTagging mt : media.getMediaTaggings()){
+        ensureMediaTaggings(media, db);
 
-            ensureMediaTaggings();
-        }
-        asdf;
+        ensureMediaDevicePaths(media.getDevicePaths(), db);
+
+        populateMediaTaggingsByHash(media, db);
+
+        populateMediaDevicePathsByMediaId(media, db);
     }
 
+    private void populateMediaTaggingsByHash(Media media, SQLiteDatabase db)
+            throws Exception {
+
+        if(Utils.stringIsNullOrWhitespace(media.getMediaHash())){
+
+            throw new Exception("media hash must be set to populate taggings");
+        }
+
+        String[] args =
+            new String[]{ media.getMediaHash() };
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_TAGGINGS_FOR_HASH_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                    NwdContract.COLUMN_MEDIA_TAG_ID,
+                    NwdContract.COLUMN_MEDIA_TAGGING_ID,
+                    NwdContract.COLUMN_MEDIA_ID,
+                    NwdContract.COLUMN_MEDIA_TAG_VALUE,
+                    NwdContract.COLUMN_MEDIA_HASH,
+                    NwdContract.COLUMN_MEDIA_TAGGING_TAGGED_AT,
+                    NwdContract.COLUMN_MEDIA_TAGGING_UNTAGGED_AT
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                int mediaTagId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_TAG_ID));
+
+                int mediaTaggingId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_TAGGING_ID));
+
+                int mediaId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_ID));
+
+                String mediaTagValue =
+                        record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE);
+
+                String mediaHash =
+                        record.get(NwdContract.COLUMN_MEDIA_HASH);
+
+                String taggedAtString =
+                        record.get(NwdContract.COLUMN_MEDIA_TAGGING_TAGGED_AT);
+
+                String untaggedAtString =
+                        record.get(NwdContract.COLUMN_MEDIA_TAGGING_UNTAGGED_AT);
+
+                Date taggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(taggedAtString);
+
+                Date untaggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(untaggedAtString);
+
+
+                //getTag() will create a new one if it doesn't exist already
+                MediaTagging mt = media.getTag(mediaTagValue);
+
+                mt.setMediaTagId(mediaTagId);
+                mt.setMediaTaggingId(mediaTaggingId);
+                mt.setMediaId(mediaId);
+                mt.setMediaHash(mediaHash);
+                mt.setTimeStamps(taggedAt, untaggedAt);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+    }
+
+    private void updateMediaDescriptionForHash(String mediaHash, String mediaDescription, SQLiteDatabase db) {
+
+        String[] args = new String[]{
+            mediaDescription,
+            mediaHash
+        };
+
+        db.execSQL(NwdContract.UPDATE_MEDIA_DESCRIPTION_FOR_HASH_X_Y , args);
+    }
+
+    private void updateMediaFileNameForHash(String mediaHash, String mediaFileName, SQLiteDatabase db) {
+
+        String[] args = new String[]{
+                mediaFileName,
+                mediaHash
+        };
+
+        db.execSQL(NwdContract.UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y , args);
+    }
 
     //region templates
 

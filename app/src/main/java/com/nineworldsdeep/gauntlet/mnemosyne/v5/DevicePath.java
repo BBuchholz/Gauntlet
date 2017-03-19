@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by brent on 3/5/17.
  */
 
-class DevicePath {
+public class DevicePath {
 
     private int devicePathId, mediaId, mediaDeviceId, mediaPathId;
     private String path, deviceName;

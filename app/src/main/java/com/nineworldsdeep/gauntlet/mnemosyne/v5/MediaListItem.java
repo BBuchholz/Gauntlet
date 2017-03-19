@@ -91,4 +91,18 @@ public class MediaListItem {
         return f;
     }
 
+    public boolean hasTag(String tag) {
+
+        return media.hasTag(tag);
+    }
+
+    public void untag(String tag) {
+
+        media.untag(tag);
+    }
+
+    public void tag(String tag) {
+
+        media.tag(tag);
+    }
 }

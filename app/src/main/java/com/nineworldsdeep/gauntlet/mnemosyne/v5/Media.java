@@ -76,4 +76,52 @@ public class Media {
 
         mediaTaggings.add(mt);
     }
+
+    public boolean hasTag(String tag) {
+
+        boolean found = false;
+
+        for(MediaTagging mt : mediaTaggings){
+
+            if(mt.getMediaTagValue().equalsIgnoreCase(tag)){
+
+                found = true;
+                break;
+            }
+        }
+
+        return found;
+    }
+
+    /**
+     * will retrieve media tagging with specified tag value,
+     * creating a new entry if it doesn't exist
+     * @param tag
+     * @return
+     */
+    public MediaTagging getTag(String tag){
+
+        for(MediaTagging mt : mediaTaggings){
+
+            if(mt.getMediaTagValue().equalsIgnoreCase(tag)){
+
+                return mt;
+            }
+        }
+
+        MediaTagging newMt = new MediaTagging();
+        add(newMt);
+
+        return newMt;
+    }
+
+    public void untag(String tag) {
+
+        getTag(tag).untag();
+    }
+
+    public void tag(String tag) {
+
+        getTag(tag).tag();
+    }
 }

@@ -814,7 +814,7 @@ public class NwdContract {
             "FROM " + TABLE_MEDIA_DEVICE + " " +
             "WHERE " + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; " ;
 
-    public static final String INSERT_INTO_MEDIA_DEVICE =
+    public static final String INSERT_MEDIA_DEVICE_X =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE + " "
             + "	(" + COLUMN_MEDIA_DEVICE_DESCRIPTION + ") "
@@ -971,7 +971,7 @@ public class NwdContract {
             "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
 
     public static final String
-            MNEMOSYNE_V5_GET_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X =
+            MNEMOSYNE_V5_GET_ACTIVE_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X =
 
             "SELECT mt." + COLUMN_MEDIA_TAG_VALUE + ",  " +
             "	   mp." + COLUMN_MEDIA_PATH_VALUE + " " +
@@ -986,7 +986,9 @@ public class NwdContract {
             "ON m." + COLUMN_MEDIA_ID + " = mtg." + COLUMN_MEDIA_ID + " " +
             "JOIN " + TABLE_MEDIA_TAG + " mt " +
             "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + "   " +
-            "WHERE md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; ";
+            "WHERE md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ? " +
+            "AND mtg." + COLUMN_MEDIA_TAGGING_TAGGED_AT +
+            " >= mtg." + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + "; ";
 
     public static final String UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y =
 
@@ -1015,4 +1017,38 @@ public class NwdContract {
             "JOIN " + TABLE_MEDIA_TAG + " mt " +
             "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + " " +
             "WHERE m." + COLUMN_MEDIA_HASH + " = ? ";
+
+    public static final String SELECT_MEDIA_DEVICE_PATHS_FOR_MEDIA_ID_X =
+
+            "SELECT mdp." + COLUMN_MEDIA_DEVICE_PATH_ID + ", " +
+            "	   m." + COLUMN_MEDIA_ID + ", " +
+            "	   md." + COLUMN_MEDIA_DEVICE_ID + ", " +
+            "	   mp." + COLUMN_MEDIA_PATH_ID + ", " +
+            "	   mp." + COLUMN_MEDIA_PATH_VALUE + ", " +
+            "	   md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + ", " +
+            "	   mdp." + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT + ", " +
+            "	   mdp." + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING + " " +
+            "FROM " + TABLE_MEDIA + " m " +
+            "JOIN " + TABLE_MEDIA_DEVICE_PATH + " mdp " +
+            "ON m." + COLUMN_MEDIA_ID + " = mdp." + COLUMN_MEDIA_ID + " " +
+            "JOIN " + TABLE_MEDIA_PATH + " mp " +
+            "ON mp." + COLUMN_MEDIA_PATH_ID + " = mdp." + COLUMN_MEDIA_PATH_ID + " " +
+            "JOIN " + TABLE_MEDIA_DEVICE + " md " +
+            "ON md." + COLUMN_MEDIA_DEVICE_ID + " = mdp." + COLUMN_MEDIA_DEVICE_ID + " " +
+            "WHERE m." + COLUMN_MEDIA_ID + " = ?; ";
+
+    public static final String INSERT_OR_IGNORE_MEDIA_DEVICE_PATH_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE_PATH + " " +
+            "	(" + COLUMN_MEDIA_ID + ", " +
+            COLUMN_MEDIA_DEVICE_ID + ", " +
+            COLUMN_MEDIA_PATH_ID + ") " +
+            "VALUES " +
+            "	(?, ?, ?); ";
+
+    public static final String SELECT_MEDIA_TAG_ID_FOR_VALUE_X =
+
+            "SELECT " + COLUMN_MEDIA_TAG_ID + "  " +
+            "FROM " + TABLE_MEDIA_TAG + " " +
+            "WHERE " + COLUMN_MEDIA_TAG_VALUE + " = ?; ";
 }

@@ -106,7 +106,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
                         this));
 
 
-            } catch (IOException e) {
+            } catch (Exception e) {
 
                 Utils.toast(this, e.getMessage());
             }
@@ -239,9 +239,10 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         }
     }
 
-    private void setNowPlaying(MediaListItem mli){
+    private void setNowPlaying(MediaListItem mli) throws Exception {
 
-        this.currentMediaListItem = mli;
+        currentMediaListItem = mli;
+        currentMediaListItem.hashMedia();
 
         updateMediaInfo();
     }
@@ -398,7 +399,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
             }catch (Exception e){
 
-                result = e.getMessage();
+                result = "Error updating tags: " + e.getMessage();
             }
 
             return result;

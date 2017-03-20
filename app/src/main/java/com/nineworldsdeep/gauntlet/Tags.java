@@ -86,10 +86,10 @@ public class Tags {
         return StringUtils.join(lst, ", ");
     }
 
-    public static HashMap<String, String> getPathToTagStringMap(NwdDb db) {
+    public static HashMap<String, String> getPathToActiveTagStringMap(NwdDb db) {
 
         List<Map<String, String>> records =
-                db.getV5PathTagRecordsForCurrentDevice();
+                db.getActiveV5PathTagRecordsForCurrentDevice();
 
         MultiMapString pathToTags =
                 new MultiMapString();

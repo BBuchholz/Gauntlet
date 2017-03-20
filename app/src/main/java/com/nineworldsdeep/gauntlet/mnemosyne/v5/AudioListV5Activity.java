@@ -23,8 +23,6 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
-import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -267,13 +265,13 @@ public class AudioListV5Activity extends AppCompatActivity {
                             AudioDisplayV5Activity.class);
 
                     intent.putExtra(
-                            AudioDisplayActivity.EXTRA_AUDIOPATH,
+                            AudioDisplayV5Activity.EXTRA_AUDIO_PATH,
                             f.getAbsolutePath()
                     );
 
                     intent.putExtra(
-                            AudioDisplayActivity.EXT,
-                            f.getAbsolutePath()
+                            AudioDisplayV5Activity.EXTRA_TAG_STRING,
+                            mli.getTags()
                     );
 
                     startActivity(intent);
@@ -307,7 +305,7 @@ public class AudioListV5Activity extends AppCompatActivity {
         HashMap<String, String> map;
 
         HashMap<String, String> pathToTagString =
-                Tags.getPathToTagStringMap(db);
+                Tags.getPathToActiveTagStringMap(db);
 
         mMediaListItems =
                 UtilsMnemosyneV5.getMediaListItemsAudio(

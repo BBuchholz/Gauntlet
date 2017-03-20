@@ -57,7 +57,9 @@ public class MediaListItem {
 
         for(MediaTagging mt : media.getMediaTaggings()){
 
-            tagValues.add(mt.getMediaTagValue());
+            if(mt.isTagged()) {
+                tagValues.add(mt.getMediaTagValue());
+            }
         }
 
         return TextUtils.join(", ", tagValues);
@@ -104,5 +106,15 @@ public class MediaListItem {
     public void tag(String tag) {
 
         media.tag(tag);
+    }
+
+    public void hashMedia() throws Exception {
+
+        File f = getFile();
+
+        if(f != null && f.exists()){
+
+            getMedia().setMediaHash(Utils.computeSHA1(f.getAbsolutePath()));
+        }
     }
 }

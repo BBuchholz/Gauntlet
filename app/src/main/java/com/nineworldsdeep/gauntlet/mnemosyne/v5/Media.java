@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import com.nineworldsdeep.gauntlet.MultiMap;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
 
@@ -94,6 +95,33 @@ public class Media {
     }
 
     /**
+     * will retrieve media device path with specified
+     * device description and path value,
+     * creating a new entry if it doesn't exist
+     * @return
+     */
+    public DevicePath getDevicePath(String deviceDescription, String pathValue){
+
+        if(devicePaths.containsKey(deviceDescription)) {
+
+            for (DevicePath dp : devicePaths.get(deviceDescription)) {
+
+                if (dp.getPath().equalsIgnoreCase(pathValue)) {
+
+                    return dp;
+                }
+            }
+        }
+
+        DevicePath newDp = new DevicePath();
+        add(newDp);
+        newDp.setDeviceName(deviceDescription);
+        newDp.setPath(pathValue);
+
+        return newDp;
+    }
+
+    /**
      * will retrieve media tagging with specified tag value,
      * creating a new entry if it doesn't exist
      * @param tag
@@ -111,6 +139,7 @@ public class Media {
 
         MediaTagging newMt = new MediaTagging();
         add(newMt);
+        newMt.setMediaTagValue(tag);
 
         return newMt;
     }
@@ -124,4 +153,5 @@ public class Media {
 
         getTag(tag).tag();
     }
+
 }

@@ -97,7 +97,7 @@ public class MediaTagging {
 
             if(untaggedAt == null || untaggedAt.compareTo(newUntaggedAt) < 0){
 
-                //untaggedAt at is older
+                //untaggedAt is older
                 untaggedAt = newUntaggedAt;
             }
         }
@@ -114,4 +114,26 @@ public class MediaTagging {
         untaggedAt = TimeStamp.now();
     }
 
+    /**
+     *
+     * @return true if taggedAt value is greater than or
+     * equal to untaggedAt value
+     */
+    public boolean isTagged() {
+
+        if(untaggedAt != null && taggedAt != null) {
+
+            return untaggedAt.compareTo(taggedAt) < 0;
+        }
+
+        if(untaggedAt == null){
+
+            // taggedAt is either null or greater than,
+            // in either case, is considered "tagged"
+            return true;
+        }
+
+        //here, untagged is not null, and tagged is null
+        return false;
+    }
 }

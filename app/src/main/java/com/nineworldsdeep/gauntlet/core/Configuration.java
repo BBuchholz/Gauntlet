@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.core;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
@@ -410,6 +411,19 @@ public class Configuration {
         if(localMediaDevice == null){
 
             localMediaDevice = db.getLocalMediaDevice(c);
+        }
+
+        return localMediaDevice;
+    }
+
+    public static MediaDevice getLocalMediaDevice(NwdDb db) {
+
+        //this will eventually get from the db
+        //MediaDevice localMediaDevice = new MediaDevice();
+
+        if(localMediaDevice == null){
+
+            localMediaDevice = db.getLocalMediaDevice();
         }
 
         return localMediaDevice;

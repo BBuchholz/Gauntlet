@@ -35,7 +35,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1307,10 +1306,10 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public List<Map<String, String>> getV5PathTagRecordsForCurrentDevice(){
+    public List<Map<String, String>> getActiveV5PathTagRecordsForCurrentDevice(){
 
-                List<Map<String,String>> pathTags =
-                new ArrayList<>();
+        List<Map<String,String>> pathTags =
+        new ArrayList<>();
 
         db.beginTransaction();
 
@@ -1321,7 +1320,7 @@ public class NwdDb {
 
             Cursor c =
                     db.rawQuery(
-                NwdContract.MNEMOSYNE_V5_GET_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X,
+                NwdContract.MNEMOSYNE_V5_GET_ACTIVE_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X,
                             args);
 
             String[] columnNames =
@@ -2382,35 +2381,38 @@ public class NwdDb {
 
         try{
 
-            String configKey = LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION;
+//            String configKey = LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION;
+//
+//            String[] args =
+//                    new String[]{
+//                           configKey
+//                    };
+//
+//            Cursor cursor =
+//                    db.rawQuery(
+//                        NwdContract.LOCAL_CONFIG_GET_VALUE_FOR_KEY_X,
+//                        args);
+//
+//            String[] columnNames =
+//                    new String[]{
+//                            NwdContract.COLUMN_LOCAL_CONFIG_VALUE
+//                    };
+//
+//            if(cursor.getCount() > 0){
+//
+//                cursor.moveToFirst();
+//
+//                Map<String, String> record =
+//                        cursorToRecord(cursor, columnNames);
+//
+//                localMediaDeviceDescription =
+//                        record.get(NwdContract.COLUMN_LOCAL_CONFIG_VALUE);
+//
+//                cursor.close();
+//            }
 
-            String[] args =
-                    new String[]{
-                           configKey
-                    };
-
-            Cursor cursor =
-                    db.rawQuery(
-                        NwdContract.LOCAL_CONFIG_GET_VALUE_FOR_KEY_X,
-                        args);
-
-            String[] columnNames =
-                    new String[]{
-                            NwdContract.COLUMN_LOCAL_CONFIG_VALUE
-                    };
-
-            if(cursor.getCount() > 0){
-
-                cursor.moveToFirst();
-
-                Map<String, String> record =
-                        cursorToRecord(cursor, columnNames);
-
-                localMediaDeviceDescription =
-                        record.get(NwdContract.COLUMN_LOCAL_CONFIG_VALUE);
-
-                cursor.close();
-            }
+            localMediaDeviceDescription =
+                    getLocalMediaDeviceDescription(db);
 
             db.setTransactionSuccessful();
 
@@ -2422,6 +2424,50 @@ public class NwdDb {
         }finally {
 
             db.endTransaction();
+        }
+
+        return localMediaDeviceDescription;
+    }
+
+    /**
+     * will use LocalConfig table to look for
+     * value associated with key "local-media-device-description"
+     *
+     * if that key is not found, will return null
+     * @return
+     */
+    public String getLocalMediaDeviceDescription(SQLiteDatabase db) {
+
+        String localMediaDeviceDescription = null;
+
+        String configKey = LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION;
+
+        String[] args =
+                new String[]{
+                       configKey
+                };
+
+        Cursor cursor =
+                db.rawQuery(
+                    NwdContract.LOCAL_CONFIG_GET_VALUE_FOR_KEY_X,
+                    args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_LOCAL_CONFIG_VALUE
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+            localMediaDeviceDescription =
+                    record.get(NwdContract.COLUMN_LOCAL_CONFIG_VALUE);
+
+            cursor.close();
         }
 
         return localMediaDeviceDescription;
@@ -2446,42 +2492,8 @@ public class NwdDb {
 
             try{
 
-                String[] args =
-                        new String[]{
-                               deviceDescription
-                        };
 
-                Cursor cursor =
-                        db.rawQuery(
-                            NwdContract.MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X,
-                            args);
-
-                String[] columnNames =
-                        new String[]{
-                                NwdContract.COLUMN_MEDIA_DEVICE_ID,
-                                NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
-                        };
-
-                if(cursor.getCount() > 0){
-
-                    cursor.moveToFirst();
-
-                    Map<String, String> record =
-                            cursorToRecord(cursor, columnNames);
-
-                    int mediaDeviceId =
-                            Integer.parseInt(
-                                record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
-
-                    String mediaDeviceDescription =
-                            record.get(NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
-
-                    md = new MediaDevice();
-                    md.setMediaDeviceId(mediaDeviceId);
-                    md.setMediaDeviceDescription(mediaDeviceDescription);
-
-                    cursor.close();
-                }
+                md = getMediaDevice(deviceDescription, db);
 
                 db.setTransactionSuccessful();
 
@@ -2493,6 +2505,76 @@ public class NwdDb {
             }finally {
 
                 db.endTransaction();
+            }
+
+        }
+
+        return md;
+    }
+
+    /**
+     * will use MediaDevice table to look for
+     * description associated with key "local-media-device-description"
+     * in LocalConfig table
+     *
+     * if that key or device is not found in either table, this will return null
+     * @return
+     */
+    public MediaDevice getLocalMediaDevice() {
+
+        MediaDevice md = null;
+        String deviceDescription = getLocalMediaDeviceDescription(db);
+
+        if(deviceDescription != null){
+
+            md = getMediaDevice(deviceDescription, db);
+        }
+
+        return md;
+    }
+
+    public MediaDevice getMediaDevice(
+            String deviceDescription, SQLiteDatabase db) {
+
+        MediaDevice md = null;
+
+        if(deviceDescription != null){
+
+            String[] args =
+                    new String[]{
+                           deviceDescription
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_DEVICE_ID,
+                            NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                int mediaDeviceId =
+                        Integer.parseInt(
+                            record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
+
+                String mediaDeviceDescription =
+                        record.get(NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
+
+                md = new MediaDevice();
+                md.setMediaDeviceId(mediaDeviceId);
+                md.setMediaDeviceDescription(mediaDeviceDescription);
+
+                cursor.close();
             }
 
         }
@@ -2512,7 +2594,7 @@ public class NwdDb {
                             localMediaDeviceDescription,
                             LOCAL_CONFIG_KEY_DEVICE_DESCRIPTION});
 
-        db.execSQL(NwdContract.INSERT_INTO_MEDIA_DEVICE,
+        db.execSQL(NwdContract.INSERT_MEDIA_DEVICE_X,
                     new String[]{
                             localMediaDeviceDescription});
     }
@@ -2681,9 +2763,66 @@ public class NwdDb {
 
         for(String tag : allTags) {
 
-            db.execSQL(NwdContract.INSERT_MEDIA_TAG_X,
-                    new String[]{tag});
+//            db.execSQL(NwdContract.INSERT_MEDIA_TAG_X,
+//                    new String[]{tag});
+
+            ensureMediaTag(tag, db);
         }
+    }
+
+    public int ensureMediaTag(String tag, SQLiteDatabase db){
+
+        int id = getMediaTagId(tag, db);
+
+        if(id < 1){
+
+            insertOrIgnoreMediaTag(tag, db);
+            id = getMediaTagId(tag, db);
+        }
+
+        return id;
+    }
+
+    private int getMediaTagId(String tag, SQLiteDatabase db) {
+
+        int id = -1;
+
+        String[] args = new String[]{ tag };
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_TAG_ID_FOR_VALUE_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_TAG_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                id = Integer.parseInt(
+                        record.get(NwdContract.COLUMN_MEDIA_TAG_ID));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    private void insertOrIgnoreMediaTag(String tag, SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.INSERT_MEDIA_TAG_X,
+        new String[]{tag});
     }
 
     public HashMap<String, Tag> getAllMediaTags() {
@@ -2876,6 +3015,13 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_MEDIA_PATH_X, new String[]{ path });
     }
 
+    private void insertOrIgnoreMediaDevice(String deviceName, SQLiteDatabase db){
+
+        db.execSQL(
+                NwdContract.INSERT_MEDIA_DEVICE_X,
+                new String[] { deviceName });
+    }
+
     private void insertOrIgnoreHashForMedia(String hash, SQLiteDatabase db) {
 
         db.execSQL(NwdContract.INSERT_MEDIA_HASH_X, new String[]{ hash });
@@ -3053,6 +3199,11 @@ public class NwdDb {
 
         for(MediaTagging mt : taggings){
 
+            if(mt.getMediaTagId() < 1){
+
+                mt.setMediaTagId(ensureMediaTag(mt.getMediaTagValue(), db));
+            }
+
             if(mt.getMediaId() < 1 || mt.getMediaTagId() < 1){
 
                 throw new Exception("Unable to ensure MediaTagging: " +
@@ -3064,13 +3215,107 @@ public class NwdDb {
         }
     }
 
+    private void ensureMediaDevicePaths(Media media,
+                                        SQLiteDatabase db)
+            throws Exception {
+
+        //other ensure signature requires mediaId set for each
+        for(DevicePath dp : media.getDevicePaths().getAll()){
+
+            dp.setMediaId(media.getMediaId());
+        }
+
+        ensureMediaDevicePaths(media.getDevicePaths(), db);
+    }
+
     private void ensureMediaDevicePaths(
             MultiMap<String, DevicePath> devicePaths,
-            SQLiteDatabase db) {
+            SQLiteDatabase db) throws Exception {
 
-        //might need to dual signature this like ensureMediaTaggings,
-        //to use mediaId?
-        asdf;
+        //need MediaId, MediaDeviceId, MediaPathId
+
+        //cache device ids
+        HashMap<String, Integer> deviceDescriptionToId =
+                new HashMap<>();
+
+        for(String deviceName : devicePaths.keySet()) {
+
+            // if deviceName is "", keyName will allow access in devicePaths
+            // after we change deviceName to local value
+            String keyName = deviceName;
+
+            if(Utils.stringIsNullOrWhitespace(deviceName)){
+
+                //default to local device
+                MediaDevice localDevice = getLocalMediaDevice();
+
+                if(localDevice != null) {
+                    deviceName = localDevice.getMediaDeviceDescription();
+                }
+
+                if(Utils.stringIsNullOrWhitespace(deviceName)){
+
+                    throw new Exception("unable to retrieve local device name");
+                }
+            }
+
+            for (DevicePath dp : devicePaths.get(keyName)) {
+
+                if (dp.getMediaId() < 1) {
+
+                    throw new Exception("media id must be set to ensure device paths");
+                }
+
+                if(!deviceDescriptionToId.containsKey(deviceName)){
+
+                    deviceDescriptionToId.put(
+                            deviceName,
+                            ensureMediaDevice(deviceName, db)
+                                    .getMediaDeviceId());
+                }
+
+                dp.setMediaDeviceId(deviceDescriptionToId.get(deviceName));
+
+                if(dp.getMediaPathId() < 1) {
+
+                    dp.setMediaPathId(ensureMediaPath(dp.getPath(), db));
+                }
+
+                insertOrIgnoreMediaDevicePath(dp, db);
+            }
+        }
+    }
+
+    private void insertOrIgnoreMediaDevicePath(DevicePath dp, SQLiteDatabase db) {
+
+
+        String[] args = new String[]{
+
+            Integer.toString(dp.getMediaId()),
+            Integer.toString(dp.getMediaDeviceId()),
+            Integer.toString(dp.getMediaPathId())
+        };
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_MEDIA_DEVICE_PATH_X_Y_Z, args);
+    }
+
+    private MediaDevice ensureMediaDevice(
+            String deviceName, SQLiteDatabase db) throws Exception {
+
+        if(Utils.stringIsNullOrWhitespace(deviceName)){
+
+            throw new Exception("device name must be set to ensure device");
+        }
+
+        MediaDevice md = getMediaDevice(deviceName, db);
+
+        if(md == null) {
+
+            insertOrIgnoreMediaDevice(deviceName, db);
+            md = getMediaDevice(deviceName, db);
+        }
+
+        return md;
     }
 
     private void updateOrIgnoreMediaTagging(MediaTagging mt, SQLiteDatabase db) {
@@ -3149,11 +3394,98 @@ public class NwdDb {
 
         ensureMediaTaggings(media, db);
 
-        ensureMediaDevicePaths(media.getDevicePaths(), db);
+        ensureMediaDevicePaths(media, db);
 
         populateMediaTaggingsByHash(media, db);
 
         populateMediaDevicePathsByMediaId(media, db);
+    }
+
+
+    private void populateMediaDevicePathsByMediaId(Media media, SQLiteDatabase db)
+            throws Exception {
+
+        if(media.getMediaId() < 1 ){
+
+            throw new Exception("media id must be set to populate device paths");
+        }
+
+        String[] args =
+            new String[]{ Integer.toString(media.getMediaId()) };
+
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_DEVICE_PATHS_FOR_MEDIA_ID_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                    NwdContract.COLUMN_MEDIA_DEVICE_PATH_ID,
+                    NwdContract.COLUMN_MEDIA_ID,
+                    NwdContract.COLUMN_MEDIA_DEVICE_ID,
+                    NwdContract.COLUMN_MEDIA_PATH_ID,
+                    NwdContract.COLUMN_MEDIA_PATH_VALUE,
+                    NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION,
+                    NwdContract.COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT,
+                    NwdContract.COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                int devicePathId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_DEVICE_PATH_ID));
+
+                int mediaId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_ID));
+
+                int mediaDeviceId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
+
+                int mediaPathId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_PATH_ID));
+
+                String path =
+                        record.get(NwdContract.COLUMN_MEDIA_PATH_VALUE);
+
+                String deviceName =
+                        record.get(NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
+
+                String verifiedPresentString =
+                        record.get(NwdContract.COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT);
+
+                String verifiedMissingString =
+                        record.get(NwdContract.COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING);
+
+
+                Date verifiedPresent =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(verifiedPresentString);
+
+                Date verifiedMissing =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(verifiedMissingString);
+
+                DevicePath dp = media.getDevicePath(deviceName, path);
+                dp.setDevicePathId(devicePathId);
+                dp.setMediaId(mediaId);
+                dp.setMediaDeviceId(mediaDeviceId);
+                dp.setMediaPathId(mediaPathId);
+
+                dp.setTimeStamps(verifiedPresent, verifiedMissing);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
     }
 
     private void populateMediaTaggingsByHash(Media media, SQLiteDatabase db)

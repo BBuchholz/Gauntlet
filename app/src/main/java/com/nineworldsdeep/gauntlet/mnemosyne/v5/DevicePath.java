@@ -24,6 +24,8 @@ public class DevicePath {
         setPath(filePath);
     }
 
+    public DevicePath() {}
+
     public Date getVerifiedPresent() {
         return verifiedPresent;
     }

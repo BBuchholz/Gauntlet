@@ -24,6 +24,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
@@ -65,6 +66,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
         //addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
         addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
+        addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
         addNavigateActivityCommand("Images", ImageListV2Activity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);

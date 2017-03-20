@@ -9,6 +9,7 @@ import com.nineworldsdeep.gauntlet.core.Configuration;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -76,6 +77,24 @@ public class UtilsMnemosyneV5 {
         return lst;
     }
 
+    public static ArrayList<MediaListItem> getMediaListItemsImage(
+            HashMap<String, String> pathToTagString,
+            File dir) {
+
+        ArrayList<MediaListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getImageMediaListItemsFromPaths(pathToTagString, getImageTopFolders()));
+        }
+        else
+        {
+            lst.addAll(getMediaListItems(pathToTagString, dir, imageExts));
+        }
+
+        return lst;
+    }
+
     private static ArrayList<MediaListItem> getMediaListItems(
             HashMap<String, String> pathToTagString,
             File dir,
@@ -132,6 +151,45 @@ public class UtilsMnemosyneV5 {
         return newList;
     }
 
+    private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
+            HashMap<String, String> pathToTagString,
+            ArrayList<String> paths) {
+
+        ArrayList<MediaListItem> newList = new ArrayList<>();
+
+        for(String filePath : paths){
+
+            File f = new File(filePath);
+
+            if(isImageFileFromPath(filePath) || f.isDirectory()) {
+
+                String tagString = pathToTagString.get(filePath);
+
+                MediaListItem mli =
+                        new MediaListItem(filePath, tagString);
+
+                newList.add(mli);
+            }
+        }
+
+        return newList;
+    }
+
+    private static boolean isImageFileFromPath(String path) {
+
+        boolean isImageFile = false;
+
+        for(String ext : imageExts){
+
+            if(path.toLowerCase().endsWith("." + ext.toLowerCase())){
+
+                isImageFile = true;
+            }
+        }
+
+        return isImageFile;
+    }
+
     private static boolean isAudioFileFromPath(String path) {
 
         boolean isAudioFile = false;
@@ -166,6 +224,25 @@ public class UtilsMnemosyneV5 {
         if(causticSongExports != null){
 
             lst.add(causticSongExports.getAbsolutePath());
+        }
+
+        return lst;
+    }
+
+    public static ArrayList<String> getImageTopFolders() {
+
+        ArrayList<String> lst = new ArrayList<>();
+
+        lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
+        lst.add(Configuration.getImagesDirectory().getAbsolutePath());
+        lst.add(Configuration.getCameraDirectory().getAbsolutePath());
+        lst.add(Configuration.getMemesDirectory().getAbsolutePath());
+
+        File f = Configuration.getScreenshotDirectory();
+
+        if(f.exists()){
+
+            lst.add(f.getAbsolutePath());
         }
 
         return lst;

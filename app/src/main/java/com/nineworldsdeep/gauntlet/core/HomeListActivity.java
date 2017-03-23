@@ -23,6 +23,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
@@ -63,24 +64,23 @@ public class HomeListActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
-        //addNavigateActivityCommand("Synergy V3", SynergyV3MainActivity.class);
         addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
         addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
-        addNavigateActivityCommand("Images", ImageListV2Activity.class);
-        addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
-        addNavigateActivityCommand("Audio", AudioListV2Activity.class);
-        addNavigateActivityCommand("Audio Player", AudioDisplayActivity.class);
+        addNavigateActivityCommand("Audio Player V5", AudioDisplayV5Activity.class);
+        addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
-        addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
-        //addNavigateActivityCommand("Compare Nodes", ClusterComparisonActivity.class);
+
+        addNavigateActivityCommand("Images", ImageListV2Activity.class);
+        addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
+        addNavigateActivityCommand("Audio", AudioListV2Activity.class);
+        addNavigateActivityCommand("Audio Player", AudioDisplayActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
         addNavigateActivityCommand("Sources", AliasListActivity.class);
         addNavigateActivityCommand("Tapestry", TapestryNamedNodeActivity.class);
-        //addNavigateActivityCommand("Test", TestModeActivity.class);
+        addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
         addNavigateActivityCommand("PrevHome", MainActivity.class);
 
     }

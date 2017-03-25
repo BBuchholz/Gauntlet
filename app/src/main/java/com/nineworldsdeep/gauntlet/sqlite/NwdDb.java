@@ -690,36 +690,6 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    /**
-     * determines whether the current db address is consistent with
-     * the current status of "test mode" in our configuration settings
-     *
-     * @return this method will return true if Configuration.isInTestMode
-     * is TRUE and the db path DOES NOT contain "NWD-SNDBX".
-     * it will also return true if Configuration.isInTestMode
-     * returns FALSE and the path DOES contain "NWD-SNDBX".
-     * the opposite conditios for each case return false;
-     * intended for supporting switching in and out of test mode
-     * in an activity (the db can be reopened/reassigned at
-     * the alternate address)
-     */
-    public boolean needsTestModeRefresh() {
-
-        if(Configuration.isInTestMode() &&
-                !dbFilePath.getAbsolutePath().contains("NWD-SNDBX")){
-
-            return true;
-        }
-
-        if(!Configuration.isInTestMode() &&
-                dbFilePath.getAbsolutePath().contains("NWD-SNDBX")){
-
-            return true;
-        }
-
-        return false;
-    }
-
     public void ensureDevicePath(String deviceName, String filePath) {
 
         //open transaction
@@ -3356,6 +3326,41 @@ public class NwdDb {
         try {
 
             sync(media, db);
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    /**
+     * assumes media is already populated from media table
+     * (mediaId, mediaHash, mediaDescription, and mediaFilename)
+     * this just populates taggings and device paths and it
+     * relies on both mediaId and mediaHash already being set
+     * @param lst
+     * @throws Exception
+     */
+    public void populateTaggingsAndDevicePaths(ArrayList<Media> lst) throws Exception {
+
+        db.beginTransaction();
+
+        try {
+
+            for(Media media : lst) {
+
+                if(Utils.stringIsNullOrWhitespace(media.getMediaHash()) ||
+                        media.getMediaId() < 1){
+
+                    throw new Exception("both media id and media hash must " +
+                            "be set to populate taggings and device paths");
+                }
+
+                populateMediaTaggingsByHash(media, db);
+                populateMediaDevicePathsByMediaId(media, db);
+            }
 
             db.setTransactionSuccessful();
 

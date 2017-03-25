@@ -19,9 +19,6 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 
-/**
- * Created by brent on 10/5/16.
- */
 public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
     public AsyncOperationExportSynergyV5ToXml(IStatusActivity statusActivity) {
@@ -45,8 +42,8 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
         try{
 
-            Document doc = Xml.createDocument("nwd");
-            Element synergySubsetEl = doc.createElement("synergySubset");
+            Document doc = Xml.createDocument(Xml.TAG_NWD);
+            Element synergySubsetEl = doc.createElement(Xml.TAG_SYNERGY_SUBSET);
             doc.getDocumentElement().appendChild(synergySubsetEl);
 
             for(ListEntry entry : SynergyV5Utils.getAllListEntries(ctx, db)){
@@ -59,26 +56,26 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
                 v5List.sync(ctx, db);
 
-                Element synergyListEl = doc.createElement("synergyList");
-                synergyListEl.setAttribute("listName", v5List.getListName());
-                synergyListEl.setAttribute("activatedAt",
+                Element synergyListEl = doc.createElement(Xml.TAG_SYNERGY_LIST);
+                synergyListEl.setAttribute(Xml.ATTR_LIST_NAME, v5List.getListName());
+                synergyListEl.setAttribute(Xml.ATTR_ACTIVATED_AT,
                                            TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
                                                 v5List.getActivatedAt()));
-                synergyListEl.setAttribute("shelvedAt",
+                synergyListEl.setAttribute(Xml.ATTR_SHELVED_AT,
                                            TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
                                                 v5List.getShelvedAt()));
                 synergySubsetEl.appendChild(synergyListEl);
 
                 for(int i = 0; i < v5List.getAllItems().size(); i++){
 
-                    Element synergyItemEl = doc.createElement("synergyItem");
-                    synergyItemEl.setAttribute("position", Integer.toString(i));
+                    Element synergyItemEl = doc.createElement(Xml.TAG_SYNERGY_ITEM);
+                    synergyItemEl.setAttribute(Xml.ATTR_POSITION, Integer.toString(i));
 
                     synergyListEl.appendChild(synergyItemEl);
 
                     SynergyV5ListItem sli = v5List.get(i);
 
-                    Element itemValueEl = doc.createElement("itemValue");
+                    Element itemValueEl = doc.createElement(Xml.TAG_ITEM_VALUE);
                     itemValueEl.setTextContent(sli.getItemValue());
 
                     synergyItemEl.appendChild(itemValueEl);
@@ -87,17 +84,17 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
                     if(toDo != null){
 
-                        Element toDoEl = doc.createElement("toDo");
+                        Element toDoEl = doc.createElement(Xml.TAG_TO_DO);
 
-                        toDoEl.setAttribute("activatedAt",
+                        toDoEl.setAttribute(Xml.ATTR_ACTIVATED_AT,
                                 TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
                                         toDo.getActivatedAt()));
 
-                        toDoEl.setAttribute("completedAt",
+                        toDoEl.setAttribute(Xml.ATTR_COMPLETED_AT,
                                 TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
                                         toDo.getCompletedAt()));
 
-                        toDoEl.setAttribute("archivedAt",
+                        toDoEl.setAttribute(Xml.ATTR_ARCHIVED_AT,
                                 TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
                                         toDo.getArchivedAt()));
 
@@ -109,7 +106,7 @@ public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
             publishProgress("writing to file...");
 
             File outputFile =
-                Configuration.getOutgoingXmlFile_yyyyMMddHHmmss("nwd-synergy-v5");
+                Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(Xml.FILE_NAME_SYNERGY_V5);
 
             Xml.write(outputFile, doc);
 

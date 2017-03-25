@@ -27,26 +27,25 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-/**
- * Created by brent on 6/14/16.
- */
 public class Xml {
 
-    public static void importMostRecentToDb(Context context,
-                                            File xmlSource){
+    public static final String TAG_NWD = "nwd";
 
-        try {
+    public static final String TAG_SYNERGY_SUBSET = "synergySubset";
+    public static final String TAG_MNEMOSYNE_SUBSET = "mnemosyneSubset";
 
+    public static final String TAG_SYNERGY_LIST = "synergyList";
+    public static final String ATTR_LIST_NAME = "listName";
+    public static final String ATTR_ACTIVATED_AT = "activatedAt";
+    public static final String ATTR_SHELVED_AT = "shelvedAt";
+    public static final String TAG_SYNERGY_ITEM = "synergyItem";
+    public static final String ATTR_POSITION = "position";
+    public static final String TAG_ITEM_VALUE = "itemValue";
+    public static final String TAG_TO_DO = "toDo";
+    public static final String ATTR_COMPLETED_AT = "completedAt";
+    public static final String ATTR_ARCHIVED_AT = "archivedAt";
 
-
-        }catch(Exception ex){
-
-            Utils.log(context, "Error importing xml: " + ex.getMessage());
-        }
-
-
-        //to test this, export, modify a tag or something, then import and verify changes
-    }
+    public static final String FILE_NAME_SYNERGY_V5 = "nwd-synergy-v5";
 
     public static void exportFromDb(Context context,
                                     List<LocalConfigNode> config,

@@ -1,12 +1,15 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.sqlite.DisplayNameDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -40,7 +43,17 @@ public class MediaListItem {
 
     public void addPath(String filePath){
 
-        media.add(new DevicePath(filePath));
+        try {
+
+            media.add(
+                    new DevicePath(
+                            Configuration.getLocalDeviceName(),
+                            filePath));
+
+        } catch (Exception e) {
+
+            Log.e("MediaListItem", Log.getStackTraceString(e));
+        }
     }
 
     public void setTagsFromTagString(String tagString){

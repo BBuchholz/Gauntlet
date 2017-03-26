@@ -8,6 +8,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
+import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -416,10 +417,33 @@ public class Configuration {
         return localMediaDevice;
     }
 
-    public static MediaDevice getLocalMediaDevice(NwdDb db) {
+    public static boolean localMediaDeviceIsSet(){
 
-        //this will eventually get from the db
-        //MediaDevice localMediaDevice = new MediaDevice();
+        return localMediaDevice != null;
+    }
+
+    public static String getLocalDeviceName(){
+
+        if(localMediaDeviceIsSet()){
+
+            return localMediaDevice.getMediaDeviceDescription();
+        }
+
+        //loads from config file
+        return TapestryUtils.getCurrentDeviceName();
+    }
+
+    /**
+     * does not check if set, use localMediaDeviceIsSet()
+     * before using this method
+     * @return
+     */
+    public static MediaDevice getLocalMediaDevice(){
+
+        return localMediaDevice;
+    }
+
+    public static MediaDevice getLocalMediaDevice(NwdDb db) {
 
         if(localMediaDevice == null){
 

@@ -24,6 +24,19 @@ public class DevicePath {
         setPath(filePath);
     }
 
+    /**
+     * just a convenience constructor.
+     *
+     * only calls setPath(filePath) and setDeviceName(deviceName)
+     * makes no assumptions about mediaDeviceId, &c.
+     * @param filePath
+     */
+    public DevicePath(String deviceName, String filePath){
+
+        setDeviceName(deviceName);
+        setPath(filePath);
+    }
+
     public DevicePath() {}
 
     public Date getVerifiedPresent() {

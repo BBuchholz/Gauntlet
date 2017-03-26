@@ -35,17 +35,32 @@ public class Xml {
     public static final String TAG_MNEMOSYNE_SUBSET = "mnemosyneSubset";
 
     public static final String TAG_SYNERGY_LIST = "synergyList";
+    public static final String TAG_SYNERGY_ITEM = "synergyItem";
+    public static final String TAG_ITEM_VALUE = "itemValue";
+    public static final String TAG_TO_DO = "toDo";
+    public static final String TAG_MEDIA = "media";
+    public static final String TAG_TAG = "tag";
+    public static final String TAG_MEDIA_DEVICE = "mediaDevice";
+    public static final String TAG_PATH = "path";
+
     public static final String ATTR_LIST_NAME = "listName";
     public static final String ATTR_ACTIVATED_AT = "activatedAt";
     public static final String ATTR_SHELVED_AT = "shelvedAt";
-    public static final String TAG_SYNERGY_ITEM = "synergyItem";
     public static final String ATTR_POSITION = "position";
-    public static final String TAG_ITEM_VALUE = "itemValue";
-    public static final String TAG_TO_DO = "toDo";
     public static final String ATTR_COMPLETED_AT = "completedAt";
     public static final String ATTR_ARCHIVED_AT = "archivedAt";
+    public static final String ATTR_SHA1_HASH = "sha1Hash";
+    public static final String ATTR_FILE_NAME = "fileName";
+    public static final String ATTR_DESCRIPTION = "description";
+    public static final String ATTR_VERIFIED_MISSING = "verifiedMissing";
+    public static final String ATTR_VERIFIED_PRESENT = "verifiedPresent";
+    public static final String ATTR_VALUE = "value";
+    public static final String ATTR_UNTAGGED_AT = "untaggedAt";
+    public static final String ATTR_TAGGED_AT = "taggedAt";
+    public static final String ATTR_TAG_VALUE = "tagValue";
 
     public static final String FILE_NAME_SYNERGY_V5 = "nwd-synergy-v5";
+    public static final String FILE_NAME_MNEMOSYNE_V5 = "nwd-mnemosyne-v5";
 
     public static void exportFromDb(Context context,
                                     List<LocalConfigNode> config,
@@ -241,5 +256,16 @@ public class Xml {
             throws IOException, SAXException, ParserConfigurationException {
 
         return new XmlImporter(source);
+    }
+
+    public static void setAttributeIfNotNullOrWhitespace(
+            Element elementToSetAttributeOn,
+            String attributeName,
+            String attributeValue) {
+
+        if(!Utils.stringIsNullOrWhitespace(attributeValue)){
+
+            elementToSetAttributeOn.setAttribute(attributeName, attributeValue);
+        }
     }
 }

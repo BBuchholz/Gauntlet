@@ -65,7 +65,13 @@ public class Media {
      * key/DeviceName will be "" if not set in DevicePath
      * @param dp
      */
-    public void add(DevicePath dp) {
+    public void add(DevicePath dp) throws Exception {
+
+        //trying this, can remove x ? y : z code if it works
+        if(Utils.stringIsNullOrWhitespace(dp.getDeviceName())){
+
+            throw new Exception("cannot add device path to media if device name is not set");
+        }
 
         String deviceName =
                 dp.getDeviceName() == null ? "" : dp.getDeviceName();
@@ -100,7 +106,7 @@ public class Media {
      * creating a new entry if it doesn't exist
      * @return
      */
-    public DevicePath getDevicePath(String deviceDescription, String pathValue){
+    public DevicePath getDevicePath(String deviceDescription, String pathValue) throws Exception {
 
         if(devicePaths.containsKey(deviceDescription)) {
 
@@ -114,9 +120,9 @@ public class Media {
         }
 
         DevicePath newDp = new DevicePath();
-        add(newDp);
         newDp.setDeviceName(deviceDescription);
         newDp.setPath(pathValue);
+        add(newDp);
 
         return newDp;
     }

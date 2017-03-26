@@ -54,7 +54,7 @@ public abstract class AsyncOperation
 
         }catch (Exception e){
 
-            result = e.getMessage();
+            result = e.toString();
 
         }finally{
 

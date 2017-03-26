@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.HashNode;
 import com.nineworldsdeep.gauntlet.model.LocalConfigNode;
@@ -243,5 +246,99 @@ public class XmlImporter {
     private Element getFirst(Element parentEl, String childName){
 
         return (Element) parentEl.getElementsByTagName(childName).item(0);
+    }
+
+    public ArrayList<Media> getMnemosyneV5Media() throws Exception {
+
+        ArrayList<Media> v5Media = new ArrayList<>();
+
+        NodeList mediaEls = doc.getElementsByTagName(Xml.TAG_MEDIA);
+
+        for(int i = 0; i < mediaEls.getLength(); i++){
+
+            Element mediaEl = (Element) mediaEls.item(i);
+
+            String sha1Hash = mediaEl.getAttribute(Xml.ATTR_SHA1_HASH);
+            String fileName = mediaEl.getAttribute(Xml.ATTR_FILE_NAME);
+            String description = mediaEl.getAttribute(Xml.ATTR_DESCRIPTION);
+
+            Media media = new Media();
+            media.setMediaHash(sha1Hash);
+            media.setMediaFileName(fileName);
+            media.setMediaDescription(description);
+
+            NodeList tagEls = mediaEl.getElementsByTagName(Xml.TAG_TAG);
+
+            for(int j = 0; j < tagEls.getLength(); j++){
+
+                Element tagEl = (Element) tagEls.item(j);
+
+                String tagValue = tagEl.getAttribute(Xml.ATTR_TAG_VALUE);
+                String taggedAtString = tagEl.getAttribute(Xml.ATTR_TAGGED_AT);
+                String untaggedAtString =
+                        tagEl.getAttribute(Xml.ATTR_UNTAGGED_AT);
+
+                Date taggedAt =
+                TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                        taggedAtString
+                );
+
+                Date untaggedAt =
+                TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                        untaggedAtString
+                );
+
+                MediaTagging mt = new MediaTagging(tagValue);
+                mt.setTimeStamps(taggedAt, untaggedAt);
+
+                media.add(mt);
+            }
+
+            NodeList deviceEls =
+                    mediaEl.getElementsByTagName(Xml.TAG_MEDIA_DEVICE);
+
+            for(int j = 0; j < deviceEls.getLength(); j++){
+
+                Element deviceEl = (Element) deviceEls.item(j);
+
+                String deviceName = deviceEl.getAttribute(Xml.ATTR_DESCRIPTION);
+
+                NodeList pathEls =
+                        mediaEl.getElementsByTagName(Xml.TAG_PATH);
+
+                for(int k = 0; k < pathEls.getLength(); k++) {
+
+                    Element pathEl = (Element) pathEls.item(k);
+
+                    String pathValue =
+                            pathEl.getAttribute(Xml.ATTR_VALUE);
+
+                    String verifiedPresentString =
+                            pathEl.getAttribute(Xml.ATTR_VERIFIED_PRESENT);
+
+                    String verifiedMissingString =
+                            pathEl.getAttribute(Xml.ATTR_VERIFIED_MISSING);
+
+                    Date verifiedPresent =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    verifiedPresentString
+                            );
+
+                    Date verifiedMissing =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    verifiedMissingString
+                            );
+
+                    DevicePath dp = new DevicePath(deviceName, pathValue);
+                    dp.setTimeStamps(verifiedPresent, verifiedMissing);
+
+                    media.add(dp);
+                }
+            }
+
+            v5Media.add(media);
+        }
+
+        return v5Media;
     }
 }

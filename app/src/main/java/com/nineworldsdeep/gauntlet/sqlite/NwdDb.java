@@ -2526,7 +2526,7 @@ public class NwdDb {
                             NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
                     };
 
-            if(cursor.getCount() > 0){
+            if(cursor.getCount() > 0) {
 
                 cursor.moveToFirst();
 
@@ -2535,7 +2535,7 @@ public class NwdDb {
 
                 int mediaDeviceId =
                         Integer.parseInt(
-                            record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
+                                record.get(NwdContract.COLUMN_MEDIA_DEVICE_ID));
 
                 String mediaDeviceDescription =
                         record.get(NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION);
@@ -2543,9 +2543,9 @@ public class NwdDb {
                 md = new MediaDevice();
                 md.setMediaDeviceId(mediaDeviceId);
                 md.setMediaDeviceDescription(mediaDeviceDescription);
-
-                cursor.close();
             }
+
+            cursor.close();
 
         }
 
@@ -3065,9 +3065,10 @@ public class NwdDb {
                 m.setMediaDescription(mediaDescription);
 
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
+
+        cursor.close();
+
     }
 
     public HashMap<String, Media> getAllMedia() {
@@ -3370,7 +3371,7 @@ public class NwdDb {
         }
     }
 
-    private void sync(Media media, SQLiteDatabase db) throws Exception {
+    public void sync(Media media, SQLiteDatabase db) throws Exception {
 
         if(Utils.stringIsNullOrWhitespace(media.getMediaHash())){
 
@@ -3435,14 +3436,14 @@ public class NwdDb {
                     NwdContract.COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING
                 };
 
-        if(cursor.getCount() > 0){
+        if(cursor.getCount() > 0) {
 
             cursor.moveToFirst();
 
             do {
 
                 Map<String, String> record =
-                    cursorToRecord(cursor, columnNames);
+                        cursorToRecord(cursor, columnNames);
 
                 int devicePathId =
                         Integer.parseInt(
@@ -3489,8 +3490,10 @@ public class NwdDb {
 
             } while (cursor.moveToNext());
 
-            cursor.close();
         }
+
+        cursor.close();
+
     }
 
     private void populateMediaTaggingsByHash(Media media, SQLiteDatabase db)
@@ -3520,14 +3523,14 @@ public class NwdDb {
                     NwdContract.COLUMN_MEDIA_TAGGING_UNTAGGED_AT
                 };
 
-        if(cursor.getCount() > 0){
+        if(cursor.getCount() > 0) {
 
             cursor.moveToFirst();
 
             do {
 
                 Map<String, String> record =
-                    cursorToRecord(cursor, columnNames);
+                        cursorToRecord(cursor, columnNames);
 
                 int mediaTagId =
                         Integer.parseInt(
@@ -3571,8 +3574,9 @@ public class NwdDb {
 
             } while (cursor.moveToNext());
 
-            cursor.close();
         }
+
+        cursor.close();
     }
 
     private void updateMediaDescriptionForHash(String mediaHash, String mediaDescription, SQLiteDatabase db) {
@@ -3593,6 +3597,26 @@ public class NwdDb {
         };
 
         db.execSQL(NwdContract.UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y , args);
+    }
+
+    public void beginTransaction() {
+
+        db.beginTransaction();
+    }
+
+    public SQLiteDatabase getSqliteDatabase() {
+
+        return db;
+    }
+
+    public void setTransactionSuccessful() {
+
+        db.setTransactionSuccessful();
+    }
+
+    public void endTransaction() {
+
+        db.endTransaction();
     }
 
     //region templates

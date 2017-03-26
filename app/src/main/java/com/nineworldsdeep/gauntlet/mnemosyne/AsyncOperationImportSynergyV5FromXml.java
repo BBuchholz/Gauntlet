@@ -18,7 +18,7 @@ import java.util.List;
 public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
 
     public AsyncOperationImportSynergyV5FromXml(IStatusActivity statusActivity) {
-        super(statusActivity, "Importing SynergyV5 from XML");
+        super(statusActivity, "Importing Synergy V5 from XML");
     }
 
     @Override
@@ -29,7 +29,8 @@ public class AsyncOperationImportSynergyV5FromXml extends AsyncOperation {
         db.open();
 
         List<File> synergyV5XmlFiles =
-                Configuration.getIncomingXmlFilesBySuffix("nwd-synergy-v5");
+                Configuration.getIncomingXmlFilesBySuffix(
+                        Xml.FILE_NAME_SYNERGY_V5);
 
         for(File f : synergyV5XmlFiles){
 

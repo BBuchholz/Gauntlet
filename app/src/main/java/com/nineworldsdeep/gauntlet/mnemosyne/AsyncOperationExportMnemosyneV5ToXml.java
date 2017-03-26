@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class AsyncOperationExportMnemosyneV5ToXml extends AsyncOperation {
 
     public AsyncOperationExportMnemosyneV5ToXml(IStatusActivity statusActivity) {
-        super(statusActivity, "Exporting Synergy V5 to XML");
+        super(statusActivity, "Exporting Mnemosyne V5 to XML");
     }
 
     @Override

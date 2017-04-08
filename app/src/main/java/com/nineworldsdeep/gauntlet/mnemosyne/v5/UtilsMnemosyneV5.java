@@ -22,7 +22,7 @@ import java.util.List;
 public class UtilsMnemosyneV5 {
 
     //TODO: add more image formats
-    private static String[] imageExts = {"png", "jpg", "gif"};
+    private static String[] imageExts = {"png", "jpg", "jpeg", "gif"};
     private static String[] audioExts = {"mp3", "wav"};
     private static String[] documentExts = {"pdf"};
 

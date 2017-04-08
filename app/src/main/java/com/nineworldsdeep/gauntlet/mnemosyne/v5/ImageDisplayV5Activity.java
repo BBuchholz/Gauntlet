@@ -35,8 +35,8 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
 
     public static final String EXTRA_IMAGE_PATH =
             "com.nineworldsdeep.gauntlet.IMAGE_DISPLAY_IMAGE_PATH";
-    public static final String EXTRA_TAG_STRING =
-            "com.nineworldsdeep.gauntlet.IMAGE_DISPLAY_TAG_STRING";
+//    public static final String EXTRA_TAG_STRING =
+//            "com.nineworldsdeep.gauntlet.IMAGE_DISPLAY_TAG_STRING";
 
 
     @Override
@@ -140,12 +140,15 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
             try {
                 NwdDb db = NwdDb.getInstance(this);
 
-                HashMap<String, String> pathToTagString =
-                        Tags.getPathToActiveTagStringMap(db);
+//                HashMap<String, String> pathToTagString =
+//                        Tags.getPathToActiveTagStringMap(db);
 
-                String tagString = pathToTagString.get(path);
+//                String tagString = pathToTagString.get(path);
 
-                setCurrentMediaListItem(new MediaListItem(path, tagString));
+                setCurrentMediaListItem(new MediaListItem(path));
+
+                db.sync(currentMediaListItem.getMedia());
+
                 Bitmap bmp = BitmapFactory.decodeFile(path);
                 ImageView img = (ImageView) findViewById(R.id.ivImage);
                 img.setImageBitmap(bmp);

@@ -265,10 +265,10 @@ public class ImageListV5Activity extends AppCompatActivity {
                             f.getAbsolutePath()
                     );
 
-                    intent.putExtra(
-                            ImageDisplayV5Activity.EXTRA_TAG_STRING,
-                            mli.getTags()
-                    );
+//                    intent.putExtra(
+//                            ImageDisplayV5Activity.EXTRA_TAG_STRING,
+//                            mli.getTags()
+//                    );
 
                     startActivity(intent);
 
@@ -300,19 +300,34 @@ public class ImageListV5Activity extends AppCompatActivity {
 
         db.open();
 
-        HashMap<String, String> pathToTagString =
-                Tags.getPathToActiveTagStringMap(db);
+//        HashMap<String, String> pathToTagString =
+//                Tags.getPathToActiveTagStringMap(db);
 
         mMediaListItems =
-                UtilsMnemosyneV5.getMediaListItemsImage(
-                        pathToTagString,
-                        mCurrentDir);
+                UtilsMnemosyneV5.getMediaListItemsImage(mCurrentDir);
 
+        //sync each as processed
         for(MediaListItem mli : mMediaListItems){
+
+            String tagString = "";
+
+            try{
+
+                if(mli.isFile()) {
+
+                    mli.hashMedia();
+                    db.sync(mli.getMedia());
+                    tagString = mli.getTags();
+                }
+
+            }catch(Exception ex){
+
+                tagString = ex.toString();
+            }
 
             map = new HashMap<>();
             map.put("displayName", mli.getFile().getName());
-            map.put("tags", mli.getTags());
+            map.put("tags", tagString);
 
             if(mli.getFile().isDirectory()){
 

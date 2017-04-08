@@ -137,7 +137,12 @@ public class Media {
 
         for(MediaTagging mt : mediaTaggings){
 
-            if(mt.getMediaTagValue().equalsIgnoreCase(tag)){
+//            if(mt.getMediaTagValue().equalsIgnoreCase(tag)){
+//
+//                return mt;
+//            }
+
+            if(mt.getMediaTagValue().equals(tag)){
 
                 return mt;
             }

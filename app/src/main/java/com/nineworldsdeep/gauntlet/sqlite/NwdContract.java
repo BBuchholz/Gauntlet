@@ -970,6 +970,11 @@ public class NwdContract {
             "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + ", ''), ?) " +
             "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
 
+//            "UPDATE " + TABLE_MEDIA_TAGGING + " " +
+//            "SET " + COLUMN_MEDIA_TAGGING_TAGGED_AT + " = MAX(" + COLUMN_MEDIA_TAGGING_TAGGED_AT + ", ?), " +
+//            "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " = MAX(" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + ", ?) " +
+//            "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
+
     public static final String
             MNEMOSYNE_V5_GET_ACTIVE_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X =
 
@@ -1050,5 +1055,13 @@ public class NwdContract {
 
             "SELECT " + COLUMN_MEDIA_TAG_ID + "  " +
             "FROM " + TABLE_MEDIA_TAG + " " +
-            "WHERE " + COLUMN_MEDIA_TAG_VALUE + " = ?; ";
+            "WHERE " + COLUMN_MEDIA_TAG_VALUE + " = ? "; //+
+            //"COLLATE NOCASE; "; //this may be our issue with tagging
+
+    public static final String SELECT_MEDIA_ID_FOR_HASH_X =
+
+            "SELECT " + COLUMN_MEDIA_ID + " " +
+            "FROM " + TABLE_MEDIA + " " +
+            "WHERE " + COLUMN_MEDIA_HASH + " = ? " +
+            "COLLATE NOCASE;";
 }

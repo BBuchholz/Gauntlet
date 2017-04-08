@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.nineworldsdeep.gauntlet.MultiMap;
 import com.nineworldsdeep.gauntlet.core.Configuration;
@@ -2872,7 +2873,7 @@ public class NwdDb {
 
             if(mediaId < 1){
 
-                mediaId = ensureMediaHash(hash, db);
+                mediaId = ensureMediaIdForHash(hash, db);
 
             }else{
 
@@ -2918,7 +2919,7 @@ public class NwdDb {
      * @param db
      * @return media id for hash
      */
-    private int ensureMediaHash(String hash, SQLiteDatabase db) {
+    private int ensureMediaIdForHash(String hash, SQLiteDatabase db) {
 
         int id = getMediaIdForHash(hash, db);
 
@@ -3001,16 +3002,52 @@ public class NwdDb {
 
         int id = -1;
 
-        Media media = getMediaForHash(hash, db);
+//        Media media = getMediaForHash(hash, db);
+//
+//        if(media != null){
+//
+//            id = media.getMediaId();
+//        }
 
-        if(media != null){
+        String[] args = new String[]{ hash };
 
-            id = media.getMediaId();
+        Cursor cursor =
+                db.rawQuery(
+            NwdContract.SELECT_MEDIA_ID_FOR_HASH_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+                id = Integer.parseInt(
+                        record.get(NwdContract.COLUMN_MEDIA_ID));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
         return id;
     }
 
+    /**
+     * requires that the hash already exists in the database,
+     * will return empty media if it does not
+     * @param hash
+     * @param db
+     * @return
+     */
     private Media getMediaForHash(String hash, SQLiteDatabase db) {
 
         Media m = new Media();
@@ -3301,12 +3338,31 @@ public class NwdDb {
 
         String mediaTagId = Integer.toString(mt.getMediaTagId());
 
-        String[] args = new String[]{
-                taggedAt, untaggedAt, mediaId, mediaTagId
-        };
+//        String[] args = new String[]{
+//                taggedAt, untaggedAt, mediaId, mediaTagId
+//        };
+//
+//        db.execSQL(NwdContract.UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z ,
+//                args);
 
-        db.execSQL(NwdContract.UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z ,
-                args);
+        SQLiteStatement updateStatement = db.compileStatement(
+            NwdContract.UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z
+        );
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(taggedAt)){
+            updateStatement.bindString(1, taggedAt);
+        }
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(untaggedAt)){
+            updateStatement.bindString(2, untaggedAt);
+        }
+
+        updateStatement.bindString(3, mediaId);
+        updateStatement.bindString(4, mediaTagId);
+
+        updateStatement.execute();
     }
 
     private void insertOrIgnoreMediaTagging(MediaTagging mt, SQLiteDatabase db) {
@@ -3378,7 +3434,7 @@ public class NwdDb {
             throw new Exception("media hash must be set for media object sync to be possible");
         }
 
-        media.setMediaId(ensureMediaHash(media.getMediaHash(), db));
+        media.setMediaId(ensureMediaIdForHash(media.getMediaHash(), db));
 
         if(!Utils.stringIsNullOrWhitespace(media.getMediaFileName())){
 

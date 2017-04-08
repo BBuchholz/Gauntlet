@@ -95,6 +95,38 @@ public class UtilsMnemosyneV5 {
         return lst;
     }
 
+
+    public static ArrayList<MediaListItem> getMediaListItemsImage(File dir) {
+
+        ArrayList<MediaListItem> lst = new ArrayList<>();
+
+        if(dir == null){
+
+            lst.addAll(getImageMediaListItemsFromPaths(getImageTopFolders()));
+        }
+        else
+        {
+            lst.addAll(getMediaListItems(dir, imageExts));
+        }
+
+        return lst;
+    }
+
+    private static ArrayList<MediaListItem> getMediaListItems(
+            File dir,
+            String[] exts) {
+
+        ArrayList<MediaListItem> lst = new ArrayList<>();
+
+        lst.addAll(getMediaListItemsFromPaths(
+                Utils.getAllDirectoryPaths(dir)));
+
+        lst.addAll(getMediaListItemsFromPaths(
+                Utils.getAllFilePathsWithExt(dir, exts)));
+
+        return lst;
+    }
+
     private static ArrayList<MediaListItem> getMediaListItems(
             HashMap<String, String> pathToTagString,
             File dir,
@@ -127,6 +159,19 @@ public class UtilsMnemosyneV5 {
         return newList;
     }
 
+    private static ArrayList<MediaListItem> getMediaListItemsFromPaths(
+            ArrayList<String> pathList) {
+
+        ArrayList<MediaListItem> newList = new ArrayList<>();
+
+        for(String filePath : pathList){
+
+            newList.add(new MediaListItem(filePath));
+        }
+
+        return newList;
+    }
+
     private static ArrayList<MediaListItem> getAudioMediaListItemsFromPaths(
             HashMap<String, String> pathToTagString,
             ArrayList<String> paths) {
@@ -143,6 +188,27 @@ public class UtilsMnemosyneV5 {
 
                 MediaListItem mli =
                         new MediaListItem(filePath, tagString);
+
+                newList.add(mli);
+            }
+        }
+
+        return newList;
+    }
+
+    private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
+            ArrayList<String> paths) {
+
+        ArrayList<MediaListItem> newList = new ArrayList<>();
+
+        for(String filePath : paths){
+
+            File f = new File(filePath);
+
+            if(isImageFileFromPath(filePath) || f.isDirectory()) {
+
+                MediaListItem mli =
+                        new MediaListItem(filePath);
 
                 newList.add(mli);
             }

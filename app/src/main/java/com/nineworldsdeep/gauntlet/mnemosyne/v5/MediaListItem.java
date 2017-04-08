@@ -34,7 +34,8 @@ public class MediaListItem {
 
     public MediaListItem(String path) {
 
-        this(path, "");
+        media = new Media();
+        addPath(path);
     }
 
     public Media getMedia() {
@@ -56,12 +57,52 @@ public class MediaListItem {
         }
     }
 
+    /**
+     *
+     * @param tagString
+     */
     public void setTagsFromTagString(String tagString){
 
-        for (String tag : tagString.split(",")) {
+        //get list of existing tags
+        ArrayList<String> existingTags = toTagList(getTags());
 
-            media.add(new MediaTagging(tag.trim()));
+        //get list of tags from new tag string
+        ArrayList<String> newTags = toTagList(tagString);
+
+        //for each in existing tags, if new tags !contain, untag
+        for(String tag : existingTags){
+
+            if(!newTags.contains(tag)){
+
+                media.getTag(tag).untag();
+            }
         }
+
+        //for each in new tags, if existing tags !contain, tag
+        for(String tag : newTags){
+
+            if(!existingTags.contains(tag)){
+
+                media.getTag(tag).tag();
+            }
+        }
+
+    }
+
+    private ArrayList<String> toTagList(String tags) {
+
+        //be sure to trim, leave case sensitive though, we have
+        //case sensitive duplicates in the db right now, need to
+        //allow them until they can be phased out entirely
+
+        ArrayList<String> tagList = new ArrayList<>();
+
+        for(String tag : tags.split(",")){
+
+            tagList.add(tag.trim());
+        }
+
+        return tagList;
     }
 
     public String getTags(){
@@ -129,5 +170,17 @@ public class MediaListItem {
 
             getMedia().setMediaHash(Utils.computeSHA1(f.getAbsolutePath()));
         }
+    }
+
+    public boolean isFile() {
+
+        File f = getFile();
+
+        if(f != null){
+
+            return f.isFile();
+        }
+
+        return false;
     }
 }

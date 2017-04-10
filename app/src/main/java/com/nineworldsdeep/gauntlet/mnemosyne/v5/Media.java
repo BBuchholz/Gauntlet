@@ -90,7 +90,8 @@ public class Media {
 
         for(MediaTagging mt : mediaTaggings){
 
-            if(mt.getMediaTagValue().equalsIgnoreCase(tag)){
+            //tags are case sensitive
+            if(mt.getMediaTagValue().equals(tag)){
 
                 found = true;
                 break;

@@ -269,10 +269,10 @@ public class AudioListV5Activity extends AppCompatActivity {
                             f.getAbsolutePath()
                     );
 
-                    intent.putExtra(
-                            AudioDisplayV5Activity.EXTRA_TAG_STRING,
-                            mli.getTags()
-                    );
+//                    intent.putExtra(
+//                            AudioDisplayV5Activity.EXTRA_TAG_STRING,
+//                            mli.getTags()
+//                    );
 
                     startActivity(intent);
 
@@ -304,19 +304,38 @@ public class AudioListV5Activity extends AppCompatActivity {
 
         HashMap<String, String> map;
 
-        HashMap<String, String> pathToTagString =
-                Tags.getPathToActiveTagStringMap(db);
+//        HashMap<String, String> pathToTagString =
+//                Tags.getPathToActiveTagStringMap(db);
+//
+//        mMediaListItems =
+//                UtilsMnemosyneV5.getMediaListItemsAudio(
+//                        pathToTagString,
+//                        mCurrentDir);
 
         mMediaListItems =
-                UtilsMnemosyneV5.getMediaListItemsAudio(
-                        pathToTagString,
-                        mCurrentDir);
+                UtilsMnemosyneV5.getMediaListItemsAudio(mCurrentDir);
 
         for(MediaListItem mli : mMediaListItems){
 
+            String tagString = "";
+
+            try{
+
+                if(mli.isFile()) {
+
+                    mli.hashMedia();
+                    db.sync(mli.getMedia());
+                    tagString = mli.getTags();
+                }
+
+            }catch(Exception ex){
+
+                tagString = ex.toString();
+            }
+
             map = new HashMap<>();
             map.put("displayName", mli.getFile().getName());
-            map.put("tags", mli.getTags());
+            map.put("tags", tagString);
 
             if(mli.getFile().isDirectory()){
 

@@ -21,16 +21,16 @@ public class MediaListItem {
 
     private Media media;
 
-    public MediaListItem(String filePath, String tagString){
-
-        media = new Media();
-        addPath(filePath);
-
-        if(tagString != null) {
-
-            setTagsFromTagString(tagString);
-        }
-    }
+//    public MediaListItem(String filePath, String tagString){
+//
+//        media = new Media();
+//        addPath(filePath);
+//
+//        if(tagString != null) {
+//
+//            setTagsFromTagString(tagString);
+//        }
+//    }
 
     public MediaListItem(String path) {
 
@@ -182,5 +182,20 @@ public class MediaListItem {
         }
 
         return false;
+    }
+
+    /**
+     * returns true if tag exists and is tagged
+     * @param tag
+     * @return
+     */
+    public boolean isTagged(String tag) {
+
+        if(!media.hasTag(tag)){
+
+            return false;
+        }
+
+        return media.getTag(tag).isTagged();
     }
 }

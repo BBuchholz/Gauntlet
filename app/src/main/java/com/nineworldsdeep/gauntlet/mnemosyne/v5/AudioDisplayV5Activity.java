@@ -44,8 +44,9 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
     public static final String EXTRA_AUDIO_PATH =
             "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_AUDIO_PATH";
-    public static final String EXTRA_TAG_STRING =
-            "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_TAG_STRING";
+
+//    public static final String EXTRA_TAG_STRING =
+//            "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_TAG_STRING";
 
 
     @Override
@@ -91,7 +92,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIO_PATH);
-        String tagString = i.getStringExtra(EXTRA_TAG_STRING);
+
+        //String tagString = i.getStringExtra(EXTRA_TAG_STRING);
 
         SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
         mMediaPlayerSingletonV5 = MediaPlayerSingletonV5.getInstance(seek);
@@ -100,15 +102,23 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
             try {
 
+//                setNowPlaying(
+//                        mMediaPlayerSingletonV5.queueAndPlayLast(
+//                        new MediaListItem(audioPath, tagString),
+//                        this));
+
+                NwdDb db = NwdDb.getInstance(this);
+
+                MediaListItem mli = new MediaListItem(audioPath);
+
                 setNowPlaying(
                         mMediaPlayerSingletonV5.queueAndPlayLast(
-                        new MediaListItem(audioPath, tagString),
-                        this));
-
+                        mli,
+                        this), db);
 
             } catch (Exception e) {
 
-                Utils.toast(this, e.getMessage());
+                Utils.toast(this, e.toString());
             }
 
         }else{
@@ -209,7 +219,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
                                 try{
 
                                     mMediaPlayerSingletonV5.resetPlayer();
-                                    setNowPlaying(null);
+                                    setNowPlaying(null, null);
                                     refreshLayout();
 
                                 }catch(Exception ex){
@@ -239,10 +249,15 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         }
     }
 
-    private void setNowPlaying(MediaListItem mli) throws Exception {
+    private void setNowPlaying(MediaListItem mli, NwdDb db) throws Exception {
 
         currentMediaListItem = mli;
         currentMediaListItem.hashMedia();
+
+        if(db != null) {
+
+            db.sync(currentMediaListItem.getMedia());
+        }
 
         updateMediaInfo();
     }
@@ -284,12 +299,14 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
         try{
 
-            setNowPlaying(mMediaPlayerSingletonV5.playPrevious(this));
+            NwdDb db = NwdDb.getInstance(this);
+
+            setNowPlaying(mMediaPlayerSingletonV5.playPrevious(this), db);
             updateMediaInfo();
 
         }catch(Exception ex){
 
-            Utils.toast(this, ex.getMessage());
+            Utils.toast(this, ex.toString());
         }
     }
 
@@ -297,7 +314,9 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
         try{
 
-            setNowPlaying(mMediaPlayerSingletonV5.playNext(this));
+            NwdDb db = NwdDb.getInstance(this);
+
+            setNowPlaying(mMediaPlayerSingletonV5.playNext(this), db);
             updateMediaInfo();
 
         }catch(Exception ex){
@@ -338,6 +357,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
                 try {
 
+                    //asdf; //tag toggle not working
                     AsyncTagSave ats = new AsyncTagSave();
                     ats.execute(tag);
 
@@ -381,7 +401,15 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
                 if(currentMediaListItem.hasTag(tag)){
 
-                    currentMediaListItem.untag(tag);
+                    //toggle tag
+                    if(currentMediaListItem.isTagged(tag)) {
+
+                        currentMediaListItem.untag(tag);
+
+                    }else{
+
+                        currentMediaListItem.tag(tag);
+                    }
 
                 }else{
 

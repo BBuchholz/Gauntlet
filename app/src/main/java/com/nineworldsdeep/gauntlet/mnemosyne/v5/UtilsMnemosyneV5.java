@@ -15,10 +15,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by brent on 2/22/17.
- */
-
 public class UtilsMnemosyneV5 {
 
     //TODO: add more image formats
@@ -59,41 +55,57 @@ public class UtilsMnemosyneV5 {
         return type;
     }
 
-    public static ArrayList<MediaListItem> getMediaListItemsAudio(
-            HashMap<String, String> pathToTagString,
-            File dir) {
+    public static ArrayList<MediaListItem> getMediaListItemsAudio(File dir) {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
         if(dir == null){
 
-            lst.addAll(getAudioMediaListItemsFromPaths(pathToTagString, getAudioTopFolders()));
+            lst.addAll(getAudioMediaListItemsFromPaths(getAudioTopFolders()));
         }
         else
         {
-            lst.addAll(getMediaListItems(pathToTagString, dir, audioExts));
+            lst.addAll(getMediaListItems(dir, audioExts));
         }
 
         return lst;
     }
 
-    public static ArrayList<MediaListItem> getMediaListItemsImage(
-            HashMap<String, String> pathToTagString,
-            File dir) {
+//    public static ArrayList<MediaListItem> getMediaListItemsAudio(
+//            HashMap<String, String> pathToTagString,
+//            File dir) {
+//
+//        ArrayList<MediaListItem> lst = new ArrayList<>();
+//
+//        if(dir == null){
+//
+//            lst.addAll(getAudioMediaListItemsFromPaths(pathToTagString, getAudioTopFolders()));
+//        }
+//        else
+//        {
+//            lst.addAll(getMediaListItems(pathToTagString, dir, audioExts));
+//        }
+//
+//        return lst;
+//    }
 
-        ArrayList<MediaListItem> lst = new ArrayList<>();
-
-        if(dir == null){
-
-            lst.addAll(getImageMediaListItemsFromPaths(pathToTagString, getImageTopFolders()));
-        }
-        else
-        {
-            lst.addAll(getMediaListItems(pathToTagString, dir, imageExts));
-        }
-
-        return lst;
-    }
+//    public static ArrayList<MediaListItem> getMediaListItemsImage(
+//            HashMap<String, String> pathToTagString,
+//            File dir) {
+//
+//        ArrayList<MediaListItem> lst = new ArrayList<>();
+//
+//        if(dir == null){
+//
+//            lst.addAll(getImageMediaListItemsFromPaths(pathToTagString, getImageTopFolders()));
+//        }
+//        else
+//        {
+//            lst.addAll(getMediaListItems(pathToTagString, dir, imageExts));
+//        }
+//
+//        return lst;
+//    }
 
 
     public static ArrayList<MediaListItem> getMediaListItemsImage(File dir) {
@@ -127,37 +139,37 @@ public class UtilsMnemosyneV5 {
         return lst;
     }
 
-    private static ArrayList<MediaListItem> getMediaListItems(
-            HashMap<String, String> pathToTagString,
-            File dir,
-            String[] exts) {
+//    private static ArrayList<MediaListItem> getMediaListItems(
+//            HashMap<String, String> pathToTagString,
+//            File dir,
+//            String[] exts) {
+//
+//        ArrayList<MediaListItem> lst = new ArrayList<>();
+//
+//        lst.addAll(getMediaListItemsFromPaths(
+//                Utils.getAllDirectoryPaths(dir), pathToTagString));
+//
+//        lst.addAll(getMediaListItemsFromPaths(
+//                Utils.getAllFilePathsWithExt(dir, exts), pathToTagString));
+//
+//        return lst;
+//    }
 
-        ArrayList<MediaListItem> lst = new ArrayList<>();
-
-        lst.addAll(getMediaListItemsFromPaths(
-                Utils.getAllDirectoryPaths(dir), pathToTagString));
-
-        lst.addAll(getMediaListItemsFromPaths(
-                Utils.getAllFilePathsWithExt(dir, exts), pathToTagString));
-
-        return lst;
-    }
-
-    private static ArrayList<MediaListItem> getMediaListItemsFromPaths(
-            ArrayList<String> pathList,
-            HashMap<String, String> pathToTagString) {
-
-        ArrayList<MediaListItem> newList = new ArrayList<>();
-
-        for(String filePath : pathList){
-
-            String tagString = pathToTagString.get(filePath);
-
-            newList.add(new MediaListItem(filePath, tagString));
-        }
-
-        return newList;
-    }
+//    private static ArrayList<MediaListItem> getMediaListItemsFromPaths(
+//            ArrayList<String> pathList,
+//            HashMap<String, String> pathToTagString) {
+//
+//        ArrayList<MediaListItem> newList = new ArrayList<>();
+//
+//        for(String filePath : pathList){
+//
+//            String tagString = pathToTagString.get(filePath);
+//
+//            newList.add(new MediaListItem(filePath, tagString));
+//        }
+//
+//        return newList;
+//    }
 
     private static ArrayList<MediaListItem> getMediaListItemsFromPaths(
             ArrayList<String> pathList) {
@@ -173,7 +185,6 @@ public class UtilsMnemosyneV5 {
     }
 
     private static ArrayList<MediaListItem> getAudioMediaListItemsFromPaths(
-            HashMap<String, String> pathToTagString,
             ArrayList<String> paths) {
 
         ArrayList<MediaListItem> newList = new ArrayList<>();
@@ -184,10 +195,8 @@ public class UtilsMnemosyneV5 {
 
             if(isAudioFileFromPath(filePath) || f.isDirectory()) {
 
-                String tagString = pathToTagString.get(filePath);
-
                 MediaListItem mli =
-                        new MediaListItem(filePath, tagString);
+                        new MediaListItem(filePath);
 
                 newList.add(mli);
             }
@@ -195,6 +204,30 @@ public class UtilsMnemosyneV5 {
 
         return newList;
     }
+
+//    private static ArrayList<MediaListItem> getAudioMediaListItemsFromPaths(
+//            HashMap<String, String> pathToTagString,
+//            ArrayList<String> paths) {
+//
+//        ArrayList<MediaListItem> newList = new ArrayList<>();
+//
+//        for(String filePath : paths){
+//
+//            File f = new File(filePath);
+//
+//            if(isAudioFileFromPath(filePath) || f.isDirectory()) {
+//
+//                String tagString = pathToTagString.get(filePath);
+//
+//                MediaListItem mli =
+//                        new MediaListItem(filePath, tagString);
+//
+//                newList.add(mli);
+//            }
+//        }
+//
+//        return newList;
+//    }
 
     private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
             ArrayList<String> paths) {
@@ -217,29 +250,29 @@ public class UtilsMnemosyneV5 {
         return newList;
     }
 
-    private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
-            HashMap<String, String> pathToTagString,
-            ArrayList<String> paths) {
-
-        ArrayList<MediaListItem> newList = new ArrayList<>();
-
-        for(String filePath : paths){
-
-            File f = new File(filePath);
-
-            if(isImageFileFromPath(filePath) || f.isDirectory()) {
-
-                String tagString = pathToTagString.get(filePath);
-
-                MediaListItem mli =
-                        new MediaListItem(filePath, tagString);
-
-                newList.add(mli);
-            }
-        }
-
-        return newList;
-    }
+//    private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
+//            HashMap<String, String> pathToTagString,
+//            ArrayList<String> paths) {
+//
+//        ArrayList<MediaListItem> newList = new ArrayList<>();
+//
+//        for(String filePath : paths){
+//
+//            File f = new File(filePath);
+//
+//            if(isImageFileFromPath(filePath) || f.isDirectory()) {
+//
+//                String tagString = pathToTagString.get(filePath);
+//
+//                MediaListItem mli =
+//                        new MediaListItem(filePath, tagString);
+//
+//                newList.add(mli);
+//            }
+//        }
+//
+//        return newList;
+//    }
 
     private static boolean isImageFileFromPath(String path) {
 

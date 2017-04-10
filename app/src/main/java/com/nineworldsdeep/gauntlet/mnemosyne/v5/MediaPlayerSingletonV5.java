@@ -86,7 +86,7 @@ public class MediaPlayerSingletonV5 {
         if(mli != null){
 
             mp.reset();
-            mp.setDataSource(mli.getFile().getPath());
+            mp.setDataSource(mli.getFile().getAbsolutePath());
             mp.setOnPreparedListener(listener);
             mp.setLooping(true);
             mp.prepareAsync();

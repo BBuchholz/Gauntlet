@@ -1021,7 +1021,8 @@ public class NwdContract {
             "ON m." + COLUMN_MEDIA_ID + " = mtg." + COLUMN_MEDIA_ID + " " +
             "JOIN " + TABLE_MEDIA_TAG + " mt " +
             "ON mtg." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + " " +
-            "WHERE m." + COLUMN_MEDIA_HASH + " = ? ";
+            "WHERE m." + COLUMN_MEDIA_HASH + " = ? " +
+            "COLLATE NOCASE";
 
     public static final String SELECT_MEDIA_DEVICE_PATHS_FOR_MEDIA_ID_X =
 

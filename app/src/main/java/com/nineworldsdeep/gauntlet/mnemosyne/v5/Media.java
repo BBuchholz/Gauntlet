@@ -79,9 +79,54 @@ public class Media {
         devicePaths.put(deviceName, dp);
     }
 
-    public void add(MediaTagging mt) {
+    public void add(MediaTagging mt) throws Exception {
 
-        mediaTaggings.add(mt);
+        //mediaTaggings.add(mt);
+
+        if(!Utils.stringIsNullOrWhitespace(mt.getMediaTagValue())){
+            getTag(mt.getMediaTagValue()).merge(mt);
+        }
+    }
+
+    /**
+     * mediaFileName, mediaDescription, and mediaHash will default to non-empty, non-null value.
+     * mediaId will default to value greater than zero.
+     *
+     * if values are set for both objects on any of the above properties,
+     * and differ, an error will be thrown
+     *
+     * mediaTaggings will be Merged with any existing taggings
+     *
+     * devicePaths will simply be added, without regard to duplication
+     * @param m
+     */
+    public void merge(Media m) throws Exception {
+
+        setMediaFileName(
+            UtilsMnemosyneV5.tryMergeString(
+                getMediaFileName(), m.getMediaFileName()));
+
+        setMediaDescription(
+            UtilsMnemosyneV5.tryMergeString(
+                getMediaDescription(), m.getMediaDescription()));
+
+        setMediaHash(
+            UtilsMnemosyneV5.tryMergeString(
+                getMediaHash(), m.getMediaHash()));
+
+        setMediaId(
+            UtilsMnemosyneV5.tryMergeInt(
+                getMediaId(), m.getMediaId()));
+
+        for(MediaTagging mt : m.getMediaTaggings()){
+
+            getTag(mt.getMediaTagValue()).merge(mt);
+        }
+
+        for(DevicePath dp : m.getDevicePaths().getAll()){
+
+            add(dp);
+        }
     }
 
     public boolean hasTag(String tag) {
@@ -150,7 +195,7 @@ public class Media {
         }
 
         MediaTagging newMt = new MediaTagging();
-        add(newMt);
+        mediaTaggings.add(newMt);
         newMt.setMediaTagValue(tag);
 
         return newMt;

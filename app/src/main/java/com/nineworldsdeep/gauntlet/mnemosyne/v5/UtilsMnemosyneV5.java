@@ -5,8 +5,13 @@ import android.webkit.MimeTypeMap;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.xml.Xml;
 
 import org.apache.commons.io.FilenameUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -345,5 +350,141 @@ public class UtilsMnemosyneV5 {
         }
 
         return lst;
+    }
+
+    public static String tryMergeString(String s1, String s2) throws Exception {
+
+        if(!Utils.stringIsNullOrWhitespace(s1) &&
+            !Utils.stringIsNullOrWhitespace(s2) &&
+            !s1.equals(s2))
+        {
+            throw new Exception("unable to merge MediaTagging, conflicting values set on an exclusive property");
+        }
+
+        if (!Utils.stringIsNullOrWhitespace(s1))
+        {
+            return s1;
+        }
+
+        return s2;
+    }
+
+    public static int tryMergeInt(int int1, int int2) throws Exception {
+
+        if(int1 > 0 && int2 > 0)
+        {
+            throw new Exception("unable to merge MediaTagging, conflicting values set on an exclusive property");
+        }
+
+        if(int1 > 0)
+        {
+            return int1;
+        }
+
+        return int2;
+    }
+
+    public static void exportToXml(ArrayList<Media> mediaList, NwdDb db) throws Exception {
+
+        Document doc = Xml.createDocument(Xml.TAG_NWD);
+        Element mnemosyneSubsetEl = doc.createElement(Xml.TAG_MNEMOSYNE_SUBSET);
+        doc.getDocumentElement().appendChild(mnemosyneSubsetEl);
+
+        //get all media, just single table query, to get hash
+        //then sync all with db.populateByHash(ArrayList<Media>)
+
+        //adapted from export all code, leaving it as much the same as possible
+
+        db.populateTaggingsAndDevicePaths(mediaList);
+
+        for(Media media : mediaList) {
+
+            Element mediaEl = doc.createElement(Xml.TAG_MEDIA);
+
+            mediaEl.setAttribute(
+                    Xml.ATTR_SHA1_HASH,
+                    media.getMediaHash());
+
+//
+//                mediaEl.setAttribute(
+//                        Xml.ATTR_FILE_NAME,
+//                        media.getMediaFileName());
+//
+//                mediaEl.setAttribute(
+//                        Xml.ATTR_DESCRIPTION,
+//                        media.getMediaDescription());
+
+
+            Xml.setAttributeIfNotNullOrWhitespace(
+                    mediaEl,
+                    Xml.ATTR_FILE_NAME,
+                    media.getMediaFileName());
+
+            Xml.setAttributeIfNotNullOrWhitespace(
+                    mediaEl,
+                    Xml.ATTR_DESCRIPTION,
+                    media.getMediaDescription());
+
+            mnemosyneSubsetEl.appendChild(mediaEl);
+
+            for (MediaTagging mt : media.getMediaTaggings()) {
+
+                Element tagEl = doc.createElement(Xml.TAG_TAG);
+
+                tagEl.setAttribute(
+                        Xml.ATTR_TAG_VALUE,
+                        mt.getMediaTagValue());
+
+                tagEl.setAttribute(
+                        Xml.ATTR_TAGGED_AT,
+                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                mt.getTaggedAt()));
+
+                tagEl.setAttribute(
+                        Xml.ATTR_UNTAGGED_AT,
+                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                mt.getUntaggedAt()));
+
+                mediaEl.appendChild(tagEl);
+            }
+
+            for (String deviceName : media.getDevicePaths().keySet()) {
+
+                Element mediaDeviceEl =
+                        doc.createElement(Xml.TAG_MEDIA_DEVICE);
+
+                mediaDeviceEl.setAttribute(
+                        Xml.ATTR_DESCRIPTION, deviceName);
+
+                mediaEl.appendChild(mediaDeviceEl);
+
+                for (DevicePath dp : media.getDevicePaths().get(deviceName)) {
+
+                    Element pathEl = doc.createElement(Xml.TAG_PATH);
+
+                    pathEl.setAttribute(
+                            Xml.ATTR_VALUE,
+                            dp.getPath());
+
+                    pathEl.setAttribute(
+                            Xml.ATTR_VERIFIED_PRESENT,
+                            TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                    dp.getVerifiedPresent()));
+
+                    pathEl.setAttribute(
+                            Xml.ATTR_VERIFIED_MISSING,
+                            TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                                    dp.getVerifiedMissing()));
+
+                    mediaDeviceEl.appendChild(pathEl);
+                }
+            }
+        }
+
+        File outputFile =
+            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(
+                    Xml.FILE_NAME_MNEMOSYNE_V5);
+
+            Xml.write(outputFile, doc);
     }
 }

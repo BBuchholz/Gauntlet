@@ -23,12 +23,16 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.xml.Xml;
 
 import org.apache.commons.io.FilenameUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +50,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO = 2;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
+    private static final int MENU_CONTEXT_EXPORT_XML = 5;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
@@ -136,7 +141,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_audio_list_v2, menu);
+        getMenuInflater().inflate(R.menu.menu_audio_list_v5, menu);
         return true;
     }
 
@@ -144,18 +149,60 @@ public class AudioListV5Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
 
 
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
-        if (id == R.id.action_go_to_home_screen){
+        switch (item.getItemId()){
 
-            NavigateActivityCommand.navigateTo(
-                    HomeListActivity.class, this
-            );
-            return true;
+            case R.id.action_go_to_home_screen:
+
+                NavigateActivityCommand.navigateTo(
+                        HomeListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_export_all_to_xml:
+
+                exportAllToXml();
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
 
+
+    }
+
+    private void exportAllToXml() {
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        ArrayList<Media> lst = new ArrayList<>();
+
+        for(MediaListItem mli : mMediaListItems){
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                lst.add(mli.getMedia());
+            }
+        }
+
+        try {
+
+            UtilsMnemosyneV5.exportToXml(lst, db);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported.");
     }
 
     private ListView getListView(){
@@ -293,6 +340,9 @@ public class AudioListV5Activity extends AppCompatActivity {
         });
     }
 
+    //TODO: this is really slow, loading all at once then displaying
+    //look into: http://stackoverflow.com/a/12039795/670768
+    // (add to list adapter in publish progress, see example)
     private ListAdapter loadItems() {
 
         ArrayList<HashMap<String, String>> lstItems =
@@ -380,6 +430,7 @@ public class AudioListV5Activity extends AppCompatActivity {
 
         if(!isDirectory) {
 
+            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_XML, Menu.NONE, "Export to XML");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
@@ -394,6 +445,21 @@ public class AudioListV5Activity extends AppCompatActivity {
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
+
+            case MENU_CONTEXT_EXPORT_XML:
+
+                try {
+
+                    exportXml(info.position);
+                    Utils.toast(this, "exported");
+
+                }catch(Exception ex){
+
+                    Utils.toast(this, "error exporting xml: " + ex.toString());
+                }
+
+                return true;
+
             case MENU_CONTEXT_SHA1_HASH_ID:
 
                 computeSHA1Hash(info.position);
@@ -420,6 +486,22 @@ public class AudioListV5Activity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
+
+
+    private void exportXml(int position) throws Exception {
+
+        MediaListItem mli = mMediaListItems.get(position);
+        Media media = mli.getMedia();
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        ArrayList<Media> lst = new ArrayList<>();
+        lst.add(media);
+
+        UtilsMnemosyneV5.exportToXml(lst, db);
+    }
+
 
     private void moveToDownloads(int position){
 

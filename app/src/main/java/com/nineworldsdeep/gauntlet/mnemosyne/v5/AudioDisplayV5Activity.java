@@ -252,11 +252,15 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
     private void setNowPlaying(MediaListItem mli, NwdDb db) throws Exception {
 
         currentMediaListItem = mli;
-        currentMediaListItem.hashMedia();
 
-        if(db != null) {
+        if(currentMediaListItem != null) {
 
-            db.sync(currentMediaListItem.getMedia());
+            currentMediaListItem.hashMedia();
+
+            if (db != null) {
+
+                db.sync(currentMediaListItem.getMedia());
+            }
         }
 
         updateMediaInfo();

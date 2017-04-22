@@ -146,25 +146,75 @@ public class ImageListV5Activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_image_list_v2, menu);
+        getMenuInflater().inflate(R.menu.menu_image_list_v5, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-        int id = item.getItemId();
+        switch (item.getItemId()){
 
-        if (id == R.id.action_go_to_home_screen){
+            case R.id.action_go_to_home_screen:
 
-            NavigateActivityCommand.navigateTo(
-                    HomeListActivity.class, this
-            );
-            return true;
+                NavigateActivityCommand.navigateTo(
+                        HomeListActivity.class, this
+                );
+
+                return true;
+
+            case R.id.action_export_all_to_xml:
+
+                exportAllToXml();
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_go_to_home_screen){
+//
+//            NavigateActivityCommand.navigateTo(
+//                    HomeListActivity.class, this
+//            );
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
+    }
+
+    private void exportAllToXml() {
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        ArrayList<Media> lst = new ArrayList<>();
+
+        for(MediaListItem mli : mMediaListItems){
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                lst.add(mli.getMedia());
+            }
+        }
+
+        try {
+
+            UtilsMnemosyneV5.exportToXml(lst, db);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported.");
     }
 
     private class AsyncItemLoader extends AsyncTask<Void, String, String> {
@@ -461,105 +511,110 @@ public class ImageListV5Activity extends AppCompatActivity {
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
-        Document doc = Xml.createDocument(Xml.TAG_NWD);
-        Element mnemosyneSubsetEl = doc.createElement(Xml.TAG_MNEMOSYNE_SUBSET);
-        doc.getDocumentElement().appendChild(mnemosyneSubsetEl);
+        ArrayList<Media> lst = new ArrayList<>();
+        lst.add(media);
 
-        //get all media, just single table query, to get hash
-        //then sync all with db.populateByHash(ArrayList<Media>)
+        UtilsMnemosyneV5.exportToXml(lst, db);
 
-        //adapted from export all code, leaving it as much the same as possible
-        ArrayList<Media> allMedia = new ArrayList<>();
-        allMedia.add(media);
-
-        db.populateTaggingsAndDevicePaths(allMedia);
-
-        Element mediaEl = doc.createElement(Xml.TAG_MEDIA);
-
-        mediaEl.setAttribute(
-                Xml.ATTR_SHA1_HASH,
-                media.getMediaHash());
-
+//        Document doc = Xml.createDocument(Xml.TAG_NWD);
+//        Element mnemosyneSubsetEl = doc.createElement(Xml.TAG_MNEMOSYNE_SUBSET);
+//        doc.getDocumentElement().appendChild(mnemosyneSubsetEl);
 //
-//                mediaEl.setAttribute(
-//                        Xml.ATTR_FILE_NAME,
-//                        media.getMediaFileName());
+//        //get all media, just single table query, to get hash
+//        //then sync all with db.populateByHash(ArrayList<Media>)
 //
-//                mediaEl.setAttribute(
-//                        Xml.ATTR_DESCRIPTION,
-//                        media.getMediaDescription());
-
-
-        Xml.setAttributeIfNotNullOrWhitespace(
-                mediaEl,
-                Xml.ATTR_FILE_NAME,
-                media.getMediaFileName());
-
-        Xml.setAttributeIfNotNullOrWhitespace(
-                mediaEl,
-                Xml.ATTR_DESCRIPTION,
-                media.getMediaDescription());
-
-        mnemosyneSubsetEl.appendChild(mediaEl);
-
-        for(MediaTagging mt : media.getMediaTaggings()){
-
-            Element tagEl = doc.createElement(Xml.TAG_TAG);
-
-            tagEl.setAttribute(
-                Xml.ATTR_TAG_VALUE,
-                mt.getMediaTagValue());
-
-            tagEl.setAttribute(
-                Xml.ATTR_TAGGED_AT,
-                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-                                mt.getTaggedAt()));
-
-            tagEl.setAttribute(
-                Xml.ATTR_UNTAGGED_AT,
-                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-                                mt.getUntaggedAt()));
-
-            mediaEl.appendChild(tagEl);
-        }
-
-        for(String deviceName : media.getDevicePaths().keySet()){
-
-            Element mediaDeviceEl =
-                    doc.createElement(Xml.TAG_MEDIA_DEVICE);
-
-            mediaDeviceEl.setAttribute(
-                    Xml.ATTR_DESCRIPTION, deviceName);
-
-            mediaEl.appendChild(mediaDeviceEl);
-
-            for(DevicePath dp : media.getDevicePaths().get(deviceName)) {
-
-                Element pathEl = doc.createElement(Xml.TAG_PATH);
-
-                pathEl.setAttribute(
-                        Xml.ATTR_VALUE,
-                        dp.getPath());
-
-                pathEl.setAttribute(
-                        Xml.ATTR_VERIFIED_PRESENT,
-                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-                            dp.getVerifiedPresent()));
-
-                pathEl.setAttribute(
-                        Xml.ATTR_VERIFIED_MISSING,
-                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
-                            dp.getVerifiedMissing()));
-
-                mediaDeviceEl.appendChild(pathEl);
-            }
-        }
-
-        File outputFile =
-            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(
-                    Xml.FILE_NAME_MNEMOSYNE_V5);
-
-            Xml.write(outputFile, doc);
+//        //adapted from export all code, leaving it as much the same as possible
+//        ArrayList<Media> allMedia = new ArrayList<>();
+//        allMedia.add(media);
+//
+//        db.populateTaggingsAndDevicePaths(allMedia);
+//
+//        Element mediaEl = doc.createElement(Xml.TAG_MEDIA);
+//
+//        mediaEl.setAttribute(
+//                Xml.ATTR_SHA1_HASH,
+//                media.getMediaHash());
+//
+////
+////                mediaEl.setAttribute(
+////                        Xml.ATTR_FILE_NAME,
+////                        media.getMediaFileName());
+////
+////                mediaEl.setAttribute(
+////                        Xml.ATTR_DESCRIPTION,
+////                        media.getMediaDescription());
+//
+//
+//        Xml.setAttributeIfNotNullOrWhitespace(
+//                mediaEl,
+//                Xml.ATTR_FILE_NAME,
+//                media.getMediaFileName());
+//
+//        Xml.setAttributeIfNotNullOrWhitespace(
+//                mediaEl,
+//                Xml.ATTR_DESCRIPTION,
+//                media.getMediaDescription());
+//
+//        mnemosyneSubsetEl.appendChild(mediaEl);
+//
+//        for(MediaTagging mt : media.getMediaTaggings()){
+//
+//            Element tagEl = doc.createElement(Xml.TAG_TAG);
+//
+//            tagEl.setAttribute(
+//                Xml.ATTR_TAG_VALUE,
+//                mt.getMediaTagValue());
+//
+//            tagEl.setAttribute(
+//                Xml.ATTR_TAGGED_AT,
+//                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                                mt.getTaggedAt()));
+//
+//            tagEl.setAttribute(
+//                Xml.ATTR_UNTAGGED_AT,
+//                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                                mt.getUntaggedAt()));
+//
+//            mediaEl.appendChild(tagEl);
+//        }
+//
+//        for(String deviceName : media.getDevicePaths().keySet()){
+//
+//            Element mediaDeviceEl =
+//                    doc.createElement(Xml.TAG_MEDIA_DEVICE);
+//
+//            mediaDeviceEl.setAttribute(
+//                    Xml.ATTR_DESCRIPTION, deviceName);
+//
+//            mediaEl.appendChild(mediaDeviceEl);
+//
+//            for(DevicePath dp : media.getDevicePaths().get(deviceName)) {
+//
+//                Element pathEl = doc.createElement(Xml.TAG_PATH);
+//
+//                pathEl.setAttribute(
+//                        Xml.ATTR_VALUE,
+//                        dp.getPath());
+//
+//                pathEl.setAttribute(
+//                        Xml.ATTR_VERIFIED_PRESENT,
+//                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                            dp.getVerifiedPresent()));
+//
+//                pathEl.setAttribute(
+//                        Xml.ATTR_VERIFIED_MISSING,
+//                        TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+//                            dp.getVerifiedMissing()));
+//
+//                mediaDeviceEl.appendChild(pathEl);
+//            }
+//        }
+//
+//        File outputFile =
+//            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(
+//                    Xml.FILE_NAME_MNEMOSYNE_V5);
+//
+//            Xml.write(outputFile, doc);
     }
 
     private void moveToMemes(int position){

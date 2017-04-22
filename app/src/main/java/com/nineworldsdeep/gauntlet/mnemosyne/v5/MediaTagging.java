@@ -136,4 +136,29 @@ public class MediaTagging {
         //here, untagged is not null, and tagged is null
         return false;
     }
+
+    public void merge(MediaTagging mt) throws Exception {
+
+        setMediaTagValue(
+            UtilsMnemosyneV5.tryMergeString(
+                getMediaTagValue(), mt.getMediaTagValue()));
+
+        setMediaHash(
+            UtilsMnemosyneV5.tryMergeString(
+                getMediaHash(), mt.getMediaHash()));
+
+        setMediaTagId(
+            UtilsMnemosyneV5.tryMergeInt(
+                getMediaTagId(), mt.getMediaTagId()));
+
+        setMediaTaggingId(
+            UtilsMnemosyneV5.tryMergeInt(
+                getMediaTaggingId(), mt.getMediaTaggingId()));
+
+        setMediaId(
+            UtilsMnemosyneV5.tryMergeInt(
+                getMediaId(), mt.getMediaId()));
+
+        setTimeStamps(mt.getTaggedAt(), mt.getUntaggedAt());
+    }
 }

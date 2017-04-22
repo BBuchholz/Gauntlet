@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nineworldsdeep.gauntlet.mnemosyne.AudioListV2Activity">
+
+    <item android:id="@+id/action_go_to_home_screen"
+          android:title="@string/home"
+          app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_export_all_to_xml"
+          android:title="@string/export_xml"
+          app:showAsAction="ifRoom|withText"/>
+</menu>

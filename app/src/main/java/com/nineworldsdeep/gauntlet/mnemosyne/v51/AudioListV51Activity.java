@@ -2,12 +2,17 @@ package com.nineworldsdeep.gauntlet.mnemosyne.v51;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,10 +55,40 @@ public class AudioListV51Activity extends ListActivity {
             }
         }
 
-        setListAdapter(new ArrayAdapter<>(
+        setListAdapter(new ArrayAdapter<MediaListItem>(
                             this,
                             android.R.layout.simple_list_item_1,
-                            new ArrayList<MediaListItem>()));
+                            new ArrayList<MediaListItem>()){
+
+            @Override
+            public View getView(int pos, View convertView, ViewGroup parent){
+
+                if(convertView==null) {
+                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    convertView=vi.inflate(R.layout.media_list_item, null);
+                }
+
+                TextView tvDisplayName = (TextView)convertView.findViewById(R.id.display_name);
+                TextView tvTags = (TextView)convertView.findViewById(R.id.tags);
+                ImageView ivImage = (ImageView)convertView.findViewById(R.id.img);
+
+                MediaListItem mli = getItem(pos);
+
+                tvDisplayName.setText(mli.getFile().getName());
+                tvTags.setText(mli.getTags());
+
+                if(mli.getFile().isDirectory()){
+
+                    ivImage.setImageResource(R.mipmap.ic_nwd_junction);
+
+                }else{
+
+                    ivImage.setImageResource(R.mipmap.ic_nwd_media);
+                }
+
+                return convertView;
+            }
+        });
 
         new AsyncLoadItems().execute(currentFile);
     }
@@ -118,7 +153,7 @@ public class AudioListV51Activity extends ListActivity {
                     }
 
 
-                    String msg = count + " of " + total + " items loaded";
+                    String msg = "Still loading... (" + count + " of " + total + " items loaded)";
 
                     publishProgress(new ProgressWrapper(mli, msg));
                 }

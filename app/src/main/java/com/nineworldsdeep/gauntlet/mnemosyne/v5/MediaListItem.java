@@ -147,6 +147,22 @@ public class MediaListItem {
         return f;
     }
 
+    @Override
+    public String toString(){
+
+        String tagString = " {" + getTags() + "}";
+        String fileName = "";
+
+        File f = getFile();
+
+        if(f != null){
+
+            fileName = f.getName();
+        }
+
+        return fileName + tagString;
+    }
+
     public boolean hasTag(String tag) {
 
         return media.hasTag(tag);

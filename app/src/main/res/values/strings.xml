@@ -97,4 +97,5 @@
     <string name="title_activity_image_display_v5">Image Display V5</string>
     <string name="title_activity_image_list_v5">Images V5</string>
     <string name="export_xml">Export XML</string>
+    <string name="title_activity_audio_list_v51">AudioListV51Activity</string>
 </resources>

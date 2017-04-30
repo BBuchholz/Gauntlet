@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.MainActivity;
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.TestModeActivity;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.bookSegments.AliasListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity;
@@ -24,13 +23,11 @@ import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.v51.AudioListV51Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV52Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
-import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryNamedNodeActivity;
@@ -67,10 +64,12 @@ public class HomeListActivity extends ListBaseActivity {
 
         addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
         addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
-        addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
+        addNavigateActivityCommand("Audio V5", AudioListV52Activity.class);
+//        addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
         addNavigateActivityCommand("Audio Player V5", AudioDisplayV5Activity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
-        addNavigateActivityCommand("Audio V51", AudioListV51Activity.class);
+//        addNavigateActivityCommand("Audio V51", AudioListV51Activity.class);
+//        addNavigateActivityCommand("Audio V52", AudioListV52Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
 

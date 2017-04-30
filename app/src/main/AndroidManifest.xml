@@ -523,7 +523,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
-        <activity android:name=".mnemosyne.v51.AudioListV51Activity">
+        <activity android:name=".mnemosyne.v5.AudioListV51Activity">
+        </activity>
+        <activity
+            android:name=".mnemosyne.v5.AudioListV52Activity"
+            android:label="@string/title_activity_audio_list_v52"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
     </application>
 

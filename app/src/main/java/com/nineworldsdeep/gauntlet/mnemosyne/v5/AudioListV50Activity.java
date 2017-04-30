@@ -18,28 +18,23 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
-import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
-import com.nineworldsdeep.gauntlet.xml.Xml;
 
 import org.apache.commons.io.FilenameUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AudioListV5Activity extends AppCompatActivity {
+public class AudioListV50Activity extends AppCompatActivity {
 
     private File mCurrentDir;
     private List<String> mTimeStampFilters;
@@ -326,9 +321,9 @@ public class AudioListV5Activity extends AppCompatActivity {
                 }else if(f.exists() && f.isDirectory()){
 
                     Intent intent = new Intent(view.getContext(),
-                            AudioListV5Activity.class);
+                            AudioListV50Activity.class);
                     intent.putExtra(
-                            AudioListV5Activity.EXTRA_CURRENT_PATH,
+                            AudioListV50Activity.EXTRA_CURRENT_PATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);

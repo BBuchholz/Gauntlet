@@ -139,6 +139,7 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
 
             try {
                 NwdDb db = NwdDb.getInstance(this);
+                db.open();
 
 //                HashMap<String, String> pathToTagString =
 //                        Tags.getPathToActiveTagStringMap(db);

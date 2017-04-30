@@ -174,18 +174,6 @@ public class ImageListV5Activity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
-//        int id = item.getItemId();
-//
-//        if (id == R.id.action_go_to_home_screen){
-//
-//            NavigateActivityCommand.navigateTo(
-//                    HomeListActivity.class, this
-//            );
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-
     }
 
     private void exportAllToXml() {

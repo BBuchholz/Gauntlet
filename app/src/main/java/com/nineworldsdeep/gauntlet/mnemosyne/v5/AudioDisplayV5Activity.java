@@ -108,6 +108,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 //                        this));
 
                 NwdDb db = NwdDb.getInstance(this);
+                db.open();
 
                 MediaListItem mli = new MediaListItem(audioPath);
 

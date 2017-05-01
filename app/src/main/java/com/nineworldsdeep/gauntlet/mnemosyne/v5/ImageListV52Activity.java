@@ -101,7 +101,7 @@ public class ImageListV52Activity extends AppCompatActivity {
             }
         }
 
-        refreshLayout();
+//        refreshLayout();
     }
 
     private void refreshLayout() {
@@ -710,10 +710,10 @@ public class ImageListV52Activity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
 
         NwdDb.getInstance(this).open();
+        refreshLayout();
     }
 
     @Override

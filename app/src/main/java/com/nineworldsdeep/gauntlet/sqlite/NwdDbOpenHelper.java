@@ -239,8 +239,18 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        //executing in order of onUpgrade()
         createV4Tables(db);
         createSynergyV5Subset(db);
+        modSynergyTablesCorrectionOne(db);
+        dropAndRecreateSynergyToDoDbV11(db);
+        dropAndRecreateSynergyToDoDbV12(db);
+        createMnemosyneV5Subset(db);
+        addColumnsDevicePathVerifiedAndMissing(db);
+
+        // TODO: clean this up, should have a method that
+        // doesn't do all the drop and recreate, just
+        // using the upgrade methods for now
     }
 
     private void createV4Tables(SQLiteDatabase db) {

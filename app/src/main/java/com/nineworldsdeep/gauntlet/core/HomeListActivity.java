@@ -147,9 +147,6 @@ public class HomeListActivity extends ListBaseActivity {
 
                                     String name = userInput.getText().toString();
 
-                                    //prevent hyphens, which are used for junctions
-                                    name = name.replace("-", "_");
-
                                     if(!Utils.stringIsNullOrWhitespace(name)){
 
                                         ConfigFile f = new ConfigFile();

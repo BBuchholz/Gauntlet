@@ -423,6 +423,28 @@ public class AudioListV52Activity extends AppCompatActivity {
 
                 return true;
 
+            case R.id.action_queue_folder_to_playlist:
+
+                MediaPlayerSingletonV5 player =
+                        MediaPlayerSingletonV5.getInstance();
+
+                ArrayAdapter<MediaListItem> adapter =
+                        (ArrayAdapter<MediaListItem>)getListAdapter();
+
+                ArrayList<MediaListItem> lst = new ArrayList<>();
+
+                for(int i = 0; i < adapter.getCount(); i++){
+
+                    lst.add(adapter.getItem(i));
+                }
+
+                player.queue(lst);
+
+                NavigateActivityCommand.navigateTo(
+                        AudioDisplayV5Activity.class, this);
+
+                return true;
+
             case R.id.action_export_all_to_xml:
 
                 exportAllToXml();
@@ -433,9 +455,6 @@ public class AudioListV52Activity extends AppCompatActivity {
 
                 return super.onOptionsItemSelected(item);
         }
-
-
-
     }
 
     @Override
@@ -553,7 +572,6 @@ public class AudioListV52Activity extends AppCompatActivity {
         }
     }
 
-
     private void exportXml(int position) throws Exception {
 
         MediaListItem mli = getItem(position);
@@ -567,7 +585,6 @@ public class AudioListV52Activity extends AppCompatActivity {
 
         UtilsMnemosyneV5.exportToXml(lst, db);
     }
-
 
     private void moveToDownloads(int position){
 

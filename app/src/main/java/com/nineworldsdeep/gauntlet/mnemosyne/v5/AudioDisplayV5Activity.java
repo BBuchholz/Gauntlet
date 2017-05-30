@@ -45,10 +45,6 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
     public static final String EXTRA_AUDIO_PATH =
             "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_AUDIO_PATH";
 
-//    public static final String EXTRA_TAG_STRING =
-//            "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_TAG_STRING";
-
-
     @Override
     protected void onResume() {
 
@@ -93,19 +89,12 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIO_PATH);
 
-        //String tagString = i.getStringExtra(EXTRA_TAG_STRING);
-
         SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
         mMediaPlayerSingletonV5 = MediaPlayerSingletonV5.getInstance(seek);
 
         if(audioPath != null){
 
             try {
-
-//                setNowPlaying(
-//                        mMediaPlayerSingletonV5.queueAndPlayLast(
-//                        new MediaListItem(audioPath, tagString),
-//                        this));
 
                 NwdDb db = NwdDb.getInstance(this);
                 db.open();
@@ -124,7 +113,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
         }else{
 
-            Utils.toast(this, "audio path null");
+            //only for testing
+            //Utils.toast(this, "audio path null");
         }
 
     }

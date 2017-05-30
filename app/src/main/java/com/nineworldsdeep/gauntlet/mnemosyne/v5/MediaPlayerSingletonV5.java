@@ -52,9 +52,24 @@ public class MediaPlayerSingletonV5 {
             }
         }
 
-        mSeekBar = seekBarForDisplay;
+        if(seekBarForDisplay != null) {
+
+            mSeekBar = seekBarForDisplay;
+        }
 
         return singleton;
+    }
+
+    /**
+     * only use this method signature when you are sure the seekbar
+     * is being set somewhere else (such as when calling from a
+     * different Activity).
+     *
+     * Otherwise, use getInstance(Seekbar);
+     */
+    public static MediaPlayerSingletonV5 getInstance() {
+
+        return getInstance(null);
     }
 
     public MediaListItem queueAndPlayLast(
@@ -68,6 +83,14 @@ public class MediaPlayerSingletonV5 {
         play(listener);
 
         return mli;
+    }
+
+    public void queue(ArrayList<MediaListItem> items){
+
+        for(MediaListItem mli : items){
+
+            playlist.add(mli);
+        }
     }
 
     private MediaListItem play(MediaPlayer.OnPreparedListener listener) throws IOException{
@@ -163,4 +186,5 @@ public class MediaPlayerSingletonV5 {
         playlist.clear();
 
     }
+
 }

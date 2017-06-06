@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +25,9 @@ import com.nineworldsdeep.gauntlet.Tags;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
-import com.nineworldsdeep.gauntlet.mnemosyne.AudioMediaEntry;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
@@ -41,6 +39,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
     private MediaPlayerSingletonV5 mMediaPlayerSingletonV5;
 
     //private NwdDb db;
+
+    private static final int MENU_CONTEXT_REMOVE_ITEM = 1;
 
     public static final String EXTRA_AUDIO_PATH =
             "com.nineworldsdeep.gauntlet.AUDIO_DISPLAY_AUDIO_PATH";
@@ -117,6 +117,67 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
             //Utils.toast(this, "audio path null");
         }
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        String title =
+                mMediaPlayerSingletonV5
+                        .getMediaListItem(info.position)
+                        .getFile()
+                        .getName();
+
+        menu.setHeaderTitle(title);
+
+        menu.add(Menu.NONE, MENU_CONTEXT_REMOVE_ITEM, Menu.NONE, "Remove From Playlist");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+
+            case MENU_CONTEXT_REMOVE_ITEM:
+
+                removeItem(info.position);
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void removeItem(int position) {
+
+        mMediaPlayerSingletonV5.removeItem(position);
+
+        if(position == mMediaPlayerSingletonV5.getCurrentPosition()){
+
+            try {
+
+                setNowPlaying(null, null);
+
+            }catch(Exception ex){
+
+                Utils.toast(getApplicationContext(),
+                        "error resetting player: " +
+                                ex.getMessage());
+            }
+        }
+
+        refreshLayout();
     }
 
     @Override

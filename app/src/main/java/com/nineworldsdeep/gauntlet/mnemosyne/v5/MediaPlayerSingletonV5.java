@@ -85,6 +85,11 @@ public class MediaPlayerSingletonV5 {
         return mli;
     }
 
+    public MediaListItem getMediaListItem(int position){
+
+        return playlist.get(position);
+    }
+
     public void queue(ArrayList<MediaListItem> items){
 
         for(MediaListItem mli : items){
@@ -187,4 +192,18 @@ public class MediaPlayerSingletonV5 {
 
     }
 
+    public void removeItem(int position) {
+
+        playlist.remove(position);
+
+        if(playlist.isCurrentPosition(position)){
+
+            stop();
+        }
+    }
+
+    public int getCurrentPosition() {
+
+        return playlist.getCurrentPosition();
+    }
 }

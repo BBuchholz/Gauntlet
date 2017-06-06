@@ -52,6 +52,11 @@ public class AudioPlaylistV5 {
         return null;
     }
 
+    public MediaListItem get(int index){
+
+        return mediaListItems.get(index);
+    }
+
     public void goToNextTrack(){
 
         currentPosition += 1;
@@ -113,5 +118,20 @@ public class AudioPlaylistV5 {
 
         mediaListItems.clear();
         resetPosition();
+    }
+
+    public void remove(int position) {
+
+        mediaListItems.remove(position);
+    }
+
+    public boolean isCurrentPosition(int position) {
+
+        return currentPosition == position;
+    }
+
+    public int getCurrentPosition() {
+
+        return currentPosition;
     }
 }

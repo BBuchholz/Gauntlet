@@ -22,6 +22,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.QuickTagActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.playerService.MediaPlayerServiceActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV52Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
@@ -75,6 +76,7 @@ public class HomeListActivity extends ListBaseActivity {
 //        addNavigateActivityCommand("Images V52", ImageListV52Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
+        addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 
 //        addNavigateActivityCommand("Images", ImageListV2Activity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);

@@ -101,4 +101,7 @@
     <string name="title_activity_audio_list_v52">AudioListV52Activity</string>
     <string name="title_activity_image_list_v52">ImageListV52Activity</string>
     <string name="queue_folder">Queue Folder</string>
+    <string name="title_activity_media_player_service">
+        MediaPlayerServiceActivity
+    </string>
 </resources>

@@ -54,7 +54,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         if(mMediaPlayerSingletonV5 == null){
 
             SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
-            mMediaPlayerSingletonV5 = MediaPlayerSingletonV5.getInstance(seek);
+            mMediaPlayerSingletonV5 =
+                    MediaPlayerSingletonV5.getInstance(seek, generateCompletionListener());
         }
 
         if(mMediaPlayerSingletonV5 != null){
@@ -66,7 +67,32 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         refreshLayout();
     }
 
-    @Override
+    protected MediaPlayer.OnCompletionListener generateCompletionListener(){
+
+        MediaPlayer.OnCompletionListener listener =
+                new MediaPlayer.OnCompletionListener() {
+
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+
+                        try{
+
+                            NwdDb db = NwdDb.getInstance(AudioDisplayV5Activity.this);
+
+                            setNowPlaying(mMediaPlayerSingletonV5.playNext(AudioDisplayV5Activity.this), db);
+                            updateMediaInfo();
+
+                        }catch(Exception ex){
+
+                            Utils.toast(AudioDisplayV5Activity.this, ex.getMessage());
+                        }
+                    }
+                };
+
+        return listener;
+    }
+
+
     protected void onPause() {
 
         super.onPause();
@@ -90,7 +116,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         String audioPath = i.getStringExtra(EXTRA_AUDIO_PATH);
 
         SeekBar seek = (SeekBar) findViewById(R.id.seekBar);
-        mMediaPlayerSingletonV5 = MediaPlayerSingletonV5.getInstance(seek);
+        mMediaPlayerSingletonV5 = MediaPlayerSingletonV5.getInstance(seek, generateCompletionListener());
 
         if(audioPath != null){
 

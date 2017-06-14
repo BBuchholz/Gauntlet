@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.widget.SeekBar;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioMediaEntry;
 import com.nineworldsdeep.gauntlet.mnemosyne.AudioPlaylist;
 
@@ -38,7 +39,10 @@ public class MediaPlayerSingletonV5 {
 
     }
 
-    public static MediaPlayerSingletonV5 getInstance(SeekBar seekBarForDisplay){
+    public static MediaPlayerSingletonV5 getInstance(
+            SeekBar seekBarForDisplay,
+            //final MediaPlayer.OnPreparedListener onPreparedListener,
+            final MediaPlayer.OnCompletionListener onCompletionListener){
 
         if(singleton == null){
 
@@ -57,6 +61,28 @@ public class MediaPlayerSingletonV5 {
             mSeekBar = seekBarForDisplay;
         }
 
+//        if(onPreparedListener != null){
+//
+//            singleton.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                @Override
+//                public void onCompletion(MediaPlayer mp) {
+//                    try{
+//
+//                        singleton.playNext(onPreparedListener);
+//
+//                    }catch(Exception ex){
+//
+//                        //do nothing
+//                    }
+//                }
+//            });
+//        }
+
+        if(onCompletionListener != null){
+
+            singleton.mp.setOnCompletionListener(onCompletionListener);
+        }
+
         return singleton;
     }
 
@@ -69,7 +95,7 @@ public class MediaPlayerSingletonV5 {
      */
     public static MediaPlayerSingletonV5 getInstance() {
 
-        return getInstance(null);
+        return getInstance(null, null);
     }
 
     public MediaListItem queueAndPlayLast(
@@ -116,7 +142,8 @@ public class MediaPlayerSingletonV5 {
             mp.reset();
             mp.setDataSource(mli.getFile().getAbsolutePath());
             mp.setOnPreparedListener(listener);
-            mp.setLooping(true);
+            //mp.setLooping(true);
+            mp.setLooping(false); //adding onCompletionListener
             mp.prepareAsync();
         }
 

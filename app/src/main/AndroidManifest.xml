@@ -254,12 +254,12 @@
         <activity
             android:name=".mnemosyne.v5.AudioDisplayV5Activity"
             android:label="@string/title_activity_audio_display_v5"
-            android:parentActivityName=".mnemosyne.v5.AudioListV52Activity"
+            android:parentActivityName=".mnemosyne.v5.AudioListV5Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV52Activity"/>
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity"/>
         </activity>
         <activity
             android:name=".mnemosyne.v5.ImageDisplayV5Activity"
@@ -533,7 +533,7 @@
         <!--<activity android:name=".mnemosyne.v5.AudioListV51Activity">-->
         <!--</activity>-->
         <activity
-            android:name=".mnemosyne.v5.AudioListV52Activity"
+            android:name=".mnemosyne.v5.AudioListV5Activity"
             android:label="@string/title_activity_audio_list_v52"
             android:parentActivityName=".core.HomeListActivity"
             android:theme="@style/AppTheme.NoActionBar">

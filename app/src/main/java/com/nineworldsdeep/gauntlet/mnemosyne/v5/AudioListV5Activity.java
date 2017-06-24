@@ -36,7 +36,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AudioListV52Activity extends AppCompatActivity {
+public class AudioListV5Activity extends AppCompatActivity {
 
     private File mCurrentDir;
 
@@ -278,7 +278,7 @@ public class AudioListV52Activity extends AppCompatActivity {
 
             try{
 
-                NwdDb db = NwdDb.getInstance(AudioListV52Activity.this);
+                NwdDb db = NwdDb.getInstance(AudioListV5Activity.this);
 
                 db.open();
 
@@ -374,9 +374,9 @@ public class AudioListV52Activity extends AppCompatActivity {
         }else if(f.exists() && f.isDirectory()){
 
             Intent intent = new Intent(view.getContext(),
-                    AudioListV52Activity.class);
+                    AudioListV5Activity.class);
             intent.putExtra(
-                    AudioListV52Activity.EXTRA_CURRENT_PATH,
+                    AudioListV5Activity.EXTRA_CURRENT_PATH,
                     f.getAbsolutePath()
             );
 

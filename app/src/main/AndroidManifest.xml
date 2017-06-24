@@ -264,12 +264,12 @@
         <activity
             android:name=".mnemosyne.v5.ImageDisplayV5Activity"
             android:label="@string/title_activity_image_display_v5"
-            android:parentActivityName=".mnemosyne.v5.ImageListV5Activity"
+            android:parentActivityName=".mnemosyne.v5.ImageListV52Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity"/>
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV52Activity"/>
         </activity>
         <activity
             android:name=".mnemosyne.AudioDisplayActivity"
@@ -424,15 +424,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".tapestry.v1.TapestryNamedNodeActivity"/>
         </activity>
-        <activity
-            android:name=".mnemosyne.v5.ImageListV5Activity"
-            android:label="@string/title_activity_image_list_v5"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
-        </activity>
+        <!--<activity-->
+            <!--android:name=".mnemosyne.v5.ImageListV5Activity"-->
+            <!--android:label="@string/title_activity_image_list_v5"-->
+            <!--android:parentActivityName=".MainActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.nineworldsdeep.gauntlet.MainActivity"/>-->
+        <!--</activity>-->
         <!--<activity-->
             <!--android:name=".mnemosyne.v5.AudioListV50Activity"-->
             <!--android:label="@string/title_activity_audio_list_v5"-->

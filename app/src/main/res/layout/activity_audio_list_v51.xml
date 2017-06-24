@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV51Activity">
+    tools:context="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV52Activity">
 
     <ListView
         android:id="@android:id/list"

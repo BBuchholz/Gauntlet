@@ -254,12 +254,12 @@
         <activity
             android:name=".mnemosyne.v5.AudioDisplayV5Activity"
             android:label="@string/title_activity_audio_display_v5"
-            android:parentActivityName=".mnemosyne.v5.AudioListV50Activity"
+            android:parentActivityName=".mnemosyne.v5.AudioListV52Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV50Activity"/>
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV52Activity"/>
         </activity>
         <activity
             android:name=".mnemosyne.v5.ImageDisplayV5Activity"
@@ -433,15 +433,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
         </activity>
-        <activity
-            android:name=".mnemosyne.v5.AudioListV50Activity"
-            android:label="@string/title_activity_audio_list_v5"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.MainActivity"/>
-        </activity>
+        <!--<activity-->
+            <!--android:name=".mnemosyne.v5.AudioListV50Activity"-->
+            <!--android:label="@string/title_activity_audio_list_v5"-->
+            <!--android:parentActivityName=".MainActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.nineworldsdeep.gauntlet.MainActivity"/>-->
+        <!--</activity>-->
         <activity
             android:name=".mnemosyne.AudioListV2Activity"
             android:label="@string/title_activity_audio_list_v2"
@@ -530,8 +530,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
-        <activity android:name=".mnemosyne.v5.AudioListV51Activity">
-        </activity>
+        <!--<activity android:name=".mnemosyne.v5.AudioListV51Activity">-->
+        <!--</activity>-->
         <activity
             android:name=".mnemosyne.v5.AudioListV52Activity"
             android:label="@string/title_activity_audio_list_v52"

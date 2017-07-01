@@ -11,6 +11,7 @@ import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
+import com.nineworldsdeep.gauntlet.hive.HiveRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileHashFragment;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
@@ -3673,6 +3674,19 @@ public class NwdDb {
     public void endTransaction() {
 
         db.endTransaction();
+    }
+
+    public ArrayList<HiveRoot> getAllHiveRoots() {
+
+        ArrayList<HiveRoot> roots = new ArrayList<>();
+
+        //mockup
+        int rootId = 1;
+        String rootName = "test-root";
+
+        roots.add(new HiveRoot(rootId, rootName));
+
+        return roots;
     }
 
     //region templates

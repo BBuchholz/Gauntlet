@@ -67,15 +67,18 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
 
         cmds.clear();
 
-        int rootId = 1;
-        String rootName = "test-root";
+        ArrayList<HiveRoot> roots = NwdDb.getInstance(this).getAllHiveRoots();
 
-        //demo
         HashMap<String, String> extraKeyToValue = new HashMap<>();
-        extraKeyToValue.put(EXTRA_HIVE_ROOT_ID, Integer.toString(rootId));
-        extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, rootName);
 
-        addNavigateActivityCommand(rootName, extraKeyToValue, HiveRootActivity.class);
+        for(HiveRoot root : roots) {
+
+            extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
+                    Integer.toString(root.getHiveRootId()));
+            extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, root.getHiveRootName());
+
+            addNavigateActivityCommand(root.getHiveRootName(), extraKeyToValue, HiveRootActivity.class);
+        }
     }
 
     @Override

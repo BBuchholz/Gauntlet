@@ -1,16 +1,21 @@
 package com.nineworldsdeep.gauntlet.hive;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IRefreshableUI;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
@@ -39,10 +44,65 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
-                Snackbar.make(view, "Added Hive Root (in progress)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                LayoutInflater li = LayoutInflater.from(HiveMainActivity.this);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText("Enter Hive Root Name: ");
+
+                android.app.AlertDialog.Builder alertDialogBuilder =
+                        new android.app.AlertDialog.Builder(HiveMainActivity.this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String name = userInput.getText().toString();
+
+                                        if(hiveRootNameIsValid(name)){
+
+                                            NwdDb db = NwdDb.getInstance(HiveMainActivity.this);
+                                            db.open();
+
+                                            db.insertHiveRootName(name);
+
+                                            Snackbar.make(view, "Added Hive Root: " + name, Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+
+                                        }else{
+
+                                            Snackbar.make(view, "Invalid Hive Root: " + name, Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+
+                                        Snackbar.make(view, "Cancelled", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+
+                                        dialog.cancel();
+                                    }
+                                });
+
+                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                alertDialog.show();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,6 +116,12 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
         }
     }
 
+    private boolean hiveRootNameIsValid(String name) {
+
+        //TODO: this needs to only allow alphanumeric and hyphens
+        return !Utils.stringIsNullOrWhitespace(name);
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -67,7 +133,7 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
 
         cmds.clear();
 
-        ArrayList<HiveRoot> roots = NwdDb.getInstance(this).getAllHiveRoots();
+        ArrayList<HiveRoot> roots = NwdDb.getInstance(this).getAllHiveRoots(this);
 
         HashMap<String, String> extraKeyToValue = new HashMap<>();
 

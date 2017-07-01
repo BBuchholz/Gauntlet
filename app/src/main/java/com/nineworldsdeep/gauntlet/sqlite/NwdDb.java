@@ -3676,17 +3676,69 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public ArrayList<HiveRoot> getAllHiveRoots() {
+    public ArrayList<HiveRoot> getAllHiveRoots(Context c) {
 
         ArrayList<HiveRoot> roots = new ArrayList<>();
 
-        //mockup
-        int rootId = 1;
-        String rootName = "test-root";
+        db.beginTransaction();
 
-        roots.add(new HiveRoot(rootId, rootName));
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.SELECT_ACTIVE_HIVE_ROOTS,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_HIVE_ROOT_ID,
+                            NwdContract.COLUMN_HIVE_ROOT_NAME,
+                            NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT,
+                            NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    HiveRoot root = new HiveRoot(
+                            Integer.parseInt(record.get(NwdContract.COLUMN_HIVE_ROOT_ID)),
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_NAME)
+                    );
+
+                    roots.add(root);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
 
         return roots;
+    }
+
+    public void insertHiveRootName(String name){
+
+        db.execSQL(NwdContract.INSERT_HIVE_ROOT_NAME_X, new String[]{ name });
     }
 
     //region templates

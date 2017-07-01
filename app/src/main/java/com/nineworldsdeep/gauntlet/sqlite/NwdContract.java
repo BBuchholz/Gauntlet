@@ -1105,4 +1105,19 @@ public class NwdContract {
             "	SET " + COLUMN_HIVE_ROOT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
             "	WHERE " + TABLE_HIVE_ROOT + "." + COLUMN_HIVE_ROOT_ID + " = NEW." + COLUMN_HIVE_ROOT_ID + "; " +
             "END " ;
+
+    public static final String SELECT_ACTIVE_HIVE_ROOTS =
+
+            "SELECT " + COLUMN_HIVE_ROOT_ID + ", " +
+            "       " + COLUMN_HIVE_ROOT_NAME + ", " +
+            "	    " + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", " +
+            "	    " + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " " +
+            "FROM " + TABLE_HIVE_ROOT + " ";
+
+    public static final String INSERT_HIVE_ROOT_NAME_X =
+
+            "INSERT OR IGNORE INTO " + TABLE_HIVE_ROOT + " " +
+            "	(" + COLUMN_HIVE_ROOT_NAME + ") " +
+            "VALUES " +
+            "	(?) ";
 }

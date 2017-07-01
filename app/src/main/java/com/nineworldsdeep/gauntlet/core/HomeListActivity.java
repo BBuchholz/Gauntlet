@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.hive.HiveMainActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
@@ -58,28 +59,17 @@ public class HomeListActivity extends ListBaseActivity {
 
         addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
         addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
-//        addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
         addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
-//        addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
         addNavigateActivityCommand("Audio Player V5", AudioDisplayV5Activity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
-//        addNavigateActivityCommand("Audio V51", AudioListV51Activity.class);
-//        addNavigateActivityCommand("Audio V52", AudioListV52Activity.class);
-//        addNavigateActivityCommand("Images V52", ImageListV52Activity.class);
         addNavigateActivityCommand("PDFs", PdfListActivity.class);
         addNavigateActivityCommand("Transfers", TransferActivity.class);
         addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 
-//        addNavigateActivityCommand("Images", ImageListV2Activity.class);
+        addNavigateActivityCommand("Hive", HiveMainActivity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
-//        addNavigateActivityCommand("Audio", AudioListV2Activity.class);
-//        addNavigateActivityCommand("Audio Player", AudioDisplayActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
-//        addNavigateActivityCommand("Sources", AliasListActivity.class);
-//        addNavigateActivityCommand("Tapestry", TapestryNamedNodeActivity.class);
-//        addNavigateActivityCommand("Quick Tag", QuickTagActivity.class);
-//        addNavigateActivityCommand("PrevHome", MainActivity.class);
 
     }
 

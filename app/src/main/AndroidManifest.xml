@@ -424,24 +424,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".tapestry.v1.TapestryNamedNodeActivity"/>
         </activity>
-        <!--<activity-->
-            <!--android:name=".mnemosyne.v5.ImageListV5Activity"-->
-            <!--android:label="@string/title_activity_image_list_v5"-->
-            <!--android:parentActivityName=".MainActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nineworldsdeep.gauntlet.MainActivity"/>-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name=".mnemosyne.v5.AudioListV50Activity"-->
-            <!--android:label="@string/title_activity_audio_list_v5"-->
-            <!--android:parentActivityName=".MainActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nineworldsdeep.gauntlet.MainActivity"/>-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".mnemosyne.v5.ImageListV5Activity" -->
+        <!-- android:label="@string/title_activity_image_list_v5" -->
+        <!-- android:parentActivityName=".MainActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.nineworldsdeep.gauntlet.MainActivity"/> -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name=".mnemosyne.v5.AudioListV50Activity" -->
+        <!-- android:label="@string/title_activity_audio_list_v5" -->
+        <!-- android:parentActivityName=".MainActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.nineworldsdeep.gauntlet.MainActivity"/> -->
+        <!-- </activity> -->
         <activity
             android:name=".mnemosyne.AudioListV2Activity"
             android:label="@string/title_activity_audio_list_v2"
@@ -530,8 +530,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
-        <!--<activity android:name=".mnemosyne.v5.AudioListV51Activity">-->
-        <!--</activity>-->
+        <!-- <activity android:name=".mnemosyne.v5.AudioListV51Activity"> -->
+        <!-- </activity> -->
         <activity
             android:name=".mnemosyne.v5.AudioListV5Activity"
             android:label="@string/title_activity_audio_list_v52"
@@ -554,6 +554,24 @@
             android:name=".mnemosyne.playerService.MediaPlayerServiceActivity"
             android:label="@string/title_activity_media_player_service"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".hive.HiveMainActivity"
+            android:label="@string/title_activity_hive_main"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
+        <activity
+            android:name=".hive.HiveRootActivity"
+            android:label="@string/title_activity_hive_root"
+            android:parentActivityName=".hive.HiveMainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.hive.HiveMainActivity"/>
         </activity>
     </application>
 

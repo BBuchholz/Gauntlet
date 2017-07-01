@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -247,6 +247,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         dropAndRecreateSynergyToDoDbV12(db);
         createMnemosyneV5Subset(db);
         addColumnsDevicePathVerifiedAndMissing(db);
+        addHiveRootTable(db);
 
         // TODO: clean this up, should have a method that
         // doesn't do all the drop and recreate, just
@@ -325,6 +326,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         if (oldVersion < 14){
 
             addColumnsDevicePathVerifiedAndMissing(db);
+        }
+
+        if (oldVersion < 15){
+
+            addHiveRootTable(db);
         }
 
     }
@@ -441,5 +447,12 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
         db.execSQL(NwdContract.MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_VERIFIED);
         db.execSQL(NwdContract.MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_MISSING);
+    }
+
+    private void addHiveRootTable(SQLiteDatabase db){
+
+        db.execSQL(NwdContract.CREATE_HIVE_ROOT);
+        db.execSQL(NwdContract.CREATE_HIVE_ROOT_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_HIVE_ROOT_UPDATED_TRIGGER);
     }
 }

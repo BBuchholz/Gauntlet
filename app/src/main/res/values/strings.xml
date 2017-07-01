@@ -104,4 +104,6 @@
     <string name="title_activity_media_player_service">
         MediaPlayerServiceActivity
     </string>
+    <string name="title_activity_hive_main">HiveMainActivity</string>
+    <string name="title_activity_hive_root">HiveRootActivity</string>
 </resources>

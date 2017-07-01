@@ -478,6 +478,14 @@ public class NwdContract {
     public static final String COLUMN_LOCAL_CONFIG_CREATED_AT = "LocalConfigCreatedAt";
     public static final String COLUMN_LOCAL_CONFIG_UPDATED_AT = "LocalConfigUpdatedAt";
 
+    public static final String COLUMN_HIVE_ROOT_ID = "HiveRootId";
+    public static final String COLUMN_HIVE_ROOT_NAME = "HiveRootName";
+    public static final String COLUMN_HIVE_ROOT_ACTIVATED_AT = "HiveRootActivatedAt";
+    public static final String COLUMN_HIVE_ROOT_DEACTIVATED_AT = "HiveRootDeactivatedAt";
+    public static final String COLUMN_HIVE_ROOT_CREATED_AT = "HiveRootCreatedAt";
+    public static final String COLUMN_HIVE_ROOT_UPDATED_AT = "HiveRootUpdatedAt";
+    public static final String TABLE_HIVE_ROOT = "HiveRoot";
+
     public static final String CREATE_MEDIA_TAG =
 
             "CREATE TABLE " + TABLE_MEDIA_TAG + " ( " +
@@ -1065,4 +1073,36 @@ public class NwdContract {
             "FROM " + TABLE_MEDIA + " " +
             "WHERE " + COLUMN_MEDIA_HASH + " = ? " +
             "COLLATE NOCASE;";
+    
+    public static final String CREATE_HIVE_ROOT =
+
+            "CREATE TABLE " + TABLE_HIVE_ROOT + " ( " +
+            "	" + COLUMN_HIVE_ROOT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE, " +
+            "	" + COLUMN_HIVE_ROOT_NAME + " TEXT NOT NULL UNIQUE, " +
+            "	" + COLUMN_HIVE_ROOT_ACTIVATED_AT + " TEXT, " +
+            "	" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " TEXT,  " +
+            "	" + COLUMN_HIVE_ROOT_CREATED_AT + " TEXT, " +
+            "	" + COLUMN_HIVE_ROOT_UPDATED_AT + " TEXT " +
+            ") " ;
+
+    public static final String CREATE_HIVE_ROOT_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + COLUMN_HIVE_ROOT_CREATED_AT + "  " +
+            "AFTER INSERT ON " + TABLE_HIVE_ROOT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_HIVE_ROOT + "  " +
+            "	SET " + COLUMN_HIVE_ROOT_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+            "		   " + COLUMN_HIVE_ROOT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_HIVE_ROOT + "." + COLUMN_HIVE_ROOT_ID + " = NEW." + COLUMN_HIVE_ROOT_ID + "; " +
+            "END " ;
+
+    public static final String CREATE_HIVE_ROOT_UPDATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + COLUMN_HIVE_ROOT_UPDATED_AT + " " +
+            "AFTER UPDATE ON " + TABLE_HIVE_ROOT + " " +
+            "BEGIN " +
+            "UPDATE " + TABLE_HIVE_ROOT + "  " +
+            "	SET " + COLUMN_HIVE_ROOT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+            "	WHERE " + TABLE_HIVE_ROOT + "." + COLUMN_HIVE_ROOT_ID + " = NEW." + COLUMN_HIVE_ROOT_ID + "; " +
+            "END " ;
 }

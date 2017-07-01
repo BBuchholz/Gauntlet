@@ -22,7 +22,7 @@ public abstract class AsyncListBasedActivity extends ListBaseActivity {
     }
 
     @Override
-    protected void refreshLayout(){
+    public void refreshLayout(){
 
 //        ListView lvItems = getListView();
 //

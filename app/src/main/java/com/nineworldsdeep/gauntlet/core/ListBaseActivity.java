@@ -54,7 +54,7 @@ public abstract class ListBaseActivity extends DbBaseActivity {
         mListState = null;
     }
 
-    protected void refreshLayout(){
+    public void refreshLayout(){
 
         ListView lvItems = getListView();
 

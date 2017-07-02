@@ -25,6 +25,8 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI {
 
@@ -118,8 +120,14 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
 
     private boolean hiveRootNameIsValid(String name) {
 
-        //TODO: this needs to only allow alphanumeric and hyphens
-        return !Utils.stringIsNullOrWhitespace(name);
+//        asdf; //do the TODO
+//        //TODO: this needs to only allow alphanumeric and hyphens
+//        return !Utils.stringIsNullOrWhitespace(name);
+
+        Matcher match = Pattern.compile("^[0-9a-z-]*$")
+            .matcher(name);
+
+        return match.find();
     }
 
     @Override
@@ -135,9 +143,9 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
 
         ArrayList<HiveRoot> roots = NwdDb.getInstance(this).getAllHiveRoots(this);
 
-        HashMap<String, String> extraKeyToValue = new HashMap<>();
-
         for(HiveRoot root : roots) {
+
+            HashMap<String, String> extraKeyToValue = new HashMap<>();
 
             extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
                     Integer.toString(root.getHiveRootId()));

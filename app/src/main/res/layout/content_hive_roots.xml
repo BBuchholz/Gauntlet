@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.nineworldsdeep.gauntlet.hive.HiveMainActivity"
-    tools:showIn="@layout/activity_hive_main">
+    tools:context="com.nineworldsdeep.gauntlet.hive.HiveRootsActivity"
+    tools:showIn="@layout/activity_hive_roots">
 
         <ListView
             android:layout_width="match_parent"

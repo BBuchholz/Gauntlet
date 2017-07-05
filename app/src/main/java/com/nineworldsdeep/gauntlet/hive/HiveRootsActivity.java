@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IRefreshableUI;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
@@ -28,9 +26,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI {
+public class HiveRootsActivity extends ListBaseActivity implements IRefreshableUI {
 
     private ArrayList<NavigateActivityCommand> cmds = new ArrayList<>();
+
     public static final String EXTRA_HIVE_ROOT_ID =
             "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_ID";
     public static final String EXTRA_HIVE_ROOT_NAME =
@@ -39,7 +38,7 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hive_main);
+        setContentView(R.layout.activity_hive_roots);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,14 +48,14 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
             public void onClick(final View view) {
 
 
-                LayoutInflater li = LayoutInflater.from(HiveMainActivity.this);
+                LayoutInflater li = LayoutInflater.from(HiveRootsActivity.this);
                 View promptsView = li.inflate(R.layout.prompt, null);
 
                 TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
                 tv.setText("Enter Hive Root Name: ");
 
                 android.app.AlertDialog.Builder alertDialogBuilder =
-                        new android.app.AlertDialog.Builder(HiveMainActivity.this);
+                        new android.app.AlertDialog.Builder(HiveRootsActivity.this);
 
                 // set prompts.xml to alertdialog builder
                 alertDialogBuilder.setView(promptsView);
@@ -75,10 +74,12 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
 
                                         if(hiveRootNameIsValid(name)){
 
-                                            NwdDb db = NwdDb.getInstance(HiveMainActivity.this);
+                                            NwdDb db = NwdDb.getInstance(HiveRootsActivity.this);
                                             db.open();
 
                                             db.insertHiveRootName(name);
+
+                                            refreshLayout();
 
                                             Snackbar.make(view, "Added Hive Root: " + name, Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
@@ -107,7 +108,9 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
                 alertDialog.show();
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Roots");
 
         //check local device name is set
         NwdDb.getInstance(this).open();
@@ -119,10 +122,6 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
     }
 
     private boolean hiveRootNameIsValid(String name) {
-
-//        asdf; //do the TODO
-//        //TODO: this needs to only allow alphanumeric and hyphens
-//        return !Utils.stringIsNullOrWhitespace(name);
 
         Matcher match = Pattern.compile("^[0-9a-z-]*$")
             .matcher(name);
@@ -151,7 +150,7 @@ public class HiveMainActivity extends ListBaseActivity implements IRefreshableUI
                     Integer.toString(root.getHiveRootId()));
             extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, root.getHiveRootName());
 
-            addNavigateActivityCommand(root.getHiveRootName(), extraKeyToValue, HiveRootActivity.class);
+            addNavigateActivityCommand(root.getHiveRootName(), extraKeyToValue, HiveLobesActivity.class);
         }
     }
 

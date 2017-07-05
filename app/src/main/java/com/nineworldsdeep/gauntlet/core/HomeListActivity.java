@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.hive.HiveMainActivity;
+import com.nineworldsdeep.gauntlet.hive.HiveRootsActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
@@ -66,7 +66,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Transfers", TransferActivity.class);
         addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 
-        addNavigateActivityCommand("Hive", HiveMainActivity.class);
+        addNavigateActivityCommand("Hive", HiveRootsActivity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);

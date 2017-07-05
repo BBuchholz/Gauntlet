@@ -6,6 +6,7 @@ import android.webkit.MimeTypeMap;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 
@@ -58,6 +59,21 @@ public class UtilsMnemosyneV5 {
         }
 
         return type;
+    }
+
+    public static ArrayList<ImageGridItem> getImageGridItems(File dir){
+
+        ArrayList<ImageGridItem> lst = new ArrayList<>();
+
+        for(MediaListItem mli : getMediaListItemsImage(dir)){
+
+            if(mli.getFile().isFile()) {
+
+                lst.add(ImageGridItem.From(mli));
+            }
+        }
+
+        return lst;
     }
 
     public static ArrayList<MediaListItem> getMediaListItemsAudio(File dir) {

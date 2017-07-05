@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.mnemosyne;
+package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,18 +12,15 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageDisplayV5Activity;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridAdapter;
+import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class ImageGridActivity extends AppCompatActivity {
+public class ImageGridV5Activity extends AppCompatActivity {
 
     private GridView mImageGrid;
     private ImageGridAdapter mImageGridAdapter;
@@ -38,7 +35,6 @@ public class ImageGridActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Utils.toast(this, "ImageGrid is deprecated, ImageGridV5 in progress");
     }
 
     @Override
@@ -187,19 +183,26 @@ public class ImageGridActivity extends AppCompatActivity {
         });
     }
 
+//    private ArrayList<ImageGridItem> getImages() {
+//
+//        NwdDb db = NwdDb.getInstance(this);
+//
+//        db.open();
+//
+//        HashMap<String, String> pathToTagString =
+//                TagDbIndex.importExportPathToTagStringMap(db);
+//
+//        File dir = Configuration.getScreenshotDirectory();
+//
+//        return MnemoSyneUtils.getImageGridItems(pathToTagString, dir);
+//    }
+
+
     private ArrayList<ImageGridItem> getImages() {
-
-        NwdDb db = NwdDb.getInstance(this);
-
-        db.open();
-
-        HashMap<String, String> pathToTagString =
-                TagDbIndex.importExportPathToTagStringMap(db);
 
         File dir = Configuration.getScreenshotDirectory();
 
-        return MnemoSyneUtils.getImageGridItems(pathToTagString, dir);
+        asdf; //this needs to become async like image list v5
+        return UtilsMnemosyneV5.getImageGridItems(dir);
     }
-
-
 }

@@ -97,21 +97,16 @@ public class MnemoSyneUtils {
         return lst;
     }
 
-    asdf; //this need to be added to V5 mnemosyne utils, and use the new
-          //media sync to generate the ImageGridItems
     public static ArrayList<ImageGridItem> getImageGridItems(
             HashMap<String,String> pathToTagString,
             File dir){
 
         ArrayList<ImageGridItem> lst = new ArrayList<>();
 
-        asdf;
-        //for(MediaListItem mli : getImageMediaListItems(dir)){
         for(FileListItem fli : getImageListItems(pathToTagString, dir)){
 
             if(fli.getFile().isFile()) {
 
-                asdf; //ImageGridItem.From(Media)
                 lst.add(ImageGridItem.From(fli));
             }
         }

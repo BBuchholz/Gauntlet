@@ -1,6 +1,5 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,12 +7,9 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
@@ -71,68 +67,7 @@ public class ImageGridV5Activity extends AppCompatActivity {
         refreshLayout();
 
     }
-//
-//    private class AsyncItemLoader extends AsyncTask<Void, String, String> {
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//
-//            String result;
-//
-//            try{
-//
-//                long start = System.nanoTime();
-//
-//                publishProgress("loading items...");
-//                mImageGridAdapter = loadItems();
-//
-//                long elapsedTime = System.nanoTime() - start;
-//                long milliseconds = elapsedTime / 1000000;
-//
-//                String elapsedTimeStr = Long.toString(milliseconds);
-//
-//                result = "finished loading: " + elapsedTimeStr + "ms";
-//
-//            }catch (Exception e){
-//
-//                result = e.getMessage();
-//            }
-//
-//            return result;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//
-//            updateStatus(result);
-//
-//            if(mImageGridAdapter != null){
-//
-//                mImageGrid = (GridView) findViewById(R.id.gvImageGrid);
-//
-//                mImageGrid.setAdapter(mImageGridAdapter);
-//
-//                setupClickListener();
-//
-//                restoreInstanceState();
-//            }
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//
-//            storeInstanceState();
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(String... text) {
-//
-//            if(text.length > 0)
-//            updateStatus(text[0]);
-//        }
-//
-//    }
-//
+
     class ProgressWrapper{
 
         private ImageGridItem igi;
@@ -244,52 +179,14 @@ public class ImageGridV5Activity extends AppCompatActivity {
 
     private void refreshLayout(){
 
-//        AsyncItemLoader ail = new AsyncItemLoader();
-//        ail.execute();
-
         setGridAdapter(new ImageGridAdapter(
                             this,
-                            android.R.layout.simple_list_item_1,
-                            new ArrayList<ImageGridItem>()){
-
-            @Override
-            public View getView(int pos, View convertView, ViewGroup parent){
-
-                if(convertView==null) {
-                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView=vi.inflate(R.layout.media_list_item, null);
-                }
-
-                TextView tvDisplayName = (TextView)convertView.findViewById(R.id.display_name);
-                TextView tvTags = (TextView)convertView.findViewById(R.id.tags);
-                ImageView ivImage = (ImageView)convertView.findViewById(R.id.img);
-
-                ImageGridItem igi = getItem(pos);
-
-                tvDisplayName.setText(igi.getFile().getName());
-                tvTags.setText(igi.getTags());
-
-                if(igi.getFile().isDirectory()){
-
-                    ivImage.setImageResource(R.mipmap.ic_nwd_junction);
-
-                }else{
-
-                    ivImage.setImageResource(R.mipmap.ic_nwd_media);
-                }
-
-                return convertView;
-            }
-        });
+                            R.layout.image_item,
+                            new ArrayList<ImageGridItem>()));
 
         new AsyncLoadItems().execute(Configuration.getScreenshotDirectory());
     }
 
-//    private ImageGridAdapter loadItems(){
-//
-//        return new ImageGridAdapter(this,
-//                        R.layout.image_item, getImages());
-//    }
 
     private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View v, int position, long id)
@@ -346,20 +243,6 @@ public class ImageGridV5Activity extends AppCompatActivity {
         });
     }
 
-//    private ArrayList<ImageGridItem> getImages() {
-//
-//        NwdDb db = NwdDb.getInstance(this);
-//
-//        db.open();
-//
-//        HashMap<String, String> pathToTagString =
-//                TagDbIndex.importExportPathToTagStringMap(db);
-//
-//        File dir = Configuration.getScreenshotDirectory();
-//
-//        return MnemoSyneUtils.getImageGridItems(pathToTagString, dir);
-//    }
-
     public void setGridAdapter(ImageGridAdapter adapter) {
         synchronized (this) {
             ensureGrid();
@@ -403,11 +286,4 @@ public class ImageGridV5Activity extends AppCompatActivity {
         return mImageGridAdapter;
     }
 
-//    private ArrayList<ImageGridItem> getImages() {
-//
-//        File dir = Configuration.getScreenshotDirectory();
-//
-//        asdf; //this needs to become async like image list v5
-//        return UtilsMnemosyneV5.getImageGridItems(dir);
-//    }
 }

@@ -64,6 +64,11 @@ public class ImageGridAdapter extends ArrayAdapter {
 		return row;
 	}
 
+	@Override
+	public ImageGridItem getItem(int position) {
+        return mImageGridItems.get(position);
+    }
+
 	static class ViewHolder {
 		TextView tvTagString;
 		ImageView ivImage;

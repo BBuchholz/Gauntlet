@@ -12,7 +12,10 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageDisplayV5Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
@@ -35,6 +38,7 @@ public class ImageGridActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Utils.toast(this, "ImageGrid is deprecated, ImageGridV5 in progress");
     }
 
     @Override
@@ -172,9 +176,9 @@ public class ImageGridActivity extends AppCompatActivity {
                 if(f.exists() && f.isFile()){
 
                     Intent intent = new Intent(view.getContext(),
-                            ImageDisplayActivity.class);
+                            ImageDisplayV5Activity.class);
                     intent.putExtra(
-                            ImageDisplayActivity.EXTRA_IMAGEPATH,
+                            ImageDisplayV5Activity.EXTRA_IMAGE_PATH,
                             f.getAbsolutePath()
                     );
                     startActivity(intent);
@@ -196,5 +200,6 @@ public class ImageGridActivity extends AppCompatActivity {
 
         return MnemoSyneUtils.getImageGridItems(pathToTagString, dir);
     }
+
 
 }

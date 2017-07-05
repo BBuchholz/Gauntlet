@@ -3,6 +3,8 @@ package com.nineworldsdeep.gauntlet.mnemosyne;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
+
 import java.io.File;
 
 /**
@@ -40,6 +42,26 @@ public class ImageGridItem {
         }
 
         return new ImageGridItem(fli.getFile(), b, fli.getTags());
+    }
+
+    public static ImageGridItem From(MediaListItem mli){
+
+        Bitmap b = null;
+
+        try{
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+
+            b = BitmapFactory.decodeFile(
+                    mli.getFile().getAbsolutePath(), options);
+
+        }catch(Exception ex){
+
+            //do nothing
+        }
+
+        return new ImageGridItem(mli.getFile(), b, mli.getTags());
     }
 
 	public Bitmap getImage() {

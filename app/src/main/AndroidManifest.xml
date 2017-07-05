@@ -513,6 +513,15 @@
                 android:value="com.nineworldsdeep.gauntlet.mnemosyne.ImageListV2Activity"/>
         </activity>
         <activity
+            android:name=".mnemosyne.v5.ImageGridV5Activity"
+            android:label="@string/title_activity_image_grid"
+            android:parentActivityName=".mnemosyne.v5.ImageListV5Activity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity"/>
+        </activity>
+        <activity
             android:name=".mnemosyne.v5.demo.ImageBrowserActivity"
             android:label="ImageBrowserActivity"
             android:parentActivityName=".core.HomeListActivity"

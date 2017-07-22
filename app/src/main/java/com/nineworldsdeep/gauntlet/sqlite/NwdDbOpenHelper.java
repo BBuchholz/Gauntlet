@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -248,6 +248,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         createMnemosyneV5Subset(db);
         addColumnsDevicePathVerifiedAndMissing(db);
         addHiveRootTable(db);
+        dropAndRecreateSynergyListInsertTrigger(db);
 
         // TODO: clean this up, should have a method that
         // doesn't do all the drop and recreate, just
@@ -333,6 +334,17 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
             addHiveRootTable(db);
         }
 
+        if (oldVersion < 16){
+
+            dropAndRecreateSynergyListInsertTrigger(db);
+        }
+
+    }
+
+    private void dropAndRecreateSynergyListInsertTrigger(SQLiteDatabase db) {
+
+        db.execSQL(NwdContract.DROP_SYNERGY_LIST_INSERT_TRIGGER);
+        db.execSQL(NwdContract.CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER);
     }
 
     private void dropAndRecreateSynergyToDoDbV11(SQLiteDatabase db){

@@ -1120,4 +1120,16 @@ public class NwdContract {
             "	(" + COLUMN_HIVE_ROOT_NAME + ") " +
             "VALUES " +
             "	(?) ";
+
+    public static final String DROP_SYNERGY_LIST_INSERT_TRIGGER =
+            "DROP TRIGGER IF EXISTS Set" + TABLE_SYNERGY_LIST + "CreatedAt ";
+
+    public static final String CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER = "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "CreatedAt  "
+            + "AFTER INSERT ON " + TABLE_SYNERGY_LIST + " "
+            + "BEGIN "
+            + "UPDATE " + TABLE_SYNERGY_LIST + "  "
+            + "SET " + COLUMN_SYNERGY_LIST_CREATED_AT + " = CURRENT_TIMESTAMP,  "
+            + COLUMN_SYNERGY_LIST_UPDATED_AT + " = CURRENT_TIMESTAMP "
+            + "WHERE " + TABLE_SYNERGY_LIST + "." + COLUMN_SYNERGY_LIST_ID + " = NEW." + COLUMN_SYNERGY_LIST_ID + "; "
+            + "END ";
 }

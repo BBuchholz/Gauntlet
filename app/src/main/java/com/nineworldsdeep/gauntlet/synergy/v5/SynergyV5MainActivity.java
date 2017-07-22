@@ -160,15 +160,9 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
         if(!Utils.stringIsNullOrWhitespace(itemText)){
 
-//            SynergyListFile slf =
-//                    new SynergyListFile(itemText);
-//            slf.load(); //just in case it already exists
-//            slf.sync();
-//            etNewItem.setText("");
-//            readItems();
-
             SynergyV5List synLst = new SynergyV5List(itemText);
 
+            synLst.activate();
             NwdDb.getInstance(this).sync(this, synLst);
 
             etNewItem.setText("");

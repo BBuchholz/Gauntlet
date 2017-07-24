@@ -22,8 +22,8 @@ public class HiveLobesActivity extends ListBaseActivity {
 
     private ArrayList<NavigateActivityCommand> cmds = new ArrayList<>();
 
-    int hiveRootId = -1;
-    String hiveRootName;
+    private int hiveRootId = -1;
+    private String hiveRootName;
 
     public static final String EXTRA_HIVE_LOBE_TYPE =
             "com.nineworldsdeep.gauntlet.EXTRA_HIVE_LOBE_TYPE";
@@ -55,8 +55,15 @@ public class HiveLobesActivity extends ListBaseActivity {
                 EXTRA_HIVE_ROOT_NAME
         );
 
-        hiveRootId = Integer.parseInt(idString);
-        hiveRootName = nameString;
+        if(!Utils.stringIsNullOrWhitespace(idString)) {
+
+            hiveRootId = Integer.parseInt(idString);
+            hiveRootName = nameString;
+
+        }else{
+
+            Utils.toast(this, "hive id not set");
+        }
 
     }
 

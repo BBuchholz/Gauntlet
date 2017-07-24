@@ -73,11 +73,6 @@ public class HiveSporesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_list_v52);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Spores");
 
         String idString = getIntent().getStringExtra(
                 EXTRA_HIVE_ROOT_ID
@@ -91,11 +86,37 @@ public class HiveSporesActivity extends AppCompatActivity {
                 EXTRA_HIVE_LOBE_TYPE
         );
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Spores");
+
         mLobe = new Lobe();
 
         mLobe.setHiveRootId(Integer.parseInt(idString));
         mLobe.setHiveRootName(nameString);
         mLobe.setLobeType(LobeType.valueOf(lobeTypeString));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                HashMap<String, String> extraKeyToValue = new HashMap<>();
+
+                extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
+                        Integer.toString(mLobe.getHiveRootId()));
+
+                extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME,
+                        mLobe.getHiveRootName());
+
+                NavigateActivityCommand.navigateTo(
+                        extraKeyToValue,
+                        HiveLobesActivity.class,
+                        HiveSporesActivity.this);
+            }
+        });
     }
 
     private void refreshLayout() {
@@ -396,6 +417,23 @@ public class HiveSporesActivity extends AppCompatActivity {
             onListItemClick((ListView)parent, v, position, id);
         }
     };
+
+    @Override
+    public void onBackPressed() {
+
+        HashMap<String, String> extraKeyToValue = new HashMap<>();
+
+        extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
+                Integer.toString(mLobe.getHiveRootId()));
+
+        extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME,
+                mLobe.getHiveRootName());
+
+        NavigateActivityCommand.navigateTo(
+                extraKeyToValue,
+                HiveLobesActivity.class,
+                HiveSporesActivity.this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

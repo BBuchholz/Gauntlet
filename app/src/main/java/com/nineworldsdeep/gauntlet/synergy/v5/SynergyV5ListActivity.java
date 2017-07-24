@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -59,6 +60,7 @@ public class SynergyV5ListActivity
     private static final int MENU_CONTEXT_COPY_NAME_TO_CLIPBOARD = 19;
     private static final int MENU_CONTEXT_ACTIVATE = 20;
     private static final int MENU_CONTEXT_ARCHIVE = 21;
+    private static final int MENU_CONTEXT_NAVIGATE_URL = 22;
 
     private SynergyV5List mSynLst;
     private ArrayList<SynergyV5ListItem> mCurrentItems;
@@ -166,9 +168,9 @@ public class SynergyV5ListActivity
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        String title = mCurrentItems.get(info.position).getItemValue();
+        String itemValue = mCurrentItems.get(info.position).getItemValue();
 
-        menu.setHeaderTitle(title);
+        menu.setHeaderTitle(itemValue);
 
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
@@ -195,6 +197,7 @@ public class SynergyV5ListActivity
             menu.add(Menu.NONE, MENU_CONTEXT_OPEN_VM_AUDIO,
                     Menu.NONE, "Open VM Audio");
         }
+
 
         Matcher imgMatcher = Pattern.compile("\\(\\bhas Image: \\d{4,14}\\b\\)")
             .matcher(mCurrentItems.get(info.position).getItemValue());
@@ -238,6 +241,19 @@ public class SynergyV5ListActivity
         menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_LIST_ID,
                 Menu.NONE, "Move To List");
 
+        ///////////////////////////////////////////////////////////////////////
+        ////////////// NAVIGATE URL
+        ///////////////////////////////////////////////////////////////////////
+
+        String possibleUrl = mCurrentItems.get(info.position).getItemValue();
+
+        if (possibleUrl.startsWith("https://") ||
+                possibleUrl.startsWith("http://")) {
+
+            menu.add(Menu.NONE, MENU_CONTEXT_NAVIGATE_URL,
+                    Menu.NONE, "Navigate URL");
+        }
+
 //        menu.add(Menu.NONE, MENU_CONTEXT_SPLIT_ITEM_ID,
 //                Menu.NONE, "Split Item");
 //
@@ -254,6 +270,13 @@ public class SynergyV5ListActivity
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
+
+            case MENU_CONTEXT_NAVIGATE_URL:
+
+                navigateUrl(info.position);
+
+                return true;
+
             case MENU_CONTEXT_COMPLETION_STATUS_ID:
 
                 toggleCompletionStatusAtPosition(info.position);
@@ -844,6 +867,16 @@ public class SynergyV5ListActivity
 
         // show it
         alertDialog.show();
+    }
+
+    private void navigateUrl(int position){
+
+        String url = mCurrentItems.get(position).getItemValue();
+
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     private void toggleCompletionStatusAtPosition(int position){

@@ -496,7 +496,7 @@ public class AudioListV5Activity extends AppCompatActivity {
             Utils.toast(this, "Error exporting all to xml: " + ex.toString());
         }
 
-        Utils.toast(this, "exported.");
+        Utils.toast(this, "exported");
     }
 
 

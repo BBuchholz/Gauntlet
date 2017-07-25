@@ -871,7 +871,10 @@ public class SynergyV5ListActivity
 
     private void navigateUrl(int position){
 
-        String url = mCurrentItems.get(position).getItemValue();
+        String itemValue = mCurrentItems.get(position).getItemValue();
+
+        //to support single and multiline notes after the url
+        String url = itemValue.split("\\s+")[0];
 
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW,

@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
@@ -28,12 +32,16 @@ import java.util.regex.Pattern;
 
 public class HiveRootsActivity extends ListBaseActivity implements IRefreshableUI {
 
-    private ArrayList<NavigateActivityCommand> cmds = new ArrayList<>();
+    private ArrayList<NavigateActivityCommand> mCommands = new ArrayList<>();
+    private ArrayList<HiveRoot> mHiveRoots = new ArrayList<>();
 
     public static final String EXTRA_HIVE_ROOT_ID =
             "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_ID";
     public static final String EXTRA_HIVE_ROOT_NAME =
             "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_NAME";
+
+    private static final int MENU_CONTEXT_DEACTIVATE = 1;
+    private static final int MENU_CONTEXT_ACTIVATE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         setContentView(R.layout.activity_hive_roots);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        populateActiveRootsSelectorSpinner();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +87,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
                                             NwdDb db = NwdDb.getInstance(HiveRootsActivity.this);
                                             db.open();
 
-                                            db.insertHiveRootName(name);
+                                            db.ensureHiveRootName(name);
 
                                             refreshLayout();
 
@@ -129,6 +139,82 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         return match.find();
     }
 
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        HiveRoot root = mHiveRoots.get(info.position);
+
+        menu.setHeaderTitle(root.getHiveRootName());
+
+        if(root.isActive()){
+
+            menu.add(Menu.NONE, MENU_CONTEXT_DEACTIVATE, Menu.NONE, "Deactivate");
+
+        }else{
+
+            menu.add(Menu.NONE, MENU_CONTEXT_ACTIVATE, Menu.NONE, "Activate");
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+
+            case MENU_CONTEXT_DEACTIVATE:
+
+                deactivate(info.position);
+                return true;
+
+            case MENU_CONTEXT_ACTIVATE:
+
+                activate(info.position);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void deactivate(int position) {
+
+        HiveRoot hr = mHiveRoots.get(position);
+
+        hr.deactivate();
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        db.sync(this, hr);
+
+        refreshLayout();
+    }
+
+    private void activate(int position) {
+
+        HiveRoot hr = mHiveRoots.get(position);
+
+        hr.activate();
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        db.sync(this, hr);
+
+        refreshLayout();
+    }
+
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -138,9 +224,19 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
     @Override
     protected void readItems(ListView lv) {
 
-        cmds.clear();
+        mCommands.clear();
+        mHiveRoots.clear();
 
-        ArrayList<HiveRoot> roots = NwdDb.getInstance(this).getAllHiveRoots(this);
+        ArrayList<HiveRoot> roots;
+
+        if(isActiveRootsSelected()){
+
+            roots = NwdDb.getInstance(this).getActiveHiveRoots(this);
+
+        }else{
+
+            roots = NwdDb.getInstance(this).getDeactivatedHiveRoots(this);
+        }
 
         for(HiveRoot root : roots) {
 
@@ -148,10 +244,67 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
             extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
                     Integer.toString(root.getHiveRootId()));
+
             extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, root.getHiveRootName());
 
+            mHiveRoots.add(root);
             addNavigateActivityCommand(root.getHiveRootName(), extraKeyToValue, HiveLobesActivity.class);
         }
+
+        setupSpinnerListener();
+    }
+
+    private boolean isActiveRootsSelected() {
+
+        Spinner spSelectedStatus = (Spinner)findViewById(R.id.spActiveRootsSelector);
+
+        Object selected = spSelectedStatus.getSelectedItem();
+
+        if(selected != null) {
+
+            return spSelectedStatus
+                    .getSelectedItem()
+                    .toString()
+                    .equalsIgnoreCase("Active");
+        }
+
+        return false;
+    }
+
+    private void setupSpinnerListener() {
+
+        final Spinner spStatus =
+                (Spinner) findViewById(R.id.spActiveRootsSelector);
+
+        spStatus.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                refreshLayout();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //do nothing
+            }
+        });
+    }
+
+    private void populateActiveRootsSelectorSpinner() {
+
+        Spinner spActiveRootsSelector =
+                (Spinner)this.findViewById(R.id.spActiveRootsSelector);
+
+        ArrayList<String> lst = new ArrayList<>();
+        lst.add("Active");
+        lst.add("Deactivated");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, lst);
+
+        spActiveRootsSelector.setAdapter(adapter);
     }
 
     @Override
@@ -165,7 +318,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
         lvItems.setAdapter(
                 new ArrayAdapter<>(
-                        this, android.R.layout.simple_list_item_1, cmds));
+                        this, android.R.layout.simple_list_item_1, mCommands));
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -173,7 +326,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
             public void onItemClick(
                     AdapterView<?> parent, View view, int position, long id) {
 
-                NavigateActivityCommand cmd = cmds.get(position);
+                NavigateActivityCommand cmd = mCommands.get(position);
                 cmd.navigate();
             }
         });
@@ -184,7 +337,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
             HashMap<String, String> extraKeyToValue,
             Class activity){
 
-        cmds.add(new NavigateActivityCommand(text, extraKeyToValue, activity, this));
+        mCommands.add(new NavigateActivityCommand(text, extraKeyToValue, activity, this));
     }
 
 }

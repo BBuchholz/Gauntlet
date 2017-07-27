@@ -4,6 +4,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- causes the entire status bar to become white and unreadable -->
+        <!-- from: https://stackoverflow.com/a/38182815/670768 -->
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
 </resources>

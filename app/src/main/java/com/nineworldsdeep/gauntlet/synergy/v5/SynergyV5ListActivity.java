@@ -261,8 +261,6 @@ public class SynergyV5ListActivity
 //                Menu.NONE, "Edit Item");
     }
 
-    //adapted from:
-    // http://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
@@ -700,27 +698,6 @@ public class SynergyV5ListActivity
                 .setNegativeButton("No", null)
                 .show();
     }
-
-//    private void promptUpdateTemplate() {
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        final String trimmedName = Utils.trimTimeStamp_yyyyMMdd(mSynLst.getListName());
-//
-//        String msg = "Update Template: " + trimmedName + "?";
-//
-//        builder.setTitle("UpdateTemplate")
-//                .setMessage(msg)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        SynergyV5Utils.updateTemplate(trimmedName, mSynLst);
-//                        Utils.toast(getApplicationContext(), "template updated");
-//                    }
-//                })
-//                .setNegativeButton("No", null)
-//                .show();
-//    }
 
     private void promptConfirmArchive(){
 

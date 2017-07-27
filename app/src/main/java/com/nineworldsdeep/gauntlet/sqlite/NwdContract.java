@@ -1112,7 +1112,17 @@ public class NwdContract {
             "       " + COLUMN_HIVE_ROOT_NAME + ", " +
             "	    " + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", " +
             "	    " + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " " +
-            "FROM " + TABLE_HIVE_ROOT + " ";
+            "FROM " + TABLE_HIVE_ROOT + " " +
+            "WHERE IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", '') >= IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", '') ";
+
+    public static final String SELECT_DEACTIVATED_HIVE_ROOTS =
+
+            "SELECT " + COLUMN_HIVE_ROOT_ID + ", " +
+            "       " + COLUMN_HIVE_ROOT_NAME + ", " +
+            "	    " + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", " +
+            "	    " + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " " +
+            "FROM " + TABLE_HIVE_ROOT + " " +
+            "WHERE IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", '') < IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", '') ";
 
     public static final String INSERT_HIVE_ROOT_NAME_X =
 
@@ -1124,7 +1134,9 @@ public class NwdContract {
     public static final String DROP_SYNERGY_LIST_INSERT_TRIGGER =
             "DROP TRIGGER IF EXISTS Set" + TABLE_SYNERGY_LIST + "CreatedAt ";
 
-    public static final String CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER = "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "CreatedAt  "
+    public static final String CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER =
+
+            "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_LIST + " "
             + "BEGIN "
             + "UPDATE " + TABLE_SYNERGY_LIST + "  "
@@ -1132,4 +1144,19 @@ public class NwdContract {
             + COLUMN_SYNERGY_LIST_UPDATED_AT + " = CURRENT_TIMESTAMP "
             + "WHERE " + TABLE_SYNERGY_LIST + "." + COLUMN_SYNERGY_LIST_ID + " = NEW." + COLUMN_SYNERGY_LIST_ID + "; "
             + "END ";
+
+    public static final String HIVE_ROOT_UPDATE_ACTIVATE_AT_DEACTIVATED_AT_FOR_NAME_X_Y_Z =
+
+            "UPDATE " + TABLE_HIVE_ROOT + "  " +
+            "SET " + COLUMN_HIVE_ROOT_ACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", ''), ?), " +
+            "	" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", ''), ?) " +
+            "WHERE " + COLUMN_HIVE_ROOT_NAME + " = ?;  ";
+
+    public static final String HIVE_ROOT_SELECT_ID_ACTIVATED_AT_DEACTIVATED_AT_FOR_NAME =
+
+            "SELECT " + COLUMN_HIVE_ROOT_ID + ", "
+            + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", "
+            + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " "
+            + "FROM " + TABLE_HIVE_ROOT + " "
+            + "WHERE " + COLUMN_HIVE_ROOT_NAME + " = ? ;";
 }

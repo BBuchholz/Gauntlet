@@ -1740,6 +1740,110 @@ public class NwdDb {
         db.endTransaction();
     }
 
+    public void sync(Context context, HiveRoot hiveRoot) {
+
+
+        if(hiveRoot.getHiveRootId() < 1) {
+
+            ensureHiveRootName(hiveRoot.getHiveRootName());
+        }
+
+        updateHiveRootTimeStampsByName(hiveRoot);
+
+        populateIdAndTimeStampsForHiveRootName(context, hiveRoot);
+    }
+
+
+    public void populateIdAndTimeStampsForHiveRootName(Context c,
+                                                       HiveRoot hiveRoot){
+
+        db.beginTransaction();
+
+        try{
+
+            String hiveRootName = hiveRoot.getHiveRootName();
+
+            String[] args =
+                    new String[]{
+                           hiveRootName
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+        NwdContract.HIVE_ROOT_SELECT_ID_ACTIVATED_AT_DEACTIVATED_AT_FOR_NAME,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_HIVE_ROOT_ID,
+                            NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT,
+                            NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    //this method will grab the last entry, if multiple returned
+                    //though list name is unique, so it should never matter
+                    String idString =
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_ID);
+
+                    String activatedString =
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT);
+                    String deactivatedString =
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT);
+
+                    Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    activatedString);
+
+                    Date deactivated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    deactivatedString);
+
+                    hiveRoot.setHiveRootId(Integer.parseInt(idString));
+                    hiveRoot.setTimeStamps(activated, deactivated);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception retrieving hive root id: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+
+    private void updateHiveRootTimeStampsByName(HiveRoot hiveRoot) {
+
+        String activated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(hiveRoot.getActivatedAt());
+
+        String deactivated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(hiveRoot.getDeactivatedAt());
+
+        String hiveRootName = hiveRoot.getHiveRootName();
+
+        db.execSQL(
+ NwdContract.HIVE_ROOT_UPDATE_ACTIVATE_AT_DEACTIVATED_AT_FOR_NAME_X_Y_Z,
+                    new String[]{activated, deactivated, hiveRootName});
+    }
+
     public void sync(Context context, SynergyV5List synLst) {
 
         String listName = synLst.getListName();
@@ -3676,7 +3780,86 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public ArrayList<HiveRoot> getAllHiveRoots(Context c) {
+    public ArrayList<HiveRoot> getDeactivatedHiveRoots(Context c) {
+
+        ArrayList<HiveRoot> roots = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.SELECT_DEACTIVATED_HIVE_ROOTS,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_HIVE_ROOT_ID,
+                            NwdContract.COLUMN_HIVE_ROOT_NAME,
+                            NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT,
+                            NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    HiveRoot root = new HiveRoot(
+                            Integer.parseInt(record.get(NwdContract.COLUMN_HIVE_ROOT_ID)),
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_NAME)
+                    );
+
+                    String activatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT);
+
+                    String deactivatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT);
+
+                    Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    activatedString);
+
+                    Date deactivated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    deactivatedString);
+
+                    root.setTimeStamps(activated, deactivated);
+
+                    roots.add(root);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return roots;
+    }
+
+
+    public ArrayList<HiveRoot> getActiveHiveRoots(Context c) {
 
         ArrayList<HiveRoot> roots = new ArrayList<>();
 
@@ -3736,7 +3919,7 @@ public class NwdDb {
         return roots;
     }
 
-    public void insertHiveRootName(String name){
+    public void ensureHiveRootName(String name){
 
         db.execSQL(NwdContract.INSERT_HIVE_ROOT_NAME_X, new String[]{ name });
     }

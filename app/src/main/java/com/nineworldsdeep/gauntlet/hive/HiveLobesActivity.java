@@ -35,6 +35,16 @@ public class HiveLobesActivity extends ListBaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                NavigateActivityCommand.navigateTo(
+                        HiveRootsActivity.class,
+                        HiveLobesActivity.this);
+            }
+        });
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -65,6 +75,14 @@ public class HiveLobesActivity extends ListBaseActivity {
             Utils.toast(this, "hive id not set");
         }
 
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        NavigateActivityCommand.navigateTo(
+                HiveRootsActivity.class,
+                HiveLobesActivity.this);
     }
 
     @Override

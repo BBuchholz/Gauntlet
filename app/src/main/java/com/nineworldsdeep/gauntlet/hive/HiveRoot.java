@@ -16,29 +16,17 @@ public class HiveRoot {
     private Date activatedAt;
     private Date deactivatedAt;
 
+    public HiveRoot(int id, String name){
+        setHiveRootId(id);
+        setHiveRootName(name);
+    }
+
     public Date getActivatedAt() {
         return activatedAt;
     }
 
-    public void setActivatedAt(Date activatedAt) {
-        this.activatedAt = activatedAt;
-    }
-
     public Date getDeactivatedAt() {
         return deactivatedAt;
-    }
-
-    public void setDeactivatedAt(Date deactivatedAt) {
-        this.deactivatedAt = deactivatedAt;
-    }
-
-    public HiveRoot(){
-
-    }
-
-    public HiveRoot(int id, String name){
-        setHiveRootId(id);
-        setHiveRootName(name);
     }
 
     public int getHiveRootId() {

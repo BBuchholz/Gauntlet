@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.IRefreshableUI;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
@@ -43,12 +44,32 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
     private static final int MENU_CONTEXT_DEACTIVATE = 1;
     private static final int MENU_CONTEXT_ACTIVATE = 2;
 
+
+    @Override
+    public void onBackPressed(){
+
+        NavigateActivityCommand.navigateTo(
+                HomeListActivity.class,
+                HiveRootsActivity.this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hive_roots);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                NavigateActivityCommand.navigateTo(
+                        HomeListActivity.class,
+                        HiveRootsActivity.this);
+            }
+        });
 
         populateActiveRootsSelectorSpinner();
 
@@ -72,6 +93,14 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.editTextDialogUserInput);
+
+                String deviceName = Configuration.getLocalDeviceName();
+
+                if(!hasActiveRootName(deviceName)) {
+
+                    userInput.setText(deviceName);
+                    userInput.setSelection(userInput.getText().length());
+                }
 
                 // set dialog message
                 alertDialogBuilder
@@ -129,6 +158,21 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
             Prompt.promptSetLocalDeviceDescription(this, this);
         }
+    }
+
+    private boolean hasActiveRootName(String rootName) {
+
+        boolean found = false;
+
+        for(HiveRoot hr : mHiveRoots){
+
+            if(hr.getHiveRootName().equalsIgnoreCase(rootName)){
+
+                found = true;
+            }
+        }
+
+        return found;
     }
 
     private boolean hiveRootNameIsValid(String name) {

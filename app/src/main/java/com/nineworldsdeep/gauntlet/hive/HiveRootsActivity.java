@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.IRefreshableUI;
@@ -26,6 +27,7 @@ import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.core.Prompt;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -43,6 +45,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
     private static final int MENU_CONTEXT_DEACTIVATE = 1;
     private static final int MENU_CONTEXT_ACTIVATE = 2;
+    private static final int MENU_CONTEXT_ENSURE_FOLDERS = 3;
 
 
     @Override
@@ -200,6 +203,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         if(root.isActive()){
 
             menu.add(Menu.NONE, MENU_CONTEXT_DEACTIVATE, Menu.NONE, "Deactivate");
+            menu.add(Menu.NONE, MENU_CONTEXT_ENSURE_FOLDERS, Menu.NONE, "Ensure Folders");
 
         }else{
 
@@ -225,9 +229,29 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
                 activate(info.position);
                 return true;
 
+            case MENU_CONTEXT_ENSURE_FOLDERS:
+
+                ensureFolders(info.position);
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void ensureFolders(int position) {
+
+        HiveRoot hr = mHiveRoots.get(position);
+
+        for(File folder : Configuration.getHiveRootFolderPaths(hr)){
+
+            if(!folder.exists()){
+
+                folder.mkdirs();
+            }
+        }
+
+        Utils.toast(this, "ensured");
     }
 
     private void deactivate(int position) {

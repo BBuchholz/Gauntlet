@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.hive.HiveRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
@@ -337,6 +338,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/pdfs");
     }
 
+    public static File getSyncFolder(){
+
+        return getDirectoryStoragePath("/NWD-SYNC");
+    }
+
     public static File getIncomingXmlFile_yyyyMMddHHmmss(String suffix) {
 
         String fileName = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss()
@@ -457,5 +463,34 @@ public class Configuration {
             Context c, NwdDb db, String localMediaDeviceName) {
 
         db.ensureLocalMediaDevice(c, localMediaDeviceName);
+    }
+
+    public static ArrayList<File> getHiveRootFolderPaths(HiveRoot hr) {
+
+        ArrayList<File> folders = new ArrayList<>();
+
+        for(String subFolderPath : getHiveRootSubFolderPaths()){
+
+            File syncFolder = getSyncFolder();
+            File hiveFolder = new File(syncFolder, "hive");
+            File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
+            File subFolder = new File(hiveRootFolder, subFolderPath);
+
+            folders.add(subFolder);
+        }
+
+        return folders;
+    }
+
+    private static ArrayList<String> getHiveRootSubFolderPaths() {
+
+        ArrayList<String> lst = new ArrayList<>();
+
+         lst.add("xml/incoming");
+         lst.add("media/audio/incoming");
+         lst.add("media/images/incoming");
+         lst.add("media/pdfs/incoming");
+
+        return lst;
     }
 }

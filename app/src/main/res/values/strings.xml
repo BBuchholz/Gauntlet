@@ -106,4 +106,8 @@
     </string>
     <string name="title_activity_hive_main">HiveMainActivity</string>
     <string name="title_activity_hive_root">HiveRootActivity</string>
+    <string name="title_activity_synergy_drawer">SynergyDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

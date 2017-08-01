@@ -591,6 +591,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.hive.HiveLobesActivity"/>
         </activity>
+        <activity
+            android:name=".synergy.SynergyDrawerActivity"
+            android:label="@string/title_activity_synergy_drawer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

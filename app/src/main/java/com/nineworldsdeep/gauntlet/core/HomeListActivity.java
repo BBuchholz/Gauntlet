@@ -25,6 +25,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
+import com.nineworldsdeep.gauntlet.synergy.SynergyDrawerActivity;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
@@ -69,6 +70,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 
         addNavigateActivityCommand("Hive", HiveRootsActivity.class);
+        addNavigateActivityCommand("Synergy Drawer", SynergyDrawerActivity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);

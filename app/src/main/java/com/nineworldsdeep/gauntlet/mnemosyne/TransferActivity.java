@@ -61,11 +61,15 @@ public class TransferActivity extends AsyncListBasedActivity
 
         cmds.add(new AsyncCommandImportSynergyV5FromXml(this));
         cmds.add(new AsyncCommandImportMnemosyneV5FromXml(this));
-        cmds.add(new AsyncCommandImportMnemosyneV3toV4(this));
-        cmds.add(new AsyncCommandImportMnemosyneV4toV5(this));
-        cmds.add(new AsyncCommandImportSynergyV3ToV5(this));
+
+//        cmds.add(new AsyncCommandImportMnemosyneV3toV4(this));
+//        cmds.add(new AsyncCommandImportMnemosyneV4toV5(this));
+//        cmds.add(new AsyncCommandImportSynergyV3ToV5(this));
+
         cmds.add(new AsyncCommandExportDb(this));
-        cmds.add(new AsyncCommandBridgeTables(this));
+
+//        cmds.add(new AsyncCommandBridgeTables(this));
+
         cmds.add(new AsyncCommandExportSynergyV5ToXml(this));
         cmds.add(new AsyncCommandExportMnemosyneV5ToXml(this));
 

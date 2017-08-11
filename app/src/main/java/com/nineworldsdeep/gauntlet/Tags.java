@@ -1,11 +1,14 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,6 +45,33 @@ public class Tags {
         for(SynergyListItem sli : slf.getItems()){
 
             lst.add(sli.getItem());
+        }
+
+        return lst;
+    }
+
+
+    public static ArrayList<String> getFrequentV5(Context context) {
+
+        ArrayList<String> lst = new ArrayList<>();
+
+        //default tags
+        lst.add("magickal diary");
+        lst.add("TCT (Typhonic Craft Tradition)");
+//        lst.add("sample to get");
+//        lst.add("lyric bit");
+//        lst.add("nwdPlanning");
+//        lst.add("spiral dynamics");
+//        lst.add("rhythm bit");
+//        lst.add("melody bit");
+
+        SynergyV5List synLst = new SynergyV5List("Tags-Frequent");
+
+        synLst.sync(context, NwdDb.getInstance(context));
+
+        for(SynergyV5ListItem sli : synLst.getActiveItems()){
+
+            lst.add(sli.getItemValue());
         }
 
         return lst;
@@ -130,4 +160,5 @@ public class Tags {
 
         return pathToTagString;
     }
+
 }

@@ -541,7 +541,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
         ListView lvTags = (ListView) findViewById(R.id.lvTagsFrequent);
 
         ArrayList<MediaListItem> playlistEntries = mMediaPlayerSingletonV5.getPlaylist();
-        ArrayList<String> frequentTags = Tags.getFrequent();
+        ArrayList<String> frequentTags = Tags.getFrequentV5(this);
 
         lvItems.setAdapter(
                 new ArrayAdapter<>(this,

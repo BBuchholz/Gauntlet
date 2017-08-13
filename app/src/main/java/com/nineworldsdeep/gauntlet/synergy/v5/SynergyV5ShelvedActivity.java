@@ -91,7 +91,8 @@ public class SynergyV5ShelvedActivity extends AppCompatActivity {
 
             synLst.activate();
 
-            synLst.sync(this, NwdDb.getInstance(this));
+            synLst.save(this, NwdDb.getInstance(this));
+            //synLst.sync(this, NwdDb.getInstance(this));
 
             readItems();
         }

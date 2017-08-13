@@ -163,7 +163,8 @@ public class SynergyV5MainActivity extends ListBaseActivity {
             SynergyV5List synLst = new SynergyV5List(itemText);
 
             synLst.activate();
-            NwdDb.getInstance(this).sync(this, synLst);
+            //NwdDb.getInstance(this).sync(this, synLst);
+            synLst.save(this, NwdDb.getInstance(this));
 
             etNewItem.setText("");
 
@@ -263,13 +264,15 @@ public class SynergyV5MainActivity extends ListBaseActivity {
 
         SynergyV5List synLst = new SynergyV5List(listName);
 
-        //sync to retrieve or set activatedAt
-        synLst.sync(this, NwdDb.getInstance(this));
+            //sync to retrieve or set activatedAt
+            //synLst.sync(this, NwdDb.getInstance(this));
+        synLst.loadCore(this, NwdDb.getInstance(this));
 
         synLst.shelve();
 
-        //sync again to push change
-        synLst.sync(this, NwdDb.getInstance(this));
+            //sync again to push change
+            //synLst.sync(this, NwdDb.getInstance(this));
+        synLst.save(this, NwdDb.getInstance(this));
 
         refreshLayout();
     }

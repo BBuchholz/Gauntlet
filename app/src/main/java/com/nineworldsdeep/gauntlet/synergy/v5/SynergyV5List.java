@@ -33,6 +33,13 @@ public class SynergyV5List {
         //mPositionToActiveItem = new HashMap<>();
     }
 
+    /**
+     *
+     * @param context
+     * @param db
+     * @deprecated use save(), loadCore(), loadActive(), and/or loadArchived()
+     */
+    @Deprecated
     public void sync(Context context, NwdDb db) {
 
         //check for timestamped list

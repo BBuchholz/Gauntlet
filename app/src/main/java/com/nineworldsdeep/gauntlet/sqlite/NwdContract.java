@@ -1159,4 +1159,42 @@ public class NwdContract {
             + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " "
             + "FROM " + TABLE_HIVE_ROOT + " "
             + "WHERE " + COLUMN_HIVE_ROOT_NAME + " = ? ;";
+
+    public static final String SYNERGY_V5_SELECT_ARCHIVED_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
+
+            "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
+            + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
+            + "	    sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + ", "
+            + "     sli." + COLUMN_SYNERGY_LIST_ITEM_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + ", "
+            + "     std." +COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
+            + "FROM " + TABLE_SYNERGY_LIST_ITEM + " sli "
+            + "JOIN " + TABLE_SYNERGY_ITEM + " si "
+            + "ON sli." + COLUMN_SYNERGY_ITEM_ID + " = si." + COLUMN_SYNERGY_ITEM_ID + " "
+            + "LEFT JOIN " + TABLE_SYNERGY_TO_DO + " std "
+            + "ON sli." + COLUMN_SYNERGY_LIST_ITEM_ID + " = std." + COLUMN_SYNERGY_LIST_ITEM_ID + " "
+            + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? "
+            + "AND std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " < std." + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
+            +   "ORDER BY sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + "; ";
+
+    public static final String SYNERGY_V5_SELECT_ACTIVE_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
+
+            "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
+            + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
+            + "	    sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + ", "
+            + "     sli." + COLUMN_SYNERGY_LIST_ITEM_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ID + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + ", "
+            + "     std." + COLUMN_SYNERGY_TO_DO_COMPLETED_AT + ", "
+            + "     std." +COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
+            + "FROM " + TABLE_SYNERGY_LIST_ITEM + " sli "
+            + "JOIN " + TABLE_SYNERGY_ITEM + " si "
+            + "ON sli." + COLUMN_SYNERGY_ITEM_ID + " = si." + COLUMN_SYNERGY_ITEM_ID + " "
+            + "LEFT JOIN " + TABLE_SYNERGY_TO_DO + " std "
+            + "ON sli." + COLUMN_SYNERGY_LIST_ITEM_ID + " = std." + COLUMN_SYNERGY_LIST_ITEM_ID + " "
+            + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? "
+            + "AND std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " >= std." + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
+            +   "ORDER BY sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + "; ";
 }

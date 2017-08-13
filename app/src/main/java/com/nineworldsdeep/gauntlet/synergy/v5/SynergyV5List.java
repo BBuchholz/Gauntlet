@@ -481,6 +481,26 @@ public class SynergyV5List {
         );
     }
 
+    public void save(Context context, NwdDb db) {
+
+        db.save(context, this);
+    }
+
+    public void loadActive(Context context, NwdDb db) {
+
+        db.loadActive(context, this);
+    }
+
+    public void loadArchived(Context context, NwdDb db) {
+
+        db.loadArchived(context, this);
+    }
+
+    public void loadCore(Context context, NwdDb db) {
+
+        db.loadCore(context, this);
+    }
+
 //    public SynergyV5ListItem archive(int position) {
 //
 //        SynergyV5ListItem currentSli = mItems.get(position);

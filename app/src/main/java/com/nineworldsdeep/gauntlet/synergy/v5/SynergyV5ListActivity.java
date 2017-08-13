@@ -175,7 +175,7 @@ public class SynergyV5ListActivity
         menu.add(Menu.NONE, MENU_CONTEXT_COMPLETION_STATUS_ID, Menu.NONE, "Toggle Completed Status");
 
 
-        if(getSelectedStatus().equalsIgnoreCase("archived")){
+        if(isDisplayingArchivedItems()){
 
             menu.add(Menu.NONE, MENU_CONTEXT_ACTIVATE, Menu.NONE, "Activate");
 
@@ -259,6 +259,11 @@ public class SynergyV5ListActivity
 //
 //        menu.add(Menu.NONE, MENU_CONTEXT_EDIT_ITEM,
 //                Menu.NONE, "Edit Item");
+    }
+
+    private boolean isDisplayingArchivedItems() {
+
+        return getSelectedStatus().equalsIgnoreCase("archived");
     }
 
     @Override
@@ -408,13 +413,7 @@ public class SynergyV5ListActivity
     private void editItem(int position) {
 
         Utils.toast(this, "in progress");
-//        Intent intent = new Intent(this, SynergyV5EditItemActivity.class);
-//
-//        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
-//        intent.putExtra(SynergyV5EditItemActivity.STRING_SYNERGY_V5_ITEM_VALUE,
-//                mSynLst.get(position).getItemValue());
-//
-//        startActivityForResult(intent, REQUEST_RESULT_EDIT_ITEM);
+
     }
 
     private void openAudio(int position, boolean mediaNotVoiceMemos){
@@ -478,13 +477,7 @@ public class SynergyV5ListActivity
     private void splitItem(int position) {
 
         Utils.toast(this, "in progress");
-//        Intent intent = new Intent(this, SynergyV5SplitItemActivity.class);
-//
-//        intent.putExtra(Extras.INT_SYNERGY_LIST_ITEM_POS, position);
-//        intent.putExtra(Extras.STRING_SYNERGY_LIST_ITEM_TEXT,
-//                mSynLst.get(position).getItemValue());
-//
-//        startActivityForResult(intent, REQUEST_RESULT_SPLIT_ITEM);
+
     }
 
     @Override
@@ -511,7 +504,10 @@ public class SynergyV5ListActivity
                     // need to specify false for archiveOne() or else
                     // remove gets called twice if sliList has only one item
                     mSynLst.archiveOne(mSynLst.replace(pos, sliList), false);
-                    mSynLst.sync(this, NwdDb.getInstance(this));
+
+                    mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
+
                     refreshListItems();
 
                 }
@@ -537,7 +533,8 @@ public class SynergyV5ListActivity
                 // need to specify false for archiveOne() or else
                 // remove gets called twice if sliList has only one item
                 mSynLst.archiveOne(mSynLst.replace(pos, lst), false);
-                mSynLst.sync(this, NwdDb.getInstance(this));
+                mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
                 refreshListItems();
             }
         }
@@ -552,7 +549,8 @@ public class SynergyV5ListActivity
     private void moveToBottom(int pos) {
 
         mSynLst.moveToBottom(mCurrentItems.get(pos).getItemValue());
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -560,7 +558,8 @@ public class SynergyV5ListActivity
     private void moveDown(int pos) {
 
         mSynLst.moveDown(mCurrentItems.get(pos).getItemValue());
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -568,7 +567,8 @@ public class SynergyV5ListActivity
     private void moveToTop(int pos) {
 
         mSynLst.moveToTop(mCurrentItems.get(pos).getItemValue());
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -576,7 +576,8 @@ public class SynergyV5ListActivity
     private void moveUp(int pos) {
 
         mSynLst.moveUp(mCurrentItems.get(pos).getItemValue());
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshListItems();
     }
@@ -725,7 +726,8 @@ public class SynergyV5ListActivity
 
                         Context ctx = getApplicationContext();
                         mSynLst.archiveCompleted();
-                        mSynLst.sync(ctx, NwdDb.getInstance(ctx));
+                        mSynLst.save(ctx, NwdDb.getInstance(ctx));
+                    //mSynLst.sync(ctx, NwdDb.getInstance(ctx));
 
                         //Utils.toast(getApplicationContext(), "in progress");
                         //readItems(mSynLst.getListName());
@@ -901,7 +903,8 @@ public class SynergyV5ListActivity
             item.complete();
         }
 
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshLayout();
 
@@ -913,7 +916,8 @@ public class SynergyV5ListActivity
 
         item.activate();
 
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshLayout();
 
@@ -925,7 +929,8 @@ public class SynergyV5ListActivity
 
         item.archive();
 
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
 
         refreshLayout();
 
@@ -935,7 +940,8 @@ public class SynergyV5ListActivity
 
         if(mSynLst != null){
 
-            mSynLst.sync(this, NwdDb.getInstance(this));
+            mSynLst.save(this, NwdDb.getInstance(this));
+                    //mSynLst.sync(this, NwdDb.getInstance(this));
         }
     }
 
@@ -947,7 +953,20 @@ public class SynergyV5ListActivity
     @Override
     protected void readItems(ListView lvItems) {
 
-        mSynLst.sync(this, NwdDb.getInstance(this));
+        mSynLst.loadCore(this, NwdDb.getInstance(this));
+
+        //asdf; //clear current?
+
+        if(isDisplayingArchivedItems()){
+
+            mSynLst.loadArchived(this, NwdDb.getInstance(this));
+
+        }else{
+
+            mSynLst.loadActive(this, NwdDb.getInstance(this));
+        }
+
+        //mSynLst.sync(this, NwdDb.getInstance(this));
 
         setListViewAdapter(lvItems);
         setupSpinnerListener();

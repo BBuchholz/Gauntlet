@@ -1844,6 +1844,149 @@ public class NwdDb {
                     new String[]{activated, deactivated, hiveRootName});
     }
 
+
+    public void save(Context context, SynergyV5List synLst) {
+
+        String listName = synLst.getListName();
+        String activated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                        synLst.getActivatedAt());
+        String shelved =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(
+                        synLst.getShelvedAt());
+
+        //populate list id if not set, creating list if !exists
+        if(synLst.getListId() < 1){
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_NAME_X,
+                    new String[]{listName});
+        }
+
+        //ensure current timestamps
+        db.execSQL(
+ NwdContract.SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z,
+                    new String[]{activated, shelved, listName});
+
+
+        // for each SynergyV5ListItem,
+        // do the same (populate item id, ensure, etc.)
+        for(int i = 0; i < synLst.getAllItems().size(); i++){
+
+            SynergyV5ListItem sli = synLst.get(i);
+            save(context, synLst, sli, i);
+        }
+
+    }
+
+
+    private void save(Context context,
+                      SynergyV5List lst,
+                      SynergyV5ListItem sli,
+                      int position){
+
+        if(lst.getListId() < 1){
+
+            Utils.toast(context, "SynergyV5List Id not set, save item skipped");
+            return;
+        }
+
+        if(sli.getItemId() < 1){
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_ITEM_VALUE_X,
+                    new String[]{sli.getItemValue()});
+
+            sli.setItemId(
+                    getIdForSynergyV5ItemValue(context, sli.getItemValue()));
+        }
+
+        if(sli.getListItemId() < 1) {
+
+            db.execSQL(NwdContract.SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z,
+                    new String[]{
+                            Integer.toString(lst.getListId()),
+                            Integer.toString(sli.getItemId()),
+                            Integer.toString(position)
+                    });
+
+            sli.setListItemId(
+                    getListItemId(context, lst.getListId(), sli.getItemId()));
+        }
+
+        db.execSQL(NwdContract.SYNERGY_V5_UPDATE_POSITION_FOR_LIST_ITEM_ID_X_Y,
+                new String[]{
+                        Integer.toString(position),
+                        Integer.toString(sli.getListItemId())
+                });
+
+        //need to check for SynergyToDo and save
+        SynergyV5ToDo toDo = sli.getToDo();
+
+        if(toDo != null){
+
+            String activated =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getActivatedAt());
+            String completed =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getCompletedAt());
+            String archived =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(toDo.getArchivedAt());
+
+            db.execSQL(
+
+                NwdContract.SYNERGY_V5_ENSURE_TO_DO_FOR_LIST_ITEM_ID_ID_AC_CO_AR,
+                new String[]{
+                        Integer.toString(sli.getListItemId()),
+                        activated,
+                        completed,
+                        archived
+                }
+            );
+
+            db.execSQL(
+
+        NwdContract.SYNERGY_V5_UPDATE_TO_DO_WHERE_LIST_ITEM_ID_AC_CO_AR_ID,
+                new String[]{
+                        activated,
+                        completed,
+                        archived,
+                        Integer.toString(sli.getListItemId())
+                }
+            );
+
+
+        }
+    }
+
+    /**
+     * loads just the id and timestamps for given list name
+     *
+     * @param context
+     * @param synLst
+     */
+    public void loadCore(Context context, SynergyV5List synLst){
+
+        populateIdAndTimeStampsForSynergyV5ListName(context, synLst);
+    }
+
+    /**
+     * loads active list items from db and merges them with the current list
+     * items
+     *
+     */
+    public void loadActive(Context context, SynergyV5List synLst) {
+
+        synergyV5PopulateActiveListItems(context, synLst);
+    }
+
+    /**
+     * loads archived list items from db and merges them with the current list
+     * items
+     *
+     */
+    public void loadArchived(Context context, SynergyV5List synLst) {
+
+        synergyV5PopulateArchivedListItems(context, synLst);
+    }
+
     public void sync(Context context, SynergyV5List synLst) {
 
         String listName = synLst.getListName();
@@ -2314,6 +2457,276 @@ public class NwdDb {
         }
 
         return lst;
+    }
+
+    public void synergyV5PopulateActiveListItems(Context c,
+                                                 SynergyV5List lst) {
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(lst.getListId())
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+        NwdContract
+            .SYNERGY_V5_SELECT_ACTIVE_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_ITEM_VALUE,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    String itemIdString,
+                            itemValue,
+                            positionString,
+                            listItemIdString,
+                            toDoIdString,
+                            toDoActivatedAtString,
+                            toDoCompletedAtString,
+                            toDoArchivedAtString;
+
+                    itemIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_ID);
+
+                    itemValue =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_VALUE);
+
+                    positionString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION);
+
+                    listItemIdString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID
+                            );
+
+                    toDoIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_TO_DO_ID);
+
+                    toDoActivatedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT);
+
+                    toDoCompletedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT);
+
+                    toDoArchivedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT);
+
+                    SynergyV5ListItem sli = new SynergyV5ListItem(itemValue);
+                    sli.setItemId(Integer.parseInt(itemIdString));
+                    sli.setListItemId(Integer.parseInt(listItemIdString));
+
+                    if(toDoIdString != null){
+
+                        //has to do item
+                        SynergyV5ToDo toDo = new SynergyV5ToDo();
+                        toDo.setToDoId(Integer.parseInt(toDoIdString));
+
+                        Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoActivatedAtString);
+
+                        Date completed =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoCompletedAtString);
+
+                        Date archived =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoArchivedAtString);
+
+                        toDo.setTimeStamps(activated, completed, archived);
+
+                        sli.setToDo(toDo);
+                    }
+
+                    int position = Integer.parseInt(positionString);
+
+                    if(lst.size() > position){
+
+                        lst.add(position, sli);
+
+                    }else{
+
+                        lst.add(sli);
+                    }
+                    //lst.add(Integer.parseInt(positionString), sli);
+
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+    public void synergyV5PopulateArchivedListItems(Context c,
+                                                   SynergyV5List lst) {
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(lst.getListId())
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+        NwdContract
+            .SYNERGY_V5_SELECT_ARCHIVED_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SYNERGY_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_ITEM_VALUE,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION,
+                            NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ID,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT,
+                            NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    String itemIdString,
+                            itemValue,
+                            positionString,
+                            listItemIdString,
+                            toDoIdString,
+                            toDoActivatedAtString,
+                            toDoCompletedAtString,
+                            toDoArchivedAtString;
+
+                    itemIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_ID);
+
+                    itemValue =
+                            record.get(NwdContract.COLUMN_SYNERGY_ITEM_VALUE);
+
+                    positionString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_POSITION);
+
+                    listItemIdString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_LIST_ITEM_ID
+                            );
+
+                    toDoIdString =
+                            record.get(NwdContract.COLUMN_SYNERGY_TO_DO_ID);
+
+                    toDoActivatedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ACTIVATED_AT);
+
+                    toDoCompletedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_COMPLETED_AT);
+
+                    toDoArchivedAtString =
+                            record.get(
+                                NwdContract.COLUMN_SYNERGY_TO_DO_ARCHIVED_AT);
+
+                    SynergyV5ListItem sli = new SynergyV5ListItem(itemValue);
+                    sli.setItemId(Integer.parseInt(itemIdString));
+                    sli.setListItemId(Integer.parseInt(listItemIdString));
+
+                    if(toDoIdString != null){
+
+                        //has to do item
+                        SynergyV5ToDo toDo = new SynergyV5ToDo();
+                        toDo.setToDoId(Integer.parseInt(toDoIdString));
+
+                        Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoActivatedAtString);
+
+                        Date completed =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoCompletedAtString);
+
+                        Date archived =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    toDoArchivedAtString);
+
+                        toDo.setTimeStamps(activated, completed, archived);
+
+                        sli.setToDo(toDo);
+                    }
+
+                    int position = Integer.parseInt(positionString);
+
+                    if(lst.size() > position){
+
+                        lst.add(position, sli);
+
+                    }else{
+
+                        lst.add(sli);
+                    }
+                    //lst.add(Integer.parseInt(positionString), sli);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
     }
 
 
@@ -3923,6 +4336,7 @@ public class NwdDb {
 
         db.execSQL(NwdContract.INSERT_HIVE_ROOT_NAME_X, new String[]{ name });
     }
+
 
     //region templates
 

@@ -447,12 +447,12 @@ public class AudioListV5Activity extends AppCompatActivity {
 
             case R.id.action_export_all_to_xml:
 
-                hiveExportAllToXml();
+                exportAllToXml();
                 return true;
 
             case R.id.action_hive_export_all_to_xml:
 
-                exportAllToXml();
+                hiveExportAllToXml();
                 return true;
 
             default:

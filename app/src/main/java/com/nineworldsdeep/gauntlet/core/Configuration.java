@@ -484,12 +484,35 @@ public class Configuration {
 
     private static ArrayList<String> getHiveRootSubFolderPaths() {
 
+//        ArrayList<String> lst = new ArrayList<>();
+//
+//         lst.add("xml/incoming");
+//         lst.add("media/audio/incoming");
+//         lst.add("media/images/incoming");
+//         lst.add("media/pdfs/incoming");
+//
+//        return lst;
+
+        return getHiveRootSubFolderPaths(true, true);
+    }
+
+    private static ArrayList<String> getHiveRootSubFolderPaths(
+            boolean includeXmlFolders,
+            boolean includeMediaFolders) {
+
         ArrayList<String> lst = new ArrayList<>();
 
-         lst.add("xml/incoming");
-         lst.add("media/audio/incoming");
-         lst.add("media/images/incoming");
-         lst.add("media/pdfs/incoming");
+        if(includeXmlFolders) {
+
+            lst.add("xml/incoming");
+        }
+
+        if(includeMediaFolders) {
+
+            lst.add("media/audio/incoming");
+            lst.add("media/images/incoming");
+            lst.add("media/pdfs/incoming");
+        }
 
         return lst;
     }
@@ -506,7 +529,8 @@ public class Configuration {
 
         for(HiveRoot hr : db.getActiveHiveRoots(ctx)){
 
-            for(File folder : Configuration.getHiveRootFolderPaths(hr)){
+            for(File folder :
+                    Configuration.getHiveRootOutgoingXmlFolderPaths(hr)){
 
                 if(folder.exists()){
 
@@ -516,5 +540,22 @@ public class Configuration {
         }
 
         return files;
+    }
+
+    public static ArrayList<File> getHiveRootOutgoingXmlFolderPaths(HiveRoot hr) {
+
+        ArrayList<File> folders = new ArrayList<>();
+
+        for(String subFolderPath : getHiveRootSubFolderPaths(true, false)){
+
+            File syncFolder = getSyncFolder();
+            File hiveFolder = new File(syncFolder, "hive");
+            File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
+            File subFolder = new File(hiveRootFolder, subFolderPath);
+
+            folders.add(subFolder);
+        }
+
+        return folders;
     }
 }

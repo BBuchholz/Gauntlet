@@ -430,6 +430,12 @@ public class ImageListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case R.id.action_hive_export_all_to_xml:
+
+                hiveExportAllToXml();
+
+                return true;
+
             default:
 
                 return super.onOptionsItemSelected(item);
@@ -525,6 +531,40 @@ public class ImageListV5Activity extends AppCompatActivity {
 
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void hiveExportAllToXml() {
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        ArrayList<Media> lst = new ArrayList<>();
+
+        ArrayAdapter<MediaListItem> itemsAdapter =
+            (ArrayAdapter<MediaListItem>)getListAdapter();
+
+        for(int i = 0; i < itemsAdapter.getCount(); i++){
+
+            MediaListItem mli = itemsAdapter.getItem(i);
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                lst.add(mli.getMedia());
+            }
+        }
+
+        try {
+
+            UtilsMnemosyneV5.hiveExportToXml(lst, db, this);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported.");
     }
 
 

@@ -243,7 +243,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
         HiveRoot hr = mHiveRoots.get(position);
 
-        for(File folder : Configuration.getHiveRootFolderPaths(hr)){
+        for(File folder : Configuration.getFoldersForHiveRoot(hr)){
 
             if(!folder.exists()){
 
@@ -263,7 +263,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
-        db.sync(this, hr);
+        db.syncByName(this, hr);
 
         refreshLayout();
     }
@@ -277,7 +277,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
-        db.sync(this, hr);
+        db.syncByName(this, hr);
 
         refreshLayout();
     }
@@ -294,6 +294,12 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
         mCommands.clear();
         mHiveRoots.clear();
+
+        //detect unregistered root folders
+        if(UtilsHive.checkAndRegisterNewRootFolders(NwdDb.getInstance(this), this)){
+
+            Utils.toast(this, "newly detected roots added (deactivated)");
+        }
 
         ArrayList<HiveRoot> roots;
 

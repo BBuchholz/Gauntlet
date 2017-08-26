@@ -1740,7 +1740,7 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public void sync(Context context, HiveRoot hiveRoot) {
+    public void syncByName(Context context, HiveRoot hiveRoot) {
 
 
         if(hiveRoot.getHiveRootId() < 1) {
@@ -4193,6 +4193,85 @@ public class NwdDb {
         db.endTransaction();
     }
 
+    public ArrayList<HiveRoot> getAllHiveRoots(Context c) {
+
+        ArrayList<HiveRoot> roots = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                        NwdContract.SELECT_HIVE_ROOTS,
+                        args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_HIVE_ROOT_ID,
+                            NwdContract.COLUMN_HIVE_ROOT_NAME,
+                            NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT,
+                            NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    HiveRoot root = new HiveRoot(
+                            Integer.parseInt(record.get(NwdContract.COLUMN_HIVE_ROOT_ID)),
+                            record.get(NwdContract.COLUMN_HIVE_ROOT_NAME)
+                    );
+
+                    String activatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT);
+
+                    String deactivatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT);
+
+                    Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    activatedString);
+
+                    Date deactivated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    deactivatedString);
+
+                    root.setTimeStamps(activated, deactivated);
+
+                    roots.add(root);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return roots;
+    }
+
+
     public ArrayList<HiveRoot> getDeactivatedHiveRoots(Context c) {
 
         ArrayList<HiveRoot> roots = new ArrayList<>();
@@ -4309,6 +4388,28 @@ public class NwdDb {
                             Integer.parseInt(record.get(NwdContract.COLUMN_HIVE_ROOT_ID)),
                             record.get(NwdContract.COLUMN_HIVE_ROOT_NAME)
                     );
+
+                    /////////////////////////////////////////////////////////////////////////////
+                    ////copying this block from getDeactivatedHiveRoots() without testing, nothing was here before, if it breaks just delete to the end comment
+                    String activatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_ACTIVATED_AT);
+
+                    String deactivatedString =
+                            record.get(
+                                NwdContract.COLUMN_HIVE_ROOT_DEACTIVATED_AT);
+
+                    Date activated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    activatedString);
+
+                    Date deactivated =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    deactivatedString);
+
+                    root.setTimeStamps(activated, deactivated);
+                    ///////////////////////end block copy////////////////////////////////////////////////////////////////
+
 
                     roots.add(root);
 

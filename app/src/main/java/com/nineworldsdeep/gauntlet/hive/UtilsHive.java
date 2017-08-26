@@ -8,6 +8,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -48,5 +49,44 @@ public class UtilsHive {
         }
 
         return null;
+    }
+
+    public static boolean checkAndRegisterNewRootFolders(NwdDb db, Context ctx) {
+
+        ArrayList<String> rootNamesFromFolderNames = new ArrayList<>();
+        ArrayList<String> unregisteredFolderNames = new ArrayList<>();
+        ArrayList<HiveRoot> allRoots = db.getAllHiveRoots(ctx);
+
+        //get immediate sub folders of SyncRoot (NWD-SYNC/hive/)
+        for(File hiveRootFolder :
+                Configuration.getFileSystemTopLevelHiveRootFolders()){
+
+            boolean found = false;
+
+            for(HiveRoot hr : allRoots){
+
+                if(hr.getHiveRootName().equalsIgnoreCase(
+                        hiveRootFolder.getName())){
+
+                    found = true;
+                }
+            }
+
+            if(!found){
+
+                unregisteredFolderNames.add(hiveRootFolder.getName());
+            }
+        }
+
+        //register them all
+        for(String unregisteredRootName : unregisteredFolderNames){
+
+            HiveRoot newHr = new HiveRoot(-1, unregisteredRootName);
+            db.syncByName(ctx, newHr);
+            newHr.deactivate();
+            db.syncByName(ctx, newHr);
+        }
+
+        return unregisteredFolderNames.size() > 0;
     }
 }

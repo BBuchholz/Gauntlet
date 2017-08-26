@@ -13,8 +13,10 @@ import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -421,7 +423,7 @@ public class Configuration {
 
         HiveRoot localRoot = UtilsHive.getLocalHiveRoot(ctx, db);
 
-        return getHiveRootFolderPaths(localRoot, true, false);
+        return getFoldersForHiveRoot(localRoot, true, false);
     }
 
     public static File getXmlDirectory() {
@@ -504,7 +506,7 @@ public class Configuration {
         db.ensureLocalMediaDevice(c, localMediaDeviceName);
     }
 
-    public static ArrayList<File> getHiveRootFolderPaths(HiveRoot hr) {
+    public static ArrayList<File> getFoldersForHiveRoot(HiveRoot hr) {
 //
 //        ArrayList<File> folders = new ArrayList<>();
 //
@@ -520,10 +522,10 @@ public class Configuration {
 //
 //        return folders;
 
-        return getHiveRootFolderPaths(hr, true, true);
+        return getFoldersForHiveRoot(hr, true, true);
     }
 
-    public static ArrayList<File> getHiveRootFolderPaths(
+    public static ArrayList<File> getFoldersForHiveRoot(
             HiveRoot hr,
             boolean includeXmlFolders,
             boolean includeMediaFolders) {
@@ -545,6 +547,19 @@ public class Configuration {
         }
 
         return folders;
+    }
+
+    public static File getHiveFolder(){
+
+        File syncFolder = getSyncFolder();
+
+        if(syncFolder == null || !syncFolder.isDirectory()){
+            return null;
+        }
+
+        File hiveFolder = new File(syncFolder, "hive");
+
+        return hiveFolder;
     }
 //
 //    private static ArrayList<String> getHiveRootSubFolderPaths() {
@@ -622,5 +637,18 @@ public class Configuration {
         }
 
         return folders;
+    }
+
+    public static ArrayList<File> getFileSystemTopLevelHiveRootFolders() {
+
+        ArrayList<File> lst = new ArrayList<>();
+
+        for (File d : getHiveFolder().listFiles(
+                (FileFilter) DirectoryFileFilter.DIRECTORY)){
+
+            lst.add(d);
+        }
+
+        return lst;
     }
 }

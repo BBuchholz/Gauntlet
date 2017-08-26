@@ -1,11 +1,11 @@
 package com.nineworldsdeep.gauntlet.core;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.hive.HiveRoot;
+import com.nineworldsdeep.gauntlet.hive.UtilsHive;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyUtils;
@@ -385,6 +385,45 @@ public class Configuration {
         return lst;
     }
 
+    public static List<File> getIncomingHiveXmlFilesBySuffix(
+            Context ctx,
+            NwdDb db,
+            String suffix){
+
+        String[] exts = {"xml"};
+        List<File> lst = new ArrayList<>();
+
+        for(File incomingDirectory : getLocalRootHiveXmlDirectories(ctx, db)) {
+
+            if (incomingDirectory.exists() && incomingDirectory.isDirectory()) {
+
+                for (File f : FileUtils.listFiles(incomingDirectory, exts, false)) {
+
+                    if (FilenameUtils.removeExtension(f.getName()).endsWith(suffix)) {
+
+                        lst.add(f);
+                    }
+                }
+            }
+        }
+
+        return lst;
+    }
+
+    /**
+     * returns null if there isn't a sync root defined identical to
+     * the device name (as is returned by Configuration.getLocalDeviceName())
+     * @return
+     */
+    private static ArrayList<File> getLocalRootHiveXmlDirectories(
+            Context ctx,
+            NwdDb db) {
+
+        HiveRoot localRoot = UtilsHive.getLocalHiveRoot(ctx, db);
+
+        return getHiveRootFolderPaths(localRoot, true, false);
+    }
+
     public static File getXmlDirectory() {
 
         return getDirectoryStoragePath("/NWD/xml");
@@ -466,35 +505,61 @@ public class Configuration {
     }
 
     public static ArrayList<File> getHiveRootFolderPaths(HiveRoot hr) {
+//
+//        ArrayList<File> folders = new ArrayList<>();
+//
+//        for(String subFolderPath : getHiveRootSubFolderPaths()){
+//
+//            File syncFolder = getSyncFolder();
+//            File hiveFolder = new File(syncFolder, "hive");
+//            File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
+//            File subFolder = new File(hiveRootFolder, subFolderPath);
+//
+//            folders.add(subFolder);
+//        }
+//
+//        return folders;
+
+        return getHiveRootFolderPaths(hr, true, true);
+    }
+
+    public static ArrayList<File> getHiveRootFolderPaths(
+            HiveRoot hr,
+            boolean includeXmlFolders,
+            boolean includeMediaFolders) {
 
         ArrayList<File> folders = new ArrayList<>();
 
-        for(String subFolderPath : getHiveRootSubFolderPaths()){
+        if(hr != null) {
 
-            File syncFolder = getSyncFolder();
-            File hiveFolder = new File(syncFolder, "hive");
-            File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
-            File subFolder = new File(hiveRootFolder, subFolderPath);
+            for (String subFolderPath :
+                    getHiveRootSubFolderPaths(includeXmlFolders, includeMediaFolders)) {
 
-            folders.add(subFolder);
+                File syncFolder = getSyncFolder();
+                File hiveFolder = new File(syncFolder, "hive");
+                File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
+                File subFolder = new File(hiveRootFolder, subFolderPath);
+
+                folders.add(subFolder);
+            }
         }
 
         return folders;
     }
-
-    private static ArrayList<String> getHiveRootSubFolderPaths() {
-
-//        ArrayList<String> lst = new ArrayList<>();
 //
-//         lst.add("xml/incoming");
-//         lst.add("media/audio/incoming");
-//         lst.add("media/images/incoming");
-//         lst.add("media/pdfs/incoming");
+//    private static ArrayList<String> getHiveRootSubFolderPaths() {
 //
-//        return lst;
-
-        return getHiveRootSubFolderPaths(true, true);
-    }
+////        ArrayList<String> lst = new ArrayList<>();
+////
+////         lst.add("xml/incoming");
+////         lst.add("media/audio/incoming");
+////         lst.add("media/images/incoming");
+////         lst.add("media/pdfs/incoming");
+////
+////        return lst;
+//
+//        return getHiveRootSubFolderPaths(true, true);
+//    }
 
     private static ArrayList<String> getHiveRootSubFolderPaths(
             boolean includeXmlFolders,

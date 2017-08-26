@@ -493,4 +493,28 @@ public class Configuration {
 
         return lst;
     }
+
+    public static ArrayList<File> getOutgoingHiveXmlFiles_yyyyMMddHHmmss(
+            Context ctx,
+            NwdDb db,
+            String suffix) {
+
+        String fileName = SynergyUtils.getCurrentTimeStamp_yyyyMMddHHmmss()
+                        + "-" + suffix + ".xml";
+
+        ArrayList<File> files = new ArrayList<>();
+
+        for(HiveRoot hr : db.getActiveHiveRoots(ctx)){
+
+            for(File folder : Configuration.getHiveRootFolderPaths(hr)){
+
+                if(folder.exists()){
+
+                    files.add(new File(folder, fileName));
+                }
+            }
+        }
+
+        return files;
+    }
 }

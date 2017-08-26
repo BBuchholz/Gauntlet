@@ -626,7 +626,36 @@ public class SynergyV5ListActivity
             return true;
         }
 
+        if(id == R.id.action_hive_export_all_to_xml){
+
+            hiveExportAllToXml();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hiveExportAllToXml() {
+
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        //calls same method that supports export of multiple items
+        //we're just passing a single entry list
+        ArrayList<String> listNamesToExport = new ArrayList<>();
+
+        listNamesToExport.add(mSynLst.getListName());
+
+        try {
+
+            UtilsSynergyV5.hiveExportToXml(listNamesToExport, db, this);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported to xml");
     }
 
     private void exportAllToXml() {

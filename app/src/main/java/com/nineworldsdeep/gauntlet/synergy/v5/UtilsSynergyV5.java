@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.synergy.v5;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
@@ -34,6 +35,17 @@ public class UtilsSynergyV5 {
             Context ctx)
             throws ParserConfigurationException, TransformerException {
 
+
+        Document doc = getDocument(listNamesToExport, db, ctx);
+
+        File outputFile =
+            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(Xml.FILE_NAME_SYNERGY_V5);
+
+        Xml.write(outputFile, doc);
+    }
+
+    @NonNull
+    private static Document getDocument(ArrayList<String> listNamesToExport, NwdDb db, Context ctx) throws ParserConfigurationException {
 
         Document doc = Xml.createDocument(Xml.TAG_NWD);
         Element synergySubsetEl = doc.createElement(Xml.TAG_SYNERGY_SUBSET);
@@ -91,10 +103,26 @@ public class UtilsSynergyV5 {
                 }
             }
         }
+        return doc;
+    }
 
-        File outputFile =
-            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(Xml.FILE_NAME_SYNERGY_V5);
 
-        Xml.write(outputFile, doc);
+    public static void hiveExportToXml(
+            ArrayList<String> listNamesToExport,
+            NwdDb db,
+            Context ctx)
+            throws ParserConfigurationException, TransformerException {
+
+
+        Document doc = getDocument(listNamesToExport, db, ctx);
+
+        for(File outputFile :
+                Configuration.getOutgoingHiveXmlFiles_yyyyMMddHHmmss(
+                        ctx,
+                        db,
+                        Xml.FILE_NAME_SYNERGY_V5))
+        {
+            Xml.write(outputFile, doc);
+        }
     }
 }

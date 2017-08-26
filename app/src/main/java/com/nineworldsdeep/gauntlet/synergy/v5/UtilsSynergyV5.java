@@ -101,6 +101,7 @@ public class UtilsSynergyV5 {
 
                     synergyItemEl.appendChild(toDoEl);
                 }
+
             }
         }
         return doc;

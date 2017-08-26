@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
 
@@ -400,8 +401,38 @@ public class UtilsMnemosyneV5 {
         return int2;
     }
 
-    public static void exportToXml(ArrayList<Media> mediaList, NwdDb db) throws Exception {
+    public static void exportToXml(ArrayList<Media> mediaList, NwdDb db)
+            throws Exception {
 
+        Document doc = getDocument(mediaList, db);
+
+        File outputFile =
+            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(
+                    Xml.FILE_NAME_MNEMOSYNE_V5);
+
+            Xml.write(outputFile, doc);
+    }
+
+    public static void hiveExportToXml(ArrayList<Media> mediaList,
+                                       NwdDb db,
+                                       Context ctx)
+            throws Exception {
+
+        Document doc = getDocument(mediaList, db);
+
+        for(File outputFile :
+            Configuration.getOutgoingHiveXmlFiles_yyyyMMddHHmmss(
+                    ctx,
+                    db,
+                    Xml.FILE_NAME_MNEMOSYNE_V5)) {
+
+            Xml.write(outputFile, doc);
+        }
+
+    }
+
+    @NonNull
+    private static Document getDocument(ArrayList<Media> mediaList, NwdDb db) throws Exception {
         Document doc = Xml.createDocument(Xml.TAG_NWD);
         Element mnemosyneSubsetEl = doc.createElement(Xml.TAG_MNEMOSYNE_SUBSET);
         doc.getDocumentElement().appendChild(mnemosyneSubsetEl);
@@ -420,16 +451,6 @@ public class UtilsMnemosyneV5 {
             mediaEl.setAttribute(
                     Xml.ATTR_SHA1_HASH,
                     media.getMediaHash());
-
-//
-//                mediaEl.setAttribute(
-//                        Xml.ATTR_FILE_NAME,
-//                        media.getMediaFileName());
-//
-//                mediaEl.setAttribute(
-//                        Xml.ATTR_DESCRIPTION,
-//                        media.getMediaDescription());
-
 
             Xml.setAttributeIfNotNullOrWhitespace(
                     mediaEl,
@@ -496,11 +517,6 @@ public class UtilsMnemosyneV5 {
                 }
             }
         }
-
-        File outputFile =
-            Configuration.getOutgoingXmlFile_yyyyMMddHHmmss(
-                    Xml.FILE_NAME_MNEMOSYNE_V5);
-
-            Xml.write(outputFile, doc);
+        return doc;
     }
 }

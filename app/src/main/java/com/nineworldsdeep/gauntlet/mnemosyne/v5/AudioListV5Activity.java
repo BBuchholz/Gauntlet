@@ -48,6 +48,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
     private static final int MENU_CONTEXT_EXPORT_XML = 5;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS = 6;
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -523,6 +524,7 @@ public class AudioListV5Activity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
         }
 
     }
@@ -570,6 +572,10 @@ public class AudioListV5Activity extends AppCompatActivity {
             case MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS:
 
                 moveToDownloads(info.position);
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS:
+
+                moveToRefTracks(info.position);
 
             default:
                 return super.onContextItemSelected(item);
@@ -627,6 +633,11 @@ public class AudioListV5Activity extends AppCompatActivity {
     private void moveToDownloads(int position){
 
         moveFile(position, Configuration.getDownloadDirectory());
+    }
+
+    private void moveToRefTracks(int position){
+
+        moveFile(position, Configuration.getRefTracksDirectory());
     }
 
     private void moveToVoiceMemos(int position) {

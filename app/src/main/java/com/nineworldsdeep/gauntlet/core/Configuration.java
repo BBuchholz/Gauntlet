@@ -106,6 +106,11 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/audio");
     }
 
+    public static File getRefTracksDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/refTracks");
+    }
+
     public static File getVoicememosDirectory(){
 
         return getDirectoryStoragePath("/NWD-AUX/voicememos");

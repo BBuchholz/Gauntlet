@@ -333,6 +333,7 @@ public class UtilsMnemosyneV5 {
         lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
         lst.add(Configuration.getAudioDirectory().getAbsolutePath());
         lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
+        lst.add(Configuration.getRefTracksDirectory().getAbsolutePath());
 
         File externalMusic = Configuration.getSdCardMediaMusicDirectory();
         File causticSongExports = Configuration.getCausticSongExportsDirectory();

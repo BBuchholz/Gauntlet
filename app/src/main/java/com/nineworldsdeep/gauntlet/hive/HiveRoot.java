@@ -95,4 +95,9 @@ public class HiveRoot {
 
         setTimeStamps(null, TimeStamp.now());
     }
+
+    public String toMultilineString(){
+
+        return "some stuff goes here";
+    }
 }

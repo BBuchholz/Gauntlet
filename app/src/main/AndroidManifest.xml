@@ -596,6 +596,24 @@
             android:label="@string/title_activity_synergy_drawer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".hive.HiveRootListActivity"
+            android:label="@string/title_hiveroot_list"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
+        <activity
+            android:name=".hive.HiveRootDetailActivity"
+            android:label="@string/title_hiveroot_detail"
+            android:parentActivityName=".hive.HiveRootListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.hive.HiveRootListActivity"/>
+        </activity>
     </application>
 
 </manifest>

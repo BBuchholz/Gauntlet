@@ -632,7 +632,25 @@ public class SynergyV5ListActivity
             return true;
         }
 
+        if(id == R.id.action_activate_all){
+
+            activateAll();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void activateAll() {
+
+        for(SynergyV5ListItem sli : mCurrentItems){
+
+            sli.activate();
+        }
+
+        mSynLst.save(this, NwdDb.getInstance(this));
+
+        refreshLayout();
     }
 
     private void hiveExportAllToXml() {

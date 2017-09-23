@@ -15,15 +15,19 @@
         android:title="@string/menu_archive"
         app:showAsAction="ifRoom|withText"/>
 
+    <item android:id="@+id/action_activate_all"
+        android:title="@string/activate_all"
+        app:showAsAction="ifRoom|withText"/>
+
     <item android:id="@+id/action_go_to_home_screen"
           android:title="@string/home"
           app:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/action_export_all_to_xml"
-          android:title="@string/export_xml"
-          app:showAsAction="ifRoom|withText"/>
-
     <item android:id="@+id/action_hive_export_all_to_xml"
           android:title="@string/hive_export_xml"
+          app:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_export_all_to_xml"
+          android:title="@string/export_xml"
           app:showAsAction="ifRoom|withText"/>
 </menu>

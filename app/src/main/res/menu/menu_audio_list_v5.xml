@@ -9,10 +9,10 @@
     <item android:id="@+id/action_queue_folder_to_playlist"
           android:title="@string/queue_folder"
           app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_export_all_to_xml"
-          android:title="@string/export_xml"
-          app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/action_hive_export_all_to_xml"
           android:title="@string/hive_export_xml"
+          app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_export_all_to_xml"
+          android:title="@string/export_xml"
           app:showAsAction="ifRoom|withText"/>
 </menu>

@@ -107,7 +107,7 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_display);
+        setContentView(R.layout.activity_audio_display_v5);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -400,6 +400,18 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
             setNowPlaying(mMediaPlayerSingletonV5.playNext(this), db);
             updateMediaInfo();
+
+        }catch(Exception ex){
+
+            Utils.toast(this, ex.getMessage());
+        }
+    }
+
+    public void play(View view){
+
+        try{
+
+            mMediaPlayerSingletonV5.play(this);
 
         }catch(Exception ex){
 

@@ -124,7 +124,7 @@ public class MediaPlayerSingletonV5 {
         }
     }
 
-    private MediaListItem play(MediaPlayer.OnPreparedListener listener) throws IOException{
+    public MediaListItem play(MediaPlayer.OnPreparedListener listener) throws IOException{
 
         if(mp != null && mp.isPlaying()){
             mp.stop();

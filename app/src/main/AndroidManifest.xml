@@ -597,7 +597,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".hive.HiveRootListActivity"
+            android:name=".hive.experimental.HiveRootListActivity"
             android:label="@string/title_hiveroot_list"
             android:parentActivityName=".core.HomeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -606,13 +606,13 @@
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
         <activity
-            android:name=".hive.HiveRootDetailActivity"
+            android:name=".hive.experimental.HiveRootDetailActivity"
             android:label="@string/title_hiveroot_detail"
-            android:parentActivityName=".hive.HiveRootListActivity"
+            android:parentActivityName=".hive.experimental.HiveRootListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nineworldsdeep.gauntlet.hive.HiveRootListActivity"/>
+                android:value="com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity"/>
         </activity>
     </application>
 

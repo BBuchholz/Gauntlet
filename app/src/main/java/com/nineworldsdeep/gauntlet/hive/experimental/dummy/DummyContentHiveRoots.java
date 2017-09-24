@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.hive.dummy;
+package com.nineworldsdeep.gauntlet.hive.experimental.dummy;
 
 import com.nineworldsdeep.gauntlet.hive.HiveRoot;
 

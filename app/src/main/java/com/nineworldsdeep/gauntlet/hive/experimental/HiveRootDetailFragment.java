@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.hive;
+package com.nineworldsdeep.gauntlet.hive.experimental;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
-//import com.nineworldsdeep.gauntlet.hive.dummy.DummyContent;
-import com.nineworldsdeep.gauntlet.hive.dummy.DummyContentHiveRoots;
+//import com.nineworldsdeep.gauntlet.hive.experimental.dummy.DummyContent;
+import com.nineworldsdeep.gauntlet.hive.HiveRoot;
+import com.nineworldsdeep.gauntlet.hive.experimental.dummy.DummyContentHiveRoots;
 
 /**
  * A fragment representing a single HiveRoot detail screen.

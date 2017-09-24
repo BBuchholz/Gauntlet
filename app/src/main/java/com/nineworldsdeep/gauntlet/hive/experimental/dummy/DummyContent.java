@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.hive.dummy;
+package com.nineworldsdeep.gauntlet.hive.experimental.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

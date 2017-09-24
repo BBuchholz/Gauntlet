@@ -9,7 +9,7 @@
               android:divider="?android:attr/dividerHorizontal"
               android:orientation="horizontal"
               android:showDividers="middle"
-              tools:context="com.nineworldsdeep.gauntlet.hive.HiveRootListActivity">
+              tools:context="com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity">
 
     <!--
     This layout is a two-pane layout for the HiveRoots
@@ -26,7 +26,7 @@
                                             android:layout_marginLeft="16dp"
                                             android:layout_marginRight="16dp"
                                             app:layoutManager="LinearLayoutManager"
-                                            tools:context="com.nineworldsdeep.gauntlet.hive.HiveRootListActivity"
+                                            tools:context="com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity"
                                             tools:listitem="@layout/hiveroot_list_content"/>
 
     <FrameLayout

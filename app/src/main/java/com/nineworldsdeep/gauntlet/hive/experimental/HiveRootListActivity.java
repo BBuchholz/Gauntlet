@@ -1,4 +1,4 @@
-package com.nineworldsdeep.gauntlet.hive;
+package com.nineworldsdeep.gauntlet.hive.experimental;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +17,10 @@ import android.view.MenuItem;
 
 import com.nineworldsdeep.gauntlet.R;
 
-//import com.nineworldsdeep.gauntlet.hive.dummy.DummyContent;
+//import com.nineworldsdeep.gauntlet.hive.experimental.dummy.DummyContent;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
-import com.nineworldsdeep.gauntlet.hive.dummy.DummyContentHiveRoots;
+import com.nineworldsdeep.gauntlet.hive.HiveRoot;
+import com.nineworldsdeep.gauntlet.hive.experimental.dummy.DummyContentHiveRoots;
 
 import java.util.List;
 

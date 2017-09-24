@@ -40,8 +40,8 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
     public static final String EXTRA_HIVE_ROOT_ID =
             "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_ID";
-    public static final String EXTRA_HIVE_ROOT_NAME =
-            "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_NAME";
+    public static final String EXTRA_HIVE_ROOT_KEY =
+            "com.nineworldsdeep.gauntlet.EXTRA_HIVE_ROOT_KEY";
 
     private static final int MENU_CONTEXT_DEACTIVATE = 1;
     private static final int MENU_CONTEXT_ACTIVATE = 2;
@@ -314,12 +314,14 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
 
         for(HiveRoot root : roots) {
 
+            HiveRegistry.registerRoot(root);
+
             HashMap<String, String> extraKeyToValue = new HashMap<>();
 
-            extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
-                    Integer.toString(root.getHiveRootId()));
+//            extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
+//                    Integer.toString(root.getHiveRootId()));
 
-            extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, root.getHiveRootName());
+            extraKeyToValue.put(EXTRA_HIVE_ROOT_KEY, root.getHiveRootName());
 
             mHiveRoots.add(root);
             addNavigateActivityCommand(root.getHiveRootName(), extraKeyToValue, HiveLobesActivity.class);

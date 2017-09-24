@@ -3,6 +3,9 @@ package com.nineworldsdeep.gauntlet.hive;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -118,5 +121,27 @@ public class HiveRoot {
     public String toMultilineString(){
 
         return "some stuff goes here";
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HiveRoot that = (HiveRoot) o;
+
+        return new EqualsBuilder()
+                .append(getHiveRootName().toLowerCase(),
+                        that.getHiveRootName().toLowerCase())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getHiveRootName().toLowerCase())
+                .toHashCode();
     }
 }

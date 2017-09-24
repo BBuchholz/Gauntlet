@@ -16,17 +16,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT_ID;
-import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT_NAME;
+import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT_KEY;
 
 public class HiveLobesActivity extends ListBaseActivity {
 
     private ArrayList<NavigateActivityCommand> cmds = new ArrayList<>();
 
-    private int hiveRootId = -1;
-    private String hiveRootName;
+    private HiveRoot mHiveRoot;
 
-    public static final String EXTRA_HIVE_LOBE_TYPE =
-            "com.nineworldsdeep.gauntlet.EXTRA_HIVE_LOBE_TYPE";
+//    public static final String EXTRA_HIVE_LOBE_TYPE =
+//            "com.nineworldsdeep.gauntlet.EXTRA_HIVE_LOBE_TYPE";
+
+    public static final String EXTRA_HIVE_LOBE_KEY =
+            "com.nineworldsdeep.gauntlet.EXTRA_HIVE_LOBE_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +59,18 @@ public class HiveLobesActivity extends ListBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Lobes");
 
-        String idString = getIntent().getStringExtra(
-                EXTRA_HIVE_ROOT_ID
+        String hiveRootKey = getIntent().getStringExtra(
+                EXTRA_HIVE_ROOT_KEY
         );
 
-        String nameString = getIntent().getStringExtra(
-                EXTRA_HIVE_ROOT_NAME
-        );
+        if(!Utils.stringIsNullOrWhitespace(hiveRootKey)
+                && HiveRegistry.hasRootRegistered(hiveRootKey)) {
 
-        if(!Utils.stringIsNullOrWhitespace(idString)) {
-
-            hiveRootId = Integer.parseInt(idString);
-            hiveRootName = nameString;
+            mHiveRoot = HiveRegistry.getHiveRoot(hiveRootKey);
 
         }else{
 
-            Utils.toast(this, "hive id not set");
+            Utils.toast(this, "hive root not registered");
         }
 
     }
@@ -96,17 +94,32 @@ public class HiveLobesActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        for(HiveLobeType hiveLobeType : HiveLobeType.values()) {
+//        for(HiveLobeType hiveLobeType : HiveLobeType.values()) {
+//
+//            HashMap<String, String> extraKeyToValue = new HashMap<>();
+//
+//            extraKeyToValue.put(EXTRA_HIVE_LOBE_KEY, this.mHiveRoot.getHiveRootName());
+//            //extraKeyToValue.put(EXTRA_HIVE_LOBE_TYPE, hiveLobeType.toString());
+//
+//            addNavigateActivityCommand(hiveLobeType.toString(), extraKeyToValue, HiveSporesActivity.class);
+//        }
+
+        UtilsHive.refreshLobes(mHiveRoot);
+
+        for(HiveLobe hl : mHiveRoot.getLobes()){
+
+            HiveRegistry.registerLobe(hl);
 
             HashMap<String, String> extraKeyToValue = new HashMap<>();
 
-            extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
-                    Integer.toString(this.hiveRootId));
-            extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, this.hiveRootName);
-            extraKeyToValue.put(EXTRA_HIVE_LOBE_TYPE, hiveLobeType.toString());
+            String lobeKey = HiveRegistry.getLobeKey(hl);
 
-            addNavigateActivityCommand(hiveLobeType.toString(), extraKeyToValue, HiveSporesActivity.class);
+            extraKeyToValue.put(EXTRA_HIVE_LOBE_KEY, lobeKey);
+
+            addNavigateActivityCommand(hl.getHiveLobeName(), extraKeyToValue, HiveSporesActivity.class);
         }
+
+        String testing = "just need a breakpoint";
     }
 
     private void addNavigateActivityCommand(

@@ -105,7 +105,7 @@ public class UtilsMnemosyneV5 {
 //        }
 //        else
 //        {
-//            lst.addAll(getMediaListItems(pathToTagString, dir, audioExts));
+//            lst.addAll(getSporesAsMediaListItems(pathToTagString, dir, audioExts));
 //        }
 //
 //        return lst;
@@ -123,7 +123,7 @@ public class UtilsMnemosyneV5 {
 //        }
 //        else
 //        {
-//            lst.addAll(getMediaListItems(pathToTagString, dir, imageExts));
+//            lst.addAll(getSporesAsMediaListItems(pathToTagString, dir, imageExts));
 //        }
 //
 //        return lst;
@@ -161,7 +161,7 @@ public class UtilsMnemosyneV5 {
         return lst;
     }
 
-//    private static ArrayList<MediaListItem> getMediaListItems(
+//    private static ArrayList<MediaListItem> getSporesAsMediaListItems(
 //            HashMap<String, String> pathToTagString,
 //            File dir,
 //            String[] exts) {

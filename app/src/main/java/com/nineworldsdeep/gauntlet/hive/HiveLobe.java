@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.hive;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 
 /**
@@ -42,6 +45,28 @@ public abstract class HiveLobe {
     }
 
     public abstract void collect();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HiveLobe that = (HiveLobe) o;
+
+        return new EqualsBuilder()
+                .append(HiveRegistry.getLobeKey(this),
+                        HiveRegistry.getLobeKey(that))
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(HiveRegistry.getLobeKey(this))
+                .toHashCode();
+    }
 
 //
 //    public int getHiveRootId() {

@@ -3,8 +3,16 @@ package com.nineworldsdeep.gauntlet.hive;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.core.Configuration;
+import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeAudio;
+import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeImages;
+import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobePdfs;
+import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeXml;
+import com.nineworldsdeep.gauntlet.hive.spores.HiveSporeFilePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,14 +23,18 @@ import java.util.ArrayList;
 
 public class UtilsHive {
 
-    public static ArrayList<MediaListItem> getMediaListItems(HiveLobe hiveLobe) {
+    public static ArrayList<MediaListItem> getSporesAsMediaListItems(HiveLobe hl) {
 
-        //TODO: implement
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
-        for(int i = 0; i < 10; i++){
+        for(HiveSpore hs : hl.getSpores()){
 
-            lst.add(new MediaListItem("a/fake/path/for/testing"));
+            if(hs instanceof HiveSporeFilePath){
+
+                HiveSporeFilePath hsfp = (HiveSporeFilePath)hs;
+
+                lst.add(new MediaListItem(hsfp.getFile().getAbsolutePath()));
+            }
         }
 
         return lst;
@@ -86,5 +98,49 @@ public class UtilsHive {
         }
 
         return unregisteredFolderNames.size() > 0;
+    }
+
+    public static HiveSporeType getSporeTypeFromFile(File fileForSpore) {
+
+        if(FilenameUtils.getExtension(
+                fileForSpore.getAbsolutePath()).equalsIgnoreCase("xml")){
+
+            return HiveSporeType.xml;
+        }
+
+        if(FilenameUtils.getExtension(
+                fileForSpore.getAbsolutePath()).equalsIgnoreCase("pdf")){
+
+            return HiveSporeType.pdf;
+        }
+
+        if(ConfigHive.isImageFile(fileForSpore)){
+
+            return HiveSporeType.image;
+        }
+
+        if(ConfigHive.isAudioFile(fileForSpore)){
+
+            return HiveSporeType.audio;
+        }
+
+        return HiveSporeType.unknown;
+    }
+
+    public static void refreshLobes(HiveRoot hr) {
+
+        hr.add(new HiveLobeXml(hr));
+        hr.add(new HiveLobeImages(hr));
+        hr.add(new HiveLobeAudio(hr));
+        hr.add(new HiveLobePdfs(hr));
+    }
+
+    public static void refreshSpores(HiveLobe hl){
+
+        //just simple for now, it gets its own method here
+        //because we will eventually be pulling associated
+        //data from the db as well
+
+        hl.collect();
     }
 }

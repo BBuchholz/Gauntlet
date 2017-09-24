@@ -96,16 +96,16 @@ public class HiveLobesActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        for(LobeType lobeType : LobeType.values()) {
+        for(HiveLobeType hiveLobeType : HiveLobeType.values()) {
 
             HashMap<String, String> extraKeyToValue = new HashMap<>();
 
             extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
                     Integer.toString(this.hiveRootId));
             extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME, this.hiveRootName);
-            extraKeyToValue.put(EXTRA_HIVE_LOBE_TYPE, lobeType.toString());
+            extraKeyToValue.put(EXTRA_HIVE_LOBE_TYPE, hiveLobeType.toString());
 
-            addNavigateActivityCommand(lobeType.toString(), extraKeyToValue, HiveSporesActivity.class);
+            addNavigateActivityCommand(hiveLobeType.toString(), extraKeyToValue, HiveSporesActivity.class);
         }
     }
 
@@ -128,7 +128,7 @@ public class HiveLobesActivity extends ListBaseActivity {
 
         lvItems.setAdapter(
                 new ArrayAdapter<>(
-                        this, android.R.layout.simple_list_item_1, LobeType.values()));
+                        this, android.R.layout.simple_list_item_1, HiveLobeType.values()));
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.hive;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -16,9 +17,19 @@ public class HiveRoot {
     private Date activatedAt;
     private Date deactivatedAt;
 
+    protected ArrayList<HiveLobe> lobesInternal;
+
     public HiveRoot(int id, String name){
+
         setHiveRootId(id);
         setHiveRootName(name);
+
+        lobesInternal = new ArrayList<>();
+    }
+
+    public Iterable<HiveLobe> getLobes(){
+
+        return lobesInternal;
     }
 
     public Date getActivatedAt() {
@@ -43,6 +54,14 @@ public class HiveRoot {
 
     public void setHiveRootName(String hiveRootName) {
         this.hiveRootName = hiveRootName;
+    }
+
+    public void add(HiveLobe hiveLobe){
+
+        if(!lobesInternal.contains(hiveLobe)){
+
+            lobesInternal.add(hiveLobe);
+        }
     }
 
     public boolean isActive() {

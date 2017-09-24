@@ -2,9 +2,7 @@ package com.nineworldsdeep.gauntlet.hive;
 
 import android.content.Context;
 
-import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 
 public class UtilsHive {
 
-    public static ArrayList<MediaListItem> getMediaListItems(Lobe lobe) {
+    public static ArrayList<MediaListItem> getMediaListItems(HiveLobe hiveLobe) {
 
         //TODO: implement
         ArrayList<MediaListItem> lst = new ArrayList<>();

@@ -22,10 +22,8 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
-import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
@@ -33,9 +31,6 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaPlayerSingletonV5;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
-
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +42,7 @@ import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT
 
 public class HiveSporesActivity extends AppCompatActivity {
 
-    Lobe mLobe;
+    HiveLobe mHiveLobe;
 
 
     /**
@@ -92,11 +87,11 @@ public class HiveSporesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Spores");
 
-        mLobe = new Lobe();
+        mHiveLobe = new HiveLobe();
 
-        mLobe.setHiveRootId(Integer.parseInt(idString));
-        mLobe.setHiveRootName(nameString);
-        mLobe.setLobeType(LobeType.valueOf(lobeTypeString));
+        mHiveLobe.setHiveRootId(Integer.parseInt(idString));
+        mHiveLobe.setHiveRootName(nameString);
+        mHiveLobe.setHiveLobeType(HiveLobeType.valueOf(lobeTypeString));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
@@ -106,10 +101,10 @@ public class HiveSporesActivity extends AppCompatActivity {
                 HashMap<String, String> extraKeyToValue = new HashMap<>();
 
                 extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
-                        Integer.toString(mLobe.getHiveRootId()));
+                        Integer.toString(mHiveLobe.getHiveRootId()));
 
                 extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME,
-                        mLobe.getHiveRootName());
+                        mHiveLobe.getHiveRootName());
 
                 NavigateActivityCommand.navigateTo(
                         extraKeyToValue,
@@ -166,7 +161,7 @@ public class HiveSporesActivity extends AppCompatActivity {
             }
         });
 
-        new AsyncLoadItems().execute(mLobe);
+        new AsyncLoadItems().execute(mHiveLobe);
     }
 
     /**
@@ -289,7 +284,7 @@ public class HiveSporesActivity extends AppCompatActivity {
         }
     }
 
-    class AsyncLoadItems extends AsyncTask<Lobe, ProgressWrapper, String> {
+    class AsyncLoadItems extends AsyncTask<HiveLobe, ProgressWrapper, String> {
 
 
         @Override
@@ -299,7 +294,7 @@ public class HiveSporesActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(Lobe... lobes) {
+        protected String doInBackground(HiveLobe... hiveLobes) {
 
             int count = 0;
             int total;
@@ -313,7 +308,7 @@ public class HiveSporesActivity extends AppCompatActivity {
                 db.open();
 
                 ArrayList<MediaListItem> items =
-                        UtilsHive.getMediaListItems(lobes[0]);
+                        UtilsHive.getMediaListItems(hiveLobes[0]);
 
                 total = items.size();
 
@@ -424,10 +419,10 @@ public class HiveSporesActivity extends AppCompatActivity {
         HashMap<String, String> extraKeyToValue = new HashMap<>();
 
         extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
-                Integer.toString(mLobe.getHiveRootId()));
+                Integer.toString(mHiveLobe.getHiveRootId()));
 
         extraKeyToValue.put(EXTRA_HIVE_ROOT_NAME,
-                mLobe.getHiveRootName());
+                mHiveLobe.getHiveRootName());
 
         NavigateActivityCommand.navigateTo(
                 extraKeyToValue,

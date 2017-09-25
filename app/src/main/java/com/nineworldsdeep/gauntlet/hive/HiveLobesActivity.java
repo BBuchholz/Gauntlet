@@ -141,7 +141,7 @@ public class HiveLobesActivity extends ListBaseActivity {
 
         lvItems.setAdapter(
                 new ArrayAdapter<>(
-                        this, android.R.layout.simple_list_item_1, HiveLobeType.values()));
+                        this, android.R.layout.simple_list_item_1, cmds));
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

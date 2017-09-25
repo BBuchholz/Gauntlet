@@ -29,7 +29,7 @@ public class UtilsMnemosyneV5 {
     private static String[] audioExts = {"mp3", "wav"};
     private static String[] documentExts = {"pdf"};
 
-    static String getMimeType(File file) {
+    public static String getMimeType(File file) {
 
         String type = null;
 

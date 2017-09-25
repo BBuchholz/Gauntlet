@@ -1,7 +1,9 @@
 package com.nineworldsdeep.gauntlet.hive;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +45,7 @@ public class HiveSporesActivity extends AppCompatActivity {
 
     HiveLobe mHiveLobe;
 
+    private static final int MENU_CONTEXT_OPEN_EXTERNAL = 1;
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -212,7 +215,8 @@ public class HiveSporesActivity extends AppCompatActivity {
                     "'android.R.id.list'");
         }
 
-        mList.setOnItemClickListener(mOnClickListener);
+        registerForContextMenu(mList);
+
         if (mFinishedStart) {
             setListAdapter(mAdapter);
         }
@@ -353,53 +357,148 @@ public class HiveSporesActivity extends AppCompatActivity {
         getTextViewStatus().setText(statusText);
     }
 
-    /**
-     * This method will be called when an item in the list is selected.
-     * Subclasses should override. Subclasses can call
-     * getListView().getItemAtPosition(position) if they need to access the
-     * data associated with the selected item.
-     *
-     * adapted from ListActivity source
-     *
-     * @param l The ListView where the click happened
-     * @param view The view that was clicked within the ListView
-     * @param idx The position of the view in the list
-     * @param id The row id of the item that was clicked
-     */
-    protected void onListItemClick(ListView l, View view, int idx, long id) {
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
 
-        MediaListItem mli = getItem(idx);
-        File f = mli.getFile();
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        if(f != null && f.exists() && f.isFile()){
+        boolean isDirectory = getItem(info.position).getFile().isDirectory();
 
-            Intent intent = new Intent(view.getContext(),
-                    AudioDisplayV5Activity.class);
+        if(!isDirectory) {
 
-            intent.putExtra(
-                    AudioDisplayV5Activity.EXTRA_AUDIO_PATH,
-                    f.getAbsolutePath()
-            );
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL, Menu.NONE, "Open External");
 
-            startActivity(intent);
+            //these can become staging methods
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+        }
 
-        }else{
+    }
 
-            Utils.toast(this, "not found");
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+
+            case MENU_CONTEXT_OPEN_EXTERNAL:
+
+                openExternal(info.position);
+
+            default:
+                return super.onContextItemSelected(item);
         }
     }
+
+    private void openExternal(int position) {
+
+        MediaListItem mli = getItem(position);
+        File f = mli.getFile();
+
+        if(f.exists() && f.isFile()){
+
+            Intent target = new Intent(Intent.ACTION_VIEW);
+
+            String mimeType = UtilsMnemosyneV5.getMimeType(f);
+
+            //target.setDataAndType(Uri.fromFile(f),"*/*");
+            target.setDataAndType(Uri.fromFile(f), mimeType);
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            try{
+
+                startActivity(target);
+
+            }catch (ActivityNotFoundException ex){
+
+                Utils.toast(HiveSporesActivity.this,
+                        "error opening file: " +
+                        f.getAbsolutePath());
+            }
+
+        }
+    }
+
+
+//    /**
+//     * This method will be called when an item in the list is selected.
+//     * Subclasses should override. Subclasses can call
+//     * getListView().getItemAtPosition(position) if they need to access the
+//     * data associated with the selected item.
+//     *
+//     * adapted from ListActivity source
+//     *
+//     * @param l The ListView where the click happened
+//     * @param view The view that was clicked within the ListView
+//     * @param idx The position of the view in the list
+//     * @param id The row id of the item that was clicked
+//     */
+//    protected void onListItemClick(ListView l, View view, int idx, long id) {
+////
+////        MediaListItem mli = getItem(idx);
+////        File f = mli.getFile();
+////
+////        if(f.exists() && f.isFile()){
+////
+////            Intent target = new Intent(Intent.ACTION_VIEW);
+////
+////            String mimeType = UtilsMnemosyneV5.getMimeType(f);
+////
+////            //target.setDataAndType(Uri.fromFile(f),"*/*");
+////            target.setDataAndType(Uri.fromFile(f), mimeType);
+////            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+////
+////            try{
+////
+////                startActivity(target);
+////
+////            }catch (ActivityNotFoundException ex){
+////
+////                Utils.toast(HiveSporesActivity.this,
+////                        "error opening file: " +
+////                        f.getAbsolutePath());
+////            }
+////
+////        }
+//
+////        if(f != null && f.exists() && f.isFile()){
+////
+////            Intent intent = new Intent(view.getContext(),
+////                    AudioDisplayV5Activity.class);
+////
+////            intent.putExtra(
+////                    AudioDisplayV5Activity.EXTRA_AUDIO_PATH,
+////                    f.getAbsolutePath()
+////            );
+////
+////            startActivity(intent);
+////
+////        }else{
+////
+////            Utils.toast(this, "not found");
+////        }
+//    }
 
     private MediaListItem getItem(int idx) {
 
         return ((ArrayAdapter<MediaListItem>)getListAdapter()).getItem(idx);
     }
 
-    private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-        {
-            onListItemClick((ListView)parent, v, position, id);
-        }
-    };
+//
+//    private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
+//        public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+//        {
+//            onListItemClick((ListView)parent, v, position, id);
+//        }
+//    };
 
     @Override
     public void onBackPressed() {
@@ -515,85 +614,5 @@ public class HiveSporesActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu,
-                                    View v,
-                                    ContextMenu.ContextMenuInfo menuInfo){
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-
-//        menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
-
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-
-//            case MENU_CONTEXT_SHA1_HASH_ID:
-//
-//                computeSHA1Hash(info.position);
-//
-//                return true;
-
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    /**
-     * Computes and stores SHA1 hash for selected item if item is a file.
-     * If item is a directory, computes and stores hashes for
-     * all files within selected directory and all subfolders of the selected directory
-     * @param position
-     */
-    private void computeSHA1Hash(int position) {
-
-        MediaListItem mli = getItem(position);
-        File f = mli.getFile();
-
-        String msg = "";
-
-        if(f.exists()){
-
-            //FileHashIndex fhi = FileHashIndex.getInstance();
-
-            try{
-
-                NwdDb db = NwdDb.getInstance(this);
-
-                //we call the count and store version that
-                //ignores previously hashed files as
-                //our audio files are not likely to change
-                //and many in number (800+ with mp3's on my
-                //test device), so this is a costly operation
-                int count = //fhi.countAndStoreSHA1Hashes(f, 0, true);
-                        FileHashDbIndex.countAndStoreSHA1Hashes(f, true, db);
-
-                if(count != 1){
-
-                    msg = count + " hashes stored";
-
-                }else{
-
-                    msg = count + " hash stored";
-                }
-
-            }catch(Exception ex){
-
-                msg = ex.getMessage();
-            }
-
-        }else{
-
-            msg = "NonExistantPath: " + f.getAbsolutePath();
-        }
-
-        Utils.toast(this, msg);
-    }
 
 }

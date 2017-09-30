@@ -25,6 +25,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.hive.UtilsHive;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -47,6 +48,8 @@ public class ImageListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 5;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_MEMES = 6;
     private static final int MENU_CONTEXT_EXPORT_XML = 7;
+    private static final int MENU_CONTEXT_COPY_TO_STAGING = 8;
+    private static final int MENU_CONTEXT_MOVE_TO_STAGING = 9;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -416,6 +419,16 @@ public class ImageListV5Activity extends AppCompatActivity {
 
         switch (item.getItemId()){
 
+            case R.id.action_copy_all_to_staging:
+
+                copyAllToStaging();
+                return true;
+
+            case R.id.action_move_all_to_staging:
+
+                moveAllToStaging();
+                return true;
+
             case R.id.action_go_to_home_screen:
 
                 NavigateActivityCommand.navigateTo(
@@ -444,6 +457,7 @@ public class ImageListV5Activity extends AppCompatActivity {
     }
 
 
+
     @Override
     public void onCreateContextMenu(ContextMenu menu,
                                     View v,
@@ -465,6 +479,9 @@ public class ImageListV5Activity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_MEMES, Menu.NONE, "Move to memes");
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
+
         }
 
     }
@@ -476,6 +493,16 @@ public class ImageListV5Activity extends AppCompatActivity {
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
+
+            case MENU_CONTEXT_COPY_TO_STAGING:
+
+                copyToStaging(info.position);
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_STAGING:
+
+                moveToStaging(info.position);
+                return true;
 
             case MENU_CONTEXT_EXPORT_XML:
 
@@ -533,6 +560,16 @@ public class ImageListV5Activity extends AppCompatActivity {
         }
     }
 
+    private void moveToStaging(int position) {
+
+        UtilsHive.moveToStaging(this, getItem(position));
+    }
+
+    private void copyToStaging(int position) {
+
+        UtilsHive.copyToStaging(this, getItem(position));
+    }
+
     private void hiveExportAllToXml() {
 
         NwdDb db = NwdDb.getInstance(this);
@@ -567,6 +604,15 @@ public class ImageListV5Activity extends AppCompatActivity {
         Utils.toast(this, "exported.");
     }
 
+    private void copyAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
+    }
+
+    private void moveAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
+    }
 
     private void exportAllToXml() {
 

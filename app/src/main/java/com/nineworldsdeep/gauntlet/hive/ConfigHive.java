@@ -13,6 +13,10 @@ import java.io.File;
 public class ConfigHive {
 
 
+    public static final String HIVE_XML_INCOMING_SUBFOLDER = "xml/incoming";
+    public static final String HIVE_AUDIO_INCOMING_SUBFOLDER = "media/audio/incoming";
+    public static final String HIVE_IMAGES_INCOMING_SUBFOLDER = "media/images/incoming";
+    public static final String HIVE_PDFS_INCOMING_SUBFOLDER = "media/pdfs/incoming";
     private static String XML_SUB_FOLDER = "xml/incoming";
     private static String AUDIO_SUB_FOLDER = "media/audio/incoming";
     private static String PDFS_SUB_FOLDER = "media/pdfs/incoming";
@@ -85,5 +89,43 @@ public class ConfigHive {
         }
 
         return isImage;
+    }
+
+    public static File getHiveSubFolderForRootNameAndType(String hiveRootName,
+                                                          HiveSporeType sporeType){
+
+        File syncFolder = getSyncFolder();
+        File hiveFolder = new File(syncFolder, "hive");
+        File hiveRootFolder = new File(hiveFolder, hiveRootName);
+        File subFolder = new File(hiveRootFolder,
+                getInternalSubFolderPathForSporeType(sporeType));
+
+        return subFolder;
+    }
+
+    private static String getInternalSubFolderPathForSporeType(HiveSporeType sporeType) {
+
+        switch (sporeType){
+
+            case audio:
+
+                return HIVE_AUDIO_INCOMING_SUBFOLDER;
+
+            case image:
+
+                return HIVE_IMAGES_INCOMING_SUBFOLDER;
+
+            case pdf:
+
+                return HIVE_PDFS_INCOMING_SUBFOLDER;
+
+            case xml:
+
+                return HIVE_XML_INCOMING_SUBFOLDER;
+
+            default:
+
+                return null;
+        }
     }
 }

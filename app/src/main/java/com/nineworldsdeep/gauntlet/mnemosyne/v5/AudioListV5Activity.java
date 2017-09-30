@@ -25,6 +25,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.hive.UtilsHive;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -49,6 +50,8 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
     private static final int MENU_CONTEXT_EXPORT_XML = 5;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS = 6;
+    private static final int MENU_CONTEXT_COPY_TO_STAGING = 7;
+    private static final int MENU_CONTEXT_MOVE_TO_STAGING = 8;
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -411,10 +414,17 @@ public class AudioListV5Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-
-        //int id = item.getItemId();
-
         switch (item.getItemId()){
+
+            case R.id.action_copy_all_to_staging:
+
+                copyAllToStaging();
+                return true;
+
+            case R.id.action_move_all_to_staging:
+
+                moveAllToStaging();
+                return true;
 
             case R.id.action_go_to_home_screen:
 
@@ -460,6 +470,16 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void copyAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
+    }
+
+    private void moveAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
     }
 
     @Override
@@ -525,6 +545,9 @@ public class AudioListV5Activity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
+
         }
 
     }
@@ -536,6 +559,16 @@ public class AudioListV5Activity extends AppCompatActivity {
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
+
+            case MENU_CONTEXT_COPY_TO_STAGING:
+
+                copyToStaging(info.position);
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_STAGING:
+
+                moveToStaging(info.position);
+                return true;
 
             case MENU_CONTEXT_EXPORT_XML:
 
@@ -580,6 +613,16 @@ public class AudioListV5Activity extends AppCompatActivity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToStaging(int position) {
+
+        UtilsHive.moveToStaging(this, getItem(position));
+    }
+
+    private void copyToStaging(int position) {
+
+        UtilsHive.copyToStaging(this, getItem(position));
     }
 
     private void exportXml(int position) throws Exception {

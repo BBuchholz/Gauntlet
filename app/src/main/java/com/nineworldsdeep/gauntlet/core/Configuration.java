@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.hive.ConfigHive;
 import com.nineworldsdeep.gauntlet.hive.HiveRoot;
 import com.nineworldsdeep.gauntlet.hive.UtilsHive;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
@@ -512,20 +513,6 @@ public class Configuration {
     }
 
     public static ArrayList<File> getFoldersForHiveRoot(HiveRoot hr) {
-//
-//        ArrayList<File> folders = new ArrayList<>();
-//
-//        for(String subFolderPath : getHiveRootSubFolderPaths()){
-//
-//            File syncFolder = getSyncFolder();
-//            File hiveFolder = new File(syncFolder, "hive");
-//            File hiveRootFolder = new File(hiveFolder, hr.getHiveRootName());
-//            File subFolder = new File(hiveRootFolder, subFolderPath);
-//
-//            folders.add(subFolder);
-//        }
-//
-//        return folders;
 
         return getFoldersForHiveRoot(hr, true, true);
     }
@@ -589,14 +576,14 @@ public class Configuration {
 
         if(includeXmlFolders) {
 
-            lst.add("xml/incoming");
+            lst.add(ConfigHive.HIVE_XML_INCOMING_SUBFOLDER);
         }
 
         if(includeMediaFolders) {
 
-            lst.add("media/audio/incoming");
-            lst.add("media/images/incoming");
-            lst.add("media/pdfs/incoming");
+            lst.add(ConfigHive.HIVE_AUDIO_INCOMING_SUBFOLDER);
+            lst.add(ConfigHive.HIVE_IMAGES_INCOMING_SUBFOLDER);
+            lst.add(ConfigHive.HIVE_PDFS_INCOMING_SUBFOLDER);
         }
 
         return lst;

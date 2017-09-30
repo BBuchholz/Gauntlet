@@ -1,17 +1,20 @@
 package com.nineworldsdeep.gauntlet.hive;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeAudio;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeImages;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobePdfs;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeXml;
 import com.nineworldsdeep.gauntlet.hive.spores.HiveSporeFilePath;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -144,5 +147,78 @@ public class UtilsHive {
         //data from the db as well
 
         hl.collect();
+    }
+
+    public static void addToStaging(Context context,
+                                    MediaListItem mli,
+                                    StagingMovementType stagingMovementType) {
+
+        File fileToAdd = mli.getFile();
+
+        String msg;
+
+        if(fileToAdd.exists()){
+
+            try{
+
+                File destinationFile =
+                        new File(getStagingDirectoryForFileType(fileToAdd),
+                                FilenameUtils.getName(fileToAdd.getAbsolutePath()));
+
+                switch (stagingMovementType) {
+
+                    case MoveToStaging:
+
+                        FileUtils.moveFile(fileToAdd, destinationFile);
+                        break;
+
+                    case CopyToStaging:
+
+                        FileUtils.copyFile(fileToAdd, destinationFile);
+                        break;
+                }
+
+                msg = "file moved";
+
+            }catch (Exception ex){
+
+                msg = "Error moving file: " + ex.getMessage();
+            }
+
+        }else{
+
+            msg = "non existant path: " + fileToAdd.getAbsolutePath();
+        }
+
+        Utils.toast(context, msg);
+    }
+
+    /**
+     *
+     * @param fileToAdd
+     * @return
+     */
+    private static File getStagingDirectoryForFileType(File fileToAdd) {
+
+        HiveSporeType sporeType = getSporeTypeFromFile(fileToAdd);
+
+        return ConfigHive.getHiveSubFolderForRootNameAndType(
+                UtilsHive.STAGING_ROOT_NAME, sporeType);
+    }
+
+    public static void moveToStaging(Context context, MediaListItem item) {
+
+        addToStaging(context, item, StagingMovementType.MoveToStaging);
+    }
+
+    public static void copyToStaging(Context context, MediaListItem item) {
+
+        addToStaging(context, item, StagingMovementType.CopyToStaging);
+    }
+
+    public enum StagingMovementType{
+
+        MoveToStaging,
+        CopyToStaging
     }
 }

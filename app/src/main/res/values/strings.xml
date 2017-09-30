@@ -114,4 +114,6 @@
     <string name="activate_all">Activate All</string>
     <string name="title_hiveroot_list">HiveRoots</string>
     <string name="title_hiveroot_detail">HiveRoot Detail</string>
+    <string name="copy_all_to_staging">Copy All To Staging</string>
+    <string name="move_all_to_staging">Move All To Staging</string>
 </resources>

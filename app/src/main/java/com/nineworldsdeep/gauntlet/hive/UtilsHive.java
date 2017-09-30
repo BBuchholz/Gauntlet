@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 public class UtilsHive {
 
+    public static final String STAGING_ROOT_NAME = "staging";
+
     public static ArrayList<MediaListItem> getSporesAsMediaListItems(HiveLobe hl) {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();

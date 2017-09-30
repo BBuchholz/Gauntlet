@@ -74,6 +74,12 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
             }
         });
 
+        //ensure staging
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        db.ensureHiveRootName(UtilsHive.STAGING_ROOT_NAME);
+
         populateActiveRootsSelectorSpinner();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -97,11 +103,11 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.editTextDialogUserInput);
 
-                String deviceName = Configuration.getLocalDeviceName();
+                String localDeviceName = Configuration.getLocalDeviceName();
 
-                if(!hasActiveRootName(deviceName)) {
+                if(!hasActiveRootName(localDeviceName)) {
 
-                    userInput.setText(deviceName);
+                    userInput.setText(localDeviceName);
                     userInput.setSelection(userInput.getText().length());
                 }
 
@@ -317,9 +323,6 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
             HiveRegistry.registerRoot(root);
 
             HashMap<String, String> extraKeyToValue = new HashMap<>();
-
-//            extraKeyToValue.put(EXTRA_HIVE_ROOT_ID,
-//                    Integer.toString(root.getHiveRootId()));
 
             extraKeyToValue.put(EXTRA_HIVE_ROOT_KEY, root.getHiveRootName());
 

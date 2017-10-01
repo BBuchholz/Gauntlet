@@ -8,6 +8,7 @@ import com.nineworldsdeep.gauntlet.hive.spores.HiveSporeFilePath;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by brent on 9/24/17.
@@ -15,6 +16,7 @@ import java.io.File;
 
 public class HiveLobeXml extends HiveLobe {
 
+    public static final String[] FILE_EXTENSIONS = new String[]{"xml"};
 
     public HiveLobeXml(HiveRoot hr) {
         super("xml", hr);
@@ -23,14 +25,10 @@ public class HiveLobeXml extends HiveLobe {
     @Override
     public void collect() {
 
-        File hiveRootXmlSubFolderPath =
-                getAssociatedDirectory();
-
         for(File filePath :
-                FileUtils.listFiles(
-                        hiveRootXmlSubFolderPath,
-                        new String[]{ "xml" },
-                        true)){
+                filterDirectoryFiles(
+                        getAssociatedDirectory(),
+                        FILE_EXTENSIONS)){
 
             add(new HiveSporeFilePath(filePath));
         }
@@ -41,4 +39,11 @@ public class HiveLobeXml extends HiveLobe {
 
         return ConfigHive.getHiveRootXmlFolderPath(getHiveRoot());
     }
+
+    @Override
+    public Iterable<File> siftFiles(HiveRoot hiveRoot) {
+
+        return siftFiles(hiveRoot, FILE_EXTENSIONS);
+    }
+
 }

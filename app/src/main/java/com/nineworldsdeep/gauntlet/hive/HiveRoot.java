@@ -144,4 +144,19 @@ public class HiveRoot {
                 .append(getHiveRootName().toLowerCase())
                 .toHashCode();
     }
+
+    public HiveLobe getLobeByName(String hiveLobeName) {
+
+        HiveLobe found = null;
+
+        for(HiveLobe thisLobe : getLobes()){
+
+            if(thisLobe.getHiveLobeName().equalsIgnoreCase(hiveLobeName)){
+
+                found = thisLobe;
+            }
+        }
+
+        return found;
+    }
 }

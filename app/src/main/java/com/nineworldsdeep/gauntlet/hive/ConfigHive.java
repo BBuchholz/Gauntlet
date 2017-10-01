@@ -17,6 +17,8 @@ public class ConfigHive {
     public static final String HIVE_AUDIO_INCOMING_SUBFOLDER = "media/audio/incoming";
     public static final String HIVE_IMAGES_INCOMING_SUBFOLDER = "media/images/incoming";
     public static final String HIVE_PDFS_INCOMING_SUBFOLDER = "media/pdfs/incoming";
+    public static final String STAGING_ROOT_NAME = "staging";
+
     private static String XML_SUB_FOLDER = "xml/incoming";
     private static String AUDIO_SUB_FOLDER = "media/audio/incoming";
     private static String PDFS_SUB_FOLDER = "media/pdfs/incoming";
@@ -127,5 +129,10 @@ public class ConfigHive {
 
                 return null;
         }
+    }
+
+    public static boolean isStagingRoot(HiveRoot hiveRoot) {
+
+        return hiveRoot.getHiveRootName().equalsIgnoreCase(STAGING_ROOT_NAME);
     }
 }

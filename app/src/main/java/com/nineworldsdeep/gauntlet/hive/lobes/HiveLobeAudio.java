@@ -23,15 +23,22 @@ public class HiveLobeAudio extends HiveLobe {
     @Override
     public void collect() {
 
-        File hiveRootAudioSubFolderPath =
-                getAssociatedDirectory();
-
+//        File hiveRootAudioSubFolderPath =
+//                getAssociatedDirectory();
+//
+//        for(File filePath :
+//                FileUtils.listFiles(
+//                        hiveRootAudioSubFolderPath,
+//                        ConfigHive.AUDIO_EXTENSIONS,
+//                        true)){
+//
+//            add(new HiveSporeFilePath(filePath));
+//        }
 
         for(File filePath :
-                FileUtils.listFiles(
-                        hiveRootAudioSubFolderPath,
-                        ConfigHive.AUDIO_EXTENSIONS,
-                        true)){
+                filterDirectoryFiles(
+                        getAssociatedDirectory(),
+                        ConfigHive.AUDIO_EXTENSIONS)){
 
             add(new HiveSporeFilePath(filePath));
         }
@@ -41,5 +48,11 @@ public class HiveLobeAudio extends HiveLobe {
     public File getAssociatedDirectory() {
 
         return ConfigHive.getHiveRootAudioFolderPath(getHiveRoot());
+    }
+
+    @Override
+    public Iterable<File> siftFiles(HiveRoot hiveRoot) {
+
+        return siftFiles(hiveRoot, ConfigHive.AUDIO_EXTENSIONS);
     }
 }

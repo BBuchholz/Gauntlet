@@ -78,7 +78,7 @@ public class HiveRootsActivity extends ListBaseActivity implements IRefreshableU
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
-        db.ensureHiveRootName(UtilsHive.STAGING_ROOT_NAME);
+        db.ensureHiveRootName(ConfigHive.STAGING_ROOT_NAME);
 
         populateActiveRootsSelectorSpinner();
 

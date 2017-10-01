@@ -1,7 +1,6 @@
 package com.nineworldsdeep.gauntlet.hive;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
@@ -10,7 +9,6 @@ import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeImages;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobePdfs;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeXml;
 import com.nineworldsdeep.gauntlet.hive.spores.HiveSporeFilePath;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
@@ -25,8 +23,6 @@ import java.util.ArrayList;
  */
 
 public class UtilsHive {
-
-    public static final String STAGING_ROOT_NAME = "staging";
 
     public static ArrayList<MediaListItem> getSporesAsMediaListItems(HiveLobe hl) {
 
@@ -149,9 +145,63 @@ public class UtilsHive {
         hl.collect();
     }
 
+    public static void getFromStaging(Context context,
+                                      HiveLobe lobe,
+                                      FileMovementType fileMovementType) {
+
+        String msg = "";
+
+        HiveRoot stagingRoot =
+                HiveRegistry.getHiveRoot(ConfigHive.STAGING_ROOT_NAME);
+
+        refreshLobes(stagingRoot);
+
+        for(File fileToGet : lobe.siftFiles(stagingRoot)) {
+
+            if (fileToGet.exists()) {
+
+                try {
+
+                    File destinationFile =
+                            new File(lobe.getAssociatedDirectory(),
+                                    FilenameUtils.getName(fileToGet.getAbsolutePath()));
+
+                    switch (fileMovementType) {
+
+                        case MoveTo:
+
+                            FileUtils.moveFile(fileToGet, destinationFile);
+                            msg = "files moved.";
+                            break;
+
+                        case CopyTo:
+
+                            FileUtils.copyFile(fileToGet, destinationFile);
+                            msg = "files copied";
+                            break;
+                    }
+
+                } catch (Exception ex) {
+
+                    msg = "Error moving files: " + ex.getMessage();
+                }
+
+            } else {
+
+                msg = "non-existent path: " + fileToGet.getAbsolutePath();
+            }
+
+        }
+
+        if (!Utils.stringIsNullOrWhitespace(msg)) {
+
+            Utils.toast(context, msg);
+        }
+    }
+
     public static void addToStaging(Context context,
                                     File fileToAdd,
-                                    StagingMovementType stagingMovementType) {
+                                    FileMovementType fileMovementType) {
 
         String msg = "";
 
@@ -163,15 +213,15 @@ public class UtilsHive {
                         new File(getStagingDirectoryForFileType(fileToAdd),
                                 FilenameUtils.getName(fileToAdd.getAbsolutePath()));
 
-                switch (stagingMovementType) {
+                switch (fileMovementType) {
 
-                    case MoveToStaging:
+                    case MoveTo:
 
                         FileUtils.moveFile(fileToAdd, destinationFile);
                         msg = "file moved.";
                         break;
 
-                    case CopyToStaging:
+                    case CopyTo:
 
                         FileUtils.copyFile(fileToAdd, destinationFile);
                         msg = "file copied";
@@ -204,22 +254,52 @@ public class UtilsHive {
         HiveSporeType sporeType = getSporeTypeFromFile(fileToAdd);
 
         return ConfigHive.getHiveSubFolderForRootNameAndType(
-                UtilsHive.STAGING_ROOT_NAME, sporeType);
+                ConfigHive.STAGING_ROOT_NAME, sporeType);
     }
 
     public static void moveToStaging(Context context, File fileToMove) {
 
-        addToStaging(context, fileToMove, StagingMovementType.MoveToStaging);
+        addToStaging(context, fileToMove, FileMovementType.MoveTo);
     }
 
     public static void copyToStaging(Context context, File fileToCopy) {
 
-        addToStaging(context, fileToCopy, StagingMovementType.CopyToStaging);
+        addToStaging(context, fileToCopy, FileMovementType.CopyTo);
     }
 
-    public enum StagingMovementType{
+    public static void copyAllFromStagingTo(Context context, HiveLobe lobe) {
 
-        MoveToStaging,
-        CopyToStaging
+        HiveRoot stagingRoot =
+                HiveRegistry.getHiveRoot(ConfigHive.STAGING_ROOT_NAME);
+
+        if(stagingRoot != null){
+
+            getFromStaging(context, lobe, FileMovementType.CopyTo);
+
+        }else{
+
+            Utils.toast(context, "staging root not registered");
+        }
+    }
+
+    public static void moveAllFromStagingTo(Context context, HiveLobe lobe) {
+
+        HiveRoot stagingRoot =
+                HiveRegistry.getHiveRoot(ConfigHive.STAGING_ROOT_NAME);
+
+        if(stagingRoot != null){
+
+            getFromStaging(context, lobe, FileMovementType.MoveTo);
+
+        }else{
+
+            Utils.toast(context, "staging root not registered");
+        }
+    }
+
+    public enum FileMovementType {
+
+        MoveTo,
+        CopyTo
     }
 }

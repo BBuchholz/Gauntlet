@@ -23,14 +23,22 @@ public class HiveLobeImages extends HiveLobe {
     @Override
     public void collect() {
 
-        File hiveRootImagesSubFolderPath =
-                getAssociatedDirectory();
+//        File hiveRootImagesSubFolderPath =
+//                getAssociatedDirectory();
+//
+//        for(File filePath :
+//                FileUtils.listFiles(
+//                        hiveRootImagesSubFolderPath,
+//                        ConfigHive.IMAGE_EXTENSIONS,
+//                        true)){
+//
+//            add(new HiveSporeFilePath(filePath));
+//        }
 
         for(File filePath :
-                FileUtils.listFiles(
-                        hiveRootImagesSubFolderPath,
-                        ConfigHive.IMAGE_EXTENSIONS,
-                        true)){
+                filterDirectoryFiles(
+                        getAssociatedDirectory(),
+                        ConfigHive.IMAGE_EXTENSIONS)){
 
             add(new HiveSporeFilePath(filePath));
         }
@@ -40,6 +48,12 @@ public class HiveLobeImages extends HiveLobe {
     public File getAssociatedDirectory() {
 
         return ConfigHive.getHiveRootImagesFolderPath(getHiveRoot());
+    }
+
+    @Override
+    public Iterable<File> siftFiles(HiveRoot hiveRoot) {
+
+        return siftFiles(hiveRoot, ConfigHive.IMAGE_EXTENSIONS);
     }
 }
 

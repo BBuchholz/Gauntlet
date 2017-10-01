@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet.hive;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -65,4 +66,31 @@ public abstract class HiveLobe {
                 .toHashCode();
     }
 
+    protected Iterable<File> filterDirectoryFiles(File directory,
+                                                  String[] fileExtensions){
+
+        return FileUtils.listFiles(
+                directory,
+                fileExtensions,
+                true);
+    }
+
+    public abstract Iterable<File> siftFiles(HiveRoot hiveRoot);
+
+    protected Iterable<File> siftFiles(HiveRoot hiveRoot, String[] fileExtensions) {
+
+        HiveLobe lobeToSift = hiveRoot.getLobeByName(this.getHiveLobeName());
+
+        if(lobeToSift != null) {
+
+            return filterDirectoryFiles(
+                    lobeToSift.getAssociatedDirectory(),
+                    fileExtensions);
+
+        }else{
+
+            return new ArrayList<>();
+        }
+
+    }
 }

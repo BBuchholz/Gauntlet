@@ -15,6 +15,8 @@ import java.io.File;
 
 public class HiveLobePdfs extends HiveLobe {
 
+    public static final String[] FILE_EXTENSIONS = new String[]{"pdf"};
+
     public HiveLobePdfs(HiveRoot hr) {
         super("pdfs", hr);
     }
@@ -22,14 +24,22 @@ public class HiveLobePdfs extends HiveLobe {
     @Override
     public void collect() {
 
-        File hiveRootPdfsSubFolderPath =
-                getAssociatedDirectory();
+//        File hiveRootPdfsSubFolderPath =
+//                getAssociatedDirectory();
+//
+//        for(File filePath :
+//                FileUtils.listFiles(
+//                        hiveRootPdfsSubFolderPath,
+//                        new String[]{"pdf"},
+//                        true)){
+//
+//            add(new HiveSporeFilePath(filePath));
+//        }
 
         for(File filePath :
-                FileUtils.listFiles(
-                        hiveRootPdfsSubFolderPath,
-                        new String[]{"pdf"},
-                        true)){
+                filterDirectoryFiles(
+                        getAssociatedDirectory(),
+                        FILE_EXTENSIONS)){
 
             add(new HiveSporeFilePath(filePath));
         }
@@ -39,5 +49,11 @@ public class HiveLobePdfs extends HiveLobe {
     public File getAssociatedDirectory() {
 
         return ConfigHive.getHiveRootPdfsFolderPath(getHiveRoot());
+    }
+
+    @Override
+    public Iterable<File> siftFiles(HiveRoot hiveRoot) {
+
+        return siftFiles(hiveRoot, FILE_EXTENSIONS);
     }
 }

@@ -24,7 +24,7 @@ public class HiveLobeImages extends HiveLobe {
     public void collect() {
 
         File hiveRootImagesSubFolderPath =
-                ConfigHive.getHiveRootImagesFolderPath(getHiveRoot());
+                getAssociatedDirectory();
 
         for(File filePath :
                 FileUtils.listFiles(
@@ -34,6 +34,12 @@ public class HiveLobeImages extends HiveLobe {
 
             add(new HiveSporeFilePath(filePath));
         }
+    }
+
+    @Override
+    public File getAssociatedDirectory() {
+
+        return ConfigHive.getHiveRootImagesFolderPath(getHiveRoot());
     }
 }
 

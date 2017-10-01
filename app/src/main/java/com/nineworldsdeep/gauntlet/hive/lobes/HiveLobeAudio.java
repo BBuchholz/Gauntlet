@@ -24,7 +24,8 @@ public class HiveLobeAudio extends HiveLobe {
     public void collect() {
 
         File hiveRootAudioSubFolderPath =
-                ConfigHive.getHiveRootAudioFolderPath(getHiveRoot());
+                getAssociatedDirectory();
+
 
         for(File filePath :
                 FileUtils.listFiles(
@@ -34,5 +35,11 @@ public class HiveLobeAudio extends HiveLobe {
 
             add(new HiveSporeFilePath(filePath));
         }
+    }
+
+    @Override
+    public File getAssociatedDirectory() {
+
+        return ConfigHive.getHiveRootAudioFolderPath(getHiveRoot());
     }
 }

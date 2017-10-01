@@ -23,7 +23,7 @@ public class HiveLobePdfs extends HiveLobe {
     public void collect() {
 
         File hiveRootPdfsSubFolderPath =
-                ConfigHive.getHiveRootPdfsFolderPath(getHiveRoot());
+                getAssociatedDirectory();
 
         for(File filePath :
                 FileUtils.listFiles(
@@ -33,5 +33,11 @@ public class HiveLobePdfs extends HiveLobe {
 
             add(new HiveSporeFilePath(filePath));
         }
+    }
+
+    @Override
+    public File getAssociatedDirectory() {
+
+        return ConfigHive.getHiveRootPdfsFolderPath(getHiveRoot());
     }
 }

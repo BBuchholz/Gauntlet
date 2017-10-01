@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.hive;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -10,10 +11,6 @@ import java.util.ArrayList;
  */
 
 public abstract class HiveLobe {
-
-//    protected int hiveRootId = -1;
-//    protected String hiveRootName;
-    //protected HiveLobeType hiveLobeType;
 
     protected String hiveLobeName;
     protected HiveRoot hiveRoot;
@@ -45,7 +42,7 @@ public abstract class HiveLobe {
     }
 
     public abstract void collect();
-
+    public abstract File getAssociatedDirectory();
 
     @Override
     public boolean equals(Object o) {
@@ -68,28 +65,4 @@ public abstract class HiveLobe {
                 .toHashCode();
     }
 
-//
-//    public int getHiveRootId() {
-//        return hiveRoot.getHiveRootId();
-//    }
-
-//    public void setHiveRootId(int hiveRootId) {
-//        this.hiveRootId = hiveRootId;
-//    }
-
-//    public String getHiveRootName() {
-//        return hiveRootName;
-//    }
-
-//    public void setHiveRootName(String hiveRootName) {
-//        this.hiveRootName = hiveRootName;
-//    }
-
-//    public HiveLobeType getHiveLobeType() {
-//        return hiveLobeType;
-//    }
-//
-//    public void setHiveLobeType(HiveLobeType hiveLobeType) {
-//        this.hiveLobeType = hiveLobeType;
-//    }
 }

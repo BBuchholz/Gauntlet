@@ -12,6 +12,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.ListBaseActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,15 +47,6 @@ public class HiveLobesActivity extends ListBaseActivity {
                         HiveLobesActivity.this);
             }
         });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Lobes");
@@ -94,16 +86,6 @@ public class HiveLobesActivity extends ListBaseActivity {
 
         cmds.clear();
 
-//        for(HiveLobeType hiveLobeType : HiveLobeType.values()) {
-//
-//            HashMap<String, String> extraKeyToValue = new HashMap<>();
-//
-//            extraKeyToValue.put(EXTRA_HIVE_LOBE_KEY, this.mHiveRoot.getHiveRootName());
-//            //extraKeyToValue.put(EXTRA_HIVE_LOBE_TYPE, hiveLobeType.toString());
-//
-//            addNavigateActivityCommand(hiveLobeType.toString(), extraKeyToValue, HiveSporesActivity.class);
-//        }
-
         UtilsHive.refreshLobes(mHiveRoot);
 
         for(HiveLobe hl : mHiveRoot.getLobes()){
@@ -116,10 +98,14 @@ public class HiveLobesActivity extends ListBaseActivity {
 
             extraKeyToValue.put(EXTRA_HIVE_LOBE_KEY, lobeKey);
 
-            addNavigateActivityCommand(hl.getHiveLobeName(), extraKeyToValue, HiveSporesActivity.class);
+            File associatedDirectory = hl.getAssociatedDirectory();
+
+            String displayValue = hl.getHiveLobeName() + " (" +
+                    associatedDirectory.listFiles().length + ")";
+
+            addNavigateActivityCommand(displayValue, extraKeyToValue, HiveSporesActivity.class);
         }
 
-        String testing = "just need a breakpoint";
     }
 
     private void addNavigateActivityCommand(

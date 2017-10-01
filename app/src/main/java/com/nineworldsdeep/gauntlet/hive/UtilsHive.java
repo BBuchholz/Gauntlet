@@ -178,7 +178,6 @@ public class UtilsHive {
                         break;
                 }
 
-
             }catch (Exception ex){
 
                 msg = "Error moving file: " + ex.getMessage();

@@ -24,7 +24,7 @@ public class HiveLobeXml extends HiveLobe {
     public void collect() {
 
         File hiveRootXmlSubFolderPath =
-                ConfigHive.getHiveRootXmlFolderPath(getHiveRoot());
+                getAssociatedDirectory();
 
         for(File filePath :
                 FileUtils.listFiles(
@@ -34,5 +34,11 @@ public class HiveLobeXml extends HiveLobe {
 
             add(new HiveSporeFilePath(filePath));
         }
+    }
+
+    @Override
+    public File getAssociatedDirectory() {
+
+        return ConfigHive.getHiveRootXmlFolderPath(getHiveRoot());
     }
 }

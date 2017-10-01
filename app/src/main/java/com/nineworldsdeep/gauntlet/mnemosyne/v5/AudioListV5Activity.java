@@ -617,12 +617,12 @@ public class AudioListV5Activity extends AppCompatActivity {
 
     private void moveToStaging(int position) {
 
-        UtilsHive.moveToStaging(this, getItem(position));
+        UtilsHive.moveToStaging(this, getItem(position).getFile());
     }
 
     private void copyToStaging(int position) {
 
-        UtilsHive.copyToStaging(this, getItem(position));
+        UtilsHive.copyToStaging(this, getItem(position).getFile());
     }
 
     private void exportXml(int position) throws Exception {

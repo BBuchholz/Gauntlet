@@ -11,4 +11,10 @@
     <item android:id="@+id/action_go_to_home_screen"
           android:title="@string/home"
           app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_copy_all_to_staging"
+          android:title="@string/copy_all_to_staging"
+          app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_move_all_to_staging"
+          android:title="@string/move_all_to_staging"
+          app:showAsAction="ifRoom|withText"/>
 </menu>

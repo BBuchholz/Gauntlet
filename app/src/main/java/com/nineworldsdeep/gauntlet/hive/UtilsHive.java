@@ -150,12 +150,10 @@ public class UtilsHive {
     }
 
     public static void addToStaging(Context context,
-                                    MediaListItem mli,
+                                    File fileToAdd,
                                     StagingMovementType stagingMovementType) {
 
-        File fileToAdd = mli.getFile();
-
-        String msg;
+        String msg = "";
 
         if(fileToAdd.exists()){
 
@@ -170,15 +168,16 @@ public class UtilsHive {
                     case MoveToStaging:
 
                         FileUtils.moveFile(fileToAdd, destinationFile);
+                        msg = "file moved.";
                         break;
 
                     case CopyToStaging:
 
                         FileUtils.copyFile(fileToAdd, destinationFile);
+                        msg = "file copied";
                         break;
                 }
 
-                msg = "file moved";
 
             }catch (Exception ex){
 
@@ -190,7 +189,10 @@ public class UtilsHive {
             msg = "non existant path: " + fileToAdd.getAbsolutePath();
         }
 
-        Utils.toast(context, msg);
+        if(!Utils.stringIsNullOrWhitespace(msg)){
+
+            Utils.toast(context, msg);
+        }
     }
 
     /**
@@ -206,14 +208,14 @@ public class UtilsHive {
                 UtilsHive.STAGING_ROOT_NAME, sporeType);
     }
 
-    public static void moveToStaging(Context context, MediaListItem item) {
+    public static void moveToStaging(Context context, File fileToMove) {
 
-        addToStaging(context, item, StagingMovementType.MoveToStaging);
+        addToStaging(context, fileToMove, StagingMovementType.MoveToStaging);
     }
 
-    public static void copyToStaging(Context context, MediaListItem item) {
+    public static void copyToStaging(Context context, File fileToCopy) {
 
-        addToStaging(context, item, StagingMovementType.CopyToStaging);
+        addToStaging(context, fileToCopy, StagingMovementType.CopyToStaging);
     }
 
     public enum StagingMovementType{

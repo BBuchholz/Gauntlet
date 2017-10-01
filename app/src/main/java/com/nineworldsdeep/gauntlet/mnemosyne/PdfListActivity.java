@@ -20,6 +20,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.hive.UtilsHive;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
@@ -41,6 +42,8 @@ public class PdfListActivity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PDFS = 2;
     private static final int MENU_CONTEXT_OPEN_EXTERNALLY = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
+    private static final int MENU_CONTEXT_COPY_TO_STAGING = 5;
+    private static final int MENU_CONTEXT_MOVE_TO_STAGING = 6;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -133,18 +136,52 @@ public class PdfListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_go_to_home_screen){
+//
+//            NavigateActivityCommand.navigateTo(
+//                    HomeListActivity.class, this
+//            );
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
-        int id = item.getItemId();
+        switch(item.getItemId()){
 
-        if (id == R.id.action_go_to_home_screen){
 
-            NavigateActivityCommand.navigateTo(
-                    HomeListActivity.class, this
-            );
-            return true;
+            case R.id.action_copy_all_to_staging:
+
+                copyAllToStaging();
+                return true;
+
+            case R.id.action_move_all_to_staging:
+
+                moveAllToStaging();
+                return true;
+
+            case R.id.action_go_to_home_screen:
+
+                NavigateActivityCommand.navigateTo(
+                        HomeListActivity.class, this);
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void copyAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
+    }
+
+    private void moveAllToStaging() {
+
+        Utils.toast(this, "awaiting implementation");
     }
 
     private void refreshLayout() {
@@ -213,6 +250,8 @@ public class PdfListActivity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PDFS, Menu.NONE, "Move to pdfs");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
             //menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNALLY, Menu.NONE, "Open externally");
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
+            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
         }
 
     }
@@ -224,6 +263,17 @@ public class PdfListActivity extends AppCompatActivity {
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
+
+            case MENU_CONTEXT_COPY_TO_STAGING:
+
+                copyToStaging(info.position);
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_STAGING:
+
+                moveToStaging(info.position);
+                return true;
+
             case MENU_CONTEXT_SHA1_HASH_ID:
 
                 computeSHA1Hash(info.position);
@@ -251,6 +301,16 @@ public class PdfListActivity extends AppCompatActivity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void moveToStaging(int position) {
+
+        UtilsHive.moveToStaging(this, mFileListItems.get(position).getFile());
+    }
+
+    private void copyToStaging(int position) {
+
+        UtilsHive.copyToStaging(this, mFileListItems.get(position).getFile());
     }
 
     private void openExternally(int position){

@@ -128,6 +128,22 @@ public class UtilsHive {
         return HiveSporeType.unknown;
     }
 
+    public static Iterable<File> siftFilesForSporeType(HiveSporeType sporeType,
+                                                       Iterable<File> files){
+
+        ArrayList<File> lst = new ArrayList<>();
+
+        for(File f : files){
+
+            if(getSporeTypeFromFile(f) == sporeType){
+
+                lst.add(f);
+            }
+        }
+
+        return lst;
+    }
+
     public static void refreshLobes(HiveRoot hr) {
 
         hr.add(new HiveLobeXml(hr));
@@ -142,6 +158,7 @@ public class UtilsHive {
         //because we will eventually be pulling associated
         //data from the db as well
 
+        hl.sporesInternal.clear();
         hl.collect();
     }
 
@@ -164,21 +181,42 @@ public class UtilsHive {
 
                     File destinationFile =
                             new File(lobe.getAssociatedDirectory(),
-                                    FilenameUtils.getName(fileToGet.getAbsolutePath()));
+                                    FilenameUtils.getName(
+                                            fileToGet.getAbsolutePath()));
 
-                    switch (fileMovementType) {
+                    if(destinationFile.exists()){
 
-                        case MoveTo:
+                        if(fileHashesAreEqual(context, fileToGet, destinationFile)) {
 
-                            FileUtils.moveFile(fileToGet, destinationFile);
-                            msg = "files moved.";
-                            break;
+                            if (fileMovementType == FileMovementType.MoveTo) {
 
-                        case CopyTo:
+                                fileToGet.delete();
+                                msg = "files moved.";
 
-                            FileUtils.copyFile(fileToGet, destinationFile);
-                            msg = "files copied";
-                            break;
+                            }else{
+
+                                msg = "files copied";
+                            }
+
+
+                        }
+
+                    }else {
+
+                        switch (fileMovementType) {
+
+                            case MoveTo:
+
+                                FileUtils.moveFile(fileToGet, destinationFile);
+                                msg = "files moved.";
+                                break;
+
+                            case CopyTo:
+
+                                FileUtils.copyFile(fileToGet, destinationFile);
+                                msg = "files copied";
+                                break;
+                        }
                     }
 
                 } catch (Exception ex) {
@@ -213,19 +251,30 @@ public class UtilsHive {
                         new File(getStagingDirectoryForFileType(fileToAdd),
                                 FilenameUtils.getName(fileToAdd.getAbsolutePath()));
 
-                switch (fileMovementType) {
+                if(destinationFile.exists()){
 
-                    case MoveTo:
+                    if(fileHashesAreEqual(context, fileToAdd, destinationFile)
+                            && fileMovementType == FileMovementType.MoveTo){
 
-                        FileUtils.moveFile(fileToAdd, destinationFile);
-                        msg = "file moved.";
-                        break;
+                        fileToAdd.delete();
+                    }
 
-                    case CopyTo:
+                }else {
 
-                        FileUtils.copyFile(fileToAdd, destinationFile);
-                        msg = "file copied";
-                        break;
+                    switch (fileMovementType) {
+
+                        case MoveTo:
+
+                            FileUtils.moveFile(fileToAdd, destinationFile);
+                            msg = "file moved.";
+                            break;
+
+                        case CopyTo:
+
+                            FileUtils.copyFile(fileToAdd, destinationFile);
+                            msg = "file copied";
+                            break;
+                    }
                 }
 
             }catch (Exception ex){
@@ -295,6 +344,88 @@ public class UtilsHive {
 
             Utils.toast(context, "staging root not registered");
         }
+    }
+
+    /**
+     * supports images, audio, and pdfs, as defined by nwd-hive internally
+     * @param intakeFiles
+     */
+    public static void intake(Context context,
+                              Iterable<File> intakeFiles) throws Exception {
+
+        //images
+        for(File imageFile :
+                siftFilesForSporeType(HiveSporeType.image, intakeFiles)){
+
+            moveFile(context, imageFile, Configuration.getScreenshotDirectory());
+        }
+
+        //audio
+        for(File audioFile :
+                siftFilesForSporeType(HiveSporeType.audio, intakeFiles)){
+
+            moveFile(context, audioFile, Configuration.getVoicememosDirectory());
+        }
+
+        //pdfs
+        for(File pdfFile :
+                siftFilesForSporeType(HiveSporeType.pdf, intakeFiles)){
+
+            moveFile(context, pdfFile, Configuration.getPdfDirectory());
+        }
+
+    }
+
+    public static void moveFile(Context context,
+                                File sourceFile,
+                                File destinationDirectory) throws Exception {
+
+        if(sourceFile.exists() && sourceFile.isFile()){
+
+            File destinationFile =
+                    new File(destinationDirectory,
+                            FilenameUtils.getName(
+                                    sourceFile.getAbsolutePath()));
+
+            if(destinationFile.exists()){
+
+                if(fileHashesAreEqual(context, sourceFile, destinationFile)){
+
+                    sourceFile.delete();
+                }
+
+            }else {
+
+                FileUtils.moveFile(sourceFile, destinationFile);
+            }
+        }
+    }
+
+    private static boolean fileHashesAreEqual(Context context, File sourceFile, File destinationFile) throws Exception {
+
+        String sourceHash =
+                Utils.computeSHA1(sourceFile.getAbsolutePath());
+        String destHash =
+                Utils.computeSHA1(destinationFile.getAbsolutePath());
+
+        if(!sourceHash.equalsIgnoreCase(destHash)){
+
+            Utils.toast(context, "Destination file [" +
+                    destinationFile.getName() +
+                    "] already exists with a different hash value, " +
+                    "file move aborted.");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isLocalRoot(Context context,
+                                      NwdDb db,
+                                      HiveRoot hiveRoot) {
+
+        return getLocalHiveRoot(context, db).equals(hiveRoot);
     }
 
     public enum FileMovementType {

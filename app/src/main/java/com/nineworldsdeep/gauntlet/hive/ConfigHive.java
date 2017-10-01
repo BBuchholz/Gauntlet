@@ -135,4 +135,5 @@ public class ConfigHive {
 
         return hiveRoot.getHiveRootName().equalsIgnoreCase(STAGING_ROOT_NAME);
     }
+
 }

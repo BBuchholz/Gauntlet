@@ -35,6 +35,7 @@ import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,9 +44,10 @@ import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT
 
 public class HiveSporesActivity extends AppCompatActivity {
 
-    HiveLobe mHiveLobe;
+    private HiveLobe mHiveLobe;
 
     private static final int MENU_CONTEXT_OPEN_EXTERNAL = 1;
+    private static final int MENU_CONTEXT_INTAKE = 2;
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -366,17 +368,24 @@ public class HiveSporesActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        NwdDb db = NwdDb.getInstance(this);
+        db.open();
+
+        boolean isLocalRoot =
+                UtilsHive.isLocalRoot(this, db, mHiveLobe.getHiveRoot());
+
         boolean isDirectory = getItem(info.position).getFile().isDirectory();
 
         if(!isDirectory) {
 
-            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL, Menu.NONE, "Open External");
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL,
+                    Menu.NONE, "Open External");
 
-            //these can become staging methods
-//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
-//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
-//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
-//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+            if(isLocalRoot) {
+
+                menu.add(Menu.NONE, MENU_CONTEXT_INTAKE,
+                        Menu.NONE, "Intake");
+            }
         }
 
     }
@@ -392,10 +401,37 @@ public class HiveSporesActivity extends AppCompatActivity {
             case MENU_CONTEXT_OPEN_EXTERNAL:
 
                 openExternal(info.position);
+                return true;
+
+            case MENU_CONTEXT_INTAKE:
+
+                intake(info.position);
+                return true;
 
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void intake(int position) {
+
+        try{
+
+            ArrayList<File> intakeFiles = new ArrayList<>();
+            intakeFiles.add(getItem(position).getFile());
+
+            UtilsHive.intake(this, intakeFiles);
+
+            Utils.toast(this, "intake successful.");
+
+        }
+        catch (Exception ex){
+
+            Utils.toast(this,
+                    "[HiveSporesActivity] intake error: " + ex.getMessage());
+        }
+
+        refreshLayout();
     }
 
     private void openExternal(int position) {

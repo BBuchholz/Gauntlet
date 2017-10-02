@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
@@ -25,6 +26,7 @@ public class HiveLobesActivity extends ListBaseActivity {
 
     private static final int MENU_CONTEXT_MOVE_ALL_FROM_STAGING = 1;
     private static final int MENU_CONTEXT_COPY_ALL_FROM_STAGING = 2;
+    private static final int MENU_CONTEXT_INTAKE_ALL = 3;
 
 
     private ArrayList<NavigateActivityCommand> mCommands = new ArrayList<>();
@@ -67,6 +69,8 @@ public class HiveLobesActivity extends ListBaseActivity {
                 && HiveRegistry.hasRootRegistered(hiveRootKey)) {
 
             mHiveRoot = HiveRegistry.getHiveRoot(hiveRootKey);
+            TextView tv = (TextView)findViewById(R.id.tvHierarchyAddress);
+            tv.setText(hiveRootKey);
 
         }else{
 
@@ -96,6 +100,9 @@ public class HiveLobesActivity extends ListBaseActivity {
 
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_ALL_FROM_STAGING,
                     Menu.NONE, "Copy All From Staging");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_INTAKE_ALL,
+                    Menu.NONE, "Intake All");
         }
     }
 
@@ -117,9 +124,19 @@ public class HiveLobesActivity extends ListBaseActivity {
                 copyAllFromStaging(info.position);
                 return true;
 
+            case MENU_CONTEXT_INTAKE_ALL:
+
+                intakeAll(info.position);
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void intakeAll(int position) {
+
+        Utils.toast(this, "awaiting implementation");
     }
 
     private void copyAllFromStaging(int position) {

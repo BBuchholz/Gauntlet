@@ -71,7 +71,8 @@ public class HiveSporesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_list_v52);
+        //setContentView(R.layout.activity_audio_list_v52);
+        setContentView(R.layout.activity_hive_spores);
 
         String lobeKey = getIntent().getStringExtra(
                 EXTRA_HIVE_LOBE_KEY
@@ -84,6 +85,10 @@ public class HiveSporesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Spores");
 
         mHiveLobe = HiveRegistry.getHiveLobe(lobeKey);
+        TextView tvHierarchyAddress =
+                (TextView) findViewById(R.id.tvHierarchyAddress);
+
+        tvHierarchyAddress.setText(lobeKey);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
@@ -553,7 +558,7 @@ public class HiveSporesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_audio_list_v5, menu);
+        getMenuInflater().inflate(R.menu.menu_hive_spores, menu);
         return true;
     }
 
@@ -573,38 +578,20 @@ public class HiveSporesActivity extends AppCompatActivity {
 
                 return true;
 
-            case R.id.action_queue_folder_to_playlist:
+            case R.id.action_intake_all:
 
-                MediaPlayerSingletonV5 player =
-                        MediaPlayerSingletonV5.getInstance();
-
-                ArrayAdapter<MediaListItem> adapter =
-                        (ArrayAdapter<MediaListItem>)getListAdapter();
-
-                ArrayList<MediaListItem> lst = new ArrayList<>();
-
-                for(int i = 0; i < adapter.getCount(); i++){
-
-                    lst.add(adapter.getItem(i));
-                }
-
-                player.queue(lst);
-
-                NavigateActivityCommand.navigateTo(
-                        AudioDisplayV5Activity.class, this);
-
-                return true;
-
-            case R.id.action_export_all_to_xml:
-
-                exportAllToXml();
-
+                intakeAll();
                 return true;
 
             default:
 
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void intakeAll() {
+
+        Utils.toast(this, "awaiting implementation");
     }
 
     @Override

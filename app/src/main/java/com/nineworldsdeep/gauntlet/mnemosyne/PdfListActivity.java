@@ -306,11 +306,13 @@ public class PdfListActivity extends AppCompatActivity {
     private void moveToStaging(int position) {
 
         UtilsHive.moveToStaging(this, mFileListItems.get(position).getFile());
+        refreshLayout();
     }
 
     private void copyToStaging(int position) {
 
         UtilsHive.copyToStaging(this, mFileListItems.get(position).getFile());
+        refreshLayout();
     }
 
     private void openExternally(int position){

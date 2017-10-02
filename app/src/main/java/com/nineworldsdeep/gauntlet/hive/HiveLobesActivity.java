@@ -136,7 +136,19 @@ public class HiveLobesActivity extends ListBaseActivity {
 
     private void intakeAll(int position) {
 
-        Utils.toast(this, "awaiting implementation");
+        NavigateActivityCommand navCmd = mCommands.get(position);
+        HiveLobe lobe = mCommandsToLobes.get(navCmd);
+
+        try {
+
+            UtilsHive.intake(this, lobe.siftFiles(mHiveRoot));
+            Utils.toast(this, "intake successful.");
+            refreshLayout();
+
+        } catch (Exception e) {
+
+            Utils.toast(this, "intake error: " + e.getMessage());
+        }
     }
 
     private void copyAllFromStaging(int position) {

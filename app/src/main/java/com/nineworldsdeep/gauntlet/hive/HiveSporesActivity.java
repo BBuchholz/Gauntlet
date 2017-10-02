@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -591,7 +592,16 @@ public class HiveSporesActivity extends AppCompatActivity {
 
     private void intakeAll() {
 
-        Utils.toast(this, "awaiting implementation");
+        try {
+
+            UtilsHive.intake(this, getListItemsFiles());
+            Utils.toast(this, "intake successful.");
+            refreshLayout();
+
+        } catch (Exception e) {
+
+            Utils.toast(this, "intake error: " + e.getMessage());
+        }
     }
 
     @Override
@@ -607,6 +617,22 @@ public class HiveSporesActivity extends AppCompatActivity {
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
+        ArrayList<Media> lst = getListItemsMedia();
+
+        try {
+
+            UtilsMnemosyneV5.exportToXml(lst, db);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported.");
+    }
+
+    @NonNull
+    private ArrayList<Media> getListItemsMedia() {
         ArrayList<Media> lst = new ArrayList<>();
 
         ArrayAdapter<MediaListItem> itemsAdapter =
@@ -623,19 +649,28 @@ public class HiveSporesActivity extends AppCompatActivity {
                 lst.add(mli.getMedia());
             }
         }
-
-        try {
-
-            UtilsMnemosyneV5.exportToXml(lst, db);
-
-        }catch (Exception ex){
-
-            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
-        }
-
-        Utils.toast(this, "exported.");
+        return lst;
     }
 
+    @NonNull
+    private ArrayList<File> getListItemsFiles() {
+        ArrayList<File> lst = new ArrayList<>();
 
+        ArrayAdapter<MediaListItem> itemsAdapter =
+                (ArrayAdapter<MediaListItem>)getListAdapter();
+
+        for(int i = 0; i < itemsAdapter.getCount(); i++){
+
+            MediaListItem mli = itemsAdapter.getItem(i);
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                lst.add(f);
+            }
+        }
+        return lst;
+    }
 
 }

@@ -176,12 +176,26 @@ public class PdfListActivity extends AppCompatActivity {
 
     private void copyAllToStaging() {
 
-        Utils.toast(this, "awaiting implementation");
+        UtilsHive.copyToStaging(this, getListItemsAsFiles());
+        refreshLayout();
     }
 
     private void moveAllToStaging() {
 
-        Utils.toast(this, "awaiting implementation");
+        UtilsHive.moveToStaging(this, getListItemsAsFiles());
+        refreshLayout();
+    }
+
+    private Iterable<File> getListItemsAsFiles(){
+
+        ArrayList<File> files = new ArrayList<>();
+
+        for(FileListItem fli : mFileListItems){
+
+            files.add(fli.getFile());
+        }
+
+        return files;
     }
 
     private void refreshLayout() {

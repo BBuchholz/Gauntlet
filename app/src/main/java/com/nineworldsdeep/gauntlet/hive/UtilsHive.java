@@ -237,54 +237,59 @@ public class UtilsHive {
         }
     }
 
+
     public static void addToStaging(Context context,
-                                    File fileToAdd,
+                                    Iterable<File> filesToAdd,
                                     FileMovementType fileMovementType) {
+
+        //todo: messages here were for single file, got modded to multiple files, messages left the same
 
         String msg = "";
 
-        if(fileToAdd.exists()){
+        for(File fileToAdd : filesToAdd) {
+            if (fileToAdd.exists()) {
 
-            try{
+                try {
 
-                File destinationFile =
-                        new File(getStagingDirectoryForFileType(fileToAdd),
-                                FilenameUtils.getName(fileToAdd.getAbsolutePath()));
+                    File destinationFile =
+                            new File(getStagingDirectoryForFileType(fileToAdd),
+                                    FilenameUtils.getName(fileToAdd.getAbsolutePath()));
 
-                if(destinationFile.exists()){
+                    if (destinationFile.exists()) {
 
-                    if(fileHashesAreEqual(context, fileToAdd, destinationFile)
-                            && fileMovementType == FileMovementType.MoveTo){
+                        if (fileHashesAreEqual(context, fileToAdd, destinationFile)
+                                && fileMovementType == FileMovementType.MoveTo) {
 
-                        fileToAdd.delete();
+                            fileToAdd.delete();
+                        }
+
+                    } else {
+
+                        switch (fileMovementType) {
+
+                            case MoveTo:
+
+                                FileUtils.moveFile(fileToAdd, destinationFile);
+                                msg = "file(s) moved.";
+                                break;
+
+                            case CopyTo:
+
+                                FileUtils.copyFile(fileToAdd, destinationFile);
+                                msg = "file(s) copied";
+                                break;
+                        }
                     }
 
-                }else {
+                } catch (Exception ex) {
 
-                    switch (fileMovementType) {
-
-                        case MoveTo:
-
-                            FileUtils.moveFile(fileToAdd, destinationFile);
-                            msg = "file moved.";
-                            break;
-
-                        case CopyTo:
-
-                            FileUtils.copyFile(fileToAdd, destinationFile);
-                            msg = "file copied";
-                            break;
-                    }
+                    msg = "Error moving file(s): " + ex.getMessage();
                 }
 
-            }catch (Exception ex){
+            } else {
 
-                msg = "Error moving file: " + ex.getMessage();
+                msg = "non existant path: " + fileToAdd.getAbsolutePath();
             }
-
-        }else{
-
-            msg = "non existant path: " + fileToAdd.getAbsolutePath();
         }
 
         if(!Utils.stringIsNullOrWhitespace(msg)){
@@ -292,6 +297,63 @@ public class UtilsHive {
             Utils.toast(context, msg);
         }
     }
+
+
+//    public static void addToStaging(Context context,
+//                                    File fileToAdd,
+//                                    FileMovementType fileMovementType) {
+//
+//        String msg = "";
+//
+//        if(fileToAdd.exists()){
+//
+//            try{
+//
+//                File destinationFile =
+//                        new File(getStagingDirectoryForFileType(fileToAdd),
+//                                FilenameUtils.getName(fileToAdd.getAbsolutePath()));
+//
+//                if(destinationFile.exists()){
+//
+//                    if(fileHashesAreEqual(context, fileToAdd, destinationFile)
+//                            && fileMovementType == FileMovementType.MoveTo){
+//
+//                        fileToAdd.delete();
+//                    }
+//
+//                }else {
+//
+//                    switch (fileMovementType) {
+//
+//                        case MoveTo:
+//
+//                            FileUtils.moveFile(fileToAdd, destinationFile);
+//                            msg = "file moved.";
+//                            break;
+//
+//                        case CopyTo:
+//
+//                            FileUtils.copyFile(fileToAdd, destinationFile);
+//                            msg = "file copied";
+//                            break;
+//                    }
+//                }
+//
+//            }catch (Exception ex){
+//
+//                msg = "Error moving file: " + ex.getMessage();
+//            }
+//
+//        }else{
+//
+//            msg = "non existant path: " + fileToAdd.getAbsolutePath();
+//        }
+//
+//        if(!Utils.stringIsNullOrWhitespace(msg)){
+//
+//            Utils.toast(context, msg);
+//        }
+//    }
 
     /**
      *
@@ -308,12 +370,26 @@ public class UtilsHive {
 
     public static void moveToStaging(Context context, File fileToMove) {
 
-        addToStaging(context, fileToMove, FileMovementType.MoveTo);
+        ArrayList<File> lst = new ArrayList<>();
+        lst.add(fileToMove);
+        addToStaging(context, lst, FileMovementType.MoveTo);
     }
 
     public static void copyToStaging(Context context, File fileToCopy) {
 
-        addToStaging(context, fileToCopy, FileMovementType.CopyTo);
+        ArrayList<File> lst = new ArrayList<>();
+        lst.add(fileToCopy);
+        addToStaging(context, lst, FileMovementType.CopyTo);
+    }
+
+    public static void moveToStaging(Context context, Iterable<File> filesToMove) {
+
+        addToStaging(context, filesToMove, FileMovementType.MoveTo);
+    }
+
+    public static void copyToStaging(Context context, Iterable<File> filesToCopy) {
+
+        addToStaging(context, filesToCopy, FileMovementType.CopyTo);
     }
 
     public static void copyAllFromStagingTo(Context context, HiveLobe lobe) {

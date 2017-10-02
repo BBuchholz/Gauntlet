@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -577,22 +578,7 @@ public class ImageListV5Activity extends AppCompatActivity {
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
-        ArrayList<Media> lst = new ArrayList<>();
-
-        ArrayAdapter<MediaListItem> itemsAdapter =
-            (ArrayAdapter<MediaListItem>)getListAdapter();
-
-        for(int i = 0; i < itemsAdapter.getCount(); i++){
-
-            MediaListItem mli = itemsAdapter.getItem(i);
-
-            File f = mli.getFile();
-
-            if(f.exists() && f.isFile()){
-
-                lst.add(mli.getMedia());
-            }
-        }
+        ArrayList<Media> lst = getListItemsMedia();
 
         try {
 
@@ -608,12 +594,14 @@ public class ImageListV5Activity extends AppCompatActivity {
 
     private void copyAllToStaging() {
 
-        Utils.toast(this, "awaiting implementation");
+        UtilsHive.copyToStaging(this, getListItemsFiles());
+        refreshLayout();
     }
 
     private void moveAllToStaging() {
 
-        Utils.toast(this, "awaiting implementation");
+        UtilsHive.moveToStaging(this, getListItemsFiles());
+        refreshLayout();
     }
 
     private void exportAllToXml() {
@@ -621,6 +609,22 @@ public class ImageListV5Activity extends AppCompatActivity {
         NwdDb db = NwdDb.getInstance(this);
         db.open();
 
+        ArrayList<Media> lst = getListItemsMedia();
+
+        try {
+
+            UtilsMnemosyneV5.exportToXml(lst, db);
+
+        }catch (Exception ex){
+
+            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+        }
+
+        Utils.toast(this, "exported.");
+    }
+
+    @NonNull
+    private ArrayList<Media> getListItemsMedia() {
         ArrayList<Media> lst = new ArrayList<>();
 
         ArrayAdapter<MediaListItem> itemsAdapter =
@@ -637,17 +641,28 @@ public class ImageListV5Activity extends AppCompatActivity {
                 lst.add(mli.getMedia());
             }
         }
+        return lst;
+    }
 
-        try {
+    @NonNull
+    private ArrayList<File> getListItemsFiles() {
+        ArrayList<File> lst = new ArrayList<>();
 
-            UtilsMnemosyneV5.exportToXml(lst, db);
+        ArrayAdapter<MediaListItem> itemsAdapter =
+            (ArrayAdapter<MediaListItem>)getListAdapter();
 
-        }catch (Exception ex){
+        for(int i = 0; i < itemsAdapter.getCount(); i++){
 
-            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+            MediaListItem mli = itemsAdapter.getItem(i);
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                lst.add(f);
+            }
         }
-
-        Utils.toast(this, "exported.");
+        return lst;
     }
 
     private void exportXml(int position) throws Exception {

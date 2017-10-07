@@ -635,10 +635,17 @@ public class Configuration {
 
         ArrayList<File> lst = new ArrayList<>();
 
-        for (File d : getHiveFolder().listFiles(
-                (FileFilter) DirectoryFileFilter.DIRECTORY)){
+        try {
 
-            lst.add(d);
+            for (File d : getHiveFolder().listFiles(
+                    (FileFilter) DirectoryFileFilter.DIRECTORY)) {
+
+                lst.add(d);
+            }
+
+        }catch (NullPointerException ex){
+
+            //do nothing, being thrown by listFiles() on new device
         }
 
         return lst;

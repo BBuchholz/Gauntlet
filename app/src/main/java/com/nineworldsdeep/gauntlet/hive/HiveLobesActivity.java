@@ -203,8 +203,17 @@ public class HiveLobesActivity extends ListBaseActivity {
 
             File associatedDirectory = hl.getAssociatedDirectory();
 
+            int count;
+            try{
+
+                count = associatedDirectory.listFiles().length;
+
+            }catch(NullPointerException ex){
+
+                count = 0;
+            }
             String displayValue = hl.getHiveLobeName() + " (" +
-                    associatedDirectory.listFiles().length + ")";
+                    count + ")";
 
             addNavigateActivityCommand(hl, displayValue, extraKeyToValue, HiveSporesActivity.class);
         }

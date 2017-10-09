@@ -101,8 +101,11 @@ public class HiveLobesActivity extends ListBaseActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_ALL_FROM_STAGING,
                     Menu.NONE, "Copy All From Staging");
 
-            menu.add(Menu.NONE, MENU_CONTEXT_INTAKE_ALL,
-                    Menu.NONE, "Intake All");
+            if(ConfigHive.isLocalRoot(lobe.getHiveRoot())) {
+
+                menu.add(Menu.NONE, MENU_CONTEXT_INTAKE_ALL,
+                        Menu.NONE, "Intake All");
+            }
         }
     }
 

@@ -136,4 +136,9 @@ public class ConfigHive {
         return hiveRoot.getHiveRootName().equalsIgnoreCase(STAGING_ROOT_NAME);
     }
 
+    public static boolean isLocalRoot(HiveRoot hiveRoot) {
+
+        return hiveRoot.getHiveRootName().equalsIgnoreCase(
+                Configuration.getLocalDeviceName());
+    }
 }

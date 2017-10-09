@@ -45,10 +45,13 @@ import static com.nineworldsdeep.gauntlet.hive.HiveRootsActivity.EXTRA_HIVE_ROOT
 
 public class HiveSporesActivity extends AppCompatActivity {
 
-    private HiveLobe mHiveLobe;
-
     private static final int MENU_CONTEXT_OPEN_EXTERNAL = 1;
     private static final int MENU_CONTEXT_INTAKE = 2;
+    private static final int MENU_OPTION_HOME = 3;
+    private static final int MENU_OPTION_INTAKE_ALL = 4;
+
+    private HiveLobe mHiveLobe;
+
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -559,7 +562,17 @@ public class HiveSporesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hive_spores, menu);
+        //getMenuInflater().inflate(R.menu.menu_hive_spores, menu);
+
+        menu.add(Menu.NONE, MENU_OPTION_HOME,
+                Menu.NONE, "Home");
+
+        if(ConfigHive.isLocalRoot(this.mHiveLobe.getHiveRoot())) {
+
+            menu.add(Menu.NONE, MENU_OPTION_INTAKE_ALL,
+                    Menu.NONE, "Intake All");
+        }
+
         return true;
     }
 
@@ -571,7 +584,7 @@ public class HiveSporesActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
 
-            case R.id.action_go_to_home_screen:
+            case MENU_OPTION_HOME:
 
                 NavigateActivityCommand.navigateTo(
                         HomeListActivity.class, this
@@ -579,7 +592,7 @@ public class HiveSporesActivity extends AppCompatActivity {
 
                 return true;
 
-            case R.id.action_intake_all:
+            case MENU_OPTION_INTAKE_ALL:
 
                 intakeAll();
                 return true;

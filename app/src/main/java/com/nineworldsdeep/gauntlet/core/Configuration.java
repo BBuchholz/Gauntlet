@@ -221,20 +221,37 @@ public class Configuration {
     }
 
     public static File getScreenshotDirectory() {
+//
+//        HashMap<String, String> dynamicVals =
+//                Utils.fromLineItemConfigFile("ConfigFile");
+//
+//        String picturesFolderPath = "/Pictures/Screenshots";
 
-        HashMap<String, String> dynamicVals =
-                Utils.fromLineItemConfigFile("ConfigFile");
-
-        String partialPath = "/Pictures/Screenshots";
-
-        if(dynamicVals.containsKey("screenShotFolder")){
-
-            partialPath = dynamicVals.get("screenShotFolder");
-        }
-
-        return getDirectoryStoragePath(partialPath);
+//        if(dynamicVals.containsKey("screenShotFolder")){
+//
+//            partialPath = dynamicVals.get("screenShotFolder");
+//        }
 
 //        return getDirectoryStoragePath("/Pictures/Screenshots");
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+        //quite a few devices use this folder instead, we want to default
+        //to it if it exists
+        String dcimFolderPath = "/DCIM/Screenshots";
+
+        File dcimFolder = getDirectoryStoragePath(dcimFolderPath);
+
+        if(dcimFolder.exists() && dcimFolder.isDirectory()){
+
+            return dcimFolder;
+
+        }else {
+
+            String picturesFolderPath = "/Pictures/Screenshots";
+            return getDirectoryStoragePath(picturesFolderPath);
+        }
+
     }
 
     public static File getSkitchDirectory() {

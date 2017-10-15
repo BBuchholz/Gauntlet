@@ -27,6 +27,7 @@ import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
@@ -125,7 +126,10 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
                 NwdDb db = NwdDb.getInstance(this);
                 db.open();
 
-                MediaListItem mli = new MediaListItem(audioPath);
+//                MediaListItem mli = new MediaListItem(audioPath);
+                MediaListItem mli =
+                        MnemosyneRegistry.tryGetMediaListItem(
+                                new File(audioPath));
 
                 setNowPlaying(
                         mMediaPlayerSingletonV5.queueAndPlayLast(

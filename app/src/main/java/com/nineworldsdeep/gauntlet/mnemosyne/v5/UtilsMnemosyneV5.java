@@ -62,7 +62,7 @@ public class UtilsMnemosyneV5 {
         return type;
     }
 
-    public static ArrayList<ImageGridItem> getImageGridItems(File dir){
+    public static ArrayList<ImageGridItem> getImageGridItems(File dir) throws Exception {
 
         ArrayList<ImageGridItem> lst = new ArrayList<>();
 
@@ -77,7 +77,7 @@ public class UtilsMnemosyneV5 {
         return lst;
     }
 
-    public static ArrayList<MediaListItem> getMediaListItemsAudio(File dir) {
+    public static ArrayList<MediaListItem> getMediaListItemsAudio(File dir) throws Exception {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
@@ -130,7 +130,7 @@ public class UtilsMnemosyneV5 {
 //    }
 
 
-    public static ArrayList<MediaListItem> getMediaListItemsImage(File dir) {
+    public static ArrayList<MediaListItem> getMediaListItemsImage(File dir) throws Exception {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
@@ -148,7 +148,7 @@ public class UtilsMnemosyneV5 {
 
     private static ArrayList<MediaListItem> getMediaListItems(
             File dir,
-            String[] exts) {
+            String[] exts) throws Exception {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
@@ -194,20 +194,25 @@ public class UtilsMnemosyneV5 {
 //    }
 
     private static ArrayList<MediaListItem> getMediaListItemsFromPaths(
-            ArrayList<String> pathList) {
+            ArrayList<String> pathList) throws Exception {
 
         ArrayList<MediaListItem> newList = new ArrayList<>();
 
         for(String filePath : pathList){
 
-            newList.add(new MediaListItem(filePath));
+            MediaListItem mli;
+            File f = new File(filePath);
+
+            mli = MnemosyneRegistry.tryGetMediaListItem(f);
+
+            newList.add(mli);
         }
 
         return newList;
     }
 
     private static ArrayList<MediaListItem> getAudioMediaListItemsFromPaths(
-            ArrayList<String> paths) {
+            ArrayList<String> paths) throws Exception {
 
         ArrayList<MediaListItem> newList = new ArrayList<>();
 
@@ -217,8 +222,22 @@ public class UtilsMnemosyneV5 {
 
             if(isAudioFileFromPath(filePath) || f.isDirectory()) {
 
-                MediaListItem mli =
-                        new MediaListItem(filePath);
+//                MediaListItem mli =
+//                        new MediaListItem(filePath);
+
+                MediaListItem mli = MnemosyneRegistry.tryGetMediaListItem(f);
+
+
+//                MediaListItem mli;
+//
+//                if(f.isDirectory()){
+//
+//                    mli = new MediaListItem(filePath);
+//
+//                } else{
+//
+//                    mli = MnemosyneRegistry.tryGetMediaListItem(f);
+//                }
 
                 newList.add(mli);
             }
@@ -252,7 +271,7 @@ public class UtilsMnemosyneV5 {
 //    }
 
     private static ArrayList<MediaListItem> getImageMediaListItemsFromPaths(
-            ArrayList<String> paths) {
+            ArrayList<String> paths) throws Exception {
 
         ArrayList<MediaListItem> newList = new ArrayList<>();
 
@@ -262,8 +281,19 @@ public class UtilsMnemosyneV5 {
 
             if(isImageFileFromPath(filePath) || f.isDirectory()) {
 
-                MediaListItem mli =
-                        new MediaListItem(filePath);
+//                MediaListItem mli;
+//
+//                if(f.isDirectory()){
+//
+//                    mli = new MediaListItem(filePath);
+//
+//                } else{
+//
+//                    mli = MnemosyneRegistry.tryGetMediaListItem(f);
+//                }
+
+
+                MediaListItem mli = MnemosyneRegistry.tryGetMediaListItem(f);
 
                 newList.add(mli);
             }

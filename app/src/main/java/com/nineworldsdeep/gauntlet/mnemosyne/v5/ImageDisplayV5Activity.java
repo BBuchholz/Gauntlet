@@ -23,6 +23,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.mnemosyne.FileListItem;
+import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
@@ -140,7 +141,9 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                 NwdDb db = NwdDb.getInstance(this);
                 db.open();
 
-                setCurrentMediaListItem(new MediaListItem(path));
+//                setCurrentMediaListItem(new MediaListItem(path));
+                setCurrentMediaListItem(
+                        MnemosyneRegistry.tryGetMediaListItem(new File(path)));
 
                 //db.sync(currentMediaListItem.getMedia());
                 MnemosyneRegistry.sync(currentMediaListItem, db);

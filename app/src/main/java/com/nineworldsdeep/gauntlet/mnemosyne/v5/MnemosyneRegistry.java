@@ -82,4 +82,32 @@ public class MnemosyneRegistry {
         }
     }
 
+    private static boolean hasFile(File f) {
+
+        return filesToHashes.containsKey(f);
+    }
+
+    private static MediaListItem getMediaListItem(File f) {
+
+        return hashesToMediaListItems.get(filesToHashes.get(f));
+    }
+
+    public static MediaListItem tryGetMediaListItem(File f) throws Exception {
+
+        if(f.isDirectory()){
+
+            return new MediaListItem(f.getAbsolutePath());
+        }
+
+        if(hasFile(f)){
+
+            return MnemosyneRegistry.getMediaListItem(f);
+
+        }else{
+
+            MediaListItem mli = new MediaListItem(f.getAbsolutePath());
+            //register(mli);
+            return mli;
+        }
+    }
 }

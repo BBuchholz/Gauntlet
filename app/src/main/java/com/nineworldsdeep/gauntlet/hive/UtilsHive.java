@@ -10,6 +10,7 @@ import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobePdfs;
 import com.nineworldsdeep.gauntlet.hive.lobes.HiveLobeXml;
 import com.nineworldsdeep.gauntlet.hive.spores.HiveSporeFilePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneRegistry;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FileUtils;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class UtilsHive {
 
-    public static ArrayList<MediaListItem> getSporesAsMediaListItems(HiveLobe hl) {
+    public static ArrayList<MediaListItem> getSporesAsMediaListItems(HiveLobe hl) throws Exception {
 
         ArrayList<MediaListItem> lst = new ArrayList<>();
 
@@ -34,7 +35,8 @@ public class UtilsHive {
 
                 HiveSporeFilePath hsfp = (HiveSporeFilePath)hs;
 
-                lst.add(new MediaListItem(hsfp.getFile().getAbsolutePath()));
+                lst.add(MnemosyneRegistry.tryGetMediaListItem(hsfp.getFile()));
+                //lst.add(new MediaListItem(hsfp.getFile().getAbsolutePath()));
             }
         }
 

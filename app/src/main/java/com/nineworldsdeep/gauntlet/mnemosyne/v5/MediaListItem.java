@@ -214,4 +214,18 @@ public class MediaListItem {
 
         return media.getTag(tag).isTagged();
     }
+
+    public String getHash() {
+
+        if(getMedia() == null){
+            return null;
+        }
+
+        return getMedia().getMediaHash();
+    }
+
+    public void setHash(String hash) {
+
+        getMedia().setMediaHash(hash);
+    }
 }

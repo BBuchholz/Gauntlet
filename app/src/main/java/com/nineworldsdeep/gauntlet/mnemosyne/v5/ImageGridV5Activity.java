@@ -123,7 +123,8 @@ public class ImageGridV5Activity extends AppCompatActivity {
 
                     if(mli.isFile()) {
 
-                        mli.hashMedia();
+                        MnemosyneRegistry.register(mli);
+                        //mli.hashMedia();
                         db.sync(mli.getMedia());
                     }
 

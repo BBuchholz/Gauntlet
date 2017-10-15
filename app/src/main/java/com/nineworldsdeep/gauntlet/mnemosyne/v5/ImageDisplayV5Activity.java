@@ -212,6 +212,7 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
     public void setCurrentMediaListItem(MediaListItem mli) throws Exception {
 
         currentMediaListItem = mli;
-        currentMediaListItem.hashMedia();
+        MnemosyneRegistry.register(currentMediaListItem);
+        //currentMediaListItem.hashMedia();
     }
 }

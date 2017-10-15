@@ -299,7 +299,7 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                     if(mli.isFile()) {
 
-                        mli.hashMedia();
+                        MnemosyneRegistry.register(mli);
                         db.sync(mli.getMedia());
                     }
 

@@ -333,7 +333,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
         if(currentMediaListItem != null) {
 
-            currentMediaListItem.hashMedia();
+            MnemosyneRegistry.register(currentMediaListItem);
+            //currentMediaListItem.hashMedia();
 
             if (db != null) {
 

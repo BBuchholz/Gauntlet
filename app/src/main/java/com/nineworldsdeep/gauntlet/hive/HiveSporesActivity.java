@@ -27,10 +27,12 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
+import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaPlayerSingletonV5;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneRegistry;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -321,7 +323,8 @@ public class HiveSporesActivity extends AppCompatActivity {
 
                     if(mli.isFile()) {
 
-                        mli.hashMedia();
+                        MnemosyneRegistry.register(mli);
+                        //mli.hashMedia();
                         db.sync(mli.getMedia());
                     }
 

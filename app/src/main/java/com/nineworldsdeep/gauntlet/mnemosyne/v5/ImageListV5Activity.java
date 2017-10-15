@@ -303,8 +303,9 @@ public class ImageListV5Activity extends AppCompatActivity {
                     if(mli.isFile()) {
 
                         MnemosyneRegistry.register(mli);
+                        MnemosyneRegistry.sync(mli, db);
                         //mli.hashMedia();
-                        db.sync(mli.getMedia());
+                        //db.sync(mli.getMedia());
                     }
 
 

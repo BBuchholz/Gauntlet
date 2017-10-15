@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Media {
 
     int mediaId;
+    boolean mediaIsDirty;
     String mediaFileName, mediaDescription, mediaHash;
     ArrayList<MediaTagging> mediaTaggings;
     MultiMap<String, DevicePath> devicePaths;
@@ -18,6 +19,22 @@ public class Media {
 
         mediaTaggings = new ArrayList<>();
         devicePaths = new MultiMap<>();
+
+        markClean();
+    }
+
+    public void markDirty(){
+
+        mediaIsDirty = true;
+    }
+
+    public void markClean(){
+
+        mediaIsDirty = false;
+    }
+
+    public boolean isDirty(){
+        return mediaIsDirty;
     }
 
     public ArrayList<MediaTagging> getMediaTaggings() {
@@ -34,6 +51,7 @@ public class Media {
 
     public void setMediaId(int mediaId) {
         this.mediaId = mediaId;
+        markDirty();
     }
 
     public String getMediaFileName() {
@@ -42,6 +60,7 @@ public class Media {
 
     public void setMediaFileName(String mediaFileName) {
         this.mediaFileName = mediaFileName;
+        markDirty();
     }
 
     public String getMediaDescription() {
@@ -50,6 +69,7 @@ public class Media {
 
     public void setMediaDescription(String mediaDescription) {
         this.mediaDescription = mediaDescription;
+        markDirty();
     }
 
     public String getMediaHash() {
@@ -58,6 +78,7 @@ public class Media {
 
     public void setMediaHash(String mediaHash) {
         this.mediaHash = mediaHash;
+        markDirty();
     }
 
     /**
@@ -77,57 +98,57 @@ public class Media {
                 dp.getDeviceName() == null ? "" : dp.getDeviceName();
 
         devicePaths.put(deviceName, dp);
+
+        markDirty();
     }
 
     public void add(MediaTagging mt) throws Exception {
-
-        //mediaTaggings.add(mt);
 
         if(!Utils.stringIsNullOrWhitespace(mt.getMediaTagValue())){
             getTag(mt.getMediaTagValue()).merge(mt);
         }
     }
 
-    /**
-     * mediaFileName, mediaDescription, and mediaHash will default to non-empty, non-null value.
-     * mediaId will default to value greater than zero.
-     *
-     * if values are set for both objects on any of the above properties,
-     * and differ, an error will be thrown
-     *
-     * mediaTaggings will be Merged with any existing taggings
-     *
-     * devicePaths will simply be added, without regard to duplication
-     * @param m
-     */
-    public void merge(Media m) throws Exception {
-
-        setMediaFileName(
-            UtilsMnemosyneV5.tryMergeString(
-                getMediaFileName(), m.getMediaFileName()));
-
-        setMediaDescription(
-            UtilsMnemosyneV5.tryMergeString(
-                getMediaDescription(), m.getMediaDescription()));
-
-        setMediaHash(
-            UtilsMnemosyneV5.tryMergeString(
-                getMediaHash(), m.getMediaHash()));
-
-        setMediaId(
-            UtilsMnemosyneV5.tryMergeInt(
-                getMediaId(), m.getMediaId()));
-
-        for(MediaTagging mt : m.getMediaTaggings()){
-
-            getTag(mt.getMediaTagValue()).merge(mt);
-        }
-
-        for(DevicePath dp : m.getDevicePaths().getAll()){
-
-            add(dp);
-        }
-    }
+//    /**
+//     * mediaFileName, mediaDescription, and mediaHash will default to non-empty, non-null value.
+//     * mediaId will default to value greater than zero.
+//     *
+//     * if values are set for both objects on any of the above properties,
+//     * and differ, an error will be thrown
+//     *
+//     * mediaTaggings will be Merged with any existing taggings
+//     *
+//     * devicePaths will simply be added, without regard to duplication
+//     * @param m
+//     */
+//    public void merge(Media m) throws Exception {
+//
+//        setMediaFileName(
+//            UtilsMnemosyneV5.tryMergeString(
+//                getMediaFileName(), m.getMediaFileName()));
+//
+//        setMediaDescription(
+//            UtilsMnemosyneV5.tryMergeString(
+//                getMediaDescription(), m.getMediaDescription()));
+//
+//        setMediaHash(
+//            UtilsMnemosyneV5.tryMergeString(
+//                getMediaHash(), m.getMediaHash()));
+//
+//        setMediaId(
+//            UtilsMnemosyneV5.tryMergeInt(
+//                getMediaId(), m.getMediaId()));
+//
+//        for(MediaTagging mt : m.getMediaTaggings()){
+//
+//            getTag(mt.getMediaTagValue()).merge(mt);
+//        }
+//
+//        for(DevicePath dp : m.getDevicePaths().getAll()){
+//
+//            add(dp);
+//        }
+//    }
 
     public boolean hasTag(String tag) {
 
@@ -169,6 +190,7 @@ public class Media {
         newDp.setDeviceName(deviceDescription);
         newDp.setPath(pathValue);
         add(newDp);
+        markDirty();
 
         return newDp;
     }
@@ -197,6 +219,7 @@ public class Media {
         MediaTagging newMt = new MediaTagging();
         mediaTaggings.add(newMt);
         newMt.setMediaTagValue(tag);
+        markDirty();
 
         return newMt;
     }
@@ -204,11 +227,13 @@ public class Media {
     public void untag(String tag) {
 
         getTag(tag).untag();
+        markDirty();
     }
 
     public void tag(String tag) {
 
         getTag(tag).tag();
+        markDirty();
     }
 
 }

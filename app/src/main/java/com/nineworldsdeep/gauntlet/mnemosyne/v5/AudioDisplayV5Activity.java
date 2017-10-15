@@ -256,7 +256,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
                                             currentMediaListItem.setTagsFromTagString(
                                                     userInput2.getText().toString());
 
-                                            db.sync(currentMediaListItem.getMedia());
+                                            //db.sync(currentMediaListItem.getMedia());
+                                            MnemosyneRegistry.sync(currentMediaListItem, db);
 
                                             updateMediaInfo();
 
@@ -338,7 +339,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
             if (db != null) {
 
-                db.sync(currentMediaListItem.getMedia());
+                //db.sync(currentMediaListItem.getMedia());
+                MnemosyneRegistry.sync(currentMediaListItem, db);
             }
         }
 
@@ -511,7 +513,8 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
                     currentMediaListItem.tag(tag);
                 }
 
-                db.sync(currentMediaListItem.getMedia());
+                //db.sync(currentMediaListItem.getMedia());
+                MnemosyneRegistry.sync(currentMediaListItem, db);
 
                 long elapsedTime = System.nanoTime() - start;
                 long milliseconds = elapsedTime / 1000000;

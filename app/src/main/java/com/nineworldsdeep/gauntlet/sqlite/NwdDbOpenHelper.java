@@ -250,7 +250,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         addHiveRootTable(db);
         dropAndRecreateSynergyListInsertTrigger(db);
 
-        // TODO: clean this up, should have a method that
+        // TODO: markClean this up, should have a method that
         // doesn't do all the drop and recreate, just
         // using the upgrade methods for now
     }

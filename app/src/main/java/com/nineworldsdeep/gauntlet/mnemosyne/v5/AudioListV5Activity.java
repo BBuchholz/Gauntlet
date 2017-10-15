@@ -300,7 +300,8 @@ public class AudioListV5Activity extends AppCompatActivity {
                     if(mli.isFile()) {
 
                         MnemosyneRegistry.register(mli);
-                        db.sync(mli.getMedia());
+                        MnemosyneRegistry.sync(mli, db);
+                        //db.sync(mli.getMedia());
                     }
 
 

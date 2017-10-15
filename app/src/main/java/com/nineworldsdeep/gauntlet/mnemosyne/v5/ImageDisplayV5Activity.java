@@ -35,8 +35,6 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
 
     public static final String EXTRA_IMAGE_PATH =
             "com.nineworldsdeep.gauntlet.IMAGE_DISPLAY_IMAGE_PATH";
-//    public static final String EXTRA_TAG_STRING =
-//            "com.nineworldsdeep.gauntlet.IMAGE_DISPLAY_TAG_STRING";
 
 
     @Override
@@ -85,7 +83,8 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                                             currentMediaListItem.setTagsFromTagString(
                                                     userInput.getText().toString());
 
-                                            db.sync(currentMediaListItem.getMedia());
+                                            //db.sync(currentMediaListItem.getMedia());
+                                            MnemosyneRegistry.sync(currentMediaListItem, db);
 
                                         } catch (Exception e) {
 
@@ -141,14 +140,10 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                 NwdDb db = NwdDb.getInstance(this);
                 db.open();
 
-//                HashMap<String, String> pathToTagString =
-//                        Tags.getPathToActiveTagStringMap(db);
-
-//                String tagString = pathToTagString.get(path);
-
                 setCurrentMediaListItem(new MediaListItem(path));
 
-                db.sync(currentMediaListItem.getMedia());
+                //db.sync(currentMediaListItem.getMedia());
+                MnemosyneRegistry.sync(currentMediaListItem, db);
 
                 Bitmap bmp = BitmapFactory.decodeFile(path);
                 ImageView img = (ImageView) findViewById(R.id.ivImage);
@@ -157,8 +152,6 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                 img.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
-                        //Utils.toast(v.getContext(), path);
 
                         //from:http://stackoverflow.com/questions/19422075/open-a-selected-file-image-pdf-programmatically-from-my-android-applicat
                         Uri uri = Uri.fromFile(new File(path));

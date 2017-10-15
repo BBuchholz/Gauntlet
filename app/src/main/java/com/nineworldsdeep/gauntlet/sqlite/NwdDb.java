@@ -3559,23 +3559,23 @@ public class NwdDb {
         return id;
     }
 
-    /**
-     * requires that the hash already exists in the database,
-     * will return empty media if it does not
-     * @param hash
-     * @param db
-     * @return
-     */
-    private Media getMediaForHash(String hash, SQLiteDatabase db) {
-
-        Media m = new Media();
-
-        m.setMediaHash(hash);
-
-        populateMediaByHash(m, db);
-
-        return m;
-    }
+//    /**
+//     * requires that the hash already exists in the database,
+//     * will return empty media if it does not
+//     * @param hash
+//     * @param db
+//     * @return
+//     */
+//    private Media getMediaForHash(String hash, SQLiteDatabase db) {
+//
+//        Media m = new Media();
+//
+//        m.setMediaHash(hash);
+//
+//        populateMediaByHash(m, db);
+//
+//        return m;
+//    }
 
     private void populateMediaByHash(Media m, SQLiteDatabase db) {
 
@@ -3618,6 +3618,8 @@ public class NwdDb {
                 m.setMediaId(mediaId);
                 m.setMediaFileName(mediaFileName);
                 m.setMediaDescription(mediaDescription);
+
+                m.markClean();
 
             } while (cursor.moveToNext());
         }
@@ -3676,6 +3678,8 @@ public class NwdDb {
                 m.setMediaDescription(mediaDescription);
                 m.setMediaFileName(mediaFileName);
                 m.setMediaHash(mediaHash);
+
+                m.markClean();
 
                 allMedia.put(m.getMediaHash(), m);
 
@@ -3979,6 +3983,8 @@ public class NwdDb {
         populateMediaTaggingsByHash(media, db);
 
         populateMediaDevicePathsByMediaId(media, db);
+
+        media.markClean();
     }
 
 

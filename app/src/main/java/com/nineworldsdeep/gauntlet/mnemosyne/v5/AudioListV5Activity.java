@@ -49,7 +49,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO = 2;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS = 3;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
-    private static final int MENU_CONTEXT_EXPORT_XML = 5;
+    private static final int MENU_CONTEXT_EXPORT_HIVE_XML = 5;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS = 6;
     private static final int MENU_CONTEXT_COPY_TO_STAGING = 7;
     private static final int MENU_CONTEXT_MOVE_TO_STAGING = 8;
@@ -458,10 +458,11 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 return true;
 
-            case R.id.action_export_all_to_xml:
-
-                exportAllToXml();
-                return true;
+//            //disabling old xml handling methods
+//            case R.id.action_export_all_to_xml:
+//
+//                exportAllToXml();
+//                return true;
 
             case R.id.action_hive_export_all_to_xml:
 
@@ -570,7 +571,7 @@ public class AudioListV5Activity extends AppCompatActivity {
 
         if(!isDirectory) {
 
-            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_XML, Menu.NONE, "Export to XML");
+            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_HIVE_XML, Menu.NONE, "Export to Hive XML");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
@@ -600,11 +601,11 @@ public class AudioListV5Activity extends AppCompatActivity {
                 moveToStaging(info.position);
                 return true;
 
-            case MENU_CONTEXT_EXPORT_XML:
+            case MENU_CONTEXT_EXPORT_HIVE_XML:
 
                 try {
 
-                    exportXml(info.position);
+                    exportHiveXml(info.position);
                     Utils.toast(this, "exported");
 
                 }catch(Exception ex){
@@ -657,7 +658,7 @@ public class AudioListV5Activity extends AppCompatActivity {
         refreshLayout();
     }
 
-    private void exportXml(int position) throws Exception {
+    private void exportHiveXml(int position) throws Exception {
 
         MediaListItem mli = getItem(position);
         Media media = mli.getMedia();
@@ -668,7 +669,9 @@ public class AudioListV5Activity extends AppCompatActivity {
         ArrayList<Media> lst = new ArrayList<>();
         lst.add(media);
 
-        UtilsMnemosyneV5.exportToXml(lst, db);
+        //UtilsMnemosyneV5.exportToXml(lst, db);
+
+        UtilsMnemosyneV5.hiveExportToXml(lst, db, this);
     }
 
     private void hiveExportAllToXml(){

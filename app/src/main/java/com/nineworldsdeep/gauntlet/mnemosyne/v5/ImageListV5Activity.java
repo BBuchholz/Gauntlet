@@ -48,7 +48,7 @@ public class ImageListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS = 4;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 5;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_MEMES = 6;
-    private static final int MENU_CONTEXT_EXPORT_XML = 7;
+    private static final int MENU_CONTEXT_EXPORT_HIVE_XML = 7;
     private static final int MENU_CONTEXT_COPY_TO_STAGING = 8;
     private static final int MENU_CONTEXT_MOVE_TO_STAGING = 9;
 
@@ -440,11 +440,11 @@ public class ImageListV5Activity extends AppCompatActivity {
 
                 return true;
 
-            case R.id.action_export_all_to_xml:
-
-                exportAllToXml();
-
-                return true;
+//            case R.id.action_export_all_to_xml:
+//
+//                exportAllToXml();
+//
+//                return true;
 
             case R.id.action_hive_export_all_to_xml:
 
@@ -476,7 +476,7 @@ public class ImageListV5Activity extends AppCompatActivity {
 
         if(!isDirectory) {
 
-            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_XML, Menu.NONE, "Export to XML");
+            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_HIVE_XML, Menu.NONE, "Export to Hive XML");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_IMAGES, Menu.NONE, "Move to images");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CAMERA, Menu.NONE, "Move to Camera");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
@@ -507,11 +507,11 @@ public class ImageListV5Activity extends AppCompatActivity {
                 moveToStaging(info.position);
                 return true;
 
-            case MENU_CONTEXT_EXPORT_XML:
+            case MENU_CONTEXT_EXPORT_HIVE_XML:
 
                 try {
 
-                    exportXml(info.position);
+                    exportHiveXml(info.position);
                     Utils.toast(this, "exported");
 
                 }catch(Exception ex){
@@ -606,24 +606,24 @@ public class ImageListV5Activity extends AppCompatActivity {
         refreshLayout();
     }
 
-    private void exportAllToXml() {
-
-        NwdDb db = NwdDb.getInstance(this);
-        db.open();
-
-        ArrayList<Media> lst = getListItemsMedia();
-
-        try {
-
-            UtilsMnemosyneV5.exportToXml(lst, db);
-
-        }catch (Exception ex){
-
-            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
-        }
-
-        Utils.toast(this, "exported.");
-    }
+//    private void exportAllToXml() {
+//
+//        NwdDb db = NwdDb.getInstance(this);
+//        db.open();
+//
+//        ArrayList<Media> lst = getListItemsMedia();
+//
+//        try {
+//
+//            UtilsMnemosyneV5.exportToXml(lst, db);
+//
+//        }catch (Exception ex){
+//
+//            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
+//        }
+//
+//        Utils.toast(this, "exported.");
+//    }
 
     @NonNull
     private ArrayList<Media> getListItemsMedia() {
@@ -667,7 +667,7 @@ public class ImageListV5Activity extends AppCompatActivity {
         return lst;
     }
 
-    private void exportXml(int position) throws Exception {
+    private void exportHiveXml(int position) throws Exception {
 
         MediaListItem mli = getItem(position);
         Media media = mli.getMedia();
@@ -678,7 +678,9 @@ public class ImageListV5Activity extends AppCompatActivity {
         ArrayList<Media> lst = new ArrayList<>();
         lst.add(media);
 
-        UtilsMnemosyneV5.exportToXml(lst, db);
+        //UtilsMnemosyneV5.exportToXml(lst, db);
+
+        UtilsMnemosyneV5.hiveExportToXml(lst, db, this);
 
     }
 

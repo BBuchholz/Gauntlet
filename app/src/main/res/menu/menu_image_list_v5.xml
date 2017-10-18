@@ -9,9 +9,9 @@
     <item android:id="@+id/action_hive_export_all_to_xml"
           android:title="@string/hive_export_xml"
           app:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/action_export_all_to_xml"
-          android:title="@string/export_xml"
-          app:showAsAction="ifRoom|withText"/>
+    <!--<item android:id="@+id/action_export_all_to_xml"-->
+          <!--android:title="@string/export_xml"-->
+          <!--app:showAsAction="ifRoom|withText"/>-->
     <item android:id="@+id/action_copy_all_to_staging"
           android:title="@string/copy_all_to_staging"
           app:showAsAction="ifRoom|withText"/>

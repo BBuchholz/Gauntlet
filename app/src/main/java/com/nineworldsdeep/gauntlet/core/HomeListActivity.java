@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity;
 import com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity;
 import com.nineworldsdeep.gauntlet.hive.HiveRootsActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
@@ -71,6 +72,10 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 
         addNavigateActivityCommand("Hive", HiveRootsActivity.class);
+
+        addNavigateActivityCommand("Archivist", ArchivistActivity.class);
+
+
         addNavigateActivityCommand("Hive Hierarchy Exp.", HiveRootListActivity.class);
 
         addNavigateActivityCommand("Synergy Drawer", SynergyDrawerActivity.class);
@@ -105,9 +110,9 @@ public class HomeListActivity extends ListBaseActivity {
         });
     }
 
-    private void addNavigateActivityCommand(String text, Class activity){
+    private void addNavigateActivityCommand(String commandText, Class activity){
 
-        cmds.add(new NavigateActivityCommand(text, activity, this));
+        cmds.add(new NavigateActivityCommand(commandText, activity, this));
     }
 
     private void checkAndPromptForDeviceName(){

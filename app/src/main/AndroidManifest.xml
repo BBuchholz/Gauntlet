@@ -531,6 +531,15 @@
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
         </activity>
         <activity
+            android:name=".archivist.v5.ArchivistActivity"
+            android:label="ArchivistActivity"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/MaterialDesignActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity"/>
+        </activity>
+        <activity
             android:name=".mnemosyne.v5.MnemosyneV5ScanActivity"
             android:label="@string/title_activity_mnemosyne_v5_scan"
             android:parentActivityName=".core.HomeListActivity"

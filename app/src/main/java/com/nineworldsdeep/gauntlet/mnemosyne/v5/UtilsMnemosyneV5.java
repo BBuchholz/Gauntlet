@@ -360,13 +360,17 @@ public class UtilsMnemosyneV5 {
 
         ArrayList<String> lst = new ArrayList<>();
 
-        lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
+        //KEEP THESE ALPHABETIZED
+
         lst.add(Configuration.getAudioDirectory().getAbsolutePath());
-        lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
-        lst.add(Configuration.getRefTracksDirectory().getAbsolutePath());
-        lst.add(Configuration.getPraxisAudioDirectory().getAbsolutePath());
-        lst.add(Configuration.getStudyAudioDirectory().getAbsolutePath());
         lst.add(Configuration.getCanvasesDirectory().getAbsolutePath());
+        lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
+        lst.add(Configuration.getPraxisAudioDirectory().getAbsolutePath());
+        lst.add(Configuration.getRefTracksDirectory().getAbsolutePath());
+        lst.add(Configuration.getStudyAudioDirectory().getAbsolutePath());
+        lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
+
+        //LEAVE THESE UN-ALPHABETIZED (currently not used in any devices, legacy code)
 
         File externalMusic = Configuration.getSdCardMediaMusicDirectory();
         File causticSongExports = Configuration.getCausticSongExportsDirectory();
@@ -388,11 +392,12 @@ public class UtilsMnemosyneV5 {
 
         ArrayList<String> lst = new ArrayList<>();
 
+        //KEEP THESE ALPHABETIZED
+
+        lst.add(Configuration.getCameraDirectory().getAbsolutePath());
         lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
         lst.add(Configuration.getImagesDirectory().getAbsolutePath());
-        lst.add(Configuration.getCameraDirectory().getAbsolutePath());
         lst.add(Configuration.getMemesDirectory().getAbsolutePath());
-        lst.add(Configuration.getStudyImagesDirectory().getAbsolutePath());
         lst.add(Configuration.getPraxisImagesDirectory().getAbsolutePath());
 
         File f = Configuration.getScreenshotDirectory();
@@ -401,6 +406,9 @@ public class UtilsMnemosyneV5 {
 
             lst.add(f.getAbsolutePath());
         }
+
+        lst.add(Configuration.getStudyImagesDirectory().getAbsolutePath());
+
 
         return lst;
     }

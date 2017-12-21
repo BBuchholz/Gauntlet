@@ -56,14 +56,8 @@ public class Tags {
         ArrayList<String> lst = new ArrayList<>();
 
         //default tags
-        lst.add("magickal diary");
-        lst.add("TCT (Typhonic Craft Tradition)");
-//        lst.add("sample to get");
-//        lst.add("lyric bit");
-//        lst.add("nwdPlanning");
-//        lst.add("spiral dynamics");
-//        lst.add("rhythm bit");
-//        lst.add("melody bit");
+        lst.add("TCT");
+        lst.add("Magickal Diary");
 
         SynergyV5List synLst = new SynergyV5List("Tags-Frequent");
 

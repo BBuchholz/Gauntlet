@@ -4,6 +4,9 @@
     <color name="dark_grey">#424242</color>
     <color name="medium_grey">#9E9E9E</color>
     <color name="button_grey">#757575</color>
+    <color name="button_fab_add_archivist_source_type">#4078d1</color>
+    <color name="button_fab_add_archivist_source">#bc5336</color>
+    <color name="button_fab_add_archivist_source_excerpt">#635e1d</color>
     <color name="colorPrimary">#F44336</color>
     <color name="colorPrimaryDark">#d32f2f</color>
     <color name="primary_light">#FFCDD2</color>

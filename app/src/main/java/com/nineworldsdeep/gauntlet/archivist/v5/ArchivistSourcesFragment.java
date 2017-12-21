@@ -25,8 +25,6 @@ public class ArchivistSourcesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_list_content, container, false);
 
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
@@ -44,7 +42,7 @@ public class ArchivistSourcesFragment extends Fragment {
         public TextView description;
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.fragment_list_content, parent, false));
+            super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
             avator = (ImageView) itemView.findViewById(R.id.list_avatar);
             name = (TextView) itemView.findViewById(R.id.list_title);
             description = (TextView) itemView.findViewById(R.id.list_desc);

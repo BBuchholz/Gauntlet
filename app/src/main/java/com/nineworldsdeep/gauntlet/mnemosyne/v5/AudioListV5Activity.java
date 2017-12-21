@@ -12,6 +12,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,6 +43,9 @@ public class AudioListV5Activity extends AppCompatActivity {
 
     private File mCurrentDir;
 
+    //for submenus, holds current info between menus (trust me, otherwise it's null for the submenu)
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
+
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.AUDIOLIST_CURRENT_PATH";
 
@@ -53,6 +57,10 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS = 6;
     private static final int MENU_CONTEXT_COPY_TO_STAGING = 7;
     private static final int MENU_CONTEXT_MOVE_TO_STAGING = 8;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS = 9;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_STUDY = 10;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES = 11;
+
 
     /**
      * This field should be made private, so it is hidden from the SDK.
@@ -565,6 +573,9 @@ public class AudioListV5Activity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        //holding for submenus
+        lastMenuInfo = info;
+
         boolean isDirectory = getItem(info.position).getFile().isDirectory();
 
         menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
@@ -572,10 +583,24 @@ public class AudioListV5Activity extends AppCompatActivity {
         if(!isDirectory) {
 
             menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_HIVE_XML, Menu.NONE, "Export to Hive XML");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
-            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
+//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+//
+
+            SubMenu moveMenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE,"Move To...");
+
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS, Menu.NONE, "Move to praxis");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_STUDY, Menu.NONE, "Move to study");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES, Menu.NONE, "Move to canvases");
+
+
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
 
@@ -584,10 +609,21 @@ public class AudioListV5Activity extends AppCompatActivity {
     }
 
     @Override
+    public void onContextMenuClosed(Menu menu){
+        //only held so we have menu info for submenus
+        lastMenuInfo = null;
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
 
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        if(info == null){
+            //submenu
+            info = lastMenuInfo;
+        }
 
         switch (item.getItemId()) {
 
@@ -637,9 +673,31 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 moveToDownloads(info.position);
 
+                return true;
+
             case MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS:
 
                 moveToRefTracks(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS:
+
+                moveToPraxis(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_STUDY:
+
+                moveToStudy(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES:
+
+                moveToCanvases(info.position);
+
+                return true;
 
             default:
                 return super.onContextItemSelected(item);
@@ -701,6 +759,21 @@ public class AudioListV5Activity extends AppCompatActivity {
     private void moveToRefTracks(int position){
 
         moveFile(position, Configuration.getRefTracksDirectory());
+    }
+
+    private void moveToPraxis(int position){
+
+        moveFile(position, Configuration.getPraxisAudioDirectory());
+    }
+
+    private void moveToStudy(int position){
+
+        moveFile(position, Configuration.getStudyAudioDirectory());
+    }
+
+    private void moveToCanvases(int position){
+
+        moveFile(position, Configuration.getCanvasesDirectory());
     }
 
     private void moveToVoiceMemos(int position) {

@@ -112,6 +112,31 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/refTracks");
     }
 
+    public static File getPraxisAudioDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/praxisAudio");
+    }
+
+    public static File getStudyAudioDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/studyAudio");
+    }
+
+    public static File getCanvasesDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/canvases");
+    }
+
+    public static File getPraxisImagesDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/praxisImages");
+    }
+
+    public static File getStudyImagesDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/studyImages");
+    }
+
     public static File getVoicememosDirectory(){
 
         return getDirectoryStoragePath("/NWD-AUX/voicememos");

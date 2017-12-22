@@ -63,8 +63,8 @@ public class Utils {
         log(null, msg);
     }
 
-    public static void toast(Context c, String msg){
-        Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
+    public static void toast(Context context, String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     public static List<String> getAllFileNamesWithExt(File dir, String[] exts) {

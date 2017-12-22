@@ -9,8 +9,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,27 @@ public class ArchivistActivity extends AppCompatActivity {
                 (FloatingActionButton) findViewById(R.id.fabAddSourceType);
         fabAddSourceExcerpt =
                 (FloatingActionButton) findViewById(R.id.fabAddSourceExcerpt);
+
+        fabAddSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.toast(ArchivistActivity.this, "add source goes here");
+            }
+        });
+
+        fabAddSourceType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.toast(ArchivistActivity.this, "add source type goes here");
+            }
+        });
+
+        fabAddSourceExcerpt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
+            }
+        });
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

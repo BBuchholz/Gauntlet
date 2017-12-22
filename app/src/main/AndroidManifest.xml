@@ -623,6 +623,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity"/>
         </activity>
+        <activity
+            android:name=".archivist.v5.ArchivistAddSourceTypeActivity"
+            android:label="@string/title_activity_archivist_add_source_type"
+            android:parentActivityName=".archivist.v5.ArchivistActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity"/>
+        </activity>
     </application>
 
 </manifest>

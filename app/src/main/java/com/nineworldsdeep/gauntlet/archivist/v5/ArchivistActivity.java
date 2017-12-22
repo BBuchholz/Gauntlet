@@ -1,5 +1,6 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
@@ -22,6 +24,8 @@ public class ArchivistActivity extends AppCompatActivity {
 
     //FLOATING ACTION BUTTON FOR EACH TAB, THIS LOOKS LIKE WHAT WE NEED
     //https://stackoverflow.com/questions/31415742/how-to-change-floatingactionbutton-between-tabs/34128992
+
+    public static final int REQUEST_RESULT_SOURCE_TYPE_NAME = 1;
 
     private FloatingActionButton fabAddSource;
     private FloatingActionButton fabAddSourceType;
@@ -53,7 +57,15 @@ public class ArchivistActivity extends AppCompatActivity {
         fabAddSourceType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.toast(ArchivistActivity.this, "add source type goes here");
+
+                //Utils.toast(ArchivistActivity.this, "add source type goes here");
+
+                Intent intent =
+                        new Intent(ArchivistActivity.this,
+                                ArchivistAddSourceTypeActivity.class);
+
+                startActivityForResult(intent, REQUEST_RESULT_SOURCE_TYPE_NAME);
+
             }
         });
 
@@ -106,6 +118,37 @@ public class ArchivistActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode== REQUEST_RESULT_SOURCE_TYPE_NAME && data != null)
+        {
+            String sourceTypeName =
+                    data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+
+            if(!Utils.stringIsNullOrWhitespace(sourceTypeName)){
+
+                Utils.toast(this, "source type name: " + sourceTypeName);
+
+            }else{
+
+                Utils.toast(this, "empty name");
+
+            }
+        }
+
+        if(requestCode== RESULT_CANCELED){
+
+            //do nothing
+            //it crashes on back button without this, see:
+            //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
+
+        }
+    }
+
 
     private void animateFab(int position){
 

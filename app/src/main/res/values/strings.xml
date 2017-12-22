@@ -117,4 +117,10 @@
     <string name="copy_all_to_staging">Copy All To Staging</string>
     <string name="move_all_to_staging">Move All To Staging</string>
     <string name="intake_all">Intake All</string>
+    <string name="title_activity_archivist_source_entry">
+        ArchivistSourceEntryActivity
+    </string>
+    <string name="title_activity_archivist_add_source_type">
+        ArchivistAddSourceTypeActivity
+    </string>
 </resources>

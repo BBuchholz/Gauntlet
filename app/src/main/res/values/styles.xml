@@ -3,7 +3,7 @@
     <!-- cf. http://stackoverflow.com/questions/27458421/how-to-customize-the-contextual-action-bar-using-appcompat-in-material-design -->
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
 
         <item name="android:windowNoTitle">true</item>
@@ -23,7 +23,7 @@
         <!-- Blue -->
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="Theme.AppCompat.Light">
+    <style name="ActionBarThemeOverlay" parent="Base.Theme.AppCompat.Light">
         <item name="android:textColorPrimary">#fff</item>
         <item name="colorControlNormal">#fff</item>
         <item name="colorControlHighlight">#3fff</item>
@@ -34,7 +34,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light">
+    <style name="ActionBarPopupThemeOverlay" parent="Base.ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">#fff</item>
     </style>
 
@@ -50,9 +50,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light"/>
 
     <style name="FilePickerTheme" parent="NNF_BaseTheme">
         <!-- Set these to match your theme -->
@@ -67,7 +67,7 @@
         <!-- <item name="nnf_toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> -->
     </style>
 
-    <style name="FilePickerAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="FilePickerAlertDialogTheme" parent="Base.Theme.AppCompat.Dialog.Alert">
         <!--<item name="colorPrimary">@color/primary</item>-->
         <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
         <!--<item name="colorAccent">@color/accent</item>-->

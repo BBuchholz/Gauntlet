@@ -12,4 +12,6 @@ public class Extras {
             "com.nineworldsdeep.gauntlet.EXTRA_ARRAYLIST_STRING_LIST_ITEMS";
     public static final String STRING_SYNERGY_LINE_ITEM_RAW_TEXT =
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_SYNERGY_LINE_ITEM_RAW_TEXT";
+    public static final String STRING_ARCHIVIST_SOURCE_TYPE_NAME =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_TYPE_NAME";
 }

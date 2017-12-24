@@ -26,7 +26,7 @@ public class ArchivistAddSourceTypeActivity extends AppCompatActivity {
 
     public void confirmClick(View v){
 
-        Intent intent=new Intent();
+        Intent intent = new Intent();
 
         EditText et = (EditText)findViewById(R.id.etSourceTypeName);
 

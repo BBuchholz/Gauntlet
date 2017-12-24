@@ -26,6 +26,8 @@ public class ArchivistActivity extends AppCompatActivity {
     //https://stackoverflow.com/questions/31415742/how-to-change-floatingactionbutton-between-tabs/34128992
 
     public static final int REQUEST_RESULT_SOURCE_TYPE_NAME = 1;
+    public static final int REQUEST_RESULT_SOURCE = 2;
+    public static final int REQUEST_RESULT_SOURCE_EXCERPT = 3;
 
     private FloatingActionButton fabAddSource;
     private FloatingActionButton fabAddSourceType;
@@ -50,7 +52,14 @@ public class ArchivistActivity extends AppCompatActivity {
         fabAddSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.toast(ArchivistActivity.this, "add source goes here");
+
+                //Utils.toast(ArchivistActivity.this, "add source goes here");
+
+                Intent intent =
+                        new Intent(ArchivistActivity.this,
+                                ArchivistAddSourceActivity.class);
+
+                startActivityForResult(intent, REQUEST_RESULT_SOURCE);
             }
         });
 
@@ -83,23 +92,6 @@ public class ArchivistActivity extends AppCompatActivity {
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-
-        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                animateFab(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -138,6 +130,18 @@ public class ArchivistActivity extends AppCompatActivity {
                 Utils.toast(this, "empty name");
 
             }
+        }
+
+        if(requestCode== REQUEST_RESULT_SOURCE && data != null){
+
+            Utils.toast(this,
+                    "add source activity result awaiting implementation");
+        }
+
+        if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
+
+            Utils.toast(this,
+                    "add source excerpt activity result awaiting implementation");
         }
 
         if(requestCode== RESULT_CANCELED){

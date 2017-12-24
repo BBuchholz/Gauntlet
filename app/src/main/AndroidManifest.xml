@@ -640,6 +640,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity"/>
         </activity>
+        <activity
+            android:name=".archivist.v5.ArchivistAddSourceExcerptActivity"
+            android:label="@string/title_activity_archivist_add_source_excerpt"
+            android:parentActivityName=".archivist.v5.ArchivistActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity"/>
+        </activity>
     </application>
 
 </manifest>

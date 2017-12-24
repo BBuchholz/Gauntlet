@@ -126,4 +126,7 @@
     <string name="title_activity_archivist_add_source">
         ArchivistAddSourceActivity
     </string>
+    <string name="title_activity_archivist_add_source_excerpt">
+        ArchivistAddSourceExcerptActivity
+    </string>
 </resources>

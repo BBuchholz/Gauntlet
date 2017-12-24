@@ -29,4 +29,18 @@ public class Extras {
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_URL";
     public static final String STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE =
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE";
+
+    public static final String INT_ARCHIVIST_SOURCE_ID =
+            "com.nineworldsdeep.gauntlet.EXTRA_INT_ARCHIVIST_SOURCE_ID";
+    public static final String STRING_ARCHIVIST_SOURCE_PAGES =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_PAGES";
+    public static final String STRING_ARCHIVIST_SOURCE_BEGIN_TIME =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_BEGIN_TIME";
+    public static final String STRING_ARCHIVIST_SOURCE_END_TIME =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_END_TIME";
+    public static final String STRING_ARCHIVIST_SOURCE_VALUE =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_VALUE";
+
+    public static final String STRING_ARCHIVIST_SOURCE_DESCRIPTION =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_DESCRIPTION";
 }

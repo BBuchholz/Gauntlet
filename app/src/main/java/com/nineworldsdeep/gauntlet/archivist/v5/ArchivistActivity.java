@@ -81,7 +81,15 @@ public class ArchivistActivity extends AppCompatActivity {
         fabAddSourceExcerpt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
+
+                //Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
+
+                Intent intent =
+                        new Intent(ArchivistActivity.this,
+                                ArchivistAddSourceExcerptActivity.class);
+
+                startActivityForResult(intent, REQUEST_RESULT_SOURCE_EXCERPT);
+
             }
         });
 

@@ -366,6 +366,7 @@ public class UtilsMnemosyneV5 {
         lst.add(Configuration.getCanvasesDirectory().getAbsolutePath());
         lst.add(Configuration.getDownloadDirectory().getAbsolutePath());
         lst.add(Configuration.getPraxisAudioDirectory().getAbsolutePath());
+        lst.add(Configuration.getProjectsAudioDirectory().getAbsolutePath());
         lst.add(Configuration.getRefTracksDirectory().getAbsolutePath());
         lst.add(Configuration.getStudyAudioDirectory().getAbsolutePath());
         lst.add(Configuration.getVoicememosDirectory().getAbsolutePath());
@@ -399,6 +400,7 @@ public class UtilsMnemosyneV5 {
         lst.add(Configuration.getImagesDirectory().getAbsolutePath());
         lst.add(Configuration.getMemesDirectory().getAbsolutePath());
         lst.add(Configuration.getPraxisImagesDirectory().getAbsolutePath());
+        lst.add(Configuration.getProjectsImagesDirectory().getAbsolutePath());
 
         File f = Configuration.getScreenshotDirectory();
 

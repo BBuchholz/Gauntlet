@@ -60,6 +60,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS = 9;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_STUDY = 10;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES = 11;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS = 12;
 
 
     /**
@@ -597,6 +598,7 @@ public class AudioListV5Activity extends AppCompatActivity {
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS, Menu.NONE, "Move to praxis");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS, Menu.NONE, "Move to projects");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_STUDY, Menu.NONE, "Move to study");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES, Menu.NONE, "Move to canvases");
 
@@ -687,6 +689,12 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS:
+
+                moveToProjects(info.position);
+
+                return true;
+
             case MENU_CONTEXT_MOVE_TO_FOLDER_STUDY:
 
                 moveToStudy(info.position);
@@ -769,6 +777,11 @@ public class AudioListV5Activity extends AppCompatActivity {
     private void moveToStudy(int position){
 
         moveFile(position, Configuration.getStudyAudioDirectory());
+    }
+
+    private void moveToProjects(int position){
+
+        moveFile(position, Configuration.getProjectsAudioDirectory());
     }
 
     private void moveToCanvases(int position){

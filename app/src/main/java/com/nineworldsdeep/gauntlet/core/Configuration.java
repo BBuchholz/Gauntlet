@@ -137,6 +137,16 @@ public class Configuration {
         return getDirectoryStoragePath("/NWD-MEDIA/studyImages");
     }
 
+    public static File getProjectsImagesDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/projectsImages");
+    }
+
+    public static File getProjectsAudioDirectory(){
+
+        return getDirectoryStoragePath("/NWD-MEDIA/projectsAudio");
+    }
+
     public static File getVoicememosDirectory(){
 
         return getDirectoryStoragePath("/NWD-AUX/voicememos");

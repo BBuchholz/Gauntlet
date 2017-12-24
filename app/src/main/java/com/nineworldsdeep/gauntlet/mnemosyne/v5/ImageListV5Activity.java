@@ -57,6 +57,7 @@ public class ImageListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_STAGING = 9;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS = 10;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_STUDY = 11;
+    private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS = 12;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -501,6 +502,7 @@ public class ImageListV5Activity extends AppCompatActivity {
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_SCREENSHOTS, Menu.NONE, "Move to Screenshots");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS, Menu.NONE, "Move to praxis");
+            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS, Menu.NONE, "Move to projects");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_STUDY, Menu.NONE, "Move to study");
             moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_MEMES, Menu.NONE, "Move to memes");
 
@@ -602,6 +604,12 @@ public class ImageListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS:
+
+                moveToProjects(info.position);
+
+                return true;
+
             default:
 
                 return super.onContextItemSelected(item);
@@ -628,6 +636,11 @@ public class ImageListV5Activity extends AppCompatActivity {
     private void moveToStudy(int position){
 
         moveFile(position, Configuration.getStudyImagesDirectory());
+    }
+
+    private void moveToProjects(int position){
+
+        moveFile(position, Configuration.getProjectsImagesDirectory());
     }
 
     private void hiveExportAllToXml() {

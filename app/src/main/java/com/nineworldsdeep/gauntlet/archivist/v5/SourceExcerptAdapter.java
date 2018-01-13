@@ -18,28 +18,27 @@ import java.util.ArrayList;
  * Created by brent on 1/13/18.
  */
 
-public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder> {
+public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdapter.ViewHolder>{
 
-    private ArrayList<ArchivistSource> mSources;
+    private ArrayList<ArchivistSourceExcerpt> mSourceExcerpts;
     private final Drawable mockPicDrawable;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView avator;
+        public ImageView picture;
         public TextView name;
         public TextView description;
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
-            avator = (ImageView) itemView.findViewById(R.id.list_avatar);
-            name = (TextView) itemView.findViewById(R.id.list_title);
-            description = (TextView) itemView.findViewById(R.id.list_desc);
+            super(inflater.inflate(R.layout.fragment_card_content, parent, false));
+            picture = (ImageView) itemView.findViewById(R.id.card_image);
+            name = (TextView) itemView.findViewById(R.id.card_title);
+            description = (TextView) itemView.findViewById(R.id.card_text);
         }
     }
 
-    public SourceAdapter(Context context){
+    public SourceExcerptAdapter(Context context){
 
-        mSources = ArchivistWorkspace.getOpenSources();
+        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts();
 
         //temp code
         Resources resources = context.getResources();
@@ -56,15 +55,15 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        ArchivistSource src = mSources.get(position);
+        ArchivistSourceExcerpt ase = mSourceExcerpts.get(position);
 
-        holder.avator.setImageDrawable(mockPicDrawable);
-        holder.name.setText(src.getSourceTitle());
-        holder.description.setText(src.getSourceDescription());
+        holder.picture.setImageDrawable(mockPicDrawable);
+        holder.name.setText(ase.getExcerptDescription());
+        holder.description.setText(ase.getExcerptContent());
     }
 
     @Override
     public int getItemCount() {
-        return mSources.size();
-}
+        return mSourceExcerpts.size();
+    }
 }

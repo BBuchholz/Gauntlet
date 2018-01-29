@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.mnemosyne.ImageDisplayActivity">
 
+    <item android:id="@+id/action_mark_with_tag_done"
+        android:title="@string/menu_done"
+        app:showAsAction="ifRoom|withText"/>
+
     <item android:id="@+id/action_set_tag_string"
         android:title="@string/menu_set_tag_string"
         app:showAsAction="ifRoom|withText"/>

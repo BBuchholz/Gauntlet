@@ -28,7 +28,9 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class ImageDisplayV5Activity extends AppCompatActivity {
 
@@ -115,6 +117,38 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                 NavigateActivityCommand.navigateTo(
                         HomeListActivity.class, this
                 );
+
+                return true;
+
+            case R.id.action_mark_with_tag_done:
+
+                try {
+
+                    String currentTags = currentMediaListItem.getTags();
+
+                    if(currentTags.length() > 0){
+
+                        currentTags += ", ";
+                    }
+
+                    currentTags += "done";
+
+                    NwdDb db =
+                            NwdDb.getInstance(ImageDisplayV5Activity.this);
+
+                    currentMediaListItem.setTagsFromTagString(currentTags);
+
+                    MnemosyneRegistry.sync(currentMediaListItem, db);
+
+                    Utils.toast(ImageDisplayV5Activity.this,
+                            "tagged \"done\" successfully");
+
+                } catch (Exception e) {
+
+                    Utils.toast(ImageDisplayV5Activity.this,
+                            "error setting tag string: " +
+                    e.getMessage());
+                }
 
                 return true;
 

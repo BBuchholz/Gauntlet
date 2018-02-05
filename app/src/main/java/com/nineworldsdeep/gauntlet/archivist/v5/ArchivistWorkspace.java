@@ -31,10 +31,10 @@ public class ArchivistWorkspace {
     public static void loadTestingValues(){
 
         //mock source types
-        sourceTypes.add(new ArchivistSourceType("Book"));
-        sourceTypes.add(new ArchivistSourceType("Video"));
-        sourceTypes.add(new ArchivistSourceType("Magazine"));
-        sourceTypes.add(new ArchivistSourceType("Webpage"));
+//        sourceTypes.add(new ArchivistSourceType("Book"));
+//        sourceTypes.add(new ArchivistSourceType("Video"));
+//        sourceTypes.add(new ArchivistSourceType("Magazine"));
+//        sourceTypes.add(new ArchivistSourceType("Webpage"));
 
         //mock sources
         openSources.add(new ArchivistSource("Test Book One", "a book"));

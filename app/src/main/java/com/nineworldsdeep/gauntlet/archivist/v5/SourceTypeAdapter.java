@@ -3,7 +3,6 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSourceType> mSourceTypes;
-    private final Drawable mockPicDrawable;
+    //private final Drawable mockPicDrawable;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,10 +42,10 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
         mSourceTypes = ArchivistWorkspace.getSourceTypes();
 
         //temp code
-        Resources resources = context.getResources();
-        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        mockPicDrawable = a.getDrawable(0);
-        a.recycle();
+        //Resources resources = context.getResources();
+        //TypedArray a = resources.obtainTypedArray(R.array.places_picture);
+        //mockPicDrawable = a.getDrawable(0);
+        //a.recycle();
     }
 
     @Override
@@ -56,8 +55,14 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.picture.setImageDrawable(mockPicDrawable);
-        holder.name.setText(mSourceTypes.get(position).getSourceTypeName());
+
+        ArchivistSourceType srcType = mSourceTypes.get(position);
+
+        //holder.picture.setImageDrawable(mockPicDrawable);
+        //holder.name.setText(mSourceTypes.get(position).getSourceTypeName());
+
+        holder.picture.setImageDrawable(srcType.getSourcePicDrawable());
+        holder.name.setText(srcType.getSourceTypeName());
     }
 
     @Override

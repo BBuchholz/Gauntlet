@@ -9,11 +9,11 @@ import android.graphics.drawable.Drawable;
 public class ArchivistSourceType {
 
     private String sourceTypeName;
-    private Drawable sourcePicDrawable;
+    private int sourcePicDrawableResourceId;
 
-    public ArchivistSourceType(String sourceTypeName, Drawable sourcePicDrawable){
+    public ArchivistSourceType(String sourceTypeName, int sourcePicDrawableResourceId){
         this.sourceTypeName = sourceTypeName;
-        this.sourcePicDrawable = sourcePicDrawable;
+        this.sourcePicDrawableResourceId = sourcePicDrawableResourceId;
     }
 
     public String getSourceTypeName() {
@@ -24,11 +24,11 @@ public class ArchivistSourceType {
         this.sourceTypeName = sourceTypeName;
     }
 
-    public Drawable getSourcePicDrawable() {
-        return sourcePicDrawable;
+    public int getSourcePicDrawableResourceId() {
+        return sourcePicDrawableResourceId;
     }
 
-    public void setSourcePicDrawable(Drawable sourcePicDrawable) {
-        this.sourcePicDrawable = sourcePicDrawable;
+    public void setSourcePicDrawableResourceId(int sourcePicDrawableResourceId) {
+        this.sourcePicDrawableResourceId = sourcePicDrawableResourceId;
     }
 }

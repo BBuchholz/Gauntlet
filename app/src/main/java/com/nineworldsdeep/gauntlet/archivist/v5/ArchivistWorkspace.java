@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import com.nineworldsdeep.gauntlet.R;
+
 import java.util.ArrayList;
 
 public class ArchivistWorkspace {
@@ -31,10 +33,13 @@ public class ArchivistWorkspace {
     public static void loadTestingValues(){
 
         //mock source types
-//        sourceTypes.add(new ArchivistSourceType("Book"));
-//        sourceTypes.add(new ArchivistSourceType("Video"));
-//        sourceTypes.add(new ArchivistSourceType("Magazine"));
-//        sourceTypes.add(new ArchivistSourceType("Webpage"));
+        sourceTypes.add(new ArchivistSourceType("Article", R.drawable.article));
+        sourceTypes.add(new ArchivistSourceType("Book", R.drawable.book));
+        sourceTypes.add(new ArchivistSourceType("Misc Source", R.drawable.misc_source));
+        sourceTypes.add(new ArchivistSourceType("Movie", R.drawable.movie));
+        sourceTypes.add(new ArchivistSourceType("Quote", R.drawable.quote));
+        sourceTypes.add(new ArchivistSourceType("Video", R.drawable.video));
+        sourceTypes.add(new ArchivistSourceType("Web", R.drawable.web));
 
         //mock sources
         openSources.add(new ArchivistSource("Test Book One", "a book"));

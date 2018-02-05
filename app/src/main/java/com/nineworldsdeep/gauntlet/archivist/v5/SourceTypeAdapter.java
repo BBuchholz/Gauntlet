@@ -1,8 +1,6 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -21,6 +19,8 @@ import java.util.ArrayList;
 public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSourceType> mSourceTypes;
+    private Context context;
+
     //private final Drawable mockPicDrawable;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,6 +40,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
     public SourceTypeAdapter(Context context){
 
         mSourceTypes = ArchivistWorkspace.getSourceTypes();
+        this.context = context;
 
         //temp code
         //Resources resources = context.getResources();
@@ -61,7 +62,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
         //holder.picture.setImageDrawable(mockPicDrawable);
         //holder.name.setText(mSourceTypes.get(position).getSourceTypeName());
 
-        holder.picture.setImageDrawable(srcType.getSourcePicDrawable());
+        holder.picture.setImageDrawable(context.getDrawable(srcType.getSourcePicDrawableResourceId()));
         holder.name.setText(srcType.getSourceTypeName());
     }
 

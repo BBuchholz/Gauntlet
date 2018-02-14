@@ -3493,8 +3493,10 @@ public class NwdDb {
 
             } while (cursor.moveToNext());
 
-            cursor.close();
+            //cursor.close();
         }
+
+        cursor.close();
 
         return id;
     }

@@ -193,11 +193,28 @@ public class ArchivistActivity extends AppCompatActivity {
 
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
+
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new ArchivistSourceTypesFragment(), "Source Types");
-        adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
-        adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+
+        ArchivistWorkspace.setSourceTypesFragment(new ArchivistSourceTypesFragment());
+        ArchivistWorkspace.setSourcesFragment(new ArchivistSourcesFragment());
+        ArchivistWorkspace.setSourceExcerptsFragment(new ArchivistSourceExcerptsFragment());
+
+        adapter.addFragment(ArchivistWorkspace.getSourceTypesFragment(), "Source Types");
+        adapter.addFragment(ArchivistWorkspace.getSourcesFragment(), "Sources");
+        adapter.addFragment(ArchivistWorkspace.getSourceExcerptsFragment(), "Excerpts");
+
         viewPager.setAdapter(adapter);
+//
+//        Adapter adapter = new Adapter(getSupportFragmentManager());
+//
+//
+//
+//        adapter.addFragment(new ArchivistSourceTypesFragment(), "Source Types");
+//        adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
+//        adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+//
+//        viewPager.setAdapter(adapter);
     }
 
     static class Adapter extends FragmentPagerAdapter {

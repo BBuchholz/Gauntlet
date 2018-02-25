@@ -22,12 +22,41 @@ public class ArchivistWorkspace {
     private static ArrayList<ArchivistSource> openSources;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
 
+    // holding references to fragments in workspace
+    private static ArchivistSourceTypesFragment sourceTypesFragment;
+    private static ArchivistSourcesFragment sourcesFragment;
+    private static ArchivistSourceExcerptsFragment sourceExcerptsFragment;
+
     static {
         sourceTypes = new ArrayList<>();
         openSources = new ArrayList<>();
         openSourceExcerpts = new ArrayList<>();
 
         loadTestingValues();
+    }
+
+    public static ArchivistSourceTypesFragment getSourceTypesFragment() {
+        return sourceTypesFragment;
+    }
+
+    public static void setSourceTypesFragment(ArchivistSourceTypesFragment sourceTypesFragment) {
+        ArchivistWorkspace.sourceTypesFragment = sourceTypesFragment;
+    }
+
+    public static ArchivistSourcesFragment getSourcesFragment() {
+        return sourcesFragment;
+    }
+
+    public static void setSourcesFragment(ArchivistSourcesFragment sourcesFragment) {
+        ArchivistWorkspace.sourcesFragment = sourcesFragment;
+    }
+
+    public static ArchivistSourceExcerptsFragment getSourceExcerptsFragment() {
+        return sourceExcerptsFragment;
+    }
+
+    public static void setSourceExcerptsFragment(ArchivistSourceExcerptsFragment sourceExcerptsFragment) {
+        ArchivistWorkspace.sourceExcerptsFragment = sourceExcerptsFragment;
     }
 
     public static void loadTestingValues(){

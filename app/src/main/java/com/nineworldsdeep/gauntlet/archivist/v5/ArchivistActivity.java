@@ -99,24 +99,31 @@ public class ArchivistActivity extends AppCompatActivity {
 
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (tabs != null) {
+            tabs.setupWithViewPager(viewPager);
+        }
 
-            }
+        if (viewPager != null) {
 
-            @Override
-            public void onPageSelected(int position) {
-                animateFab(position);
-            }
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-        });
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    animateFab(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
     }
 
 
@@ -158,6 +165,7 @@ public class ArchivistActivity extends AppCompatActivity {
             //it crashes on back button without this, see:
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
 
+            Utils.toast(this, "cancelled");
         }
     }
 
@@ -235,7 +243,7 @@ public class ArchivistActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

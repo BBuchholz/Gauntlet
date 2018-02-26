@@ -1,34 +1,25 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
-import android.graphics.drawable.Drawable;
-
-/**
- * Created by brent on 1/12/18.
- */
-
-public class ArchivistSourceType {
+class ArchivistSourceType {
 
     private String sourceTypeName;
     private int sourcePicDrawableResourceId;
+    private int sourceTypeId;
 
-    public ArchivistSourceType(String sourceTypeName, int sourcePicDrawableResourceId){
+    ArchivistSourceType(int sourceTypeId, String sourceTypeName, int sourcePicDrawableResourceId){
+        this.sourceTypeId = sourceTypeId;
         this.sourceTypeName = sourceTypeName;
         this.sourcePicDrawableResourceId = sourcePicDrawableResourceId;
     }
 
-    public String getSourceTypeName() {
+    String getSourceTypeName() {
         return sourceTypeName;
     }
 
-    public void setSourceTypeName(String sourceTypeName) {
-        this.sourceTypeName = sourceTypeName;
-    }
+    int getSourceTypeId() { return sourceTypeId; }
 
-    public int getSourcePicDrawableResourceId() {
+    int getSourcePicDrawableResourceId() {
         return sourcePicDrawableResourceId;
     }
 
-    public void setSourcePicDrawableResourceId(int sourcePicDrawableResourceId) {
-        this.sourcePicDrawableResourceId = sourcePicDrawableResourceId;
-    }
 }

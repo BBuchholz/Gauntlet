@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
@@ -13,8 +14,10 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 public class ArchivistAddSourceActivity extends AppCompatActivity {
 
-    private int mSourceTypeId;
-    private String mSourceTypeName;
+//    private int mSourceTypeId;
+//    private String mSourceTypeName;
+
+    private ArchivistSourceType mCurrentSourceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +27,35 @@ public class ArchivistAddSourceActivity extends AppCompatActivity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
+//
+//        mSourceTypeId = intent.getIntExtra(
+//                Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
+//
+//        mSourceTypeName = intent.getStringExtra(
+//                Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+//
+//        if(mSourceTypeId < 1 ||
+//                Utils.stringIsNullOrWhitespace(mSourceTypeName)){
+//
+//            Utils.toast(this, "Invalid Source Type Info");
+//            Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
+//            btnConfirm.setEnabled(false);
+//        }
 
-        mSourceTypeId = intent.getIntExtra(
-                Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
+        mCurrentSourceType = ArchivistWorkspace.getCurrentSourceType();
 
-        mSourceTypeName = intent.getStringExtra(
-                Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+        Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
+        TextView tvSourceTypeName = (TextView)findViewById(R.id.tvSourceTypeName);
 
-        if(mSourceTypeId < 1 ||
-                Utils.stringIsNullOrWhitespace(mSourceTypeName)){
+        if(mCurrentSourceType != null) {
+
+            tvSourceTypeName.setText(mCurrentSourceType.getSourceTypeName());
+            btnConfirm.setEnabled(true);
+
+        }else{
 
             Utils.toast(this, "Invalid Source Type Info");
-            Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
             btnConfirm.setEnabled(false);
         }
     }
@@ -59,8 +78,8 @@ public class ArchivistAddSourceActivity extends AppCompatActivity {
         String sourceUrl = etUrl.getText().toString();
         String sourceRetrievalDate = etRetrievalDate.getText().toString();
 
-        intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, mSourceTypeId);
-        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME, mSourceTypeName);
+        intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, mCurrentSourceType.getSourceTypeId());
+        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME, mCurrentSourceType.getSourceTypeName());
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE, sourceTitle);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR, sourceAuthor);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR, sourceDirector);

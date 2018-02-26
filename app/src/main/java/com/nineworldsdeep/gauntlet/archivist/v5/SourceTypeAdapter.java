@@ -51,7 +51,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
                     Utils.toast(parent.getContext(),
                             "clicked " + sourceType.getSourceTypeName());
 
-                    ArchivistWorkspace.setFragmentTitle("Sources", typeName);
+                    ArchivistWorkspace.setCurrentSourceTypeByName(typeName);
 
                     fragmentStatePagerAdapter.notifyDataSetChanged();
                 }

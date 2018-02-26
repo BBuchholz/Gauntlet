@@ -14,9 +14,6 @@ import com.nineworldsdeep.gauntlet.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by brent on 1/13/18.
- */
 
 public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder> {
 
@@ -25,13 +22,13 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView avator;
+        public ImageView sourceTypeImage;
         public TextView name;
         public TextView description;
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
-            avator = (ImageView) itemView.findViewById(R.id.list_avatar);
+            sourceTypeImage = (ImageView) itemView.findViewById(R.id.list_avatar);
             name = (TextView) itemView.findViewById(R.id.list_title);
             description = (TextView) itemView.findViewById(R.id.list_desc);
         }
@@ -58,7 +55,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
         ArchivistSource src = mSources.get(position);
 
-        holder.avator.setImageDrawable(mockPicDrawable);
+        holder.sourceTypeImage.setImageDrawable(mockPicDrawable);
         holder.name.setText(src.getSourceTitle());
         holder.description.setText(src.getSourceDescription());
     }

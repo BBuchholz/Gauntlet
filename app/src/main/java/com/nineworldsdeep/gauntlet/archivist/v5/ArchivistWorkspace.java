@@ -24,6 +24,7 @@ class ArchivistWorkspace {
     private static HashMap<String, ArchivistSourceType> namesToSourceTypes;
     private static ArrayList<ArchivistSource> openSources;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
+    private static ArchivistSourceType currentSourceType;
 
     private static HashMap<String, String> fragmentKeysToTitles;
 
@@ -32,6 +33,7 @@ class ArchivistWorkspace {
         openSources = new ArrayList<>();
         openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
+        currentSourceType = null;
 
         loadTestingValues();
     }
@@ -44,13 +46,13 @@ class ArchivistWorkspace {
     private static void loadTestingValues(){
 
         //mock source types
-        addSourceType(new ArchivistSourceType("Article", R.drawable.article));
-        addSourceType(new ArchivistSourceType("Book", R.drawable.book));
-        addSourceType(new ArchivistSourceType("Misc Source", R.drawable.misc_source));
-        addSourceType(new ArchivistSourceType("Movie", R.drawable.movie));
-        addSourceType(new ArchivistSourceType("Quote", R.drawable.quote));
-        addSourceType(new ArchivistSourceType("Video", R.drawable.video));
-        addSourceType(new ArchivistSourceType("Web", R.drawable.web));
+        addSourceType(new ArchivistSourceType(1111, "Article", R.drawable.article));
+        addSourceType(new ArchivistSourceType(2222, "Book", R.drawable.book));
+        addSourceType(new ArchivistSourceType(3333, "Misc Source", R.drawable.misc_source));
+        addSourceType(new ArchivistSourceType(4444, "Movie", R.drawable.movie));
+        addSourceType(new ArchivistSourceType(5555, "Quote", R.drawable.quote));
+        addSourceType(new ArchivistSourceType(6666, "Video", R.drawable.video));
+        addSourceType(new ArchivistSourceType(7777, "Web", R.drawable.web));
 
         //mock sources
         openSources.add(new ArchivistSource("Test Book One", "a book"));
@@ -77,9 +79,18 @@ class ArchivistWorkspace {
         return openSourceExcerpts;
     }
 
-    static void setFragmentTitle(String fragmentKey, String fragmentTitle) {
+    static void setCurrentSourceTypeByName(String typeName) {
 
+        fragmentKeysToTitles.put("Sources", typeName);
+        currentSourceType = getSourceTypeByName(typeName);
+    }
+
+    static void setFragmentTitle(String fragmentKey, String fragmentTitle){
         fragmentKeysToTitles.put(fragmentKey, fragmentTitle);
+    }
+
+    static ArchivistSourceType getCurrentSourceType(){
+        return currentSourceType;
     }
 
     static String getFragmentTitle(String fragmentKey) {

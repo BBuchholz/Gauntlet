@@ -3,17 +3,15 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
-
-/**
- * Created by brent on 1/13/18.
- */
 
 
 public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.ViewHolder> {
@@ -25,28 +23,37 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView picture;
+        ImageView picture;
         public TextView name;
 
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+        public ViewHolder(LayoutInflater inflater, final ViewGroup parent) {
             super(inflater.inflate(
                     R.layout.fragment_archivist_source_types_content, parent, false));
 
             picture = (ImageView) itemView.findViewById(R.id.tile_picture);
             name = (TextView) itemView.findViewById(R.id.tile_title);
+
+            picture.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+
+                    ArchivistSourceType sourceType =
+                            ArchivistWorkspace.getSourceTypeByName(
+                                    name.getText().toString());
+
+                    Utils.toast(parent.getContext(),
+                            "clicked " + sourceType.getSourceTypeName());
+                }
+            });
         }
     }
 
-    public SourceTypeAdapter(Context context){
+    SourceTypeAdapter(Context context){
 
         mSourceTypes = ArchivistWorkspace.getSourceTypes();
         this.context = context;
 
-        //temp code
-        //Resources resources = context.getResources();
-        //TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        //mockPicDrawable = a.getDrawable(0);
-        //a.recycle();
     }
 
     @Override
@@ -58,9 +65,6 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         ArchivistSourceType srcType = mSourceTypes.get(position);
-
-        //holder.picture.setImageDrawable(mockPicDrawable);
-        //holder.name.setText(mSourceTypes.get(position).getSourceTypeName());
 
         holder.picture.setImageDrawable(context.getDrawable(srcType.getSourcePicDrawableResourceId()));
         holder.name.setText(srcType.getSourceTypeName());

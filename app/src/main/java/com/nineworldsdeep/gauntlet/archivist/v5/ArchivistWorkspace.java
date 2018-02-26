@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import android.widget.TextView;
+
 import com.nineworldsdeep.gauntlet.R;
 
 import java.util.ArrayList;
@@ -19,14 +21,14 @@ class ArchivistWorkspace {
  * those sources at a time, without needing to load all excerpt from
  * every source. that is the concept we are modeling here
  */
-    private static ArrayList<ArchivistSourceType> sourceTypes;
+    private static HashMap<String, ArchivistSourceType> namesToSourceTypes;
     private static ArrayList<ArchivistSource> openSources;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
 
     private static HashMap<String, String> fragmentKeysToTitles;
 
     static {
-        sourceTypes = new ArrayList<>();
+        namesToSourceTypes = new HashMap<>();
         openSources = new ArrayList<>();
         openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
@@ -34,16 +36,21 @@ class ArchivistWorkspace {
         loadTestingValues();
     }
 
+    private static void addSourceType(ArchivistSourceType sourceType){
+
+        namesToSourceTypes.put(sourceType.getSourceTypeName(), sourceType);
+    }
+
     private static void loadTestingValues(){
 
         //mock source types
-        sourceTypes.add(new ArchivistSourceType("Article", R.drawable.article));
-        sourceTypes.add(new ArchivistSourceType("Book", R.drawable.book));
-        sourceTypes.add(new ArchivistSourceType("Misc Source", R.drawable.misc_source));
-        sourceTypes.add(new ArchivistSourceType("Movie", R.drawable.movie));
-        sourceTypes.add(new ArchivistSourceType("Quote", R.drawable.quote));
-        sourceTypes.add(new ArchivistSourceType("Video", R.drawable.video));
-        sourceTypes.add(new ArchivistSourceType("Web", R.drawable.web));
+        addSourceType(new ArchivistSourceType("Article", R.drawable.article));
+        addSourceType(new ArchivistSourceType("Book", R.drawable.book));
+        addSourceType(new ArchivistSourceType("Misc Source", R.drawable.misc_source));
+        addSourceType(new ArchivistSourceType("Movie", R.drawable.movie));
+        addSourceType(new ArchivistSourceType("Quote", R.drawable.quote));
+        addSourceType(new ArchivistSourceType("Video", R.drawable.video));
+        addSourceType(new ArchivistSourceType("Web", R.drawable.web));
 
         //mock sources
         openSources.add(new ArchivistSource("Test Book One", "a book"));
@@ -59,7 +66,7 @@ class ArchivistWorkspace {
     }
 
     static ArrayList<ArchivistSourceType> getSourceTypes() {
-        return sourceTypes;
+        return new ArrayList<>(namesToSourceTypes.values());
     }
 
     static ArrayList<ArchivistSource> getOpenSources() {
@@ -78,5 +85,10 @@ class ArchivistWorkspace {
     static String getFragmentTitle(String fragmentKey) {
 
         return fragmentKeysToTitles.get(fragmentKey);
+    }
+
+    static ArchivistSourceType getSourceTypeByName(String name) {
+
+        return namesToSourceTypes.get(name);
     }
 }

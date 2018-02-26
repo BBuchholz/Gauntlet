@@ -48,7 +48,7 @@ class ArchivistWorkspace {
         //mock source types
         addSourceType(new ArchivistSourceType(1111, "Article", R.drawable.article));
         addSourceType(new ArchivistSourceType(2222, "Book", R.drawable.book));
-        addSourceType(new ArchivistSourceType(3333, "Misc Source", R.drawable.misc_source));
+        addSourceType(new ArchivistSourceType(-1, "Misc Source", R.drawable.misc_source));
         addSourceType(new ArchivistSourceType(4444, "Movie", R.drawable.movie));
         addSourceType(new ArchivistSourceType(5555, "Quote", R.drawable.quote));
         addSourceType(new ArchivistSourceType(6666, "Video", R.drawable.video));

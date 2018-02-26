@@ -34,6 +34,25 @@ public class ArchivistActivity extends AppCompatActivity {
     private FloatingActionButton fabAddSourceType;
     private FloatingActionButton fabAddSourceExcerpt;
 
+    private int sourceTabIndex = -1;
+    private int sourceTypesTabIndex = -1;
+    private int sourceExcerptsTabIndex = -1;
+
+    private ArchivistFragmentStatePagerAdapter archivistFragmentStatePagerAdapter;
+    private ViewPager viewPager;
+
+    public ArchivistFragmentStatePagerAdapter getFragmentStatePagerAdapter(){
+        return archivistFragmentStatePagerAdapter;
+    }
+
+    public void selectSourcesTab(){
+        if(sourceTabIndex > -1) {
+            viewPager.setCurrentItem(sourceTabIndex);
+        }
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,25 +222,31 @@ public class ArchivistActivity extends AppCompatActivity {
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
 
-        Adapter adapter = new Adapter(getSupportFragmentManager());
+        this.viewPager = viewPager;
+        archivistFragmentStatePagerAdapter = new ArchivistFragmentStatePagerAdapter(getSupportFragmentManager());
 
         ArchivistSourceTypesFragment archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
-        archivistSourceTypesFragment.setFragmentStatePagerAdapter(adapter);
+        archivistSourceTypesFragment.setParentArchivistActivity(this);
 
-        adapter.addFragment(archivistSourceTypesFragment, "Source Types");
-        adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
-        adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+        archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");
+        sourceTypesTabIndex = 0;
 
-        viewPager.setAdapter(adapter);
+        archivistFragmentStatePagerAdapter.addFragment(new ArchivistSourcesFragment(), "Sources");
+        sourceTabIndex = 1;
+
+        archivistFragmentStatePagerAdapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+        sourceExcerptsTabIndex = 2;
+
+        this.viewPager.setAdapter(archivistFragmentStatePagerAdapter);
     }
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:
     // https://stackoverflow.com/questions/30080045/fragmentpageradapter-notifydatasetchanged-not-working
-    static class Adapter extends FragmentStatePagerAdapter {
+    static class ArchivistFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final HashMap<Fragment, String> mFragmentsToKeys = new HashMap<>();
 
-        public Adapter(FragmentManager manager) {
+        ArchivistFragmentStatePagerAdapter(FragmentManager manager) {
             super(manager);
         }
 

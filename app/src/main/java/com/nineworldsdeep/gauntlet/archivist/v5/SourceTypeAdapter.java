@@ -18,8 +18,9 @@ import java.util.ArrayList;
 public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSourceType> mSourceTypes;
-    private Context context;
-    private FragmentStatePagerAdapter fragmentStatePagerAdapter;
+    //private Context context;
+
+    private ArchivistActivity parentArchivistActivity;
 
     //private final Drawable mockPicDrawable;
 
@@ -27,13 +28,13 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
         ImageView picture;
         public TextView name;
-        FragmentStatePagerAdapter fragmentStatePagerAdapter;
+        private ArchivistActivity parentArchivistActivity;
 
-        public ViewHolder(LayoutInflater inflater, final ViewGroup parent, final FragmentStatePagerAdapter fragmentStatePagerAdapter) {
+        public ViewHolder(LayoutInflater inflater, final ViewGroup parent, final ArchivistActivity parentArchivistActivity) {
             super(inflater.inflate(
                     R.layout.fragment_archivist_source_types_content, parent, false));
 
-            this.fragmentStatePagerAdapter = fragmentStatePagerAdapter;
+            this.parentArchivistActivity = parentArchivistActivity;
 
             picture = (ImageView) itemView.findViewById(R.id.tile_picture);
             name = (TextView) itemView.findViewById(R.id.tile_title);
@@ -53,22 +54,23 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
                     ArchivistWorkspace.setCurrentSourceTypeByName(typeName);
 
-                    fragmentStatePagerAdapter.notifyDataSetChanged();
+                    parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
+                    parentArchivistActivity.selectSourcesTab();
                 }
             });
         }
     }
 
-    SourceTypeAdapter(Context context, FragmentStatePagerAdapter fragmentStatePagerAdapter){
+    SourceTypeAdapter(ArchivistActivity parentArchivistActivity){
 
         mSourceTypes = ArchivistWorkspace.getSourceTypes();
-        this.context = context;
-        this.fragmentStatePagerAdapter = fragmentStatePagerAdapter;
+        this.parentArchivistActivity = parentArchivistActivity;
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()), parent, fragmentStatePagerAdapter);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()), parent, parentArchivistActivity);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
         ArchivistSourceType srcType = mSourceTypes.get(position);
 
-        holder.picture.setImageDrawable(context.getDrawable(srcType.getSourcePicDrawableResourceId()));
+        holder.picture.setImageDrawable(parentArchivistActivity.getDrawable(srcType.getSourcePicDrawableResourceId()));
         holder.name.setText(srcType.getSourceTypeName());
     }
 

@@ -58,7 +58,7 @@ public class ArchivistSourceExcerptsFragment extends Fragment {
 //        }
 //    }
 //
-//    public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+//    public static class ContentAdapter extends RecyclerView.ArchivistFragmentStatePagerAdapter<ViewHolder> {
 //
 //        // Set numbers of List in RecyclerView.
 //        private static final int LENGTH = 18;

@@ -25,38 +25,29 @@ public class ArchivistAddSourceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_archivist_add_source);
 
         //getActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        Intent intent = getIntent();
-//
-//        mSourceTypeId = intent.getIntExtra(
-//                Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
-//
-//        mSourceTypeName = intent.getStringExtra(
-//                Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
-//
-//        if(mSourceTypeId < 1 ||
-//                Utils.stringIsNullOrWhitespace(mSourceTypeName)){
-//
-//            Utils.toast(this, "Invalid Source Type Info");
-//            Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
-//            btnConfirm.setEnabled(false);
-//        }
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mCurrentSourceType = ArchivistWorkspace.getCurrentSourceType();
 
         Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
         TextView tvSourceTypeName = (TextView)findViewById(R.id.tvSourceTypeName);
 
-        if(mCurrentSourceType != null) {
+        if(mCurrentSourceType != null && mCurrentSourceType.getSourceTypeId() > 0) {
 
-            tvSourceTypeName.setText(mCurrentSourceType.getSourceTypeName());
-            btnConfirm.setEnabled(true);
+            if (tvSourceTypeName != null && btnConfirm != null) {
+                tvSourceTypeName.setText(mCurrentSourceType.getSourceTypeName());
+                btnConfirm.setEnabled(true);
+            }
 
         }else{
 
             Utils.toast(this, "Invalid Source Type Info");
-            btnConfirm.setEnabled(false);
+            if (btnConfirm != null) {
+                btnConfirm.setEnabled(false);
+            }
         }
     }
 
@@ -71,12 +62,12 @@ public class ArchivistAddSourceActivity extends AppCompatActivity {
         EditText etUrl = (EditText)findViewById(R.id.etSourceUrl);
         EditText etRetrievalDate = (EditText)findViewById(R.id.etSourceRetrievalDate);
 
-        String sourceTitle = etTitle.getText().toString();
-        String sourceAuthor = etAuthor.getText().toString();
-        String sourceDirector = etDirector.getText().toString();
-        String sourceYear = etYear.getText().toString();
-        String sourceUrl = etUrl.getText().toString();
-        String sourceRetrievalDate = etRetrievalDate.getText().toString();
+        String sourceTitle = etTitle != null ? etTitle.getText().toString() : null;
+        String sourceAuthor = etAuthor != null ? etAuthor.getText().toString() : null;
+        String sourceDirector = etDirector != null ? etDirector.getText().toString() : null;
+        String sourceYear = etYear != null ? etYear.getText().toString() : null;
+        String sourceUrl = etUrl != null ? etUrl.getText().toString() : null;
+        String sourceRetrievalDate = etRetrievalDate != null ? etRetrievalDate.getText().toString() : null;
 
         intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, mCurrentSourceType.getSourceTypeId());
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME, mCurrentSourceType.getSourceTypeName());

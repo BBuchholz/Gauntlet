@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,11 +23,15 @@ import com.nineworldsdeep.gauntlet.R;
  */
 public class ArchivistSourceTypesFragment extends Fragment {
 
+    private FragmentStatePagerAdapter fragmentStatePagerAdapter;
 
     public ArchivistSourceTypesFragment() {
         // Required empty public constructor
     }
 
+    public void setFragmentStatePagerAdapter(FragmentStatePagerAdapter fragmentStatePagerAdapter){
+        this.fragmentStatePagerAdapter = fragmentStatePagerAdapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,7 +40,7 @@ public class ArchivistSourceTypesFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
         //ContentAdapter adapter = new ContentAdapter(recyclerView.getContext());
-        SourceTypeAdapter adapter = new SourceTypeAdapter(recyclerView.getContext());
+        SourceTypeAdapter adapter = new SourceTypeAdapter(recyclerView.getContext(), fragmentStatePagerAdapter);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
 

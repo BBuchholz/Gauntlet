@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -205,14 +206,19 @@ public class ArchivistActivity extends AppCompatActivity {
 
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        adapter.addFragment(new ArchivistSourceTypesFragment(), "Source Types");
+        ArchivistSourceTypesFragment archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
+        archivistSourceTypesFragment.setFragmentStatePagerAdapter(adapter);
+
+        adapter.addFragment(archivistSourceTypesFragment, "Source Types");
         adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
         adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
 
         viewPager.setAdapter(adapter);
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:
+    // https://stackoverflow.com/questions/30080045/fragmentpageradapter-notifydatasetchanged-not-working
+    static class Adapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final HashMap<Fragment, String> mFragmentsToKeys = new HashMap<>();
 

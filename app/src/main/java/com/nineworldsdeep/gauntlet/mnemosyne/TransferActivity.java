@@ -29,7 +29,10 @@ public class TransferActivity extends AsyncListBasedActivity
         setContentView(R.layout.activity_transfer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -59,8 +62,8 @@ public class TransferActivity extends AsyncListBasedActivity
         //SEE AudioListV2Activity FOR EXAMPLE OF MORE COMPLEX IMPLEMENTATION
         cmds.clear();
 
-        cmds.add(new AsyncCommandImportSynergyV5FromXml(this));
-        cmds.add(new AsyncCommandImportMnemosyneV5FromXml(this));
+//        cmds.add(new AsyncCommandImportSynergyV5FromXml(this));
+//        cmds.add(new AsyncCommandImportMnemosyneV5FromXml(this));
 
         cmds.add(new AsyncCommandHiveImportSynergyV5FromXml(this));
         cmds.add(new AsyncCommandHiveImportMnemosyneV5FromXml(this));
@@ -73,8 +76,8 @@ public class TransferActivity extends AsyncListBasedActivity
 
 //        cmds.add(new AsyncCommandBridgeTables(this));
 
-        cmds.add(new AsyncCommandExportSynergyV5ToXml(this));
-        cmds.add(new AsyncCommandExportMnemosyneV5ToXml(this));
+//        cmds.add(new AsyncCommandExportSynergyV5ToXml(this));
+//        cmds.add(new AsyncCommandExportMnemosyneV5ToXml(this));
 
         cmds.add(new AsyncCommandHiveExportSynergyV5ToXml(this));
         cmds.add(new AsyncCommandHiveExportMnemosyneV5ToXml(this));

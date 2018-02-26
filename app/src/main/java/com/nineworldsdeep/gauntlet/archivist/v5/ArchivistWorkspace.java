@@ -3,8 +3,9 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 import com.nineworldsdeep.gauntlet.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class ArchivistWorkspace {
+class ArchivistWorkspace {
 
 /*
  * Mirrors MnemosyneRegistry, being a static entity,
@@ -22,44 +23,18 @@ public class ArchivistWorkspace {
     private static ArrayList<ArchivistSource> openSources;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
 
-    // holding references to fragments in workspace
-    private static ArchivistSourceTypesFragment sourceTypesFragment;
-    private static ArchivistSourcesFragment sourcesFragment;
-    private static ArchivistSourceExcerptsFragment sourceExcerptsFragment;
+    private static HashMap<String, String> fragmentKeysToTitles;
 
     static {
         sourceTypes = new ArrayList<>();
         openSources = new ArrayList<>();
         openSourceExcerpts = new ArrayList<>();
+        fragmentKeysToTitles = new HashMap<>();
 
         loadTestingValues();
     }
 
-    public static ArchivistSourceTypesFragment getSourceTypesFragment() {
-        return sourceTypesFragment;
-    }
-
-    public static void setSourceTypesFragment(ArchivistSourceTypesFragment sourceTypesFragment) {
-        ArchivistWorkspace.sourceTypesFragment = sourceTypesFragment;
-    }
-
-    public static ArchivistSourcesFragment getSourcesFragment() {
-        return sourcesFragment;
-    }
-
-    public static void setSourcesFragment(ArchivistSourcesFragment sourcesFragment) {
-        ArchivistWorkspace.sourcesFragment = sourcesFragment;
-    }
-
-    public static ArchivistSourceExcerptsFragment getSourceExcerptsFragment() {
-        return sourceExcerptsFragment;
-    }
-
-    public static void setSourceExcerptsFragment(ArchivistSourceExcerptsFragment sourceExcerptsFragment) {
-        ArchivistWorkspace.sourceExcerptsFragment = sourceExcerptsFragment;
-    }
-
-    public static void loadTestingValues(){
+    private static void loadTestingValues(){
 
         //mock source types
         sourceTypes.add(new ArchivistSourceType("Article", R.drawable.article));
@@ -83,15 +58,25 @@ public class ArchivistWorkspace {
         openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
     }
 
-    public static ArrayList<ArchivistSourceType> getSourceTypes() {
+    static ArrayList<ArchivistSourceType> getSourceTypes() {
         return sourceTypes;
     }
 
-    public static ArrayList<ArchivistSource> getOpenSources() {
+    static ArrayList<ArchivistSource> getOpenSources() {
         return openSources;
     }
 
-    public static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts() {
+    static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts() {
         return openSourceExcerpts;
+    }
+
+    static void setFragmentTitle(String fragmentKey, String fragmentTitle) {
+
+        fragmentKeysToTitles.put(fragmentKey, fragmentTitle);
+    }
+
+    static String getFragmentTitle(String fragmentKey) {
+
+        return fragmentKeysToTitles.get(fragmentKey);
     }
 }

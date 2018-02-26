@@ -17,6 +17,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -202,32 +203,33 @@ public class ArchivistActivity extends AppCompatActivity {
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
 
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-
-        ArchivistWorkspace.setSourceTypesFragment(new ArchivistSourceTypesFragment());
-        ArchivistWorkspace.setSourcesFragment(new ArchivistSourcesFragment());
-        ArchivistWorkspace.setSourceExcerptsFragment(new ArchivistSourceExcerptsFragment());
-
-        adapter.addFragment(ArchivistWorkspace.getSourceTypesFragment(), "Source Types");
-        adapter.addFragment(ArchivistWorkspace.getSourcesFragment(), "Sources");
-        adapter.addFragment(ArchivistWorkspace.getSourceExcerptsFragment(), "Excerpts");
-
-        viewPager.setAdapter(adapter);
-//
 //        Adapter adapter = new Adapter(getSupportFragmentManager());
 //
+//        ArchivistWorkspace.setSourceTypesFragment(new ArchivistSourceTypesFragment());
+//        ArchivistWorkspace.setSourcesFragment(new ArchivistSourcesFragment());
+//        ArchivistWorkspace.setSourceExcerptsFragment(new ArchivistSourceExcerptsFragment());
 //
-//
-//        adapter.addFragment(new ArchivistSourceTypesFragment(), "Source Types");
-//        adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
-//        adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+//        adapter.addFragment(ArchivistWorkspace.getSourceTypesFragment(), "Source Types");
+//        adapter.addFragment(ArchivistWorkspace.getSourcesFragment(), "Sources");
+//        adapter.addFragment(ArchivistWorkspace.getSourceExcerptsFragment(), "Excerpts");
 //
 //        viewPager.setAdapter(adapter);
+//
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+
+
+
+        adapter.addFragment(new ArchivistSourceTypesFragment(), "Source Types");
+        adapter.addFragment(new ArchivistSourcesFragment(), "Sources");
+        adapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+
+        viewPager.setAdapter(adapter);
     }
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private final HashMap<Fragment, String> mFragmentsToKeys = new HashMap<>();
+        //private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public Adapter(FragmentManager manager) {
             super(manager);
@@ -243,14 +245,28 @@ public class ArchivistActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String fragmentKey) {
+
+            addFragment(fragment, fragmentKey, fragmentKey);
+        }
+
+        void addFragment(Fragment fragment, String fragmentKey, String fragmentTitle) {
+
             mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
+
+            //mFragmentTitleList.add(fragmentKey);
+
+            mFragmentsToKeys.put(fragment, fragmentKey);
+            ArchivistWorkspace.setFragmentTitle(fragmentKey, fragmentTitle);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+
+            //return mFragmentTitleList.get(position);
+
+            Fragment fragment = mFragmentList.get(position);
+            return ArchivistWorkspace.getFragmentTitle(mFragmentsToKeys.get(fragment));
         }
     }
 }

@@ -1,95 +1,92 @@
 package com.nineworldsdeep.gauntlet.sqlite;
 
-/**
- * Created by brent on 5/27/16.
- */
 public class NwdContract {
 
     //region tables
-    public static final String TABLE_DISPLAY_NAME = "DisplayName";
-    public static final String TABLE_PATH = "Path";
-    public static final String TABLE_HASH = "Hash";
-    public static final String TABLE_DEVICE = "Device";
-    public static final String TABLE_FILE = "File";
-    public static final String TABLE_TAG = "Tag";
-    public static final String TABLE_FILE_TAGS = "FileTags";
-    public static final String TABLE_AUDIO_TRANSCRIPT = "AudioTranscript";
-//    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
+    static final String TABLE_DISPLAY_NAME = "DisplayName";
+    static final String TABLE_PATH = "Path";
+    static final String TABLE_HASH = "Hash";
+    static final String TABLE_DEVICE = "Device";
+    static final String TABLE_FILE = "File";
+    static final String TABLE_TAG = "Tag";
+    static final String TABLE_FILE_TAGS = "FileTags";
+    static final String TABLE_AUDIO_TRANSCRIPT = "AudioTranscript";
+//    static final String TABLE_LOCAL_CONFIG = "LocalConfig";
 
-    public static final String TABLE_SYNERGY_LIST = "SynergyList";
-    public static final String TABLE_SYNERGY_LIST_ITEM = "SynergyListItem";
-    public static final String TABLE_SYNERGY_ITEM = "SynergyItem";
-    public static final String TABLE_SYNERGY_TO_DO = "SynergyToDo";
+    private static final String TABLE_SYNERGY_LIST = "SynergyList";
+    private static final String TABLE_SYNERGY_LIST_ITEM = "SynergyListItem";
+    private static final String TABLE_SYNERGY_ITEM = "SynergyItem";
+    private static final String TABLE_SYNERGY_TO_DO = "SynergyToDo";
     //endregion
 
     //region columns
 
     //region V4a
 
-    public static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
-    public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
-    public static final String COLUMN_PATH_ID = "PathId";
-    public static final String COLUMN_PATH_VALUE = "PathValue";
-    public static final String COLUMN_HASH_ID = "HashId";
-    public static final String COLUMN_HASH_VALUE = "HashValue";
-    public static final String COLUMN_DEVICE_ID = "DeviceId";
-    public static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
-    public static final String COLUMN_FILE_ID = "FileId";
-    public static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
-    public static final String COLUMN_TAG_ID = "TagId";
-    public static final String COLUMN_TAG_VALUE = "TagValue";
-    public static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
-    public static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
-    public static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
-    public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
-    public static final String COLUMN_FILE_NAME = "FileName";
-//    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
-//    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
-//    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+    static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
+    static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
+    static final String COLUMN_PATH_ID = "PathId";
+    static final String COLUMN_PATH_VALUE = "PathValue";
+    static final String COLUMN_HASH_ID = "HashId";
+    static final String COLUMN_HASH_VALUE = "HashValue";
+    static final String COLUMN_DEVICE_ID = "DeviceId";
+    static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
+    static final String COLUMN_FILE_ID = "FileId";
+    static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
+    static final String COLUMN_TAG_ID = "TagId";
+    static final String COLUMN_TAG_VALUE = "TagValue";
+    static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
+    static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
+    static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
+    static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
+    static final String COLUMN_FILE_NAME = "FileName";
+//    static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
+//    static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+//    static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
 
     //endregion
 
-    public static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT =
+    static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT =
             "MediaDevicePathVerifiedPresent";
-    public static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING =
+    static final String COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING =
             "MediaDevicePathVerifiedMissing";
 
-    public static final String COLUMN_COUNT = "Count";
+    static final String COLUMN_COUNT = "Count";
 
-    public static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
-    public static final String COLUMN_SYNERGY_LIST_NAME = "SynergyListName";
-    public static final String COLUMN_SYNERGY_LIST_ACTIVATED_AT = "SynergyListActivatedAt";
-    public static final String COLUMN_SYNERGY_LIST_SHELVED_AT = "SynergyListShelvedAt";
-    public static final String COLUMN_SYNERGY_LIST_CREATED_AT = "SynergyListCreatedAt";
-    public static final String COLUMN_SYNERGY_LIST_UPDATED_AT = "SynergyListUpdatedAt";
+    static final String COLUMN_SYNERGY_LIST_ID = "SynergyListId";
+    static final String COLUMN_SYNERGY_LIST_NAME = "SynergyListName";
+    static final String COLUMN_SYNERGY_LIST_ACTIVATED_AT = "SynergyListActivatedAt";
+    static final String COLUMN_SYNERGY_LIST_SHELVED_AT = "SynergyListShelvedAt";
+    private static final String COLUMN_SYNERGY_LIST_CREATED_AT = "SynergyListCreatedAt";
+    private static final String COLUMN_SYNERGY_LIST_UPDATED_AT = "SynergyListUpdatedAt";
 
-    public static final String COLUMN_SYNERGY_LIST_ITEM_ID = "SynergyListItemId";
-    public static final String COLUMN_SYNERGY_LIST_ITEM_CREATED_AT = "SynergyListItemCreatedAt";
-    public static final String COLUMN_SYNERGY_LIST_ITEM_UPDATED_AT  = "SynergyListItemUpdatedAt";
-    public static final String COLUMN_SYNERGY_LIST_ITEM_POSITION = "SynergyListItemPosition";
+    static final String COLUMN_SYNERGY_LIST_ITEM_ID = "SynergyListItemId";
+    private static final String COLUMN_SYNERGY_LIST_ITEM_CREATED_AT = "SynergyListItemCreatedAt";
+    private static final String COLUMN_SYNERGY_LIST_ITEM_UPDATED_AT  = "SynergyListItemUpdatedAt";
+    static final String COLUMN_SYNERGY_LIST_ITEM_POSITION = "SynergyListItemPosition";
 
-    public static final String COLUMN_SYNERGY_ITEM_ID = "SynergyItemId";
-    public static final String COLUMN_SYNERGY_ITEM_VALUE = "SynergyItemValue";
-    public static final String COLUMN_SYNERGY_ITEM_CREATED_AT = "SynergyItemCreatedAt";
-    public static final String COLUMN_SYNERGY_ITEM_UPDATED_AT = "SynergyItemUpdatedAt";
+    static final String COLUMN_SYNERGY_ITEM_ID = "SynergyItemId";
+    static final String COLUMN_SYNERGY_ITEM_VALUE = "SynergyItemValue";
+    private static final String COLUMN_SYNERGY_ITEM_CREATED_AT = "SynergyItemCreatedAt";
+    private static final String COLUMN_SYNERGY_ITEM_UPDATED_AT = "SynergyItemUpdatedAt";
 
-    public static final String COLUMN_SYNERGY_TO_DO_ID = "SynergyToDoId";
-    public static final String COLUMN_SYNERGY_TO_DO_ACTIVATED_AT = "SynergyToDoActivatedAt";
-    public static final String COLUMN_SYNERGY_TO_DO_COMPLETED_AT = "SynergyToDoCompletedAt";
-    public static final String COLUMN_SYNERGY_TO_DO_ARCHIVED_AT = "SynergyToDoArchivedAt";
-    public static final String COLUMN_SYNERGY_TO_DO_CREATED_AT = "SynergyToDoCreatedAt";
-    public static final String COLUMN_SYNERGY_TO_DO_UPDATED_AT = "SynergyToDoUpdatedAt";
+    static final String COLUMN_SYNERGY_TO_DO_ID = "SynergyToDoId";
+    static final String COLUMN_SYNERGY_TO_DO_ACTIVATED_AT = "SynergyToDoActivatedAt";
+    static final String COLUMN_SYNERGY_TO_DO_COMPLETED_AT = "SynergyToDoCompletedAt";
+    static final String COLUMN_SYNERGY_TO_DO_ARCHIVED_AT = "SynergyToDoArchivedAt";
+    private static final String COLUMN_SYNERGY_TO_DO_CREATED_AT = "SynergyToDoCreatedAt";
+    private static final String COLUMN_SYNERGY_TO_DO_UPDATED_AT = "SynergyToDoUpdatedAt";
 
     //endregion
 
     //region SynergyV5_DDL
 
-    public static final String DROP_SYNERGY_LIST = "DROP TABLE SynergyList;";
-    public static final String DROP_SYNERGY_TO_DO = "DROP TABLE SynergyToDo;";
-    public static final String DROP_SYNERGY_LIST_ITEM =
+    static final String DROP_SYNERGY_LIST = "DROP TABLE SynergyList;";
+    static final String DROP_SYNERGY_TO_DO = "DROP TABLE SynergyToDo;";
+    static final String DROP_SYNERGY_LIST_ITEM =
             "DROP TABLE SynergyListItem;";
 
-    public static final String CREATE_SYNERGY_LIST =
+    static final String CREATE_SYNERGY_LIST =
 
         "CREATE TABLE " + TABLE_SYNERGY_LIST + " ( "
             + COLUMN_SYNERGY_LIST_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
@@ -100,7 +97,7 @@ public class NwdContract {
             + COLUMN_SYNERGY_LIST_UPDATED_AT + " TEXT "
         + ") ";
 
-    public static final String CREATE_SYNERGY_LIST_CREATED_TRIGGER =
+    static final String CREATE_SYNERGY_LIST_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_LIST + " "
@@ -112,7 +109,7 @@ public class NwdContract {
                 + "WHERE " + TABLE_SYNERGY_LIST + "." + COLUMN_SYNERGY_LIST_ID + " = NEW." + COLUMN_SYNERGY_LIST_ID + "; "
             + "END ";
 
-    public static final String CREATE_SYNERGY_LIST_UPDATED_TRIGGER =
+    static final String CREATE_SYNERGY_LIST_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "UpdatedAt  "
             + "AFTER UPDATE ON " + TABLE_SYNERGY_LIST + " "
@@ -124,7 +121,7 @@ public class NwdContract {
 
 
 
-    public static final String CREATE_SYNERGY_ITEM =
+    static final String CREATE_SYNERGY_ITEM =
 
             "CREATE TABLE " + TABLE_SYNERGY_ITEM + " ("
             + COLUMN_SYNERGY_ITEM_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
@@ -133,7 +130,7 @@ public class NwdContract {
             + COLUMN_SYNERGY_ITEM_UPDATED_AT + " TEXT "
             + ") ";
 
-    public static final String CREATE_SYNERGY_ITEM_CREATED_TRIGGER =
+    static final String CREATE_SYNERGY_ITEM_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_ITEM + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_ITEM + " "
@@ -144,7 +141,7 @@ public class NwdContract {
             + "	WHERE " + TABLE_SYNERGY_ITEM + "." + COLUMN_SYNERGY_ITEM_ID + " = NEW." + COLUMN_SYNERGY_ITEM_ID + "; "
             + "END ";
 
-    public static final String CREATE_SYNERGY_ITEM_UPDATED_TRIGGER =
+    static final String CREATE_SYNERGY_ITEM_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_ITEM + "UpdatedAt "
             + "AFTER UPDATE ON " + TABLE_SYNERGY_ITEM + " "
@@ -156,7 +153,7 @@ public class NwdContract {
 
 
 
-    public static final String CREATE_SYNERGY_LIST_ITEM =
+    static final String CREATE_SYNERGY_LIST_ITEM =
 
             "CREATE TABLE " + TABLE_SYNERGY_LIST_ITEM + " ( "
             + COLUMN_SYNERGY_LIST_ITEM_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
@@ -168,7 +165,7 @@ public class NwdContract {
             + "	UNIQUE(" + COLUMN_SYNERGY_LIST_ID + ", " + COLUMN_SYNERGY_ITEM_ID + ") "
             + ") ";
 
-    public static final String CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER =
+    static final String CREATE_SYNERGY_LIST_ITEM_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST_ITEM + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_LIST_ITEM + " "
@@ -179,7 +176,7 @@ public class NwdContract {
             + "	WHERE " + TABLE_SYNERGY_LIST_ITEM + "." + COLUMN_SYNERGY_LIST_ITEM_ID + " = NEW." + COLUMN_SYNERGY_LIST_ITEM_ID + "; "
             + "END ";
 
-    public static final String CREATE_SYNERGY_LIST_ITEM_UPDATED_TRIGGER =
+    static final String CREATE_SYNERGY_LIST_ITEM_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST_ITEM + "UpdatedAt "
             + "AFTER UPDATE ON " + TABLE_SYNERGY_LIST_ITEM + " "
@@ -191,7 +188,7 @@ public class NwdContract {
 
 
 
-    public static final String CREATE_SYNERGY_TO_DO =
+    static final String CREATE_SYNERGY_TO_DO =
 
             "CREATE TABLE " + TABLE_SYNERGY_TO_DO + " ( "
             + "" + COLUMN_SYNERGY_TO_DO_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  "
@@ -205,7 +202,7 @@ public class NwdContract {
             + "UNIQUE(" + COLUMN_SYNERGY_LIST_ITEM_ID + ") "
         + ") ";
 
-    public static final String CREATE_SYNERGY_TO_DO_CREATED_TRIGGER =
+    static final String CREATE_SYNERGY_TO_DO_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_TO_DO + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_TO_DO + " "
@@ -216,7 +213,7 @@ public class NwdContract {
                 + "WHERE " + TABLE_SYNERGY_TO_DO + "." + COLUMN_SYNERGY_TO_DO_ID + " = NEW." + COLUMN_SYNERGY_TO_DO_ID + "; "
             + "END ";
 
-    public static final String CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER =
+    static final String CREATE_SYNERGY_TO_DO_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_TO_DO + "UpdatedAt "
             + "AFTER UPDATE ON " + TABLE_SYNERGY_TO_DO + " "
@@ -230,7 +227,7 @@ public class NwdContract {
 
     //region SynergyV5_SELECT
 
-    public static final String
+    static final String
             SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS =
 
                 "SELECT sl." + COLUMN_SYNERGY_LIST_NAME + ", COUNT(sli." + COLUMN_SYNERGY_LIST_ITEM_ID + ") AS '" + COLUMN_COUNT + "' "
@@ -248,7 +245,7 @@ public class NwdContract {
                 + "GROUP BY sl." + COLUMN_SYNERGY_LIST_NAME + " "
                 + "ORDER BY sl." + COLUMN_SYNERGY_LIST_NAME + "; ";
 
-    public static final String
+    static final String
         SYNERGY_V5_SELECT_LIST_NAMES_WITH_ITEM_COUNTS_NEW =
 
             "SELECT sl." + COLUMN_SYNERGY_LIST_NAME + ", SUM( " +
@@ -270,7 +267,7 @@ public class NwdContract {
             "GROUP BY sl." + COLUMN_SYNERGY_LIST_NAME + " " +
             "ORDER BY sl." + COLUMN_SYNERGY_LIST_NAME + "; ";
 
-    public static final String SYNERGY_V5_SELECT_ACTIVE_LISTS =
+    static final String SYNERGY_V5_SELECT_ACTIVE_LISTS =
 
             "SELECT " + COLUMN_SYNERGY_LIST_NAME + " "
             + "FROM " + TABLE_SYNERGY_LIST + " "
@@ -279,20 +276,20 @@ public class NwdContract {
                          COLUMN_SYNERGY_LIST_SHELVED_AT + " "
             + "ORDER BY " + COLUMN_SYNERGY_LIST_NAME + "; ";
 
-    public static final String SYNERGY_V5_SELECT_SHELVED_LISTS =
+    static final String SYNERGY_V5_SELECT_SHELVED_LISTS =
 
             "SELECT " + COLUMN_SYNERGY_LIST_NAME + " "
             + "FROM " + TABLE_SYNERGY_LIST + " "
             + "WHERE " + COLUMN_SYNERGY_LIST_ACTIVATED_AT + " < " + COLUMN_SYNERGY_LIST_SHELVED_AT + " "
             + "ORDER BY " + COLUMN_SYNERGY_LIST_NAME + "; ";
 
-    public static final String SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X =
+    static final String SYNERGY_V5_SELECT_ID_FOR_LIST_NAME_X =
 
             "SELECT " + COLUMN_SYNERGY_LIST_ID + " "
             + "FROM " + TABLE_SYNERGY_LIST + " "
             + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
 
-    public static final String
+    static final String
             SYNERGY_V5_SELECT_ID_ACTIVATED_AT_SHELVED_AT_FOR_LIST_NAME =
 
         "SELECT " + COLUMN_SYNERGY_LIST_ID + ", "
@@ -301,7 +298,7 @@ public class NwdContract {
         + "FROM " + TABLE_SYNERGY_LIST + " "
         + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ? ;";
 
-    public static final String
+    static final String
             SYNERGY_V5_SELECT_LIST_ITEM_ID_FOR_LIST_ID_ITEM_ID_X_Y =
 
             "SELECT " + COLUMN_SYNERGY_LIST_ITEM_ID + " "
@@ -309,13 +306,13 @@ public class NwdContract {
             + "WHERE " + COLUMN_SYNERGY_LIST_ID + " = ?  "
             + "AND " + COLUMN_SYNERGY_ITEM_ID + " = ? ; ";
 
-    public static final String SYNERGY_V5_SELECT_ID_FOR_ITEM_VALUE_X =
+    static final String SYNERGY_V5_SELECT_ID_FOR_ITEM_VALUE_X =
 
             "SELECT " + COLUMN_SYNERGY_ITEM_ID + " "
             + "FROM " + TABLE_SYNERGY_ITEM + " "
             + "WHERE " + COLUMN_SYNERGY_ITEM_VALUE + " = ? ; ";
 
-    public static final String
+    static final String
             SYNERGY_V5_SELECT_ITEM_VALUES_BY_POSITION_FOR_LIST_ID_X =
 
             "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
@@ -327,7 +324,7 @@ public class NwdContract {
                     " = si." + COLUMN_SYNERGY_ITEM_ID + " "
             + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? ; ";
 
-    public static final String
+    static final String
             SYNERGY_V5_SELECT_LIST_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
 
             "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
@@ -350,14 +347,14 @@ public class NwdContract {
 
     //region SynergyV5_INSERT
 
-    public static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
+    static final String SYNERGY_V5_ENSURE_LIST_NAME_X =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST + " "
             + "	(" + COLUMN_SYNERGY_LIST_NAME + ") "
             + "VALUES "
             + "	(?); ";
 
-    public static final String SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z =
+    static final String SYNERGY_V5_ENSURE_LIST_ITEM_POSITION_X_Y_Z =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_LIST_ITEM + " "
             + "	(" + COLUMN_SYNERGY_LIST_ID + ",  "
@@ -366,14 +363,14 @@ public class NwdContract {
             + "VALUES "
             + "	(?, ?, ?); ";
 
-    public static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
+    static final String SYNERGY_V5_ENSURE_ITEM_VALUE_X =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_ITEM + " "
             + "	(" + COLUMN_SYNERGY_ITEM_VALUE + ") "
             + "VALUES "
             + "	(?); ";
 
-    public static final String
+    static final String
             SYNERGY_V5_ENSURE_TO_DO_FOR_LIST_ITEM_ID_ID_AC_CO_AR =
 
             "INSERT OR IGNORE INTO " + TABLE_SYNERGY_TO_DO + "  "
@@ -388,7 +385,7 @@ public class NwdContract {
 
     //region SynergyV5_UPDATE
 
-    public static final String
+    static final String
             SYNERGY_V5_LIST_UPDATE_ACTIVATE_AT_SHELVED_AT_FOR_LIST_NAME_X_Y_Z =
 
             "UPDATE " + TABLE_SYNERGY_LIST + " "
@@ -396,14 +393,14 @@ public class NwdContract {
             + "	   " + COLUMN_SYNERGY_LIST_SHELVED_AT + " = MAX(IFNULL(" + COLUMN_SYNERGY_LIST_SHELVED_AT + ", ''), ?) "
             + "WHERE " + COLUMN_SYNERGY_LIST_NAME + " = ?; ";
 
-    public static final String
+    static final String
             SYNERGY_V5_UPDATE_POSITION_FOR_LIST_ITEM_ID_X_Y =
 
             "UPDATE " + TABLE_SYNERGY_LIST_ITEM + " "
             + "SET " + COLUMN_SYNERGY_LIST_ITEM_POSITION + " = ? "
             + "WHERE " + COLUMN_SYNERGY_LIST_ITEM_ID + " = ? ; ";
 
-    public static final String
+    static final String
             SYNERGY_V5_UPDATE_TO_DO_WHERE_LIST_ITEM_ID_AC_CO_AR_ID =
 
             "UPDATE " + TABLE_SYNERGY_TO_DO + "  "
@@ -417,76 +414,76 @@ public class NwdContract {
 
     //endregion
 
-    public static final String TABLE_MEDIA_TRANSCRIPTION = "MediaTranscription";
+    private static final String TABLE_MEDIA_TRANSCRIPTION = "MediaTranscription";
 
-    public static final String TABLE_MEDIA_DEVICE = "MediaDevice";
-    public static final String TABLE_MEDIA_ROOT = "MediaRoot";
-    public static final String TABLE_MEDIA_PATH = "MediaPath";
-    public static final String TABLE_MEDIA = "Media";
-    public static final String TABLE_MEDIA_DEVICE_PATH = "MediaDevicePath";
-    public static final String TABLE_MEDIA_TAG = "MediaTag";
-    public static final String TABLE_MEDIA_TAGGING = "MediaTagging";
-    public static final String TABLE_MEDIA_TRANSCRIPT = "MediaTranscript";
+    private static final String TABLE_MEDIA_DEVICE = "MediaDevice";
+    private static final String TABLE_MEDIA_ROOT = "MediaRoot";
+    private static final String TABLE_MEDIA_PATH = "MediaPath";
+    private static final String TABLE_MEDIA = "Media";
+    private static final String TABLE_MEDIA_DEVICE_PATH = "MediaDevicePath";
+    private static final String TABLE_MEDIA_TAG = "MediaTag";
+    private static final String TABLE_MEDIA_TAGGING = "MediaTagging";
+    private static final String TABLE_MEDIA_TRANSCRIPT = "MediaTranscript";
 
-    public static final String COLUMN_MEDIA_ROOT_ID = "MediaRootId";
-    public static final String COLUMN_MEDIA_ROOT_PATH = "MediaRootPath";
-    public static final String COLUMN_MEDIA_DEVICE_ID = "MediaDeviceId";
-    public static final String COLUMN_MEDIA_DEVICE_DESCRIPTION = "MediaDeviceDescription";
-    public static final String COLUMN_MEDIA_PATH_VALUE = "MediaPathValue";
-    public static final String COLUMN_MEDIA_FILE_NAME = "MediaFileName";
-    public static final String COLUMN_MEDIA_ID = "MediaId";
-    public static final String COLUMN_MEDIA_PATH_ID = "MediaPathId";
-    public static final String COLUMN_MEDIA_HASH = "MediaHash";
-    public static final String COLUMN_MEDIA_TAG_ID = "MediaTagId";
-    public static final String COLUMN_MEDIA_TAG_VALUE = "MediaTagValue";
-    public static final String COLUMN_MEDIA_DESCRIPTION = "MediaDescription";
+    static final String COLUMN_MEDIA_ROOT_ID = "MediaRootId";
+    static final String COLUMN_MEDIA_ROOT_PATH = "MediaRootPath";
+    static final String COLUMN_MEDIA_DEVICE_ID = "MediaDeviceId";
+    static final String COLUMN_MEDIA_DEVICE_DESCRIPTION = "MediaDeviceDescription";
+    static final String COLUMN_MEDIA_PATH_VALUE = "MediaPathValue";
+    static final String COLUMN_MEDIA_FILE_NAME = "MediaFileName";
+    static final String COLUMN_MEDIA_ID = "MediaId";
+    static final String COLUMN_MEDIA_PATH_ID = "MediaPathId";
+    static final String COLUMN_MEDIA_HASH = "MediaHash";
+    static final String COLUMN_MEDIA_TAG_ID = "MediaTagId";
+    static final String COLUMN_MEDIA_TAG_VALUE = "MediaTagValue";
+    static final String COLUMN_MEDIA_DESCRIPTION = "MediaDescription";
 
-    public static final String COLUMN_MEDIA_TRANSCRIPT_ID = "MediaTranscriptId";
-    public static final String COLUMN_MEDIA_TRANSCRIPT_VALUE = "MediaTranscriptValue";
-    public static final String COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME = "MediaTranscriptBeginTime";
-    public static final String COLUMN_MEDIA_TRANSCRIPT_END_TIME = "MediaTranscriptEndTime";
-    public static final String COLUMN_MEDIA_TRANSCRIPT_CREATED_AT = "MediaTranscriptCreatedAt";
-    public static final String COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT = "MediaTranscriptUpdatedAt";
-    public static final String COLUMN_MEDIA_TRANSCRIPTION_ID = "MediaTranscriptionId";
-    public static final String COLUMN_MEDIA_TRANSCRIPTION_CREATED_AT = "MediaTranscriptionCreatedAt";
-    public static final String COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT = "MediaTranscriptionUpdatedAt";
-    public static final String COLUMN_MEDIA_CREATED_AT = "MediaCreatedAt";
-    public static final String COLUMN_MEDIA_UPDATED_AT = "MediaUpdatedAt";
-    public static final String COLUMN_MEDIA_ROOT_CREATED_AT = "MediaRootCreatedAt";
-    public static final String COLUMN_MEDIA_ROOT_UPDATED_AT = "MediaRootUpdatedAt";
-    public static final String COLUMN_MEDIA_PATH_CREATED_AT = "MediaPathCreatedAt";
-    public static final String COLUMN_MEDIA_PATH_UPDATED_AT = "MediaPathUpdatedAt";
-    public static final String COLUMN_MEDIA_DEVICE_PATH_ID = "MediaDevicePathId";
-    public static final String COLUMN_MEDIA_DEVICE_PATH_CREATED_AT = "MediaDevicePathCreatedAt";
-    public static final String COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT = "MediaDevicePathUpdatedAt";
-    public static final String COLUMN_MEDIA_DEVICE_CREATED_AT = "MediaDeviceCreatedAt";
-    public static final String COLUMN_MEDIA_DEVICE_UPDATED_AT = "MediaDeviceUpdatedAt";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_ID = "MediaTranscriptId";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_VALUE = "MediaTranscriptValue";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME = "MediaTranscriptBeginTime";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_END_TIME = "MediaTranscriptEndTime";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_CREATED_AT = "MediaTranscriptCreatedAt";
+    private static final String COLUMN_MEDIA_TRANSCRIPT_UPDATED_AT = "MediaTranscriptUpdatedAt";
+    private static final String COLUMN_MEDIA_TRANSCRIPTION_ID = "MediaTranscriptionId";
+    private static final String COLUMN_MEDIA_TRANSCRIPTION_CREATED_AT = "MediaTranscriptionCreatedAt";
+    private static final String COLUMN_MEDIA_TRANSCRIPTION_UPDATED_AT = "MediaTranscriptionUpdatedAt";
+    private static final String COLUMN_MEDIA_CREATED_AT = "MediaCreatedAt";
+    private static final String COLUMN_MEDIA_UPDATED_AT = "MediaUpdatedAt";
+    private static final String COLUMN_MEDIA_ROOT_CREATED_AT = "MediaRootCreatedAt";
+    private static final String COLUMN_MEDIA_ROOT_UPDATED_AT = "MediaRootUpdatedAt";
+    private static final String COLUMN_MEDIA_PATH_CREATED_AT = "MediaPathCreatedAt";
+    private static final String COLUMN_MEDIA_PATH_UPDATED_AT = "MediaPathUpdatedAt";
+    static final String COLUMN_MEDIA_DEVICE_PATH_ID = "MediaDevicePathId";
+    private static final String COLUMN_MEDIA_DEVICE_PATH_CREATED_AT = "MediaDevicePathCreatedAt";
+    private static final String COLUMN_MEDIA_DEVICE_PATH_UPDATED_AT = "MediaDevicePathUpdatedAt";
+    private static final String COLUMN_MEDIA_DEVICE_CREATED_AT = "MediaDeviceCreatedAt";
+    private static final String COLUMN_MEDIA_DEVICE_UPDATED_AT = "MediaDeviceUpdatedAt";
 
-    public static final String COLUMN_MEDIA_TAGGING_ID = "MediaTaggingId";
-    public static final String COLUMN_MEDIA_TAGGING_TAGGED_AT = "MediaTaggingTaggedAt";
-    public static final String COLUMN_MEDIA_TAGGING_UNTAGGED_AT = "MediaTaggingUntaggedAt";
-    public static final String COLUMN_MEDIA_TAGGING_CREATED_AT = "MediaTaggingCreatedAt";
-    public static final String COLUMN_MEDIA_TAGGING_UPDATED_AT = "MediaTaggingUpdatedAt";
-    public static final String COLUMN_MEDIA_TAG_CREATED_AT = "MediaTagCreatedAt";
-    public static final String COLUMN_MEDIA_TAG_UPDATED_AT = "MediaTagUpdatedAt";
+    static final String COLUMN_MEDIA_TAGGING_ID = "MediaTaggingId";
+    static final String COLUMN_MEDIA_TAGGING_TAGGED_AT = "MediaTaggingTaggedAt";
+    static final String COLUMN_MEDIA_TAGGING_UNTAGGED_AT = "MediaTaggingUntaggedAt";
+    private static final String COLUMN_MEDIA_TAGGING_CREATED_AT = "MediaTaggingCreatedAt";
+    private static final String COLUMN_MEDIA_TAGGING_UPDATED_AT = "MediaTaggingUpdatedAt";
+    private static final String COLUMN_MEDIA_TAG_CREATED_AT = "MediaTagCreatedAt";
+    private static final String COLUMN_MEDIA_TAG_UPDATED_AT = "MediaTagUpdatedAt";
 
-    public static final String TABLE_LOCAL_CONFIG = "LocalConfig";
+    static final String TABLE_LOCAL_CONFIG = "LocalConfig";
 
-    public static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
-    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
-    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
-    public static final String COLUMN_LOCAL_CONFIG_CREATED_AT = "LocalConfigCreatedAt";
-    public static final String COLUMN_LOCAL_CONFIG_UPDATED_AT = "LocalConfigUpdatedAt";
+    static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
+    static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+    static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+    private static final String COLUMN_LOCAL_CONFIG_CREATED_AT = "LocalConfigCreatedAt";
+    private static final String COLUMN_LOCAL_CONFIG_UPDATED_AT = "LocalConfigUpdatedAt";
 
-    public static final String COLUMN_HIVE_ROOT_ID = "HiveRootId";
-    public static final String COLUMN_HIVE_ROOT_NAME = "HiveRootName";
-    public static final String COLUMN_HIVE_ROOT_ACTIVATED_AT = "HiveRootActivatedAt";
-    public static final String COLUMN_HIVE_ROOT_DEACTIVATED_AT = "HiveRootDeactivatedAt";
-    public static final String COLUMN_HIVE_ROOT_CREATED_AT = "HiveRootCreatedAt";
-    public static final String COLUMN_HIVE_ROOT_UPDATED_AT = "HiveRootUpdatedAt";
-    public static final String TABLE_HIVE_ROOT = "HiveRoot";
+    static final String COLUMN_HIVE_ROOT_ID = "HiveRootId";
+    static final String COLUMN_HIVE_ROOT_NAME = "HiveRootName";
+    static final String COLUMN_HIVE_ROOT_ACTIVATED_AT = "HiveRootActivatedAt";
+    static final String COLUMN_HIVE_ROOT_DEACTIVATED_AT = "HiveRootDeactivatedAt";
+    private static final String COLUMN_HIVE_ROOT_CREATED_AT = "HiveRootCreatedAt";
+    private static final String COLUMN_HIVE_ROOT_UPDATED_AT = "HiveRootUpdatedAt";
+    private static final String TABLE_HIVE_ROOT = "HiveRoot";
 
-    public static final String CREATE_MEDIA_TAG =
+    static final String CREATE_MEDIA_TAG =
 
             "CREATE TABLE " + TABLE_MEDIA_TAG + " ( " +
             "	" + COLUMN_MEDIA_TAG_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -495,7 +492,7 @@ public class NwdContract {
             "	" + COLUMN_MEDIA_TAG_UPDATED_AT + " TEXT " +
             ") ";
 
-    public static final String CREATE_MEDIA_TAG_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_TAG_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TAG + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_TAG + " " +
@@ -506,7 +503,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TAG + "." + COLUMN_MEDIA_TAG_ID + " = NEW." + COLUMN_MEDIA_TAG_ID + "; " +
             "END ";
 
-    public static final String CREATE_MEDIA_TAG_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_TAG_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TAG + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_TAG + " " +
@@ -517,7 +514,7 @@ public class NwdContract {
             "END " ;
 
 
-    public static final String CREATE_MEDIA_DEVICE =
+    static final String CREATE_MEDIA_DEVICE =
 
             "CREATE TABLE " + TABLE_MEDIA_DEVICE + " ( " +
             "	" + COLUMN_MEDIA_DEVICE_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -526,7 +523,7 @@ public class NwdContract {
             "	" + COLUMN_MEDIA_DEVICE_UPDATED_AT + " TEXT " +
             ") " ;
 
-    public static final String CREATE_MEDIA_DEVICE_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_DEVICE_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_DEVICE + " " +
@@ -537,7 +534,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_DEVICE + "." + COLUMN_MEDIA_DEVICE_ID + " = NEW." + COLUMN_MEDIA_DEVICE_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_DEVICE_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_DEVICE_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_DEVICE + " " +
@@ -548,7 +545,7 @@ public class NwdContract {
             "END " ;
 
 
-    public static final String CREATE_MEDIA_TRANSCRIPT =
+    static final String CREATE_MEDIA_TRANSCRIPT =
 
             "CREATE TABLE " + TABLE_MEDIA_TRANSCRIPT + " ( " +
             "	" + COLUMN_MEDIA_TRANSCRIPT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -560,7 +557,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_MEDIA_TRANSCRIPT_BEGIN_TIME + ", " + COLUMN_MEDIA_TRANSCRIPT_END_TIME + ") " +
             ") " ;
 
-    public static final String CREATE_MEDIA_TRANSCRIPT_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_TRANSCRIPT_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPT + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_TRANSCRIPT + " " +
@@ -571,7 +568,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TRANSCRIPT + "." + COLUMN_MEDIA_TRANSCRIPT_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPT_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_TRANSCRIPT_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_TRANSCRIPT_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPT + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_TRANSCRIPT + " " +
@@ -582,7 +579,7 @@ public class NwdContract {
             "END " ;
 
 
-    public static final String CREATE_MEDIA_PATH =
+    static final String CREATE_MEDIA_PATH =
 
             "CREATE TABLE " + TABLE_MEDIA_PATH + " ( " +
             "	" + COLUMN_MEDIA_PATH_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -591,7 +588,7 @@ public class NwdContract {
             "	" + COLUMN_MEDIA_PATH_UPDATED_AT + " TEXT " +
             ") ";
 
-    public static final String CREATE_MEDIA_PATH_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_PATH_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_PATH + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_PATH + " " +
@@ -602,7 +599,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_PATH + "." + COLUMN_MEDIA_PATH_ID + " = NEW." + COLUMN_MEDIA_PATH_ID + "; " +
             "END ";
 
-    public static final String CREATE_MEDIA_PATH_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_PATH_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_PATH + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_PATH + " " +
@@ -613,7 +610,7 @@ public class NwdContract {
             "END ";
 
 
-    public static final String CREATE_MEDIA_ROOT =
+    static final String CREATE_MEDIA_ROOT =
 
             "CREATE TABLE " + TABLE_MEDIA_ROOT + " ( " +
             "	" + COLUMN_MEDIA_ROOT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -623,7 +620,7 @@ public class NwdContract {
             "	" + COLUMN_MEDIA_ROOT_UPDATED_AT + " TEXT " +
             ") ";
 
-    public static final String CREATE_MEDIA_ROOT_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_ROOT_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_ROOT + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_ROOT + " " +
@@ -634,7 +631,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_ROOT + "." + COLUMN_MEDIA_ROOT_ID + " = NEW." + COLUMN_MEDIA_ROOT_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_ROOT_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_ROOT_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_ROOT + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_ROOT + " " +
@@ -644,7 +641,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_ROOT + "." + COLUMN_MEDIA_ROOT_ID + " = NEW." + COLUMN_MEDIA_ROOT_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA =
+    static final String CREATE_MEDIA =
 
             "CREATE TABLE " + TABLE_MEDIA + " ( " +
             "	" + COLUMN_MEDIA_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -656,7 +653,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_MEDIA_HASH + ") " +
             ") ";
 
-    public static final String CREATE_MEDIA_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA + " " +
@@ -667,7 +664,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA + "." + COLUMN_MEDIA_ID + " = NEW." + COLUMN_MEDIA_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA + " " +
@@ -677,7 +674,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA + "." + COLUMN_MEDIA_ID + " = NEW." + COLUMN_MEDIA_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_DEVICE_PATH =
+    static final String CREATE_MEDIA_DEVICE_PATH =
 
             "CREATE TABLE " + TABLE_MEDIA_DEVICE_PATH + " ( " +
             "	" + COLUMN_MEDIA_DEVICE_PATH_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -689,7 +686,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_PATH_ID + ") " +
             ") " ;
 
-    public static final String CREATE_MEDIA_DEVICE_PATH_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_DEVICE_PATH_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE_PATH + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_DEVICE_PATH + " " +
@@ -700,7 +697,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_DEVICE_PATH + "." + COLUMN_MEDIA_DEVICE_PATH_ID + " = NEW." + COLUMN_MEDIA_DEVICE_PATH_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_DEVICE_PATH_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_DEVICE_PATH_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_DEVICE_PATH + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_DEVICE_PATH + " " +
@@ -710,7 +707,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_DEVICE_PATH + "." + COLUMN_MEDIA_DEVICE_PATH_ID + " = NEW." + COLUMN_MEDIA_DEVICE_PATH_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_TRANSCRIPTION =
+    static final String CREATE_MEDIA_TRANSCRIPTION =
 
             "CREATE TABLE " + TABLE_MEDIA_TRANSCRIPTION + " ( " +
             "	" + COLUMN_MEDIA_TRANSCRIPTION_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -721,7 +718,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TRANSCRIPT_ID + ") " +
             ") " ;
 
-    public static final String CREATE_MEDIA_TRANSCRIPTION_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_TRANSCRIPTION_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPTION + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_TRANSCRIPTION + " " +
@@ -732,7 +729,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TRANSCRIPTION + "." + COLUMN_MEDIA_TRANSCRIPTION_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPTION_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_TRANSCRIPTION_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_TRANSCRIPTION_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TRANSCRIPTION + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_TRANSCRIPTION + " " +
@@ -742,7 +739,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TRANSCRIPTION + "." + COLUMN_MEDIA_TRANSCRIPTION_ID + " = NEW." + COLUMN_MEDIA_TRANSCRIPTION_ID + "; " +
             "END ";
 
-    public static final String CREATE_MEDIA_TAGGING =
+    static final String CREATE_MEDIA_TAGGING =
 
             "CREATE TABLE " + TABLE_MEDIA_TAGGING + " ( " +
             "	" + COLUMN_MEDIA_TAGGING_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -755,7 +752,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
             ") " ;
 
-    public static final String CREATE_MEDIA_TAGGING_CREATED_TRIGGER =
+    static final String CREATE_MEDIA_TAGGING_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TAGGING + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_MEDIA_TAGGING + " " +
@@ -767,7 +764,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TAGGING + "." + COLUMN_MEDIA_TAGGING_ID + " = NEW." + COLUMN_MEDIA_TAGGING_ID + "; " +
             "END " ;
 
-    public static final String CREATE_MEDIA_TAGGING_UPDATED_TRIGGER =
+    static final String CREATE_MEDIA_TAGGING_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_MEDIA_TAGGING + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_MEDIA_TAGGING + " " +
@@ -777,7 +774,7 @@ public class NwdContract {
             "	WHERE " + TABLE_MEDIA_TAGGING + "." + COLUMN_MEDIA_TAGGING_ID + " = NEW." + COLUMN_MEDIA_TAGGING_ID + "; " +
             "END " ;
 
-    public static final String CREATE_LOCAL_CONFIG_V5 =
+    static final String CREATE_LOCAL_CONFIG_V5 =
 
             "CREATE TABLE " + TABLE_LOCAL_CONFIG + " ( " +
             "	" + COLUMN_LOCAL_CONFIG_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
@@ -788,7 +785,7 @@ public class NwdContract {
             "	UNIQUE(" + COLUMN_LOCAL_CONFIG_KEY + ", " + COLUMN_LOCAL_CONFIG_VALUE + ") " +
             ") " ;
 
-    public static final String CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER =
+    static final String CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_LOCAL_CONFIG + "CreatedAt  " +
             "AFTER INSERT ON " + TABLE_LOCAL_CONFIG + " " +
@@ -799,7 +796,7 @@ public class NwdContract {
             "	WHERE " + TABLE_LOCAL_CONFIG + "." + COLUMN_LOCAL_CONFIG_ID + " = NEW." + COLUMN_LOCAL_CONFIG_ID + "; " +
             "END " ;
 
-    public static final String CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER =
+    static final String CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_LOCAL_CONFIG + "UpdatedAt " +
             "AFTER UPDATE ON " + TABLE_LOCAL_CONFIG + " " +
@@ -809,56 +806,56 @@ public class NwdContract {
             "	WHERE " + TABLE_LOCAL_CONFIG + "." + COLUMN_LOCAL_CONFIG_ID + " = NEW." + COLUMN_LOCAL_CONFIG_ID + "; " +
             "END " ;
 
-    public static final String LOCAL_CONFIG_GET_VALUE_FOR_KEY_X =
+    static final String LOCAL_CONFIG_GET_VALUE_FOR_KEY_X =
 
             "SELECT " + COLUMN_LOCAL_CONFIG_VALUE + " " +
             "FROM " + TABLE_LOCAL_CONFIG + " " +
             "WHERE " + COLUMN_LOCAL_CONFIG_KEY + " = ?; ";
 
-    public static final String MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X =
+    static final String MNEMOSYNE_V5_SELECT_MEDIA_DEVICE_BY_DESC_X =
 
             "SELECT " + COLUMN_MEDIA_DEVICE_ID + ",  " +
             "	    " + COLUMN_MEDIA_DEVICE_DESCRIPTION + " " +
             "FROM " + TABLE_MEDIA_DEVICE + " " +
             "WHERE " + COLUMN_MEDIA_DEVICE_DESCRIPTION + " = ?; " ;
 
-    public static final String INSERT_MEDIA_DEVICE_X =
+    static final String INSERT_MEDIA_DEVICE_X =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE + " "
             + "	(" + COLUMN_MEDIA_DEVICE_DESCRIPTION + ") "
             + "VALUES "
             + "	(?); " ;
 
-    public static final String MNEMOSYNE_V5_INSERT_LOCAL_CONFIG_KEY_VALUE_X_Y =
+    static final String MNEMOSYNE_V5_INSERT_LOCAL_CONFIG_KEY_VALUE_X_Y =
 
             "INSERT OR IGNORE INTO " + TABLE_LOCAL_CONFIG + " " +
             "	(" + COLUMN_LOCAL_CONFIG_KEY + ", " + COLUMN_LOCAL_CONFIG_VALUE + ") " +
             "VALUES " +
             "	(?, ?); ";
 
-    public static final String MNEMOSYNE_V5_UPDATE_LOCAL_CONFIG_VALUE_FOR_KEY_X_Y =
+    static final String MNEMOSYNE_V5_UPDATE_LOCAL_CONFIG_VALUE_FOR_KEY_X_Y =
 
             "UPDATE " + TABLE_LOCAL_CONFIG + " " +
             "SET " + COLUMN_LOCAL_CONFIG_VALUE + " = ? " +
             "WHERE " + COLUMN_LOCAL_CONFIG_KEY + " = ?; " ;
 
-    public static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_VERIFIED =
+    static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_VERIFIED =
 
             "ALTER TABLE " + TABLE_MEDIA_DEVICE_PATH +
                     " ADD COLUMN " + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_PRESENT + " TEXT; ";
 
-    public static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_MISSING =
+    static final String MNEMOSYNE_V5_ADD_COLUMN_MEDIA_DEVICE_PATH_MISSING =
 
             "ALTER TABLE " + TABLE_MEDIA_DEVICE_PATH +
                     " ADD COLUMN " + COLUMN_MEDIA_DEVICE_PATH_VERIFIED_MISSING + " TEXT; ";
 
-    public static final String SELECT_FROM_MEDIA_DEVICE =
+    static final String SELECT_FROM_MEDIA_DEVICE =
 
             "SELECT " + NwdContract.COLUMN_MEDIA_DEVICE_ID + ", "
                       + NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION + " "
             + "FROM " + NwdContract.TABLE_MEDIA_DEVICE + "; ";
 
-    public static final String
+    static final String
             SELECT_ID_AND_PATH_FROM_MEDIA_ROOT_FOR_DEVICE_ID =
 
             "SELECT " + NwdContract.COLUMN_MEDIA_ROOT_ID + ", "
@@ -866,14 +863,14 @@ public class NwdContract {
             + "FROM " + NwdContract.TABLE_MEDIA_ROOT + " "
             + "WHERE " + NwdContract.COLUMN_MEDIA_DEVICE_ID + " = ? ; ";
 
-    public static final String INSERT_DEVICE_ID_PATH_INTO_MEDIA_ROOT =
+    static final String INSERT_DEVICE_ID_PATH_INTO_MEDIA_ROOT =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_ROOT + " "
             + "	(" + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_ROOT_PATH + ") "
             + "VALUES "
             + "	(?, ?); " ;
 
-    public static final String MNEMOSYNE_V4_GET_PATH_TAG_LINKS =
+    static final String MNEMOSYNE_V4_GET_PATH_TAG_LINKS =
 
             "SELECT " +
                 NwdContract.COLUMN_PATH_VALUE + ", " +
@@ -901,19 +898,19 @@ public class NwdContract {
                 NwdContract.TABLE_TAG + "." +
                     NwdContract.COLUMN_TAG_ID + "";
 
-    public static final String INSERT_MEDIA_TAG_X =
+    static final String INSERT_MEDIA_TAG_X =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_TAG + " " +
             "	(" + COLUMN_MEDIA_TAG_VALUE + ") " +
             "VALUES " +
             "	(?); ";
 
-    public static final String SELECT_MEDIA_TAG_ID_VALUE =
+    static final String SELECT_MEDIA_TAG_ID_VALUE =
 
             "SELECT " + COLUMN_MEDIA_TAG_ID + ", " + COLUMN_MEDIA_TAG_VALUE + " " +
             "FROM " + TABLE_MEDIA_TAG + ";";
 
-    public static final String SELECT_MEDIA_FOR_HASH_X =
+    static final String SELECT_MEDIA_FOR_HASH_X =
 
             "SELECT " + COLUMN_MEDIA_ID + ",  " +
             "	    " + COLUMN_MEDIA_FILE_NAME + ",  " +
@@ -922,40 +919,40 @@ public class NwdContract {
             "FROM " + TABLE_MEDIA + " " +
             "WHERE " + COLUMN_MEDIA_HASH + " = ? ";
 
-    public static final String INSERT_MEDIA_HASH_X =
+    static final String INSERT_MEDIA_HASH_X =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA + " " +
             "	(" + COLUMN_MEDIA_HASH + ") " +
             "VALUES " +
             "	(?); ";
 
-    public static final String UPDATE_HASH_FOR_MEDIA_ID_X_Y =
+    static final String UPDATE_HASH_FOR_MEDIA_ID_X_Y =
 
             "UPDATE " + TABLE_MEDIA + " " +
             "SET " + COLUMN_MEDIA_HASH + " = ? " +
             "WHERE " + COLUMN_MEDIA_ID + " = ? ";
 
-    public static final String INSERT_MEDIA_PATH_X =
+    static final String INSERT_MEDIA_PATH_X =
 
             "INSERT OR IGNORE INTO " + NwdContract.TABLE_MEDIA_PATH + " " +
             "	(" + NwdContract.COLUMN_MEDIA_PATH_VALUE + ") " +
             "VALUES " +
             "	(?); ";
 
-    public static final String SELECT_MEDIA_PATH_ID_FOR_PATH_X =
+    static final String SELECT_MEDIA_PATH_ID_FOR_PATH_X =
 
             "SELECT " + COLUMN_MEDIA_PATH_ID + " " +
             "FROM " + TABLE_MEDIA_PATH + " " +
             "WHERE " + COLUMN_MEDIA_PATH_VALUE + " = ?;";
 
-    public static final String INSERT_MEDIA_DEVICE_PATH_MID_DID_PID =
+    static final String INSERT_MEDIA_DEVICE_PATH_MID_DID_PID =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE_PATH + " " +
             "	(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_DEVICE_ID + ", " + COLUMN_MEDIA_PATH_ID + ") " +
             "VALUES " +
             "	(?, ?, ?); ";
 
-    public static final String SELECT_MEDIA_WHERE_HASH_NOT_NULL_OR_WHITESPACE =
+    static final String SELECT_MEDIA_WHERE_HASH_NOT_NULL_OR_WHITESPACE =
 
             "SELECT " + COLUMN_MEDIA_ID + ",  " +
             "	   " + COLUMN_MEDIA_FILE_NAME + ",  " +
@@ -964,14 +961,14 @@ public class NwdContract {
             "FROM " + TABLE_MEDIA + " " +
             "WHERE " + COLUMN_MEDIA_HASH + " IS NOT NULL AND trim(" + COLUMN_MEDIA_HASH + ", ' ') != ''; ";
 
-    public static final String INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y =
+    static final String INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_TAGGING + " " +
             "	(" + COLUMN_MEDIA_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
             "VALUES " +
             "	(?, ?); ";
 
-    public static final String UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z =
+    static final String UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z =
 
             "UPDATE " + TABLE_MEDIA_TAGGING + " " +
             "SET " + COLUMN_MEDIA_TAGGING_TAGGED_AT + " = MAX(IFNULL(" + COLUMN_MEDIA_TAGGING_TAGGED_AT + ", ''), ?), " +
@@ -983,7 +980,7 @@ public class NwdContract {
 //            "	" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + " = MAX(" + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + ", ?) " +
 //            "WHERE " + COLUMN_MEDIA_ID + " = ? AND " + COLUMN_MEDIA_TAG_ID + " = ?; ";
 
-    public static final String
+    static final String
             MNEMOSYNE_V5_GET_ACTIVE_TAGS_FOR_PATHS_FOR_DEVICE_NAME_X =
 
             "SELECT mt." + COLUMN_MEDIA_TAG_VALUE + ",  " +
@@ -1003,19 +1000,19 @@ public class NwdContract {
             "AND mtg." + COLUMN_MEDIA_TAGGING_TAGGED_AT +
             " >= mtg." + COLUMN_MEDIA_TAGGING_UNTAGGED_AT + "; ";
 
-    public static final String UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y =
+    static final String UPDATE_MEDIA_FILE_NAME_FOR_HASH_X_Y =
 
             "UPDATE " + TABLE_MEDIA + " " +
             "SET " + COLUMN_MEDIA_FILE_NAME + " = ? " +
             "WHERE " + COLUMN_MEDIA_HASH + " = ?; ";
 
-    public static final String UPDATE_MEDIA_DESCRIPTION_FOR_HASH_X_Y =
+    static final String UPDATE_MEDIA_DESCRIPTION_FOR_HASH_X_Y =
 
             "UPDATE " + TABLE_MEDIA + " " +
             "SET " + COLUMN_MEDIA_DESCRIPTION + " = ? " +
             "WHERE " + COLUMN_MEDIA_HASH + " = ?; ";
 
-    public static final String SELECT_MEDIA_TAGGINGS_FOR_HASH_X =
+    static final String SELECT_MEDIA_TAGGINGS_FOR_HASH_X =
 
             "SELECT mt." + COLUMN_MEDIA_TAG_ID + ",  " +
             "	   mtg." + COLUMN_MEDIA_TAGGING_ID + ",  " +
@@ -1032,7 +1029,7 @@ public class NwdContract {
             "WHERE m." + COLUMN_MEDIA_HASH + " = ? " +
             "COLLATE NOCASE";
 
-    public static final String SELECT_MEDIA_DEVICE_PATHS_FOR_MEDIA_ID_X =
+    static final String SELECT_MEDIA_DEVICE_PATHS_FOR_MEDIA_ID_X =
 
             "SELECT mdp." + COLUMN_MEDIA_DEVICE_PATH_ID + ", " +
             "	   m." + COLUMN_MEDIA_ID + ", " +
@@ -1051,7 +1048,7 @@ public class NwdContract {
             "ON md." + COLUMN_MEDIA_DEVICE_ID + " = mdp." + COLUMN_MEDIA_DEVICE_ID + " " +
             "WHERE m." + COLUMN_MEDIA_ID + " = ?; ";
 
-    public static final String INSERT_OR_IGNORE_MEDIA_DEVICE_PATH_X_Y_Z =
+    static final String INSERT_OR_IGNORE_MEDIA_DEVICE_PATH_X_Y_Z =
 
             "INSERT OR IGNORE INTO " + TABLE_MEDIA_DEVICE_PATH + " " +
             "	(" + COLUMN_MEDIA_ID + ", " +
@@ -1060,21 +1057,21 @@ public class NwdContract {
             "VALUES " +
             "	(?, ?, ?); ";
 
-    public static final String SELECT_MEDIA_TAG_ID_FOR_VALUE_X =
+    static final String SELECT_MEDIA_TAG_ID_FOR_VALUE_X =
 
             "SELECT " + COLUMN_MEDIA_TAG_ID + "  " +
             "FROM " + TABLE_MEDIA_TAG + " " +
             "WHERE " + COLUMN_MEDIA_TAG_VALUE + " = ? "; //+
             //"COLLATE NOCASE; "; //this may be our issue with tagging
 
-    public static final String SELECT_MEDIA_ID_FOR_HASH_X =
+    static final String SELECT_MEDIA_ID_FOR_HASH_X =
 
             "SELECT " + COLUMN_MEDIA_ID + " " +
             "FROM " + TABLE_MEDIA + " " +
             "WHERE " + COLUMN_MEDIA_HASH + " = ? " +
             "COLLATE NOCASE;";
     
-    public static final String CREATE_HIVE_ROOT =
+    static final String CREATE_HIVE_ROOT =
 
             "CREATE TABLE " + TABLE_HIVE_ROOT + " ( " +
             "	" + COLUMN_HIVE_ROOT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE, " +
@@ -1085,7 +1082,7 @@ public class NwdContract {
             "	" + COLUMN_HIVE_ROOT_UPDATED_AT + " TEXT " +
             ") " ;
 
-    public static final String CREATE_HIVE_ROOT_CREATED_TRIGGER =
+    static final String CREATE_HIVE_ROOT_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + COLUMN_HIVE_ROOT_CREATED_AT + "  " +
             "AFTER INSERT ON " + TABLE_HIVE_ROOT + " " +
@@ -1096,7 +1093,7 @@ public class NwdContract {
             "	WHERE " + TABLE_HIVE_ROOT + "." + COLUMN_HIVE_ROOT_ID + " = NEW." + COLUMN_HIVE_ROOT_ID + "; " +
             "END " ;
 
-    public static final String CREATE_HIVE_ROOT_UPDATED_TRIGGER =
+    static final String CREATE_HIVE_ROOT_UPDATED_TRIGGER =
 
             "CREATE TRIGGER Set" + COLUMN_HIVE_ROOT_UPDATED_AT + " " +
             "AFTER UPDATE ON " + TABLE_HIVE_ROOT + " " +
@@ -1107,7 +1104,7 @@ public class NwdContract {
             "END " ;
 
 
-    public static final String SELECT_HIVE_ROOTS =
+    static final String SELECT_HIVE_ROOTS =
 
             "SELECT " + COLUMN_HIVE_ROOT_ID + ", " +
             "       " + COLUMN_HIVE_ROOT_NAME + ", " +
@@ -1115,7 +1112,7 @@ public class NwdContract {
             "	    " + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " " +
             "FROM " + TABLE_HIVE_ROOT + " ";
 
-    public static final String SELECT_ACTIVE_HIVE_ROOTS =
+    static final String SELECT_ACTIVE_HIVE_ROOTS =
 
             "SELECT " + COLUMN_HIVE_ROOT_ID + ", " +
             "       " + COLUMN_HIVE_ROOT_NAME + ", " +
@@ -1124,7 +1121,7 @@ public class NwdContract {
             "FROM " + TABLE_HIVE_ROOT + " " +
             "WHERE IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", '') >= IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", '') ";
 
-    public static final String SELECT_DEACTIVATED_HIVE_ROOTS =
+    static final String SELECT_DEACTIVATED_HIVE_ROOTS =
 
             "SELECT " + COLUMN_HIVE_ROOT_ID + ", " +
             "       " + COLUMN_HIVE_ROOT_NAME + ", " +
@@ -1133,17 +1130,17 @@ public class NwdContract {
             "FROM " + TABLE_HIVE_ROOT + " " +
             "WHERE IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", '') < IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", '') ";
 
-    public static final String INSERT_HIVE_ROOT_NAME_X =
+    static final String INSERT_HIVE_ROOT_NAME_X =
 
             "INSERT OR IGNORE INTO " + TABLE_HIVE_ROOT + " " +
             "	(" + COLUMN_HIVE_ROOT_NAME + ") " +
             "VALUES " +
             "	(?) ";
 
-    public static final String DROP_SYNERGY_LIST_INSERT_TRIGGER =
+    static final String DROP_SYNERGY_LIST_INSERT_TRIGGER =
             "DROP TRIGGER IF EXISTS Set" + TABLE_SYNERGY_LIST + "CreatedAt ";
 
-    public static final String CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER =
+    static final String CREATE_NEW_SYNERGY_LIST_CREATED_TRIGGER =
 
             "CREATE TRIGGER Set" + TABLE_SYNERGY_LIST + "CreatedAt  "
             + "AFTER INSERT ON " + TABLE_SYNERGY_LIST + " "
@@ -1154,14 +1151,14 @@ public class NwdContract {
             + "WHERE " + TABLE_SYNERGY_LIST + "." + COLUMN_SYNERGY_LIST_ID + " = NEW." + COLUMN_SYNERGY_LIST_ID + "; "
             + "END ";
 
-    public static final String HIVE_ROOT_UPDATE_ACTIVATE_AT_DEACTIVATED_AT_FOR_NAME_X_Y_Z =
+    static final String HIVE_ROOT_UPDATE_ACTIVATE_AT_DEACTIVATED_AT_FOR_NAME_X_Y_Z =
 
             "UPDATE " + TABLE_HIVE_ROOT + "  " +
             "SET " + COLUMN_HIVE_ROOT_ACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", ''), ?), " +
             "	" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + " = MAX(IFNULL(" + COLUMN_HIVE_ROOT_DEACTIVATED_AT + ", ''), ?) " +
             "WHERE " + COLUMN_HIVE_ROOT_NAME + " = ?;  ";
 
-    public static final String HIVE_ROOT_SELECT_ID_ACTIVATED_AT_DEACTIVATED_AT_FOR_NAME =
+    static final String HIVE_ROOT_SELECT_ID_ACTIVATED_AT_DEACTIVATED_AT_FOR_NAME =
 
             "SELECT " + COLUMN_HIVE_ROOT_ID + ", "
             + COLUMN_HIVE_ROOT_ACTIVATED_AT + ", "
@@ -1169,7 +1166,7 @@ public class NwdContract {
             + "FROM " + TABLE_HIVE_ROOT + " "
             + "WHERE " + COLUMN_HIVE_ROOT_NAME + " = ? ;";
 
-    public static final String SYNERGY_V5_SELECT_ARCHIVED_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
+    static final String SYNERGY_V5_SELECT_ARCHIVED_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
 
             "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
             + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
@@ -1188,7 +1185,7 @@ public class NwdContract {
             + "AND std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " < std." + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
             +   "ORDER BY sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + "; ";
 
-    public static final String SYNERGY_V5_SELECT_ACTIVE_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
+    static final String SYNERGY_V5_SELECT_ACTIVE_ITEMS_AND_TODOS_BY_POSITION_FOR_LIST_ID_X =
 
             "SELECT si." + COLUMN_SYNERGY_ITEM_ID + ", "
             + "	    si." + COLUMN_SYNERGY_ITEM_VALUE + ", "
@@ -1206,4 +1203,372 @@ public class NwdContract {
             + "WHERE sli." + COLUMN_SYNERGY_LIST_ID + " = ? "
             + "AND std." + COLUMN_SYNERGY_TO_DO_ACTIVATED_AT + " >= std." + COLUMN_SYNERGY_TO_DO_ARCHIVED_AT + " "
             +   "ORDER BY sli." + COLUMN_SYNERGY_LIST_ITEM_POSITION + "; ";
+
+    ///////////////////////////////ARCHIVIST DDL////////////////////////////////////////////////////////////////////////////////////
+
+    private static final String TABLE_SOURCE_LOCATION = "SourceLocation";
+
+
+
+    private static final String COLUMN_SOURCE_LOCATION_ID = "SourceLocationId";
+    private static final String COLUMN_SOURCE_LOCATION_VALUE = "SourceLocationValue";
+    private static final String COLUMN_SOURCE_LOCATION_CREATED_AT = "SourceLocationCreatedAt";
+    private static final String COLUMN_SOURCE_LOCATION_UPDATED_AT = "SourceLocationUpdatedAt";
+
+    static final String CREATE_SOURCE_LOCATION =
+            "CREATE TABLE " + TABLE_SOURCE_LOCATION + " ( " +
+                    "	" + COLUMN_SOURCE_LOCATION_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_LOCATION_VALUE + " TEXT NOT NULL UNIQUE, " +
+                    "	" + COLUMN_SOURCE_LOCATION_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_LOCATION_UPDATED_AT + " TEXT " +
+                    ") ";
+
+    static final String CREATE_SOURCE_LOCATION_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_LOCATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_LOCATION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION + "." + COLUMN_SOURCE_LOCATION_ID + " = NEW." + COLUMN_SOURCE_LOCATION_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_LOCATION_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_LOCATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION + "." + COLUMN_SOURCE_LOCATION_ID + " = NEW." + COLUMN_SOURCE_LOCATION_ID + "; " +
+                    "END ";
+
+
+
+    private static final String TABLE_SOURCE_ANNOTATION = "SourceAnnotation";
+
+    private static final String COLUMN_SOURCE_ANNOTATION_ID = "SourceAnnotationId";
+    private static final String COLUMN_SOURCE_ANNOTATION_VALUE = "SourceAnnotationValue";
+    private static final String COLUMN_SOURCE_ANNOTATION_CREATED_AT = "SourceAnnotationCreatedAt";
+    private static final String COLUMN_SOURCE_ANNOTATION_UPDATED_AT = "SourceAnnotationUpdatedAt";
+
+
+    static final String CREATE_SOURCE_ANNOTATION =
+            "CREATE TABLE " + TABLE_SOURCE_ANNOTATION + " ( " +
+                    "	" + COLUMN_SOURCE_ANNOTATION_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_ANNOTATION_VALUE + " TEXT NOT NULL UNIQUE, " +
+                    "	" + COLUMN_SOURCE_ANNOTATION_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_ANNOTATION_UPDATED_AT + " TEXT " +
+                    ") ";
+
+    static final String CREATE_SOURCE_ANNOTATION_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_ANNOTATION_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_ANNOTATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_ANNOTATION + "  " +
+                    "	SET " + COLUMN_SOURCE_ANNOTATION_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_ANNOTATION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_ANNOTATION + "." + COLUMN_SOURCE_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_ANNOTATION_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_ANNOTATION_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_ANNOTATION_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_ANNOTATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_ANNOTATION + "  " +
+                    "	SET " + COLUMN_SOURCE_ANNOTATION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_ANNOTATION + "." + COLUMN_SOURCE_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_ANNOTATION_ID + "; " +
+                    "END ";
+
+
+
+    private static final String TABLE_SOURCE_TYPE = "SourceType";
+    private static final String COLUMN_SOURCE_TYPE_ID = "SourceTypeId";
+    private static final String COLUMN_SOURCE_TYPE_VALUE = "SourceTypeValue";
+    private static final String COLUMN_SOURCE_TYPE_CREATED_AT = "SourceTypeCreatedAt";
+    private static final String COLUMN_SOURCE_TYPE_UPDATED_AT = "SourceTypeUpdatedAt";
+
+
+
+    static final String CREATE_SOURCE_TYPE =
+            "CREATE TABLE " + TABLE_SOURCE_TYPE + " ( " +
+                    "	" + COLUMN_SOURCE_TYPE_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_TYPE_VALUE + " TEXT NOT NULL UNIQUE, " +
+                    "	" + COLUMN_SOURCE_TYPE_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_TYPE_UPDATED_AT + " TEXT " +
+                    ") ";
+
+    static final String CREATE_SOURCE_TYPE_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_TYPE_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_TYPE + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_TYPE + "  " +
+                    "	SET " + COLUMN_SOURCE_TYPE_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_TYPE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_TYPE + "." + COLUMN_SOURCE_TYPE_ID + " = NEW." + COLUMN_SOURCE_TYPE_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_TYPE_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_TYPE_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_TYPE + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_TYPE + "  " +
+                    "	SET " + COLUMN_SOURCE_TYPE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_TYPE + "." + COLUMN_SOURCE_TYPE_ID + " = NEW." + COLUMN_SOURCE_TYPE_ID + "; " +
+                    "END ";
+
+
+
+    private static final String TABLE_SOURCE = "Source";
+    private static final String COLUMN_SOURCE_ID = "SourceId";
+    private static final String COLUMN_SOURCE_AUTHOR = "SourceAuthor";
+    private static final String COLUMN_SOURCE_DIRECTOR = "SourceDirector";
+    private static final String COLUMN_SOURCE_TITLE = "SourceTitle";
+    private static final String COLUMN_SOURCE_YEAR = "SourceYear";
+    private static final String COLUMN_SOURCE_URL = "SourceUrl";
+    private static final String COLUMN_SOURCE_RETRIEVAL_DATE = "SourceRetrievalDate";
+    private static final String COLUMN_SOURCE_TAG = "SourceTag";
+    private static final String COLUMN_SOURCE_CREATED_AT = "SourceCreatedAt";
+    private static final String COLUMN_SOURCE_UPDATED_AT = "SourceUpdatedAt";
+
+
+    static final String CREATE_SOURCE =
+            "CREATE TABLE " + TABLE_SOURCE + " ( " +
+                    "	" + COLUMN_SOURCE_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_TYPE_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_TYPE + " (" + COLUMN_SOURCE_TYPE_ID + "), " +
+                    "	" + COLUMN_SOURCE_AUTHOR + " TEXT, " +
+                    "	" + COLUMN_SOURCE_DIRECTOR + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_TITLE + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_YEAR + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_URL + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_RETRIEVAL_DATE + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_TAG + " TEXT UNIQUE, " +
+                    "	" + COLUMN_SOURCE_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_UPDATED_AT + " TEXT " +
+                    ") ";
+
+    static final String CREATE_SOURCE_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE + "  " +
+                    "	SET " + COLUMN_SOURCE_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE Source." + COLUMN_SOURCE_ID + " = NEW." + COLUMN_SOURCE_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE + "  " +
+                    "	SET " + COLUMN_SOURCE_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE Source." + COLUMN_SOURCE_ID + " = NEW." + COLUMN_SOURCE_ID + "; " +
+                    "END ";
+
+
+
+    private static final String TABLE_SOURCE_LOCATION_SUBSET = "SourceLocationSubset";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ID = "SourceLocationSubsetId";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_VALUE = "SourceLocationSubsetValue";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT = "SourceLocationSubsetCreatedAt";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT = "SourceLocationSubsetUpdatedAt";
+
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET =
+            "CREATE TABLE " + TABLE_SOURCE_LOCATION_SUBSET + " ( " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_LOCATION_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_LOCATION + " (" + COLUMN_SOURCE_LOCATION_ID + "),  " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + " TEXT NOT NULL, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT + " TEXT, " +
+                    "	UNIQUE(" + COLUMN_SOURCE_LOCATION_ID + ", " + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + ") " +
+                    ") ";
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_LOCATION_SUBSET + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION_SUBSET + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION_SUBSET + "." + COLUMN_SOURCE_LOCATION_SUBSET_ID + " = NEW." + COLUMN_SOURCE_LOCATION_SUBSET_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_LOCATION_SUBSET + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION_SUBSET + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION_SUBSET + "." + COLUMN_SOURCE_LOCATION_SUBSET_ID + " = NEW." + COLUMN_SOURCE_LOCATION_SUBSET_ID + "; " +
+                    "END ";
+
+
+    private static final String TABLE_SOURCE_LOCATION_SUBSET_ENTRY = "SourceLocationSubsetEntry";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID = "SourceLocationSubsetEntryId";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE = "SourceLocationSubsetEntryValue";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT = "SourceLocationSubsetEntryVerifiedPresentAt";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT = "SourceLocationSubsetEntryMissingAt";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT = "SourceLocationSubsetEntryCreatedAt";
+    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT = "SourceLocationSubsetEntryUpdatedAt";
+
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET_ENTRY =
+            "CREATE TABLE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " ( " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_LOCATION_SUBSET + " (" + COLUMN_SOURCE_LOCATION_SUBSET_ID + "), " +
+                    "	" + COLUMN_SOURCE_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE + " (" + COLUMN_SOURCE_ID + "),  " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE + " TEXT NOT NULL UNIQUE, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT + " TEXT, " +
+                    "	UNIQUE(" + COLUMN_SOURCE_LOCATION_SUBSET_ID + ", " + COLUMN_SOURCE_ID + ", " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE + ") " +
+                    ") ";
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " = NEW." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_TRIGGER =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "  " +
+                    "	SET " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " = NEW." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + "; " +
+                    "END ";
+
+
+    private static final String TABLE_SOURCE_EXCERPT = "SourceExcerpt";
+    private static final String COLUMN_SOURCE_EXCERPT_ID = "SourceExcerptId";
+    private static final String COLUMN_SOURCE_EXCERPT_VALUE = "SourceExcerptValue";
+    private static final String COLUMN_SOURCE_EXCERPT_PAGES = "SourceExcerptPages";
+    private static final String COLUMN_SOURCE_EXCERPT_BEGIN_TIME = "SourceExcerptBeginTime";
+    private static final String COLUMN_SOURCE_EXCERPT_END_TIME = "SourceExcerptEndTime";
+    private static final String COLUMN_SOURCE_EXCERPT_CREATED_AT = "SourceExcerptCreatedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_UPDATED_AT = "SourceExcerptUpdatedAt";
+
+    static final String CREATE_SOURCE_EXCERPT =
+            "CREATE TABLE " + TABLE_SOURCE_EXCERPT + " ( " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE + " (" + COLUMN_SOURCE_ID + "), " +
+                    "	" + COLUMN_SOURCE_EXCERPT_VALUE + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_PAGES + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_EXCERPT_BEGIN_TIME + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_EXCERPT_END_TIME + " TEXT,  " +
+                    "	" + COLUMN_SOURCE_EXCERPT_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_UPDATED_AT + " TEXT " +
+                    ") ";
+
+    static final String CREATE_SOURCE_EXCERPT_CREATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_EXCERPT + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_EXCERPT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT + "." + COLUMN_SOURCE_EXCERPT_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_EXCERPT_UPDATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_EXCERPT + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT + "." + COLUMN_SOURCE_EXCERPT_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ID + "; " +
+                    "END ";
+
+
+    private static final String TABLE_SOURCE_EXCERPT_ANNOTATION = "SourceExcerptAnnotation";
+    private static final String COLUMN_SOURCE_EXCERPT_ANNOTATION_ID = "SourceExcerptAnnotationId";
+    private static final String COLUMN_SOURCE_EXCERPT_ANNOTATION_LINKED_AT = "SourceExcerptAnnotationLinkedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_ANNOTATION_UNLINKED_AT = "SourceExcerptAnnotationUnlinkedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_ANNOTATION_CREATED_AT = "SourceExcerptAnnotationCreatedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_ANNOTATION_UPDATED_AT = "SourceExcerptAnnotationUpdatedAt";
+
+    static final String CREATE_SOURCE_EXCERPT_ANNOTATION  =
+            "CREATE TABLE " + TABLE_SOURCE_EXCERPT_ANNOTATION + " ( " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_EXCERPT + " (" + COLUMN_SOURCE_EXCERPT_ID + "),  " +
+                    "	" + COLUMN_SOURCE_ANNOTATION_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_ANNOTATION + " (" + COLUMN_SOURCE_ANNOTATION_ID + "), " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ANNOTATION_LINKED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ANNOTATION_UNLINKED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ANNOTATION_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ANNOTATION_UPDATED_AT + " TEXT,  " +
+                    "	UNIQUE(" + COLUMN_SOURCE_EXCERPT_ID + ", " + COLUMN_SOURCE_ANNOTATION_ID + ") " +
+                    ") ";
+
+    static final String CREATE_SOURCE_EXCERPT_ANNOTATION_CREATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_ANNOTATION_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_EXCERPT_ANNOTATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_ANNOTATION_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_EXCERPT_ANNOTATION_UPDATED_AT + " = CURRENT_TIMESTAMP, " +
+                    "		   " + COLUMN_SOURCE_EXCERPT_ANNOTATION_LINKED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_EXCERPT_ANNOTATION_UPDATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_ANNOTATION_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_EXCERPT_ANNOTATION + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_ANNOTATION_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + "; " +
+                    "END ";
+
+    private static final String TABLE_SOURCE_EXCERPT_TAGGING = "SourceExcerptTagging";
+    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_ID = "SourceExcerptTaggingId";
+    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT = "SourceExcerptTaggingTaggedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT = "SourceExcerptTaggingUntaggedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_CREATED_AT = "SourceExcerptTaggingCreatedAt";
+    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT = "SourceExcerptTaggingUpdatedAt";
+
+    static final String CREATE_SOURCE_EXCERPT_TAGGING  =
+            "CREATE TABLE " + TABLE_SOURCE_EXCERPT_TAGGING + " ( " +
+                    "	" + COLUMN_SOURCE_EXCERPT_TAGGING_ID + " INTEGER NOT NULL PRIMARY KEY UNIQUE,  " +
+                    "	" + COLUMN_SOURCE_EXCERPT_ID + " INTEGER NOT NULL REFERENCES " + TABLE_SOURCE_EXCERPT + " (" + COLUMN_SOURCE_EXCERPT_ID + "),  " +
+                    "	" + COLUMN_MEDIA_TAG_ID + " INTEGER NOT NULL REFERENCES " + TABLE_MEDIA_TAG + " (" + COLUMN_MEDIA_TAG_ID + "), " +
+                    "	" + COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_TAGGING_CREATED_AT + " TEXT, " +
+                    "	" + COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT + " TEXT,  " +
+                    "	UNIQUE(" + COLUMN_SOURCE_EXCERPT_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
+                    ") ";
+
+    static final String CREATE_SOURCE_EXCERPT_TAGGING_CREATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_TAGGING_CREATED_AT + "  " +
+                    "AFTER INSERT ON " + TABLE_SOURCE_EXCERPT_TAGGING + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT_TAGGING + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_TAGGING_CREATED_AT + " = CURRENT_TIMESTAMP,  " +
+                    "		   " + COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT + " = CURRENT_TIMESTAMP, " +
+                    "		   " + COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT_TAGGING + "." + COLUMN_SOURCE_EXCERPT_TAGGING_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_TAGGING_ID + "; " +
+                    "END ";
+
+    static final String CREATE_SOURCE_EXCERPT_TAGGING_UPDATED_TRIGGER  =
+            "CREATE TRIGGER Set" + COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT + " " +
+                    "AFTER UPDATE ON " + TABLE_SOURCE_EXCERPT_TAGGING + " " +
+                    "BEGIN " +
+                    "UPDATE " + TABLE_SOURCE_EXCERPT_TAGGING + "  " +
+                    "	SET " + COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT + " = CURRENT_TIMESTAMP " +
+                    "	WHERE " + TABLE_SOURCE_EXCERPT_TAGGING + "." + COLUMN_SOURCE_EXCERPT_TAGGING_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_TAGGING_ID + "; " +
+                    "END ";
+
+
+
+
+
+
+
 }

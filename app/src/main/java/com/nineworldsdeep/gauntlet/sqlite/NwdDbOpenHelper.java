@@ -9,12 +9,9 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.HashMap;
 
-/**
- * Created by brent on 5/12/16.
- */
 public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
     private static final String DATABASE_NAME = "nwd";
 
     private static HashMap<String, NwdDbOpenHelper> instances =
@@ -186,7 +183,6 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Opens the internal database for Gauntlet/NWD
-     * @param context
      */
     private NwdDbOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -203,8 +199,6 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
     /**
      * Opens an external database for Gauntlet/NWD with the specified name
      * in the NWD/sqlite directory. Intended for imports and exports.
-     * @param context
-     * @param databaseName
      */
     private NwdDbOpenHelper(Context context, String databaseName)
     {
@@ -223,7 +217,6 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
      * it is designed to be used to trigger deletion
      * of the existing database during development
      * so changes to the structure can easily actuate
-     * @return
      */
     private boolean deleteDatabaseForDevelopment(){
 
@@ -249,6 +242,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         addColumnsDevicePathVerifiedAndMissing(db);
         addHiveRootTable(db);
         dropAndRecreateSynergyListInsertTrigger(db);
+        createArchivistV5Subset(db);
 
         // TODO: markClean this up, should have a method that
         // doesn't do all the drop and recreate, just
@@ -337,6 +331,11 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         if (oldVersion < 16){
 
             dropAndRecreateSynergyListInsertTrigger(db);
+        }
+
+        if (oldVersion < 17){
+
+            createArchivistV5Subset(db);
         }
 
     }
@@ -453,6 +452,54 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5);
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_LOCAL_CONFIG_V5_UPDATED_TRIGGER);
+    }
+
+    private void createArchivistV5Subset(SQLiteDatabase db){
+
+        //SourceLocation
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_UPDATED_TRIGGER);
+
+        //SourceAnnotation
+        db.execSQL(NwdContract.CREATE_SOURCE_ANNOTATION);
+        db.execSQL(NwdContract.CREATE_SOURCE_ANNOTATION_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_ANNOTATION_UPDATED_TRIGGER);
+
+        //SourceType
+        db.execSQL(NwdContract.CREATE_SOURCE_TYPE);
+        db.execSQL(NwdContract.CREATE_SOURCE_TYPE_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_TYPE_UPDATED_TRIGGER);
+
+        //Source
+        db.execSQL(NwdContract.CREATE_SOURCE);
+        db.execSQL(NwdContract.CREATE_SOURCE_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_UPDATED_TRIGGER);
+
+        //SourceLocationSubset
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET_UPDATED_TRIGGER);
+
+        //SourceLocationSubsetEntry
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET_ENTRY);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_TRIGGER);
+
+        //SourceExcerpt
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_UPDATED_TRIGGER);
+
+        //SourceExcerptAnnotation
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_ANNOTATION);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_ANNOTATION_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_ANNOTATION_UPDATED_TRIGGER);
+
+        //SourceExcerptTagging
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING_CREATED_TRIGGER);
+        db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING_UPDATED_TRIGGER);
     }
 
     private void addColumnsDevicePathVerifiedAndMissing(SQLiteDatabase db){

@@ -52,11 +52,11 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
                     String typeName = name.getText().toString();
 
-                    ArchivistSourceType sourceType =
-                            ArchivistWorkspace.getSourceTypeByName(typeName);
+//                    ArchivistSourceType sourceType =
+//                            ArchivistWorkspace.getSourceTypeByName(typeName);
 
-                    Utils.toast(parent.getContext(),
-                            "clicked " + sourceType.getSourceTypeName());
+//                    Utils.toast(parent.getContext(),
+//                            "clicked " + sourceType.getSourceTypeName());
 
                     ArchivistWorkspace.setCurrentSourceTypeByName(typeName);
 

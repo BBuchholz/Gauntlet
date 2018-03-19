@@ -46,8 +46,6 @@ class ArchivistWorkspace {
         namesToSourceTypes.put(sourceType.getSourceTypeName(), sourceType);
     }
 
-
-
     private static void loadTestingValues(){
 
         //mock sources
@@ -112,5 +110,10 @@ class ArchivistWorkspace {
     static ArchivistSourceType getSourceTypeByName(String name) {
 
         return namesToSourceTypes.get(name);
+    }
+
+    public static boolean currentSourceTypeIsAllTypes() {
+
+        return currentSourceType.getSourceTypeName().equals(ArchivistSourceType.ALL_SOURCE_TYPES_NAME);
     }
 }

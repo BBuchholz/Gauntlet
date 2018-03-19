@@ -6,6 +6,7 @@ import com.nineworldsdeep.gauntlet.R;
 
 public class ArchivistSourceType implements Comparable<ArchivistSourceType> {
 
+    public static final String ALL_SOURCE_TYPES_NAME = "Misc Source";
     private String sourceTypeName;
     private int sourcePicDrawableResourceId;
     private int sourceTypeId;

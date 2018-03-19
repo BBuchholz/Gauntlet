@@ -78,11 +78,19 @@ public class ArchivistActivity extends AppCompatActivity {
 
                 //Utils.toast(ArchivistActivity.this, "add source goes here");
 
-                Intent intent =
-                        new Intent(ArchivistActivity.this,
-                                ArchivistAddSourceActivity.class);
+                if(!ArchivistWorkspace.currentSourceTypeIsAllTypes()) {
 
-                startActivityForResult(intent, REQUEST_RESULT_SOURCE);
+                    Intent intent =
+                            new Intent(ArchivistActivity.this,
+                                    ArchivistAddSourceActivity.class);
+
+                    startActivityForResult(intent, REQUEST_RESULT_SOURCE);
+
+                }else{
+
+                    Utils.toast(ArchivistActivity.this,
+                            "Select a specific source type to add new sources");
+                }
             }
         });
 

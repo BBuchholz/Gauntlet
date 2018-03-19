@@ -15,6 +15,7 @@ import android.view.View;
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ public class ArchivistActivity extends AppCompatActivity {
     private FloatingActionButton fabAddSource;
     private FloatingActionButton fabAddSourceType;
     private FloatingActionButton fabAddSourceExcerpt;
+
+    private ArchivistSourceTypesFragment archivistSourceTypesFragment;
 
     private int sourceTabIndex = -1;
     private int sourceTypesTabIndex = -1;
@@ -158,7 +161,12 @@ public class ArchivistActivity extends AppCompatActivity {
 
             if(!Utils.stringIsNullOrWhitespace(sourceTypeName)){
 
-                Utils.toast(this, "source type name: " + sourceTypeName);
+                NwdDb db = NwdDb.getInstance(this);
+
+                db.ensureArchivistSourceTypeName(sourceTypeName);
+                archivistSourceTypesFragment.refreshSourceTypes();
+
+                Utils.toast(this, "added source type name: " + sourceTypeName);
 
             }else{
 
@@ -225,7 +233,7 @@ public class ArchivistActivity extends AppCompatActivity {
         this.viewPager = viewPager;
         archivistFragmentStatePagerAdapter = new ArchivistFragmentStatePagerAdapter(getSupportFragmentManager());
 
-        ArchivistSourceTypesFragment archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
+        archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
         archivistSourceTypesFragment.setParentArchivistActivity(this);
 
         archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");

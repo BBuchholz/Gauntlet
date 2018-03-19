@@ -24,22 +24,22 @@ public class NwdContract {
     //region V4a
 
     static final String COLUMN_DISPLAY_NAME_ID = "DisplayNameId";
-    static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
+    public static final String COLUMN_DISPLAY_NAME_VALUE = "DisplayNameValue";
     static final String COLUMN_PATH_ID = "PathId";
-    static final String COLUMN_PATH_VALUE = "PathValue";
+    public static final String COLUMN_PATH_VALUE = "PathValue";
     static final String COLUMN_HASH_ID = "HashId";
-    static final String COLUMN_HASH_VALUE = "HashValue";
+    public static final String COLUMN_HASH_VALUE = "HashValue";
     static final String COLUMN_DEVICE_ID = "DeviceId";
-    static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
-    static final String COLUMN_FILE_ID = "FileId";
-    static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
+    public static final String COLUMN_DEVICE_DESCRIPTION = "DeviceDescription";
+    public static final String COLUMN_FILE_ID = "FileId";
+    public static final String COLUMN_FILE_HASHED_AT = "FileHashedAt";
     static final String COLUMN_TAG_ID = "TagId";
-    static final String COLUMN_TAG_VALUE = "TagValue";
+    public static final String COLUMN_TAG_VALUE = "TagValue";
     static final String COLUMN_FILE_TAGS_ID = "FileTagsId";
-    static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
+    public static final String COLUMN_FILE_DESCRIPTION = "FileDescription";
     static final String COLUMN_AUDIO_TRANSCRIPT_ID = "AudioTranscriptId";
-    static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
-    static final String COLUMN_FILE_NAME = "FileName";
+    public static final String COLUMN_AUDIO_TRANSCRIPT_VALUE = "AudioTranscriptValue";
+    public static final String COLUMN_FILE_NAME = "FileName";
 //    static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
 //    static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
 //    static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
@@ -429,13 +429,13 @@ public class NwdContract {
     static final String COLUMN_MEDIA_ROOT_PATH = "MediaRootPath";
     static final String COLUMN_MEDIA_DEVICE_ID = "MediaDeviceId";
     static final String COLUMN_MEDIA_DEVICE_DESCRIPTION = "MediaDeviceDescription";
-    static final String COLUMN_MEDIA_PATH_VALUE = "MediaPathValue";
+    public static final String COLUMN_MEDIA_PATH_VALUE = "MediaPathValue";
     static final String COLUMN_MEDIA_FILE_NAME = "MediaFileName";
     static final String COLUMN_MEDIA_ID = "MediaId";
     static final String COLUMN_MEDIA_PATH_ID = "MediaPathId";
     static final String COLUMN_MEDIA_HASH = "MediaHash";
     static final String COLUMN_MEDIA_TAG_ID = "MediaTagId";
-    static final String COLUMN_MEDIA_TAG_VALUE = "MediaTagValue";
+    public static final String COLUMN_MEDIA_TAG_VALUE = "MediaTagValue";
     static final String COLUMN_MEDIA_DESCRIPTION = "MediaDescription";
 
     private static final String COLUMN_MEDIA_TRANSCRIPT_ID = "MediaTranscriptId";
@@ -470,8 +470,8 @@ public class NwdContract {
     static final String TABLE_LOCAL_CONFIG = "LocalConfig";
 
     static final String COLUMN_LOCAL_CONFIG_ID = "LocalConfigId";
-    static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
-    static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
+    public static final String COLUMN_LOCAL_CONFIG_KEY = "LocalConfigKey";
+    public static final String COLUMN_LOCAL_CONFIG_VALUE = "LocalConfigValue";
     private static final String COLUMN_LOCAL_CONFIG_CREATED_AT = "LocalConfigCreatedAt";
     private static final String COLUMN_LOCAL_CONFIG_UPDATED_AT = "LocalConfigUpdatedAt";
 
@@ -1282,8 +1282,8 @@ public class NwdContract {
 
 
     private static final String TABLE_SOURCE_TYPE = "SourceType";
-    private static final String COLUMN_SOURCE_TYPE_ID = "SourceTypeId";
-    private static final String COLUMN_SOURCE_TYPE_VALUE = "SourceTypeValue";
+    static final String COLUMN_SOURCE_TYPE_ID = "SourceTypeId";
+    static final String COLUMN_SOURCE_TYPE_VALUE = "SourceTypeValue";
     private static final String COLUMN_SOURCE_TYPE_CREATED_AT = "SourceTypeCreatedAt";
     private static final String COLUMN_SOURCE_TYPE_UPDATED_AT = "SourceTypeUpdatedAt";
 
@@ -1567,8 +1567,16 @@ public class NwdContract {
 
 
 
+    static final String INSERT_OR_IGNORE_SOURCE_TYPE_VALUE =
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_TYPE + " " +
+                    "	(" + COLUMN_SOURCE_TYPE_VALUE + ") " +
+                    "VALUES " +
+                    "	(?); ";
 
 
+    static final String SELECT_TYPE_ID_TYPE_VALUE_FROM_SOURCE_TYPE =
 
-
+            "SELECT " + NwdContract.COLUMN_SOURCE_TYPE_ID + ", " +
+                    "	    " + NwdContract.COLUMN_SOURCE_TYPE_VALUE + " " +
+                    "FROM " + NwdContract.TABLE_SOURCE_TYPE + "; ";
 }

@@ -63,7 +63,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
     SourceTypeAdapter(ArchivistActivity parentArchivistActivity){
 
-        mSourceTypes = ArchivistWorkspace.getSourceTypes();
+        mSourceTypes = ArchivistWorkspace.getSourceTypes(parentArchivistActivity);
         this.parentArchivistActivity = parentArchivistActivity;
 
     }

@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.nineworldsdeep.gauntlet.MultiMap;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
@@ -4444,6 +4446,73 @@ public class NwdDb {
     public void ensureHiveRootName(String name){
 
         db.execSQL(NwdContract.INSERT_HIVE_ROOT_NAME_X, new String[]{ name });
+    }
+
+    public void ensureArchivistSourceTypeName(String sourceTypeName) {
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_TYPE_VALUE, new String[]{sourceTypeName});
+    }
+
+    public ArrayList<ArchivistSourceType> getArchivistSourceTypes(Context context) {
+
+        ArrayList<ArchivistSourceType> allSourceTypes = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_TYPE_ID_TYPE_VALUE_FROM_SOURCE_TYPE,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_TYPE_ID,
+                            NwdContract.COLUMN_SOURCE_TYPE_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    int sourceTypeId =
+                            Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_TYPE_ID));
+
+                    String sourceTypeValue =
+                            record.get(NwdContract.COLUMN_SOURCE_TYPE_VALUE);
+
+
+                    ArchivistSourceType sourceType =
+                            new ArchivistSourceType(sourceTypeId, sourceTypeValue);
+
+                    allSourceTypes.add(sourceType);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return allSourceTypes;
     }
 
 

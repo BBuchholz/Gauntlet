@@ -1,15 +1,39 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
-class ArchivistSourceType {
+import com.nineworldsdeep.gauntlet.R;
+
+public class ArchivistSourceType {
 
     private String sourceTypeName;
     private int sourcePicDrawableResourceId;
     private int sourceTypeId;
 
-    ArchivistSourceType(int sourceTypeId, String sourceTypeName, int sourcePicDrawableResourceId){
+    public ArchivistSourceType(int sourceTypeId, String sourceTypeName){
         this.sourceTypeId = sourceTypeId;
         this.sourceTypeName = sourceTypeName;
-        this.sourcePicDrawableResourceId = sourcePicDrawableResourceId;
+        this.sourcePicDrawableResourceId = inferDrawableResourceId(sourceTypeName);
+    }
+
+    private int inferDrawableResourceId(String sourceTypeName) {
+
+        switch (sourceTypeName){
+
+            case "Article":
+                return R.drawable.article;
+            case "Book":
+                return R.drawable.book;
+            case "Movie":
+                return R.drawable.movie;
+            case "Quote":
+                return R.drawable.quote;
+            case "Video":
+                return R.drawable.video;
+            case "Web":
+                return R.drawable.web;
+            default:
+                return R.drawable.misc_source;
+        }
+
     }
 
     String getSourceTypeName() {

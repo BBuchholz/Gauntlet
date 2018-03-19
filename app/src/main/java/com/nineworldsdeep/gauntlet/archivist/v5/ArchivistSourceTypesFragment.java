@@ -24,6 +24,7 @@ import com.nineworldsdeep.gauntlet.R;
 public class ArchivistSourceTypesFragment extends Fragment {
 
     private ArchivistActivity parentArchivistActivity;
+    private SourceTypeAdapter sourceTypeAdapter;
 
     public ArchivistSourceTypesFragment() {
         // Required empty public constructor
@@ -39,8 +40,8 @@ public class ArchivistSourceTypesFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
-        SourceTypeAdapter adapter = new SourceTypeAdapter(parentArchivistActivity);
-        recyclerView.setAdapter(adapter);
+        sourceTypeAdapter = new SourceTypeAdapter(parentArchivistActivity);
+        recyclerView.setAdapter(sourceTypeAdapter);
         recyclerView.setHasFixedSize(true);
 
         int tilePadding = getResources().getDimensionPixelSize(R.dimen.tile_padding);
@@ -51,4 +52,8 @@ public class ArchivistSourceTypesFragment extends Fragment {
     }
 
 
+    public void refreshSourceTypes() {
+
+        sourceTypeAdapter.notifyDataSetChanged();
+    }
 }

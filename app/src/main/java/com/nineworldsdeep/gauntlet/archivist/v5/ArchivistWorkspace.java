@@ -1,8 +1,10 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import android.content.Context;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,16 +45,9 @@ class ArchivistWorkspace {
         namesToSourceTypes.put(sourceType.getSourceTypeName(), sourceType);
     }
 
-    private static void loadTestingValues(){
 
-        //mock source types
-        addSourceType(new ArchivistSourceType(1111, "Article", R.drawable.article));
-        addSourceType(new ArchivistSourceType(2222, "Book", R.drawable.book));
-        addSourceType(new ArchivistSourceType(-1, "Misc Source", R.drawable.misc_source));
-        addSourceType(new ArchivistSourceType(4444, "Movie", R.drawable.movie));
-        addSourceType(new ArchivistSourceType(5555, "Quote", R.drawable.quote));
-        addSourceType(new ArchivistSourceType(6666, "Video", R.drawable.video));
-        addSourceType(new ArchivistSourceType(7777, "Web", R.drawable.web));
+
+    private static void loadTestingValues(){
 
         //mock sources
         openSources.add(new ArchivistSource("Test Book One", "a book"));
@@ -67,8 +62,21 @@ class ArchivistWorkspace {
         openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
     }
 
-    static ArrayList<ArchivistSourceType> getSourceTypes() {
+    static ArrayList<ArchivistSourceType> getSourceTypes(Context context) {
+        refreshSourceTypes(context);
         return new ArrayList<>(namesToSourceTypes.values());
+    }
+
+    private static void refreshSourceTypes(Context context) {
+
+        NwdDb db = NwdDb.getInstance(context);
+
+        ArrayList<ArchivistSourceType> allTypes = db.getArchivistSourceTypes(context);
+
+        for(ArchivistSourceType sourceType : allTypes){
+
+            addSourceType(sourceType);
+        }
     }
 
     static ArrayList<ArchivistSource> getOpenSources() {

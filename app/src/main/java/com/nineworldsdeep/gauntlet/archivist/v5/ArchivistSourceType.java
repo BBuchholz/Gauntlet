@@ -1,8 +1,10 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import android.support.annotation.NonNull;
+
 import com.nineworldsdeep.gauntlet.R;
 
-public class ArchivistSourceType {
+public class ArchivistSourceType implements Comparable<ArchivistSourceType> {
 
     private String sourceTypeName;
     private int sourcePicDrawableResourceId;
@@ -46,4 +48,8 @@ public class ArchivistSourceType {
         return sourcePicDrawableResourceId;
     }
 
+    @Override
+    public int compareTo(@NonNull ArchivistSourceType other) {
+        return sourceTypeName.compareTo(other.sourceTypeName);
+    }
 }

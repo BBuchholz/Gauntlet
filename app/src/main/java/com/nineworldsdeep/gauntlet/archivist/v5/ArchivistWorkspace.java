@@ -7,6 +7,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 class ArchivistWorkspace {
@@ -64,7 +65,9 @@ class ArchivistWorkspace {
 
     static ArrayList<ArchivistSourceType> getSourceTypes(Context context) {
         refreshSourceTypes(context);
-        return new ArrayList<>(namesToSourceTypes.values());
+        ArrayList<ArchivistSourceType> lst = new ArrayList<>(namesToSourceTypes.values());
+        Collections.sort(lst);
+        return lst;
     }
 
     private static void refreshSourceTypes(Context context) {

@@ -356,7 +356,6 @@ public class NwdDb {
 
     /**
      * Opens/Creates the internal database for Gauntlet/NWD
-     * @param context
      */
     private NwdDb(Context context){
 
@@ -368,8 +367,6 @@ public class NwdDb {
     /**
      * Opens/Creates an external database for Gauntlet/NWD with the specified name
      * in the NWD/sqlite directory. Intended for imports and exports.
-     * @param context
-     * @param databaseName
      */
     private NwdDb(Context context, String databaseName){
 
@@ -469,9 +466,6 @@ public class NwdDb {
 
     /**
      * assumes an open transaction (open and close outside of this method)
-     * @param deviceDescription
-     * @param filePath
-     * @param displayName
      */
     private void ensureDisplayName(String deviceDescription,
                                    String filePath,
@@ -518,9 +512,9 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error linking display name [" +
-                    displayName + "] to file [" +
-                    filePath + "]: " + ex.getMessage());
+//            Utils.log("error linking display name [" +
+//                    displayName + "] to file [" +
+//                    filePath + "]: " + ex.getMessage());
 
         }finally {
 
@@ -530,10 +524,6 @@ public class NwdDb {
 
     /**
      * assumes an open transaction (open and close outside of this method)
-     * @param deviceName
-     * @param filePath
-     * @param sha1Hash
-     * @param hashedAt
      */
     private void ensureHash(String deviceName,
                             String filePath,
@@ -582,9 +572,9 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error linking SHA1 hash [" +
-                    sha1Hash + "] to file [" +
-                    filePath + "]: " + ex.getMessage());
+//            Utils.log("error linking SHA1 hash [" +
+//                    sha1Hash + "] to file [" +
+//                    filePath + "]: " + ex.getMessage());
 
         }finally {
 
@@ -594,9 +584,6 @@ public class NwdDb {
 
     /**
      * assumes an open transaction (open and close outside of this method)
-     * @param deviceName
-     * @param filePath
-     * @param tag
      */
     private void ensureTag(String deviceName, String filePath, TagNode tag){
 
@@ -635,9 +622,9 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error linking tag [" +
-                    tag + "] to file [" +
-                    filePath + "]: " + ex.getMessage());
+//            Utils.log("error linking tag [" +
+//                    tag + "] to file [" +
+//                    filePath + "]: " + ex.getMessage());
 
         }finally {
 
@@ -681,9 +668,9 @@ public class NwdDb {
 
                 }catch(Exception ex) {
 
-                    Utils.log("error linking tag [" +
-                            tag + "] to file path [" +
-                            path + "]: " + ex.getMessage());
+//                    Utils.log("error linking tag [" +
+//                            tag + "] to file path [" +
+//                            path + "]: " + ex.getMessage());
 
                 }
             }
@@ -713,9 +700,9 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error ensuring file for device [" +
-                    deviceName + "] and path [" +
-                    filePath + "]: " + ex.getMessage());
+//            Utils.log("error ensuring file for device [" +
+//                    deviceName + "] and path [" +
+//                    filePath + "]: " + ex.getMessage());
 
         }finally {
 
@@ -781,9 +768,9 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error updating audio transcript [" + transcription + "] " +
-                    "for device [" + deviceName + "] " +
-                    "and path [" + filePath + "]: " + ex.getMessage());
+//            Utils.log("error updating audio transcript [" + transcription + "] " +
+//                    "for device [" + deviceName + "] " +
+//                    "and path [" + filePath + "]: " + ex.getMessage());
 
         }finally {
 
@@ -793,8 +780,6 @@ public class NwdDb {
 
     /**
      * assumes an open transaction (open and close outside of this method)
-     * @param key
-     * @param val
      */
     private void ensureConfigValue(String key, String val){
 
@@ -826,8 +811,8 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error updating local config key [" + key + "] " +
-                    "with value [" + val + "]: " + ex.getMessage());
+//            Utils.log("error updating local config key [" + key + "] " +
+//                    "with value [" + val + "]: " + ex.getMessage());
 
         }finally {
 
@@ -950,9 +935,9 @@ public class NwdDb {
             db.setTransactionSuccessful();
 
         }catch(Exception ex) {
-
-            Utils.log("error retrieving path display names " +
-                    "for current device: " + ex.getMessage());
+//
+//            Utils.log("error retrieving path display names " +
+//                    "for current device: " + ex.getMessage());
 
         }finally {
 
@@ -1131,9 +1116,9 @@ public class NwdDb {
 
             }catch(Exception ex) {
 
-                Utils.log("error linking display name [" +
-                        displayName + "] to file [" +
-                        filePath + "]: " + ex.getMessage());
+//                Utils.log("error linking display name [" +
+//                        displayName + "] to file [" +
+//                        filePath + "]: " + ex.getMessage());
 
             }
         }
@@ -1393,8 +1378,8 @@ public class NwdDb {
 
         }catch(Exception ex) {
 
-            Utils.log("error deleting tags " +
-                    "for path [" + path + "]: " + ex.getMessage());
+//            Utils.log("error deleting tags " +
+//                    "for path [" + path + "]: " + ex.getMessage());
 
         }finally {
 
@@ -1960,9 +1945,6 @@ public class NwdDb {
 
     /**
      * loads just the id and timestamps for given list name
-     *
-     * @param context
-     * @param synLst
      */
     public void loadCore(Context context, SynergyV5List synLst){
 
@@ -2862,7 +2844,6 @@ public class NwdDb {
      * value associated with key "local-media-device-description"
      *
      * if that key is not found, will return null
-     * @return
      */
     public String getLocalMediaDeviceDescription(Context c) {
 
@@ -2925,7 +2906,6 @@ public class NwdDb {
      * value associated with key "local-media-device-description"
      *
      * if that key is not found, will return null
-     * @return
      */
     public String getLocalMediaDeviceDescription(SQLiteDatabase db) {
 
@@ -3432,13 +3412,6 @@ public class NwdDb {
                 new String[]{ hash, Integer.toString(mediaId) });
     }
 
-    /**
-     *
-     *
-     * @param hash
-     * @param db
-     * @return media id for hash
-     */
     private int ensureMediaIdForHash(String hash, SQLiteDatabase db) {
 
         int id = getMediaIdForHash(hash, db);
@@ -3923,8 +3896,6 @@ public class NwdDb {
      * (mediaId, mediaHash, mediaDescription, and mediaFilename)
      * this just populates taggings and device paths and it
      * relies on both mediaId and mediaHash already being set
-     * @param lst
-     * @throws Exception
      */
     public void populateTaggingsAndDevicePaths(ArrayList<Media> lst) throws Exception {
 

@@ -52,8 +52,8 @@ public class ArchivistSourceTypesFragment extends Fragment {
     }
 
 
-    public void refreshSourceTypes() {
+    public void refreshSourceTypes(Context context) {
 
-        sourceTypeAdapter.notifyDataSetChanged();
+        sourceTypeAdapter.refreshSourceTypes(context);
     }
 }

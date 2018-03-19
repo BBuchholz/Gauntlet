@@ -22,6 +22,12 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
     private ArchivistActivity parentArchivistActivity;
 
+    void refreshSourceTypes(Context context) {
+
+        mSourceTypes = ArchivistWorkspace.getSourceTypes(context);
+        notifyDataSetChanged();
+    }
+
     //private final Drawable mockPicDrawable;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,6 +73,8 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
         this.parentArchivistActivity = parentArchivistActivity;
 
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

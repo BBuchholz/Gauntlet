@@ -164,7 +164,7 @@ public class ArchivistActivity extends AppCompatActivity {
                 NwdDb db = NwdDb.getInstance(this);
 
                 db.ensureArchivistSourceTypeName(sourceTypeName);
-                archivistSourceTypesFragment.refreshSourceTypes();
+                archivistSourceTypesFragment.refreshSourceTypes(this);
 
                 Utils.toast(this, "added source type name: " + sourceTypeName);
 

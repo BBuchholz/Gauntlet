@@ -41,8 +41,8 @@ public class ArchivistSourcesFragment extends Fragment {
     }
 
 
-    public void refreshSources() {
+    public void refreshSources(Context context) {
 
-        sourceAdapter.refreshSources();
+        sourceAdapter.refreshSources(context);
     }
 }

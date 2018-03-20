@@ -62,6 +62,7 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
 
                     parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
                     parentArchivistActivity.selectSourcesTab();
+                    parentArchivistActivity.refreshSources();
                 }
             });
         }

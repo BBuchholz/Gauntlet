@@ -211,7 +211,7 @@ public class ArchivistActivity extends AppCompatActivity {
                             sourceRetrievalDate);
 
                 db.insertOrIgnoreArchivistSource(archivistSource);
-                archivistSourcesFragment.refreshSources();
+                archivistSourcesFragment.refreshSources(this);
 
                 Utils.toast(this, "Added new " + sourceTypeName);
 
@@ -287,6 +287,11 @@ public class ArchivistActivity extends AppCompatActivity {
         sourceExcerptsTabIndex = 2;
 
         this.viewPager.setAdapter(archivistFragmentStatePagerAdapter);
+    }
+
+    public void refreshSources() {
+
+        archivistSourcesFragment.refreshSources(this);
     }
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:

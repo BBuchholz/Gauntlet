@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import com.nineworldsdeep.gauntlet.Utils;
+
 public class ArchivistSource {
 
     private int sourceId;
@@ -87,8 +89,27 @@ public class ArchivistSource {
         this.sourceRetrievalDate = sourceRetrievalDate;
     }
 
-    public String getShortDescription() {
+    String getShortDescription() {
 
-           //display title, author, address, whatever is set (I think Empyrean has this figured out)
+        if(!Utils.stringIsNullOrWhitespace(sourceTitle)){
+
+            return sourceTitle;
+
+        }else if(!Utils.stringIsNullOrWhitespace(sourceAuthor)){
+
+            return sourceAuthor;
+
+        }else if(!Utils.stringIsNullOrWhitespace(sourceDirector)){
+
+            return sourceDirector;
+
+        }else if(!Utils.stringIsNullOrWhitespace(sourceUrl)){
+
+            return sourceUrl;
+
+        }else{
+
+            return "[UNKNOWN SOURCE]";
+        }
     }
 }

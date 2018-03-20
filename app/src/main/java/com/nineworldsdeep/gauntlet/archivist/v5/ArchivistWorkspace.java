@@ -1,9 +1,11 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ class ArchivistWorkspace {
  * every source. that is the concept we are modeling here
  */
     private static HashMap<String, ArchivistSourceType> namesToSourceTypes;
-    private static ArrayList<ArchivistSource> openSources;
+    //private static ArrayList<ArchivistSource> openSources;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
     private static ArchivistSourceType currentSourceType;
 
@@ -33,7 +35,7 @@ class ArchivistWorkspace {
 
     static {
         namesToSourceTypes = new HashMap<>();
-        openSources = new ArrayList<>();
+        //openSources = new ArrayList<>();
         openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
         currentSourceType = null;
@@ -49,10 +51,10 @@ class ArchivistWorkspace {
     private static void loadTestingValues(){
 
         //mock sources
-        openSources.add(new ArchivistSource("Test Book One", "a book"));
-        openSources.add(new ArchivistSource("Test Book Two", "another book"));
-        openSources.add(new ArchivistSource("Test Movie Segment", "a citation of a movie segment"));
-        openSources.add(new ArchivistSource("Test Web Page", "some source site"));
+//        openSources.add(new ArchivistSource("Test Book One", "a book"));
+//        openSources.add(new ArchivistSource("Test Book Two", "another book"));
+//        openSources.add(new ArchivistSource("Test Movie Segment", "a citation of a movie segment"));
+//        openSources.add(new ArchivistSource("Test Web Page", "some source site"));
 
         //mock excerpts
         openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
@@ -80,9 +82,33 @@ class ArchivistWorkspace {
         }
     }
 
-    static ArrayList<ArchivistSource> getOpenSources() {
+    static ArrayList<ArchivistSource> getSources(Context context) {
+
+        ArrayList<ArchivistSource> openSources;
+
+        NwdDb db = NwdDb.getInstance(context);
+
+        if(currentSourceTypeIsAllTypes()){
+            //return all sources
+            openSources = db.getAllArchivistSources(context);
+        }else{
+            //return for current source type (where clause using source type id)
+            openSources = db.getArchivistSourcesForTypeId(context,
+                    currentSourceType.getSourceTypeId());
+        }
+
+
+//        ArrayList<ArchivistSource> openSources = new ArrayList<>();
+//
+//        openSources.add(new ArchivistSource("Test Book One", "a book"));
+//        openSources.add(new ArchivistSource("Test Book Two", "another book"));
+//        openSources.add(new ArchivistSource("Test Movie Segment", "a citation of a movie segment"));
+//        openSources.add(new ArchivistSource("Test Web Page", "some source site"));
+
         return openSources;
     }
+
+
 
     static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts() {
         return openSourceExcerpts;
@@ -107,12 +133,12 @@ class ArchivistWorkspace {
         return fragmentKeysToTitles.get(fragmentKey);
     }
 
-    static ArchivistSourceType getSourceTypeByName(String name) {
+    private static ArchivistSourceType getSourceTypeByName(String name) {
 
         return namesToSourceTypes.get(name);
     }
 
-    public static boolean currentSourceTypeIsAllTypes() {
+    static boolean currentSourceTypeIsAllTypes() {
 
         return currentSourceType.getSourceTypeName().equals(ArchivistSourceType.ALL_SOURCE_TYPES_NAME);
     }

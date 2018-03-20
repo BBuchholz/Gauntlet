@@ -4424,6 +4424,22 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_TYPE_VALUE, new String[]{sourceTypeName});
     }
 
+    public void insertOrIgnoreArchivistSource(ArchivistSource archivistSource) {
+
+        String[] args = new String[]{
+
+                Integer.toString(archivistSource.getSourceTypeId()),
+                archivistSource.getSourceTitle(),
+                archivistSource.getSourceAuthor(),
+                archivistSource.getSourceDirector(),
+                archivistSource.getSourceYear(),
+                archivistSource.getSourceUrl(),
+                archivistSource.getSourceRetrievalDate()
+        };
+
+        db.execSQL(NwdContract.INSERT_SOURCE_T_U_V_W_X_Y_Z, args);
+    }
+
     public ArrayList<ArchivistSourceType> getArchivistSourceTypes(Context context) {
 
         ArrayList<ArchivistSourceType> allSourceTypes = new ArrayList<>();
@@ -4484,6 +4500,168 @@ public class NwdDb {
         }
 
         return allSourceTypes;
+    }
+
+
+    public ArrayList<ArchivistSource> getAllArchivistSources(Context context) {
+
+        ArrayList<ArchivistSource> allSources = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCES, //query is in NwdSql, just remove where clause
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_ID,
+                            NwdContract.COLUMN_SOURCE_TYPE_ID,
+                            NwdContract.COLUMN_SOURCE_TITLE,
+                            NwdContract.COLUMN_SOURCE_AUTHOR,
+                            NwdContract.COLUMN_SOURCE_DIRECTOR,
+                            NwdContract.COLUMN_SOURCE_YEAR,
+                            NwdContract.COLUMN_SOURCE_URL,
+                            NwdContract.COLUMN_SOURCE_RETRIEVAL_DATE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+
+                    int sourceId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_ID));
+                    int sourceTypeId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_TYPE_ID));
+                    String sourceTitle = record.get(NwdContract.COLUMN_SOURCE_TITLE);
+                    String sourceAuthor = record.get(NwdContract.COLUMN_SOURCE_AUTHOR);
+                    String sourceDirector = record.get(NwdContract.COLUMN_SOURCE_DIRECTOR);
+                    String sourceYear = record.get(NwdContract.COLUMN_SOURCE_YEAR);
+                    String sourceUrl = record.get(NwdContract.COLUMN_SOURCE_URL);
+                    String sourceRetrievalDate = record.get(NwdContract.COLUMN_SOURCE_RETRIEVAL_DATE);
+
+                    ArchivistSource archivistSource =
+                            new ArchivistSource(
+                                    sourceId,
+                                    sourceTypeId,
+                                    sourceTitle,
+                                    sourceAuthor,
+                                    sourceDirector,
+                                    sourceYear,
+                                    sourceUrl,
+                                    sourceRetrievalDate);
+
+                    allSources.add(archivistSource);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return allSources;
+    }
+
+    public ArrayList<ArchivistSource> getArchivistSourcesForTypeId(Context context, int sourceTypeId) {
+
+
+        ArrayList<ArchivistSource> sourcesForTypeId = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(sourceTypeId)
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCES_BY_TYPE_ID_X,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_ID,
+                            NwdContract.COLUMN_SOURCE_TYPE_ID,
+                            NwdContract.COLUMN_SOURCE_TITLE,
+                            NwdContract.COLUMN_SOURCE_AUTHOR,
+                            NwdContract.COLUMN_SOURCE_DIRECTOR,
+                            NwdContract.COLUMN_SOURCE_YEAR,
+                            NwdContract.COLUMN_SOURCE_URL,
+                            NwdContract.COLUMN_SOURCE_RETRIEVAL_DATE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+
+                    int sourceId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_ID));
+                    //int sourceTypeId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_TYPE_ID));
+                    String sourceTitle = record.get(NwdContract.COLUMN_SOURCE_TITLE);
+                    String sourceAuthor = record.get(NwdContract.COLUMN_SOURCE_AUTHOR);
+                    String sourceDirector = record.get(NwdContract.COLUMN_SOURCE_DIRECTOR);
+                    String sourceYear = record.get(NwdContract.COLUMN_SOURCE_YEAR);
+                    String sourceUrl = record.get(NwdContract.COLUMN_SOURCE_URL);
+                    String sourceRetrievalDate = record.get(NwdContract.COLUMN_SOURCE_RETRIEVAL_DATE);
+
+                    ArchivistSource archivistSource =
+                            new ArchivistSource(
+                                    sourceId,
+                                    sourceTypeId,
+                                    sourceTitle,
+                                    sourceAuthor,
+                                    sourceDirector,
+                                    sourceYear,
+                                    sourceUrl,
+                                    sourceRetrievalDate);
+
+                    sourcesForTypeId.add(archivistSource);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return sourcesForTypeId;
     }
 
 

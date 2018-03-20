@@ -36,6 +36,7 @@ public class ArchivistActivity extends AppCompatActivity {
     private FloatingActionButton fabAddSourceExcerpt;
 
     private ArchivistSourceTypesFragment archivistSourceTypesFragment;
+    private ArchivistSourcesFragment archivistSourcesFragment;
 
     private int sourceTabIndex = -1;
     private int sourceTypesTabIndex = -1;
@@ -185,8 +186,39 @@ public class ArchivistActivity extends AppCompatActivity {
 
         if(requestCode== REQUEST_RESULT_SOURCE && data != null){
 
-            Utils.toast(this,
-                    "add source activity result awaiting implementation");
+            int sourceTypeId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
+            String sourceTypeName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+            String sourceTitle = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE);
+            String sourceAuthor = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR);
+            String sourceDirector = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR);
+            String sourceYear = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_YEAR);
+            String sourceUrl = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_URL);
+            String sourceRetrievalDate = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE);
+
+            if(sourceTypeId > 0){
+
+                NwdDb db = NwdDb.getInstance(this);
+
+                ArchivistSource archivistSource =
+                        new ArchivistSource(
+                            -1,
+                            sourceTypeId,
+                            sourceTitle,
+                            sourceAuthor,
+                            sourceDirector,
+                            sourceYear,
+                            sourceUrl,
+                            sourceRetrievalDate);
+
+                db.insertOrIgnoreArchivistSource(archivistSource);
+                archivistSourcesFragment.refreshSources();
+
+                Utils.toast(this, "Added new " + sourceTypeName);
+
+            }else{
+
+                Utils.toast(this, "invalid source type");
+            }
         }
 
         if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
@@ -247,7 +279,8 @@ public class ArchivistActivity extends AppCompatActivity {
         archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");
         sourceTypesTabIndex = 0;
 
-        archivistFragmentStatePagerAdapter.addFragment(new ArchivistSourcesFragment(), "Sources");
+        archivistSourcesFragment = new ArchivistSourcesFragment();
+        archivistFragmentStatePagerAdapter.addFragment(archivistSourcesFragment, "Sources");
         sourceTabIndex = 1;
 
         archivistFragmentStatePagerAdapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");

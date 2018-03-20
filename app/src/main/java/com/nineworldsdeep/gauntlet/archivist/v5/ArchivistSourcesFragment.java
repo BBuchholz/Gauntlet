@@ -18,6 +18,8 @@ import com.nineworldsdeep.gauntlet.R;
 
 public class ArchivistSourcesFragment extends Fragment {
 
+    private SourceAdapter sourceAdapter;
+
     public ArchivistSourcesFragment() {
         // Required empty public constructor
     }
@@ -31,12 +33,16 @@ public class ArchivistSourcesFragment extends Fragment {
 
         //ContentAdapter adapter = new ContentAdapter(recyclerView.getContext());
 
-        SourceAdapter adapter = new SourceAdapter(recyclerView.getContext());
-        recyclerView.setAdapter(adapter);
+        sourceAdapter = new SourceAdapter(recyclerView.getContext());
+        recyclerView.setAdapter(sourceAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return recyclerView;
     }
 
 
+    public void refreshSources() {
+
+        sourceAdapter.refreshSources();
+    }
 }

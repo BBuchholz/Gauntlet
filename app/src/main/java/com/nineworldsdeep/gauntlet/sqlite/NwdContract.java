@@ -1319,13 +1319,13 @@ public class NwdContract {
 
 
     private static final String TABLE_SOURCE = "Source";
-    private static final String COLUMN_SOURCE_ID = "SourceId";
-    private static final String COLUMN_SOURCE_AUTHOR = "SourceAuthor";
-    private static final String COLUMN_SOURCE_DIRECTOR = "SourceDirector";
-    private static final String COLUMN_SOURCE_TITLE = "SourceTitle";
-    private static final String COLUMN_SOURCE_YEAR = "SourceYear";
-    private static final String COLUMN_SOURCE_URL = "SourceUrl";
-    private static final String COLUMN_SOURCE_RETRIEVAL_DATE = "SourceRetrievalDate";
+    static final String COLUMN_SOURCE_ID = "SourceId";
+    static final String COLUMN_SOURCE_AUTHOR = "SourceAuthor";
+    static final String COLUMN_SOURCE_DIRECTOR = "SourceDirector";
+    static final String COLUMN_SOURCE_TITLE = "SourceTitle";
+    static final String COLUMN_SOURCE_YEAR = "SourceYear";
+    static final String COLUMN_SOURCE_URL = "SourceUrl";
+    static final String COLUMN_SOURCE_RETRIEVAL_DATE = "SourceRetrievalDate";
     private static final String COLUMN_SOURCE_TAG = "SourceTag";
     private static final String COLUMN_SOURCE_CREATED_AT = "SourceCreatedAt";
     private static final String COLUMN_SOURCE_UPDATED_AT = "SourceUpdatedAt";
@@ -1579,4 +1579,42 @@ public class NwdContract {
             "SELECT " + NwdContract.COLUMN_SOURCE_TYPE_ID + ", " +
                     "	    " + NwdContract.COLUMN_SOURCE_TYPE_VALUE + " " +
                     "FROM " + NwdContract.TABLE_SOURCE_TYPE + "; ";
+
+    static final String INSERT_SOURCE_T_U_V_W_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE + " " +
+            "	(" + COLUMN_SOURCE_TYPE_ID + ", " +
+            "	 " + COLUMN_SOURCE_TITLE + ", " +
+            "	 " + COLUMN_SOURCE_AUTHOR + ", " +
+            "	 " + COLUMN_SOURCE_DIRECTOR + ", " +
+            "	 " + COLUMN_SOURCE_YEAR + ", " +
+            "	 " + COLUMN_SOURCE_URL + ", " +
+            "	 " + COLUMN_SOURCE_RETRIEVAL_DATE + ") " +
+            "VALUES " +
+            "	(?,?,?,?,?,?,?); ";
+
+    static final String SELECT_SOURCES =
+
+            "SELECT " + COLUMN_SOURCE_ID + ", " +
+                    "	   " + COLUMN_SOURCE_TYPE_ID + ", " +
+                    "	   " + COLUMN_SOURCE_TITLE + ", " +
+                    "	   " + COLUMN_SOURCE_AUTHOR + ", " +
+                    "	   " + COLUMN_SOURCE_DIRECTOR + ", " +
+                    "	   " + COLUMN_SOURCE_YEAR + ", " +
+                    "	   " + COLUMN_SOURCE_URL + ", " +
+                    "	   " + COLUMN_SOURCE_RETRIEVAL_DATE + "  " +
+                    "FROM " + TABLE_SOURCE + " ;";
+
+    static final String SELECT_SOURCES_BY_TYPE_ID_X =
+
+            "SELECT " + COLUMN_SOURCE_ID + ", " +
+            "	   " + COLUMN_SOURCE_TYPE_ID + ", " +
+            "	   " + COLUMN_SOURCE_TITLE + ", " +
+            "	   " + COLUMN_SOURCE_AUTHOR + ", " +
+            "	   " + COLUMN_SOURCE_DIRECTOR + ", " +
+            "	   " + COLUMN_SOURCE_YEAR + ", " +
+            "	   " + COLUMN_SOURCE_URL + ", " +
+            "	   " + COLUMN_SOURCE_RETRIEVAL_DATE + "  " +
+            "FROM " + TABLE_SOURCE + " " +
+            "WHERE " + COLUMN_SOURCE_TYPE_ID + " = ?; ";
 }

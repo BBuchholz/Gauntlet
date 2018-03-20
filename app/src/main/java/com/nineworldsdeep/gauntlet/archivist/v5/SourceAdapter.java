@@ -20,6 +20,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
     private ArrayList<ArchivistSource> mSources;
     private final Drawable mockPicDrawable;
 
+    public void refreshSources(Context context) {
+
+        mSources = ArchivistWorkspace.getSources(context);
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView sourceTypeImage;
@@ -34,9 +40,9 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         }
     }
 
-    public SourceAdapter(Context context){
+    SourceAdapter(Context context){
 
-        mSources = ArchivistWorkspace.getOpenSources();
+        mSources = ArchivistWorkspace.getSources(context);
 
         //temp code
         Resources resources = context.getResources();
@@ -57,7 +63,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
         holder.sourceTypeImage.setImageDrawable(mockPicDrawable);
         holder.name.setText(src.getSourceTitle());
-        holder.description.setText(src.getSourceDescription());
+        holder.description.setText(src.getShortDescription());
     }
 
     @Override

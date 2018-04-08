@@ -1526,7 +1526,7 @@ public class NwdContract {
                     "	WHERE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + "; " +
                     "END ";
 
-    private static final String TABLE_SOURCE_EXCERPT_TAGGING = "SourceExcerptTagging";
+    private static final String TABLE_SOURCE_EXCERPT_TAGGING = "TaggingBase";
     private static final String COLUMN_SOURCE_EXCERPT_TAGGING_ID = "SourceExcerptTaggingId";
     private static final String COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT = "SourceExcerptTaggingTaggedAt";
     private static final String COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT = "SourceExcerptTaggingUntaggedAt";

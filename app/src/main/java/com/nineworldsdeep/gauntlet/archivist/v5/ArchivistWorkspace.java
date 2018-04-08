@@ -54,10 +54,12 @@ class ArchivistWorkspace {
     private static void loadTestingValues(){
 
         //mock excerpts
-        openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
-        openSourceExcerpts.add(new ArchivistSourceExcerpt("Quote", "something someone cool said once"));
-        openSourceExcerpts.add(new ArchivistSourceExcerpt("0:15:05 - 0:17:23", "a transcript of the audio"));
-        openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
+//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
+//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Quote", "something someone cool said once"));
+//        openSourceExcerpts.add(new ArchivistSourceExcerpt("0:15:05 - 0:17:23", "a transcript of the audio"));
+//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
+
+        openSourceExcerpts.add(new ArchivistSourceExcerpt(1,1,"asdf","asdf","asdf","asdf"));
     }
 
     static ArrayList<ArchivistSourceType> getSourceTypes(Context context) {

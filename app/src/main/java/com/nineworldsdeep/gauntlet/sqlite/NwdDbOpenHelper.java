@@ -496,7 +496,7 @@ public class NwdDbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_ANNOTATION_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_ANNOTATION_UPDATED_TRIGGER);
 
-        //SourceExcerptTagging
+        //TaggingBase
         db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING);
         db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING_CREATED_TRIGGER);
         db.execSQL(NwdContract.CREATE_SOURCE_EXCERPT_TAGGING_UPDATED_TRIGGER);

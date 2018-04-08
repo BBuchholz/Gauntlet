@@ -22,4 +22,8 @@ public class ArchivistSourceExcerptTagging extends TaggingBase {
     public String getMediaTagValue() {
         return mediaTagValue;
     }
+
+    public void setMediaTagValue(String mediaTagValue) {
+        this.mediaTagValue = mediaTagValue;
+    }
 }

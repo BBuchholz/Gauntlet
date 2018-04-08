@@ -1,17 +1,16 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.util.SparseArray;
-import android.widget.TextView;
 
-import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.thedeanda.lorem.Lorem;
+import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 class ArchivistWorkspace {
 
@@ -59,8 +58,37 @@ class ArchivistWorkspace {
 //        openSourceExcerpts.add(new ArchivistSourceExcerpt("0:15:05 - 0:17:23", "a transcript of the audio"));
 //        openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
 
-        openSourceExcerpts.add(new ArchivistSourceExcerpt(1,1,"asdf","asdf","asdf","asdf"));
+        Lorem lorem = LoremIpsum.getInstance();
+
+        Random rand = new Random();
+
+        //max will be between 6 and 25
+        int maxNum = rand.nextInt(20) + 6;
+
+        for(int i = 1; i < maxNum; i++) {
+            String loremValue = lorem.getWords(i * 1, i * 5);
+            addTestExcerpt(i, loremValue, lorem, rand);
+        }
     }
+
+    private static void addTestExcerpt(int id, String loremExcerptValue, Lorem lorem, Random rand) {
+
+        String name = "test excerpt #" + Integer.toString(id);
+
+        ArchivistSourceExcerpt ase =
+                new ArchivistSourceExcerpt(id,1,loremExcerptValue,name + " pages",name + " begin time",name + " end time");
+
+        //max will be between 1 and 8
+        int maxNumTags = rand.nextInt(8) + 1;
+
+        for(int i = 1; i < maxNumTags; i++) {
+
+            ase.tag(lorem.getWords(1, 3));
+        }
+
+        openSourceExcerpts.add(ase);
+    }
+
 
     static ArrayList<ArchivistSourceType> getSourceTypes(Context context) {
         refreshSourceTypes(context);

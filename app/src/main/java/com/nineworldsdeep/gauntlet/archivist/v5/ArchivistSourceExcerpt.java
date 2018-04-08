@@ -93,6 +93,41 @@ public class ArchivistSourceExcerpt {
         return TextUtils.join(", ", tagValues);
     }
 
+    /**
+     * will retrieve media tagging with specified tag value,
+     * creating a new entry if it doesn't exist
+     * @param tag
+     * @return
+     */
+    public ArchivistSourceExcerptTagging getTag(String tag){
+
+        for(ArchivistSourceExcerptTagging set : excerptTaggings){
+
+
+            if(set.getMediaTagValue().equals(tag)){
+
+                return set;
+            }
+        }
+
+        ArchivistSourceExcerptTagging newSet = new ArchivistSourceExcerptTagging();
+        excerptTaggings.add(newSet);
+        newSet.setMediaTagValue(tag);
+
+        return newSet;
+    }
+
+    public void untag(String tag) {
+
+        getTag(tag).untag();
+    }
+
+    public void tag(String tag) {
+
+        getTag(tag).tag();
+    }
+
+
 //    public String getExcerptDescription() {
 //        return "desc";
 //    }

@@ -47,7 +47,8 @@ dependencies {
     compile 'com.nononsenseapps:filepicker:3.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-
+    //lorem ipsum @ https://github.com/mdeanda/lorem
+    compile 'com.thedeanda:lorem:2.1'
 }
 
 

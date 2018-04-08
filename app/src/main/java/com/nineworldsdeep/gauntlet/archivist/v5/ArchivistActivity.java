@@ -280,6 +280,8 @@ public class ArchivistActivity extends AppCompatActivity {
         sourceTypesTabIndex = 0;
 
         archivistSourcesFragment = new ArchivistSourcesFragment();
+        archivistSourcesFragment.setParentArchivistActivity(this);
+
         archivistFragmentStatePagerAdapter.addFragment(archivistSourcesFragment, "Sources");
         sourceTabIndex = 1;
 

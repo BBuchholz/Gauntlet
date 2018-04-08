@@ -18,10 +18,15 @@ import com.nineworldsdeep.gauntlet.R;
 
 public class ArchivistSourcesFragment extends Fragment {
 
+    private ArchivistActivity parentArchivistActivity;
     private SourceAdapter sourceAdapter;
 
     public ArchivistSourcesFragment() {
         // Required empty public constructor
+    }
+
+    public void setParentArchivistActivity(ArchivistActivity parentArchivistActivity){
+        this.parentArchivistActivity = parentArchivistActivity;
     }
 
     @Override
@@ -31,9 +36,7 @@ public class ArchivistSourcesFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
 
-        //ContentAdapter adapter = new ContentAdapter(recyclerView.getContext());
-
-        sourceAdapter = new SourceAdapter(recyclerView.getContext());
+        sourceAdapter = new SourceAdapter(parentArchivistActivity);
         recyclerView.setAdapter(sourceAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

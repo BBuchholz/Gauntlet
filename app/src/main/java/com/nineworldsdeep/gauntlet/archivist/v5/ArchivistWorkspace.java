@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.SparseArray;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
@@ -27,6 +28,8 @@ class ArchivistWorkspace {
  * every source. that is the concept we are modeling here
  */
     private static HashMap<String, ArchivistSourceType> namesToSourceTypes;
+    //private static HashMap<Integer, ArchivistSourceType> idsToSourceTypes;
+    private static SparseArray<ArchivistSourceType> idsToSourceTypes;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
     private static ArchivistSourceType currentSourceType;
 
@@ -34,6 +37,7 @@ class ArchivistWorkspace {
 
     static {
         namesToSourceTypes = new HashMap<>();
+        idsToSourceTypes = new SparseArray<>();
         openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
         currentSourceType = null;
@@ -44,6 +48,7 @@ class ArchivistWorkspace {
     private static void addSourceType(ArchivistSourceType sourceType){
 
         namesToSourceTypes.put(sourceType.getSourceTypeName(), sourceType);
+        idsToSourceTypes.put(sourceType.getSourceTypeId(), sourceType);
     }
 
     private static void loadTestingValues(){
@@ -128,5 +133,9 @@ class ArchivistWorkspace {
                 currentSourceType.getSourceTypeName().equals(
                         ArchivistSourceType.ALL_SOURCE_TYPES_NAME);
 
+    }
+
+    public static ArchivistSourceType getSourceTypeById(int sourceTypeId) {
+        return idsToSourceTypes.get(sourceTypeId);
     }
 }

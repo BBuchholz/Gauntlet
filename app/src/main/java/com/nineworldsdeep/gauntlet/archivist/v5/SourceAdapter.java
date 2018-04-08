@@ -18,7 +18,9 @@ import java.util.ArrayList;
 public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSource> mSources;
-    private final Drawable mockPicDrawable;
+    //private final Drawable mockPicDrawable;
+
+    private ArchivistActivity parentArchivistActivity;
 
     public void refreshSources(Context context) {
 
@@ -28,7 +30,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView sourceTypeImage;
+        ImageView sourceTypeImage;
         public TextView name;
         public TextView description;
 
@@ -40,15 +42,16 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         }
     }
 
-    SourceAdapter(Context context){
+    SourceAdapter(ArchivistActivity parentArchivistActivity){
 
-        mSources = ArchivistWorkspace.getSources(context);
+        mSources = ArchivistWorkspace.getSources(parentArchivistActivity);
+        this.parentArchivistActivity = parentArchivistActivity;
 
-        //temp code
-        Resources resources = context.getResources();
-        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        mockPicDrawable = a.getDrawable(0);
-        a.recycle();
+//        //temp code
+//        Resources resources = context.getResources();
+//        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
+//        mockPicDrawable = a.getDrawable(0);
+//        a.recycle();
     }
 
     @Override
@@ -61,7 +64,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
         ArchivistSource src = mSources.get(position);
 
-        holder.sourceTypeImage.setImageDrawable(mockPicDrawable);
+        holder.sourceTypeImage.setImageDrawable(
+                parentArchivistActivity.getDrawable(
+                        src.getSourceType().getSourcePicDrawableResourceId()
+                )
+        );
+
         holder.name.setText(src.getSourceTitle());
         holder.description.setText(src.getShortDescription());
     }

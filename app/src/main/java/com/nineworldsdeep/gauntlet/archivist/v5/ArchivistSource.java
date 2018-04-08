@@ -13,6 +13,8 @@ public class ArchivistSource {
     private String sourceUrl;
     private String sourceRetrievalDate;
 
+    private ArchivistSourceType sourceType;
+
     public ArchivistSource(
             int sourceId,
             int sourceTypeId,
@@ -31,6 +33,16 @@ public class ArchivistSource {
         this.sourceYear = sourceYear;
         this.sourceUrl = sourceUrl;
         this.sourceRetrievalDate = sourceRetrievalDate;
+    }
+
+    public ArchivistSourceType getSourceType() {
+
+        //lazy load
+        if(sourceType == null){
+
+            sourceType = ArchivistWorkspace.getSourceTypeById(sourceTypeId);
+        }
+        return sourceType;
     }
 
     public int getSourceTypeId() {

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSourceType> mSourceTypes;
-    //private Context context;
 
     private ArchivistActivity parentArchivistActivity;
 
@@ -28,19 +27,17 @@ public class SourceTypeAdapter extends RecyclerView.Adapter<SourceTypeAdapter.Vi
         notifyDataSetChanged();
     }
 
-    //private final Drawable mockPicDrawable;
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView picture;
         public TextView name;
-        private ArchivistActivity parentArchivistActivity;
+        //private ArchivistActivity parentArchivistActivity;
 
         public ViewHolder(LayoutInflater inflater, final ViewGroup parent, final ArchivistActivity parentArchivistActivity) {
             super(inflater.inflate(
                     R.layout.fragment_archivist_source_types_content, parent, false));
 
-            this.parentArchivistActivity = parentArchivistActivity;
+            //this.parentArchivistActivity = parentArchivistActivity;
 
             picture = (ImageView) itemView.findViewById(R.id.tile_picture);
             name = (TextView) itemView.findViewById(R.id.tile_title);

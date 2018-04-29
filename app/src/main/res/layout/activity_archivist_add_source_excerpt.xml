@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:text="Source: [LABEL GOES HERE] "/>
+            android:id="@+id/tvSourceDescription"/>
 
         <LinearLayout
             android:layout_width="match_parent"

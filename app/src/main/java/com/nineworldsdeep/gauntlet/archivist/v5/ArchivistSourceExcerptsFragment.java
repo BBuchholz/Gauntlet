@@ -22,23 +22,26 @@ import com.nineworldsdeep.gauntlet.R;
  */
 public class ArchivistSourceExcerptsFragment extends Fragment {
 
+    private ArchivistActivity parentArchivistActivity;
+    private SourceExcerptAdapter sourceExcerptAdapter;
 
     public ArchivistSourceExcerptsFragment() {
         // Required empty public constructor
     }
 
+    public void setParentArchivistActivity(ArchivistActivity parentArchivistActivity){
+        this.parentArchivistActivity = parentArchivistActivity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_card_content, container, false);
 
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
-        //ContentAdapter adapter = new ContentAdapter(recyclerView.getContext());
-        SourceExcerptAdapter adapter = new SourceExcerptAdapter(recyclerView.getContext());
-        recyclerView.setAdapter(adapter);
+
+        sourceExcerptAdapter = new SourceExcerptAdapter(recyclerView.getContext());
+        recyclerView.setAdapter(sourceExcerptAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

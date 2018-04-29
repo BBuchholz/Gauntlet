@@ -6,11 +6,13 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder> {
 
     private ArrayList<ArchivistSource> mSources;
-    //private final Drawable mockPicDrawable;
 
     private ArchivistActivity parentArchivistActivity;
 
@@ -34,8 +35,34 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         public TextView name;
         public TextView description;
 
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
+//        public ViewHolder(LayoutInflater inflater,
+//                          final ViewGroup parent) {
+//
+//            super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
+//
+//            sourceTypeImage = (ImageView) itemView.findViewById(R.id.list_avatar);
+//            name = (TextView) itemView.findViewById(R.id.list_title);
+//            description = (TextView) itemView.findViewById(R.id.list_desc);
+//
+//            sourceTypeImage.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View view) {
+//
+////                    ArchivistWorkspace.setCurrentSource(archivistSource);
+////
+////                    parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
+////                    parentArchivistActivity.selectSourceExcerptsTab();
+////                    parentArchivistActivity.refreshSourceExcerpts();
+//
+//                }
+//            });
+//        }
+
+        public ViewHolder(final View itemView) {
+
+            super(itemView);
+
             sourceTypeImage = (ImageView) itemView.findViewById(R.id.list_avatar);
             name = (TextView) itemView.findViewById(R.id.list_title);
             description = (TextView) itemView.findViewById(R.id.list_desc);
@@ -56,7 +83,39 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+
+
+//        final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+//
+//
+//
+//        return holder;
+
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_archivist_sources_content, parent, false);
+
+        final ViewHolder holder = new ViewHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int position = holder.getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+
+                    ArchivistSource archivistSource = mSources.get(position);
+                    ArchivistWorkspace.setCurrentSource(archivistSource);
+
+                    parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
+                    parentArchivistActivity.selectSourceExcerptsTab();
+                    parentArchivistActivity.refreshSourceExcerpts();
+
+                    Utils.toast(parentArchivistActivity, archivistSource.getShortDescription() + " clicked in SourceAdapter.");
+                }
+            }
+        });
+
+
+        return holder;
     }
 
     @Override

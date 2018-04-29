@@ -31,6 +31,7 @@ class ArchivistWorkspace {
     private static SparseArray<ArchivistSourceType> idsToSourceTypes;
     private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
     private static ArchivistSourceType currentSourceType;
+    private static ArchivistSource currentSource;
 
     private static HashMap<String, String> fragmentKeysToTitles;
 
@@ -40,6 +41,7 @@ class ArchivistWorkspace {
         openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
         currentSourceType = null;
+        currentSource = null;
 
         loadTestingValues();
     }
@@ -146,6 +148,15 @@ class ArchivistWorkspace {
     static ArchivistSourceType getCurrentSourceType(){
         return currentSourceType;
     }
+
+    static ArchivistSource getCurrentSource(){
+        return currentSource;
+    }
+
+    static void setCurrentSource(ArchivistSource archivistSource){
+        currentSource = archivistSource;
+    }
+
 
     static String getFragmentTitle(String fragmentKey) {
 

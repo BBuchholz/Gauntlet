@@ -37,6 +37,7 @@ public class ArchivistActivity extends AppCompatActivity {
 
     private ArchivistSourceTypesFragment archivistSourceTypesFragment;
     private ArchivistSourcesFragment archivistSourcesFragment;
+    private ArchivistSourceExcerptsFragment archivistSourceExcerptsFragment;
 
     private int sourceTabIndex = -1;
     private int sourceTypesTabIndex = -1;
@@ -52,6 +53,12 @@ public class ArchivistActivity extends AppCompatActivity {
     public void selectSourcesTab(){
         if(sourceTabIndex > -1) {
             viewPager.setCurrentItem(sourceTabIndex);
+        }
+    }
+
+    public void selectSourceExcerptsTab(){
+        if(sourceTabIndex > -1){
+            viewPager.setCurrentItem(sourceExcerptsTabIndex);
         }
     }
 
@@ -285,7 +292,9 @@ public class ArchivistActivity extends AppCompatActivity {
         archivistFragmentStatePagerAdapter.addFragment(archivistSourcesFragment, "Sources");
         sourceTabIndex = 1;
 
-        archivistFragmentStatePagerAdapter.addFragment(new ArchivistSourceExcerptsFragment(), "Excerpts");
+        archivistSourceExcerptsFragment = new ArchivistSourceExcerptsFragment();
+        archivistSourceExcerptsFragment.setParentArchivistActivity(this);
+        archivistFragmentStatePagerAdapter.addFragment(archivistSourceExcerptsFragment, "Excerpts");
         sourceExcerptsTabIndex = 2;
 
         this.viewPager.setAdapter(archivistFragmentStatePagerAdapter);
@@ -295,6 +304,9 @@ public class ArchivistActivity extends AppCompatActivity {
 
         archivistSourcesFragment.refreshSources(this);
     }
+
+    public void refreshSourceExcerpts(){}
+
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:
     // https://stackoverflow.com/questions/30080045/fragmentpageradapter-notifydatasetchanged-not-working

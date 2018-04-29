@@ -45,6 +45,10 @@ public class ArchivistSource {
         return sourceType;
     }
 
+    public int getSourceId() {
+        return sourceId;
+    }
+
     public int getSourceTypeId() {
         return sourceTypeId;
     }

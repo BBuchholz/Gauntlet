@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
@@ -13,8 +14,10 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 public class ArchivistAddSourceExcerptActivity extends AppCompatActivity {
 
-    private int mSourceId;
-    private String mSourceDescription;
+    //private int mSourceId;
+    //private String mSourceDescription;
+
+    private ArchivistSource mCurrentSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,23 +25,49 @@ public class ArchivistAddSourceExcerptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_archivist_add_source_excerpt);
 
         //getActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        mSourceId = intent.getIntExtra(
-                Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+//        Intent intent = getIntent();
+//
+//        mSourceId = intent.getIntExtra(
+//                Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+//
+//        //NOTE: this is a "description", not necessarily the title, it's what gets passed to the activity, whatever works best, could be the Url, or the "author" if it's a quote
+//        mSourceDescription = intent.getStringExtra(
+//                Extras.STRING_ARCHIVIST_SOURCE_DESCRIPTION);
+//
+//        if (mSourceId < 1 ||
+//                Utils.stringIsNullOrWhitespace(mSourceDescription)) {
+//
+//            Utils.toast(this, "Invalid Source Info");
+//            Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
+//            btnConfirm.setEnabled(false);
+//        }
 
-        //NOTE: this is a "description", not necessarily the title, it's what gets passed to the activity, whatever works best, could be the Url, or the "author" if it's a quote
-        mSourceDescription = intent.getStringExtra(
-                Extras.STRING_ARCHIVIST_SOURCE_DESCRIPTION);
+        mCurrentSource = ArchivistWorkspace.getCurrentSource();
 
-        if (mSourceId < 1 ||
-                Utils.stringIsNullOrWhitespace(mSourceDescription)) {
+        Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        TextView tvSourceDescription = (TextView)findViewById(R.id.tvSourceDescription);
+
+        if(mCurrentSource != null &&
+                mCurrentSource.getSourceId() > 0 &&
+                mCurrentSource.getSourceTypeId() > 0){
+
+            if(tvSourceDescription != null && btnConfirm != null){
+                tvSourceDescription.setText(mCurrentSource.getShortDescription());
+                btnConfirm.setEnabled(true);
+            }
+
+        }else{
 
             Utils.toast(this, "Invalid Source Info");
-            Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
-            btnConfirm.setEnabled(false);
+
+            if (btnConfirm != null) {
+                btnConfirm.setEnabled(false);
+            }
         }
     }
 
@@ -56,7 +85,7 @@ public class ArchivistAddSourceExcerptActivity extends AppCompatActivity {
         String sourceExcerptEndTime = etSourceExcerptEndTime.getText().toString();
         String sourceExcerptValue = etSourceExcerptValue.getText().toString();
 
-        intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_ID, mSourceId);
+        //intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_ID, mSourceId);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES, sourceExcerptPages);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME, sourceExcerptBeginTime);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME, sourceExcerptEndTime);

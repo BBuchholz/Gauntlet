@@ -2,6 +2,7 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.text.TextUtils;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.TaggingBase;
 
 import java.util.ArrayList;
@@ -34,12 +35,12 @@ public class ArchivistSourceExcerpt {
 //    }
 
 
-    ArchivistSourceExcerpt(int excerptId,
-                           int sourceId,
-                           String excerptValue,
-                           String excerptPages,
-                           String excerptBeginTime,
-                           String excerptEndTime) {
+    public ArchivistSourceExcerpt(int excerptId,
+                                  int sourceId,
+                                  String excerptValue,
+                                  String excerptPages,
+                                  String excerptBeginTime,
+                                  String excerptEndTime) {
         this.excerptId = excerptId;
         this.sourceId = sourceId;
         this.excerptValue = excerptValue;
@@ -52,7 +53,26 @@ public class ArchivistSourceExcerpt {
 
     public String getLocation(){
         //return pages, begin to end time, whatever is most relevant
-        return "Location: " + excerptValue.substring(0, 7);
+
+        String location = "location not specified";
+
+        if(!Utils.stringIsNullOrWhitespace(getExcerptPages())){
+
+            location = "pages: " + getExcerptPages();
+
+
+        }else if(!Utils.stringIsNullOrWhitespace(getExcerptBeginTime())){
+
+            location = "time: " + getExcerptBeginTime();
+
+            if(!Utils.stringIsNullOrWhitespace(getExcerptEndTime())){
+
+                location += " - " + getExcerptEndTime();
+            }
+
+        }
+
+        return location;
     }
 
     public int getExcerptId() {

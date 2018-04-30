@@ -48,4 +48,8 @@ public class ArchivistSourceExcerptsFragment extends Fragment {
         return recyclerView;
     }
 
+    public void refreshSourceExcerpts(Context context){
+
+        sourceExcerptAdapter.refreshSourceExcerpts(context);
+    }
 }

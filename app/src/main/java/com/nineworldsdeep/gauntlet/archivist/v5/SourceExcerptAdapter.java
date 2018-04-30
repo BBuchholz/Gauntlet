@@ -27,6 +27,12 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
     private ArchivistActivity parentArchivistActivity;
 
+    public void refreshSourceExcerpts(Context context){
+
+        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(context);
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -48,7 +54,7 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
     SourceExcerptAdapter(ArchivistActivity parentArchivistActivity){
 
-        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts();
+        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(parentArchivistActivity);
         this.parentArchivistActivity = parentArchivistActivity;
 
     }

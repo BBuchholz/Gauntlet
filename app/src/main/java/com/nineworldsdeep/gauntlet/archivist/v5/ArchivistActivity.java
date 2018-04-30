@@ -230,8 +230,35 @@ public class ArchivistActivity extends AppCompatActivity {
 
         if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
 
-            Utils.toast(this,
-                    "add source excerpt activity result awaiting implementation");
+            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+            String sourceExcerptPages = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES);
+            String sourceExcerptBeginTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME);
+            String sourceExcerptEndTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME);
+            String sourceExcerptValue = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_VALUE);
+
+            if(sourceId > 0){
+
+                NwdDb db = NwdDb.getInstance(this);
+
+                ArchivistSourceExcerpt ase =
+                        new ArchivistSourceExcerpt(
+                               -1,
+                                sourceId,
+                                sourceExcerptValue,
+                                sourceExcerptPages,
+                                sourceExcerptBeginTime,
+                                sourceExcerptEndTime
+                        );
+
+                db.insertOrIgnoreArchivistSourceExcerpt(ase);
+                archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+
+                Utils.toast(this, "Added excerpt");
+
+            }else{
+
+                Utils.toast(this, "invalid source");
+            }
         }
 
         if(requestCode== RESULT_CANCELED){
@@ -305,7 +332,10 @@ public class ArchivistActivity extends AppCompatActivity {
         archivistSourcesFragment.refreshSources(this);
     }
 
-    public void refreshSourceExcerpts(){}
+    public void refreshSourceExcerpts(){
+
+        archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+    }
 
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:

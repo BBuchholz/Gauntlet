@@ -29,7 +29,7 @@ class ArchivistWorkspace {
     private static HashMap<String, ArchivistSourceType> namesToSourceTypes;
     //private static HashMap<Integer, ArchivistSourceType> idsToSourceTypes;
     private static SparseArray<ArchivistSourceType> idsToSourceTypes;
-    private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
+    //private static ArrayList<ArchivistSourceExcerpt> openSourceExcerpts;
     private static ArchivistSourceType currentSourceType;
     private static ArchivistSource currentSource;
 
@@ -38,12 +38,12 @@ class ArchivistWorkspace {
     static {
         namesToSourceTypes = new HashMap<>();
         idsToSourceTypes = new SparseArray<>();
-        openSourceExcerpts = new ArrayList<>();
+        //openSourceExcerpts = new ArrayList<>();
         fragmentKeysToTitles = new HashMap<>();
         currentSourceType = null;
         currentSource = null;
 
-        loadTestingValues();
+
     }
 
     private static void addSourceType(ArchivistSourceType sourceType){
@@ -52,7 +52,9 @@ class ArchivistWorkspace {
         idsToSourceTypes.put(sourceType.getSourceTypeId(), sourceType);
     }
 
-    private static void loadTestingValues(){
+    private static void genTestExcerpts(
+            ArrayList<ArchivistSourceExcerpt> openSourceExcerpts,
+            int numberToGenerate){
 
         //mock excerpts
 //        openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
@@ -64,16 +66,13 @@ class ArchivistWorkspace {
 
         Random rand = new Random();
 
-        //max will be between 6 and 25
-        int maxNum = rand.nextInt(20) + 6;
-
-        for(int i = 1; i < maxNum; i++) {
-            String loremValue = lorem.getWords(i * 1, i * 5);
-            addTestExcerpt(i, loremValue, lorem, rand);
+        for(int i = 1; i <= numberToGenerate; i++) {
+            String loremValue = lorem.getWords(1, i * 5);
+            addTestExcerpt(openSourceExcerpts, i, loremValue, lorem, rand);
         }
     }
 
-    private static void addTestExcerpt(int id, String loremExcerptValue, Lorem lorem, Random rand) {
+    private static void addTestExcerpt(ArrayList<ArchivistSourceExcerpt> openSourceExcerpts, int id, String loremExcerptValue, Lorem lorem, Random rand) {
 
         String name = "test excerpt #" + Integer.toString(id);
 
@@ -131,7 +130,22 @@ class ArchivistWorkspace {
 
 
 
-    static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts() {
+    static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts(Context context) {
+
+        ArrayList<ArchivistSourceExcerpt> openSourceExcerpts = new ArrayList<>();
+
+        //genTestExcerpts(openSourceExcerpts, 5);
+
+        if(currentSource != null && currentSource.getSourceId() > 0) {
+
+            NwdDb db = NwdDb.getInstance(context);
+
+            openSourceExcerpts =
+                    db.getArchivistSourceExcerptsForSourceId(
+                            context,
+                            currentSource.getSourceId());
+        }
+
         return openSourceExcerpts;
     }
 

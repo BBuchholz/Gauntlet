@@ -1447,11 +1447,11 @@ public class NwdContract {
 
 
     private static final String TABLE_SOURCE_EXCERPT = "SourceExcerpt";
-    private static final String COLUMN_SOURCE_EXCERPT_ID = "SourceExcerptId";
-    private static final String COLUMN_SOURCE_EXCERPT_VALUE = "SourceExcerptValue";
-    private static final String COLUMN_SOURCE_EXCERPT_PAGES = "SourceExcerptPages";
-    private static final String COLUMN_SOURCE_EXCERPT_BEGIN_TIME = "SourceExcerptBeginTime";
-    private static final String COLUMN_SOURCE_EXCERPT_END_TIME = "SourceExcerptEndTime";
+    static final String COLUMN_SOURCE_EXCERPT_ID = "SourceExcerptId";
+    static final String COLUMN_SOURCE_EXCERPT_VALUE = "SourceExcerptValue";
+    static final String COLUMN_SOURCE_EXCERPT_PAGES = "SourceExcerptPages";
+    static final String COLUMN_SOURCE_EXCERPT_BEGIN_TIME = "SourceExcerptBeginTime";
+    static final String COLUMN_SOURCE_EXCERPT_END_TIME = "SourceExcerptEndTime";
     private static final String COLUMN_SOURCE_EXCERPT_CREATED_AT = "SourceExcerptCreatedAt";
     private static final String COLUMN_SOURCE_EXCERPT_UPDATED_AT = "SourceExcerptUpdatedAt";
 
@@ -1593,6 +1593,18 @@ public class NwdContract {
             "VALUES " +
             "	(?,?,?,?,?,?,?); ";
 
+    static final String INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_EXCERPT + " " +
+            "	(" +
+                    COLUMN_SOURCE_ID + ", " +
+                    COLUMN_SOURCE_EXCERPT_VALUE + ", " +
+                    COLUMN_SOURCE_EXCERPT_BEGIN_TIME + ", " +
+                    COLUMN_SOURCE_EXCERPT_END_TIME + ", " +
+                    COLUMN_SOURCE_EXCERPT_PAGES + ") " +
+            "VALUES  " +
+            "	(?, ?, ?, ?, ?); ";
+
     static final String SELECT_SOURCES =
 
             "SELECT " + COLUMN_SOURCE_ID + ", " +
@@ -1617,4 +1629,15 @@ public class NwdContract {
             "	   " + COLUMN_SOURCE_RETRIEVAL_DATE + "  " +
             "FROM " + TABLE_SOURCE + " " +
             "WHERE " + COLUMN_SOURCE_TYPE_ID + " = ?; ";
+
+    static final String SELECT_SOURCE_EXCERPT_BY_ID =
+
+            "SELECT " + COLUMN_SOURCE_EXCERPT_ID + ", " +
+            "	    " + COLUMN_SOURCE_ID + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_VALUE + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_PAGES + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_BEGIN_TIME + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_END_TIME + " " +
+            "FROM " + TABLE_SOURCE_EXCERPT + "  " +
+            "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ? ; ";
 }

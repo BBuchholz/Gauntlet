@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.nineworldsdeep.gauntlet.MultiMap;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerpt;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -4440,6 +4441,20 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_SOURCE_T_U_V_W_X_Y_Z, args);
     }
 
+    public void insertOrIgnoreArchivistSourceExcerpt(ArchivistSourceExcerpt ase){
+
+        String[] args = new String[]{
+
+                Integer.toString(ase.getSourceId()),
+                ase.getExcerptValue(),
+                ase.getExcerptBeginTime(),
+                ase.getExcerptEndTime(),
+                ase.getExcerptPages()
+        };
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z, args);
+    }
+
     public ArrayList<ArchivistSourceType> getArchivistSourceTypes(Context context) {
 
         ArrayList<ArchivistSourceType> allSourceTypes = new ArrayList<>();
@@ -4663,6 +4678,88 @@ public class NwdDb {
 
         return sourcesForTypeId;
     }
+
+    public ArrayList<ArchivistSourceExcerpt> getArchivistSourceExcerptsForSourceId(Context context, int sourceId) {
+
+        ArrayList<ArchivistSourceExcerpt> sourceExcerptsForSourceId = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(sourceId)
+                    };
+
+            //////////////////////////////////////////////////////////////////////
+            // NOTE: NwdSql also has other versions of this query,
+            // if you come here looking for slightly different
+            // functionality, don't reinvent the wheel
+            //////////////////////////////////////////////////////////////////////
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCE_EXCERPT_BY_ID,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_EXCERPT_ID,
+                            NwdContract.COLUMN_SOURCE_ID,
+                            NwdContract.COLUMN_SOURCE_EXCERPT_VALUE,
+                            NwdContract.COLUMN_SOURCE_EXCERPT_PAGES,
+                            NwdContract.COLUMN_SOURCE_EXCERPT_BEGIN_TIME,
+                            NwdContract.COLUMN_SOURCE_EXCERPT_END_TIME
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+
+                    int sourceExcerptId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_EXCERPT_ID));
+                    //int sourceId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_ID));
+                    String sourceExcerptPages = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_VALUE);
+                    String sourceExcerptBeginTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_PAGES);
+                    String sourceExcerptEndTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_BEGIN_TIME);
+                    String sourceExcerptValue = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_END_TIME);
+
+                    ArchivistSourceExcerpt ase =
+                            new ArchivistSourceExcerpt(
+                                    sourceExcerptId,
+                                    sourceId,
+                                    sourceExcerptValue,
+                                    sourceExcerptPages,
+                                    sourceExcerptBeginTime,
+                                    sourceExcerptEndTime
+                            );
+
+                    sourceExcerptsForSourceId.add(ase);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return sourceExcerptsForSourceId;
+    }
+
 
 
     //region templates

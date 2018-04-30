@@ -53,8 +53,7 @@ public class ArchivistAddSourceExcerptActivity extends AppCompatActivity {
         TextView tvSourceDescription = (TextView)findViewById(R.id.tvSourceDescription);
 
         if(mCurrentSource != null &&
-                mCurrentSource.getSourceId() > 0 &&
-                mCurrentSource.getSourceTypeId() > 0){
+                mCurrentSource.getSourceId() > 0){
 
             if(tvSourceDescription != null && btnConfirm != null){
                 tvSourceDescription.setText(mCurrentSource.getShortDescription());
@@ -80,12 +79,12 @@ public class ArchivistAddSourceExcerptActivity extends AppCompatActivity {
         EditText etSourceExcerptEndTime = (EditText)findViewById(R.id.etSourceExcerptEndTime);
         EditText etSourceExcerptValue = (EditText)findViewById(R.id.etSourceExcerptValue);
 
-        String sourceExcerptPages = etSourceExcerptPages.getText().toString();
-        String sourceExcerptBeginTime = etSourceExcerptBeginTime.getText().toString();
-        String sourceExcerptEndTime = etSourceExcerptEndTime.getText().toString();
-        String sourceExcerptValue = etSourceExcerptValue.getText().toString();
+        String sourceExcerptPages = etSourceExcerptPages != null ? etSourceExcerptPages.getText().toString() : null;
+        String sourceExcerptBeginTime = etSourceExcerptBeginTime != null ? etSourceExcerptBeginTime.getText().toString() : null;
+        String sourceExcerptEndTime = etSourceExcerptEndTime != null ? etSourceExcerptEndTime.getText().toString() : null;
+        String sourceExcerptValue = etSourceExcerptValue != null ? etSourceExcerptValue.getText().toString() : null;
 
-        //intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_ID, mSourceId);
+        intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_ID, mCurrentSource.getSourceId());
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES, sourceExcerptPages);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME, sourceExcerptBeginTime);
         intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME, sourceExcerptEndTime);

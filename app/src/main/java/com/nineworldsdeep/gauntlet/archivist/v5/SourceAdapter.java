@@ -35,29 +35,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         public TextView name;
         public TextView description;
 
-//        public ViewHolder(LayoutInflater inflater,
-//                          final ViewGroup parent) {
-//
-//            super(inflater.inflate(R.layout.fragment_archivist_sources_content, parent, false));
-//
-//            sourceTypeImage = (ImageView) itemView.findViewById(R.id.list_avatar);
-//            name = (TextView) itemView.findViewById(R.id.list_title);
-//            description = (TextView) itemView.findViewById(R.id.list_desc);
-//
-//            sourceTypeImage.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View view) {
-//
-////                    ArchivistWorkspace.setCurrentSource(archivistSource);
-////
-////                    parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
-////                    parentArchivistActivity.selectSourceExcerptsTab();
-////                    parentArchivistActivity.refreshSourceExcerpts();
-//
-//                }
-//            });
-//        }
+
 
         public ViewHolder(final View itemView) {
 
@@ -74,22 +52,14 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         mSources = ArchivistWorkspace.getSources(parentArchivistActivity);
         this.parentArchivistActivity = parentArchivistActivity;
 
-//        //temp code
-//        Resources resources = context.getResources();
-//        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-//        mockPicDrawable = a.getDrawable(0);
-//        a.recycle();
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
-//        final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
-//
-//
-//
-//        return holder;
+
 
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_archivist_sources_content, parent, false);

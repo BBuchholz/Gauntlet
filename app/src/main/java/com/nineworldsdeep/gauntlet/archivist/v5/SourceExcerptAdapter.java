@@ -24,19 +24,14 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
     //private final Drawable mockPicDrawable;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-//        public ImageView picture;
-//        public TextView name;
-//        public TextView description;
+
 
         TextView excerptLocation;
         TextView excerptValue;
         TextView excerptTagString;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-//            super(inflater.inflate(R.layout.fragment_card_content, parent, false));
-//            picture = (ImageView) itemView.findViewById(R.id.card_image);
-//            name = (TextView) itemView.findViewById(R.id.card_title);
-//            description = (TextView) itemView.findViewById(R.id.card_text);
+
 
             super(inflater.inflate(R.layout.fragment_archivist_source_excerpts_content, parent, false));
             excerptLocation = (TextView) itemView.findViewById(R.id.tvExcerptLocation);
@@ -49,11 +44,7 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
         mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts();
 
-        //temp code
-//        Resources resources = context.getResources();
-//        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-//        mockPicDrawable = a.getDrawable(0);
-//        a.recycle();
+
     }
 
     @Override
@@ -66,9 +57,6 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
         ArchivistSourceExcerpt ase = mSourceExcerpts.get(position);
 
-//        holder.picture.setImageDrawable(mockPicDrawable);
-//        holder.name.setText(ase.getExcerptValue());
-//        holder.description.setText(ase.getExcerptValue());
 
         holder.excerptLocation.setText(ase.getLocation());
         holder.excerptValue.setText(ase.getExcerptValue());

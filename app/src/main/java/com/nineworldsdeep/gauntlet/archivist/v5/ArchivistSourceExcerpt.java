@@ -52,7 +52,7 @@ public class ArchivistSourceExcerpt {
 
     public String getLocation(){
         //return pages, begin to end time, whatever is most relevant
-        return "Location Goes Here";
+        return "Location: " + excerptValue.substring(0, 7);
     }
 
     public int getExcerptId() {

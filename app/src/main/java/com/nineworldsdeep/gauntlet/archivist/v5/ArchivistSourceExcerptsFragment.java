@@ -40,7 +40,7 @@ public class ArchivistSourceExcerptsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
 
-        sourceExcerptAdapter = new SourceExcerptAdapter(recyclerView.getContext());
+        sourceExcerptAdapter = new SourceExcerptAdapter(parentArchivistActivity);
         recyclerView.setAdapter(sourceExcerptAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

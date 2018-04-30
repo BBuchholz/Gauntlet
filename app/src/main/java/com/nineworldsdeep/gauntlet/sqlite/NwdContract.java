@@ -1640,4 +1640,15 @@ public class NwdContract {
             "	    " + COLUMN_SOURCE_EXCERPT_END_TIME + " " +
             "FROM " + TABLE_SOURCE_EXCERPT + "  " +
             "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ? ; ";
+
+    static final String SELECT_SOURCE_EXCERPTS_FOR_SOURCE_ID_X =
+
+            "SELECT " + COLUMN_SOURCE_EXCERPT_ID + ", " +
+            "	    " + COLUMN_SOURCE_ID + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_VALUE + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_PAGES + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_BEGIN_TIME + ", " +
+            "	    " + COLUMN_SOURCE_EXCERPT_END_TIME + " " +
+            "FROM " + TABLE_SOURCE_EXCERPT + "  " +
+            "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
 }

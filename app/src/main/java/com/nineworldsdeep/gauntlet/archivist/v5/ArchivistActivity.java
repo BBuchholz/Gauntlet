@@ -238,22 +238,29 @@ public class ArchivistActivity extends AppCompatActivity {
 
             if(sourceId > 0){
 
-                NwdDb db = NwdDb.getInstance(this);
+                if(Utils.stringIsNullOrWhitespace(sourceExcerptValue)) {
 
-                ArchivistSourceExcerpt ase =
-                        new ArchivistSourceExcerpt(
-                               -1,
-                                sourceId,
-                                sourceExcerptValue,
-                                sourceExcerptPages,
-                                sourceExcerptBeginTime,
-                                sourceExcerptEndTime
-                        );
+                    Utils.toast(this, "Source Excerpt Value cannot be empty");
 
-                db.insertOrIgnoreArchivistSourceExcerpt(ase);
-                archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+                }else {
 
-                Utils.toast(this, "Added excerpt");
+                    NwdDb db = NwdDb.getInstance(this);
+
+                    ArchivistSourceExcerpt ase =
+                            new ArchivistSourceExcerpt(
+                                    -1,
+                                    sourceId,
+                                    sourceExcerptValue,
+                                    sourceExcerptPages,
+                                    sourceExcerptBeginTime,
+                                    sourceExcerptEndTime
+                            );
+
+                    db.insertOrIgnoreArchivistSourceExcerpt(ase);
+                    archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+
+                    Utils.toast(this, "Added excerpt");
+                }
 
             }else{
 

@@ -4699,7 +4699,7 @@ public class NwdDb {
             //////////////////////////////////////////////////////////////////////
             Cursor cursor =
                     db.rawQuery(
-                            NwdContract.SELECT_SOURCE_EXCERPT_BY_ID,
+                            NwdContract.SELECT_SOURCE_EXCERPTS_FOR_SOURCE_ID_X,
                             args);
 
             String[] columnNames =

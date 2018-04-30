@@ -4724,10 +4724,10 @@ public class NwdDb {
 
                     int sourceExcerptId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_EXCERPT_ID));
                     //int sourceId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_ID));
-                    String sourceExcerptPages = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_VALUE);
-                    String sourceExcerptBeginTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_PAGES);
-                    String sourceExcerptEndTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_BEGIN_TIME);
-                    String sourceExcerptValue = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_END_TIME);
+                    String sourceExcerptValue = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_VALUE);
+                    String sourceExcerptPages = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_PAGES);
+                    String sourceExcerptBeginTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_BEGIN_TIME);
+                    String sourceExcerptEndTime = record.get(NwdContract.COLUMN_SOURCE_EXCERPT_END_TIME);
 
                     ArchivistSourceExcerpt ase =
                             new ArchivistSourceExcerpt(

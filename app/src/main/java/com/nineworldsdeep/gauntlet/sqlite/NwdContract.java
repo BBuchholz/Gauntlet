@@ -1526,10 +1526,10 @@ public class NwdContract {
                     "	WHERE " + TABLE_SOURCE_EXCERPT_ANNOTATION + "." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + " = NEW." + COLUMN_SOURCE_EXCERPT_ANNOTATION_ID + "; " +
                     "END ";
 
-    private static final String TABLE_SOURCE_EXCERPT_TAGGING = "TaggingBase";
-    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_ID = "SourceExcerptTaggingId";
-    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT = "SourceExcerptTaggingTaggedAt";
-    private static final String COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT = "SourceExcerptTaggingUntaggedAt";
+    private static final String TABLE_SOURCE_EXCERPT_TAGGING = "SourceExcerptTagging";
+    static final String COLUMN_SOURCE_EXCERPT_TAGGING_ID = "SourceExcerptTaggingId";
+    static final String COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT = "SourceExcerptTaggingTaggedAt";
+    static final String COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT = "SourceExcerptTaggingUntaggedAt";
     private static final String COLUMN_SOURCE_EXCERPT_TAGGING_CREATED_AT = "SourceExcerptTaggingCreatedAt";
     private static final String COLUMN_SOURCE_EXCERPT_TAGGING_UPDATED_AT = "SourceExcerptTaggingUpdatedAt";
 
@@ -1651,4 +1651,32 @@ public class NwdContract {
             "	    " + COLUMN_SOURCE_EXCERPT_END_TIME + " " +
             "FROM " + TABLE_SOURCE_EXCERPT + "  " +
             "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
+
+    public static final String INSERT_OR_IGNORE_EXCERPT_TAGGING_X_Y =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_EXCERPT_TAGGING + " " +
+            "	(" + COLUMN_SOURCE_EXCERPT_ID + ", " + COLUMN_MEDIA_TAG_ID + ") " +
+            "VALUES " +
+            "	(?, ?); ";
+
+    public static final String SELECT_ARCHIVIST_SOURCE_EXCERPT_TAGGINGS_FOR_EXID =
+
+            "SELECT mt." + COLUMN_MEDIA_TAG_ID + ", " +
+            "	   sext." + COLUMN_SOURCE_EXCERPT_TAGGING_ID + ", " +
+            "	   sext." + COLUMN_SOURCE_EXCERPT_ID + ", " +
+            "	   mt." + COLUMN_MEDIA_TAG_VALUE + ", " +
+            "	   sext." + COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT + ", " +
+            "	   sext." + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + " " +
+            "FROM " + TABLE_SOURCE_EXCERPT_TAGGING + " sext " +
+            "JOIN " + TABLE_MEDIA_TAG + " mt  " +
+            "ON sext." + COLUMN_MEDIA_TAG_ID + " = mt." + COLUMN_MEDIA_TAG_ID + " " +
+            "WHERE sext." + COLUMN_SOURCE_EXCERPT_ID + " = ?; ";
+
+    public static final String UPDATE_EXCERPT_TAGGING_TAGGED_UNTAGGED_WHERE_EXID_AND_TGID_W_X_Y_Z =
+
+            "UPDATE " + TABLE_SOURCE_EXCERPT_TAGGING + "  " +
+            "SET " + COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT + ", ''), ?), " +
+            "	" + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + ", ''), ?) " +
+            "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ?  " +
+            "AND " + COLUMN_MEDIA_TAG_ID + " = ? ; ";
 }

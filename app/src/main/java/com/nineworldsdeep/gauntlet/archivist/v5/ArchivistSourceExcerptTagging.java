@@ -19,6 +19,18 @@ public class ArchivistSourceExcerptTagging extends TaggingBase {
         return mediaTagId;
     }
 
+    public void setMediaTagId(int mediaTagId) {
+        this.mediaTagId = mediaTagId;
+    }
+
+    public void setSourceExcerptTaggingId(int sourceExcerptTaggingId) {
+        this.sourceExcerptTaggingId = sourceExcerptTaggingId;
+    }
+
+    public void setSourceExcerptId(int sourceExcerptId) {
+        this.sourceExcerptId = sourceExcerptId;
+    }
+
     public String getMediaTagValue() {
         return mediaTagValue;
     }

@@ -99,6 +99,10 @@ public class ArchivistSourceExcerpt {
         return excerptEndTime;
     }
 
+    public ArrayList<ArchivistSourceExcerptTagging> getExcerptTaggings() {
+        return excerptTaggings;
+    }
+
     public String getTagString(){
 
         ArrayList<String> tagValues = new ArrayList<>();
@@ -145,6 +149,50 @@ public class ArchivistSourceExcerpt {
     public void tag(String tag) {
 
         getTag(tag).tag();
+    }
+
+    private ArrayList<String> toTagList(String tags) {
+
+        //be sure to trim, leave case sensitive though, we have
+        //case sensitive duplicates in the db right now, need to
+        //allow them until they can be phased out entirely
+
+        ArrayList<String> tagList = new ArrayList<>();
+
+        for(String tag : tags.split(",")){
+
+            tagList.add(tag.trim());
+        }
+
+        return tagList;
+    }
+
+    public void setTagsFromTagString(String tagString){
+
+        //get list of existing tags
+        ArrayList<String> existingTags = toTagList(getTagString());
+
+        //get list of tags from new tag string
+        ArrayList<String> newTags = toTagList(tagString);
+
+        //for each in existing tags, if new tags !contain, untag
+        for(String tag : existingTags){
+
+            if(!newTags.contains(tag)){
+
+                getTag(tag).untag();
+            }
+        }
+
+        //for each in new tags, if existing tags !contain, tag
+        for(String tag : newTags){
+
+            if(!existingTags.contains(tag)){
+
+                getTag(tag).tag();
+            }
+        }
+
     }
 
 

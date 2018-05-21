@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteStatement;
 import com.nineworldsdeep.gauntlet.MultiMap;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerpt;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerptTagging;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -4453,6 +4454,218 @@ public class NwdDb {
         };
 
         db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z, args);
+    }
+
+    public void ensureArchivistSourceExcerptTaggings(
+            ArchivistSourceExcerpt ase)
+            throws Exception {
+
+        //mirrors this.ensureMediaTaggings()
+
+        db.beginTransaction();
+
+        try {
+
+            ensureArchivistSourceExcerptTaggings(ase, db);
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    private void ensureArchivistSourceExcerptTaggings(
+            ArchivistSourceExcerpt ase,
+            SQLiteDatabase db)
+                throws Exception {
+
+        for(ArchivistSourceExcerptTagging aset : ase.getExcerptTaggings()){
+
+            if(aset.getMediaTagId() < 1){
+
+                aset.setMediaTagId(ensureMediaTag(aset.getMediaTagValue(), db));
+            }
+
+            if(aset.getSourceExcerptId() < 1){
+
+                aset.setSourceExcerptId(ase.getExcerptId());
+            }
+
+            if(aset.getSourceExcerptId() < 1 || aset.getMediaTagId() < 1){
+
+                throw new Exception("Unable to ensure ExcerptTagging: " +
+                        "excerptId and/or mediaId not set.");
+            }
+
+            insertOrIgnoreArchivistExcerptTagging(aset, db);
+            updateOrIgnoreArchivistSourceExcerptTagging(aset, db);
+        }
+    }
+
+    private void insertOrIgnoreArchivistExcerptTagging(
+            ArchivistSourceExcerptTagging aset,
+            SQLiteDatabase db) {
+
+        String[] args = new String[]{
+
+                Integer.toString(aset.getSourceExcerptId()),
+                Integer.toString(aset.getMediaTagId())
+        };
+
+        //should mirror INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_EXCERPT_TAGGING_X_Y, args);
+    }
+
+    private void updateOrIgnoreArchivistSourceExcerptTagging(
+            ArchivistSourceExcerptTagging aset, SQLiteDatabase db) {
+
+        String taggedAt =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(aset.getTaggedAt());
+
+        String untaggedAt =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(aset.getUntaggedAt());
+
+        String excerptId = Integer.toString(aset.getSourceExcerptId());
+
+        String mediaTagId = Integer.toString(aset.getMediaTagId());
+
+        //should mirror UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z
+        SQLiteStatement updateStatement = db.compileStatement(
+                NwdContract.UPDATE_EXCERPT_TAGGING_TAGGED_UNTAGGED_WHERE_EXID_AND_TGID_W_X_Y_Z
+        );
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(taggedAt)){
+            updateStatement.bindString(1, taggedAt);
+        }
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(untaggedAt)){
+            updateStatement.bindString(2, untaggedAt);
+        }
+
+        updateStatement.bindString(3, excerptId);
+        updateStatement.bindString(4, mediaTagId);
+
+        updateStatement.execute();
+    }
+
+    /**
+     * assumes excerpt is already populated this just populates taggings
+     * and relies on sourceExcerptId already being set
+     */
+    public void populateArchivistSourceExcerptTaggings(
+            ArrayList<ArchivistSourceExcerpt> lst) throws Exception {
+
+        db.beginTransaction();
+
+        try {
+
+            for(ArchivistSourceExcerpt ase : lst) {
+
+                if(ase.getExcerptId() < 1){
+
+                    throw new Exception("excerpt id must " +
+                            "be set to populate taggings");
+                }
+
+                populateArchivistSourceExcerptTaggingsByExcerptId(ase, db);
+            }
+
+            db.setTransactionSuccessful();
+
+        }finally {
+
+            db.endTransaction();
+        }
+    }
+
+    private void populateArchivistSourceExcerptTaggingsByExcerptId(
+            ArchivistSourceExcerpt ase,
+            SQLiteDatabase db)
+                throws Exception {
+
+        //mimics this.populateMediaTaggingsByHash()
+
+        String excerptIdString = Integer.toString(ase.getExcerptId());
+
+        if(Utils.stringIsNullOrWhitespace(excerptIdString)){
+
+            throw new Exception("excerpt id must be set to populate taggings");
+        }
+
+        String[] args =
+                new String[]{ excerptIdString };
+
+        //mirrors SELECT_MEDIA_TAGGINGS_FOR_HASH_X
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_ARCHIVIST_SOURCE_EXCERPT_TAGGINGS_FOR_EXID,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_TAG_ID,
+                        NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_ID,
+                        NwdContract.COLUMN_SOURCE_EXCERPT_ID,
+                        NwdContract.COLUMN_MEDIA_TAG_VALUE,
+                        NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT,
+                        NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT
+                };
+
+        if(cursor.getCount() > 0) {
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                int mediaTagId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_MEDIA_TAG_ID));
+
+                int sourceExcerptTaggingId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_ID));
+
+                int sourceExcerptId =
+                        Integer.parseInt(
+                                record.get(NwdContract.COLUMN_SOURCE_EXCERPT_ID));
+
+                String mediaTagValue =
+                        record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE);
+
+                String taggedAtString =
+                        record.get(NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_TAGGED_AT);
+
+                String untaggedAtString =
+                        record.get(NwdContract.COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT);
+
+                Date taggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(taggedAtString);
+
+                Date untaggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(untaggedAtString);
+
+
+                //getTag() will create a new one if it doesn't exist already
+                ArchivistSourceExcerptTagging aset =
+                        ase.getTag(mediaTagValue);
+
+                aset.setMediaTagId(mediaTagId);
+                aset.setSourceExcerptTaggingId(sourceExcerptTaggingId);
+                aset.setSourceExcerptId(sourceExcerptId);
+                aset.setTimeStamps(taggedAt, untaggedAt);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
     }
 
     public ArrayList<ArchivistSourceType> getArchivistSourceTypes(Context context) {

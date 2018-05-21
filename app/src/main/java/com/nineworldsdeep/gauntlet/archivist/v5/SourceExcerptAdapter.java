@@ -1,6 +1,8 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -8,12 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 
@@ -29,8 +33,16 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
     public void refreshSourceExcerpts(Context context){
 
-        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(context);
-        notifyDataSetChanged();
+        try {
+
+            mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(context);
+            notifyDataSetChanged();
+
+        } catch (Exception e) {
+
+            Utils.toast(parentArchivistActivity,
+                    "error getting excerpts: " + e.getMessage());
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +66,16 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
     SourceExcerptAdapter(ArchivistActivity parentArchivistActivity){
 
-        mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(parentArchivistActivity);
+        try {
+
+            mSourceExcerpts = ArchivistWorkspace.getOpenSourceExcerpts(parentArchivistActivity);
+
+        } catch (Exception e) {
+
+            Utils.toast(parentArchivistActivity,
+                    "error getting excerpts: " + e.getMessage());
+        }
+
         this.parentArchivistActivity = parentArchivistActivity;
 
     }
@@ -77,6 +98,70 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
             @Override
             public void onClick(View view) {
                 Utils.toast(parentArchivistActivity, "SourceExcerptAdapter tags button clicked for location: " + ase.getLocation());
+
+                LayoutInflater li = LayoutInflater.from(parentArchivistActivity);
+                View promptsView = li.inflate(R.layout.prompt, null);
+
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(parentArchivistActivity);
+
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput2 = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                String currentValue = ase.getTagString();
+
+                if(!Utils.stringIsNullOrWhitespace(currentValue)){
+                    userInput2.setText(currentValue);
+                }
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                        try {
+
+                                            NwdDb db = NwdDb.getInstance(parentArchivistActivity);
+
+                                            ase.setTagsFromTagString(
+                                                    userInput2.getText().toString());
+
+                                            //db.sync(currentMediaListItem.getMedia());
+                                            //MnemosyneRegistry.sync(currentMediaListItem, db);
+                                            ////////////////////////////////////////////////////////////////
+                                            // save new tags to db
+                                            ///////////////////////////////////////////////////////////////
+                                            db.ensureArchivistSourceExcerptTaggings(ase);
+
+                                            refreshSourceExcerpts(parentArchivistActivity);
+
+                                            Utils.toast(parentArchivistActivity,
+                                                    "tags set (awaiting implementation)");
+
+                                        } catch (Exception e) {
+
+                                            Utils.toast(parentArchivistActivity,
+                                                    "error setting tag string: " +
+                                                            e.getMessage());
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
             }
         });
     }

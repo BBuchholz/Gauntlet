@@ -52,43 +52,43 @@ class ArchivistWorkspace {
         idsToSourceTypes.put(sourceType.getSourceTypeId(), sourceType);
     }
 
-    private static void genTestExcerpts(
-            ArrayList<ArchivistSourceExcerpt> openSourceExcerpts,
-            int numberToGenerate){
+//    private static void genTestExcerpts(
+//            ArrayList<ArchivistSourceExcerpt> openSourceExcerpts,
+//            int numberToGenerate){
+//
+//        //mock excerpts
+////        openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
+////        openSourceExcerpts.add(new ArchivistSourceExcerpt("Quote", "something someone cool said once"));
+////        openSourceExcerpts.add(new ArchivistSourceExcerpt("0:15:05 - 0:17:23", "a transcript of the audio"));
+////        openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
+//
+//        Lorem lorem = LoremIpsum.getInstance();
+//
+//        Random rand = new Random();
+//
+//        for(int i = 1; i <= numberToGenerate; i++) {
+//            String loremValue = lorem.getWords(1, i * 5);
+//            addTestExcerpt(openSourceExcerpts, i, loremValue, lorem, rand);
+//        }
+//    }
 
-        //mock excerpts
-//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Pages 3-10", "a passage of text from the book"));
-//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Quote", "something someone cool said once"));
-//        openSourceExcerpts.add(new ArchivistSourceExcerpt("0:15:05 - 0:17:23", "a transcript of the audio"));
-//        openSourceExcerpts.add(new ArchivistSourceExcerpt("Web Page Section C", "some stuff from the page"));
-
-        Lorem lorem = LoremIpsum.getInstance();
-
-        Random rand = new Random();
-
-        for(int i = 1; i <= numberToGenerate; i++) {
-            String loremValue = lorem.getWords(1, i * 5);
-            addTestExcerpt(openSourceExcerpts, i, loremValue, lorem, rand);
-        }
-    }
-
-    private static void addTestExcerpt(ArrayList<ArchivistSourceExcerpt> openSourceExcerpts, int id, String loremExcerptValue, Lorem lorem, Random rand) {
-
-        String name = "test excerpt #" + Integer.toString(id);
-
-        ArchivistSourceExcerpt ase =
-                new ArchivistSourceExcerpt(id,1,loremExcerptValue,name + " pages",name + " begin time",name + " end time");
-
-        //max will be between 1 and 8
-        int maxNumTags = rand.nextInt(8) + 1;
-
-        for(int i = 1; i < maxNumTags; i++) {
-
-            ase.tag(lorem.getWords(1, 3));
-        }
-
-        openSourceExcerpts.add(ase);
-    }
+//    private static void addTestExcerpt(ArrayList<ArchivistSourceExcerpt> openSourceExcerpts, int id, String loremExcerptValue, Lorem lorem, Random rand) {
+//
+//        String name = "test excerpt #" + Integer.toString(id);
+//
+//        ArchivistSourceExcerpt ase =
+//                new ArchivistSourceExcerpt(id,1,loremExcerptValue,name + " pages",name + " begin time",name + " end time");
+//
+//        //max will be between 1 and 8
+//        int maxNumTags = rand.nextInt(8) + 1;
+//
+//        for(int i = 1; i < maxNumTags; i++) {
+//
+//            ase.tag(lorem.getWords(1, 3));
+//        }
+//
+//        openSourceExcerpts.add(ase);
+//    }
 
 
     static ArrayList<ArchivistSourceType> getSourceTypes(Context context) {
@@ -128,13 +128,11 @@ class ArchivistWorkspace {
         return openSources;
     }
 
-
-
-    static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts(Context context) {
+    static ArrayList<ArchivistSourceExcerpt> getOpenSourceExcerpts(
+            Context context)
+                throws Exception {
 
         ArrayList<ArchivistSourceExcerpt> openSourceExcerpts = new ArrayList<>();
-
-        //genTestExcerpts(openSourceExcerpts, 5);
 
         if(currentSource != null && currentSource.getSourceId() > 0) {
 
@@ -144,6 +142,8 @@ class ArchivistWorkspace {
                     db.getArchivistSourceExcerptsForSourceId(
                             context,
                             currentSource.getSourceId());
+
+            db.populateArchivistSourceExcerptTaggings(openSourceExcerpts);
         }
 
         return openSourceExcerpts;

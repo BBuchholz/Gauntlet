@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nineworldsdeep.gauntlet.mnemosyne.AudioDisplayActivity">
+
     <item android:id="@+id/action_set_tag_string"
         android:title="@string/menu_set_tag_string"
         app:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_tag_mark_for_transcription"
+        android:title="@string/tag4scrp"
+        app:showAsAction="ifRoom|withText"/>
+
     <item android:id="@+id/action_reset_player"
         android:title="@string/menu_reset_player"
         app:showAsAction="ifRoom|withText"/>

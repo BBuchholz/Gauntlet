@@ -130,4 +130,5 @@
     <string name="title_activity_archivist_add_source_excerpt">
         ArchivistAddSourceExcerptActivity
     </string>
+    <string name="tag4scrp">Tag4Scrp</string>
 </resources>

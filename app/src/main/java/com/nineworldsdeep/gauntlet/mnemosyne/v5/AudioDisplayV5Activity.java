@@ -326,6 +326,44 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
 
                 return true;
 
+            case R.id.action_tag_mark_for_transcription:
+
+                String markForTranscriptionTag = "mark for transcription";
+
+                AsyncTagSave ats = new AsyncTagSave();
+                ats.execute(markForTranscriptionTag);
+
+//                try {
+//
+//                    String currentTags = currentMediaListItem.getTags();
+//
+//                    if(currentTags.length() > 0){
+//
+//                        currentTags += ", ";
+//                    }
+//
+//                    currentTags += markForTranscriptionTag;
+//
+//                    NwdDb db =
+//                            NwdDb.getInstance(AudioDisplayV5Activity.this);
+//
+//                    currentMediaListItem.setTagsFromTagString(currentTags);
+//
+//                    MnemosyneRegistry.sync(currentMediaListItem, db);
+//
+//                    Utils.toast(AudioDisplayV5Activity.this,
+//                            "tagged \"" + markForTranscriptionTag +
+//                                    "\" successfully");
+//
+//                } catch (Exception e) {
+//
+//                    Utils.toast(AudioDisplayV5Activity.this,
+//                            "error setting tag string: " +
+//                                    e.getMessage());
+//                }
+
+                return true;
+
             default:
 
                 return super.onOptionsItemSelected(item);

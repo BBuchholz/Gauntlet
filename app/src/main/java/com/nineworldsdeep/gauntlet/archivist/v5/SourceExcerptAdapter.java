@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.archivist.v5;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -162,6 +163,34 @@ public class SourceExcerptAdapter extends RecyclerView.Adapter<SourceExcerptAdap
 
                 // show it
                 alertDialog.show();
+            }
+        });
+
+        holder.excerptValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(view.getContext(),
+                        ArchivistSourceExcerptDetailActivity.class);
+
+
+                intent.putExtra(
+                        ArchivistSourceExcerptDetailActivity.EXTRA_SOURCE_ID,
+                        ase.getSourceId());
+
+                intent.putExtra(
+                        ArchivistSourceExcerptDetailActivity.EXTRA_SOURCE_EXCERPT_ID,
+                        ase.getExcerptId());
+
+                intent.putExtra(
+                        ArchivistSourceExcerptDetailActivity.EXTRA_SOURCE_EXCERPT_VALUE,
+                        ase.getExcerptValue());
+
+                intent.putExtra(
+                        ArchivistSourceExcerptDetailActivity.EXTRA_SOURCE_EXCERPT_TAG_STRING,
+                        ase.getTagString());
+
+                parentArchivistActivity.startActivity(intent);
             }
         });
     }

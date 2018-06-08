@@ -109,9 +109,13 @@ public class AudioDisplayV5Activity extends AppCompatActivity implements MediaPl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_display_v5);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent i = getIntent();
         String audioPath = i.getStringExtra(EXTRA_AUDIO_PATH);

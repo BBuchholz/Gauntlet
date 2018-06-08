@@ -1,7 +1,9 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +63,7 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_STUDY = 10;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES = 11;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS = 12;
+    private static final int MENU_CONTEXT_OPEN_EXTERNAL = 13;
 
 
     /**
@@ -605,7 +608,7 @@ public class AudioListV5Activity extends AppCompatActivity {
 
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
-
+            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL, Menu.NONE, "Open External");
         }
 
     }
@@ -707,8 +710,43 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_OPEN_EXTERNAL:
+
+                openExternal(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    private void openExternal(int position) {
+
+        MediaListItem mli = getItem(position);
+        File f = mli.getFile();
+
+        if(f.exists() && f.isFile()){
+
+            Intent target = new Intent(Intent.ACTION_VIEW);
+
+            String mimeType = UtilsMnemosyneV5.getMimeType(f);
+
+            //target.setDataAndType(Uri.fromFile(f),"*/*");
+            target.setDataAndType(Uri.fromFile(f), mimeType);
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            try{
+
+                startActivity(target);
+
+            }catch (ActivityNotFoundException ex){
+
+                Utils.toast(AudioListV5Activity.this,
+                        "error opening file: " +
+                                f.getAbsolutePath());
+            }
+
         }
     }
 

@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
@@ -18,7 +17,7 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
     private ArrayList<ArchivistSourceLocationEntry> mSourcesLocationEntries;
 
-    private ArchivistSourceDetailActivity parentArchivistSourceDetailActivity;
+    private ArchivistSourceDetailsActivity parentArchivistSourceDetailsActivity;
 
     public void refreshSourceLocationEntries(Context context) {
 
@@ -42,10 +41,10 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
         }
     }
 
-    SourceLocationEntryAdapter(ArchivistSourceDetailActivity parent){
+    SourceLocationEntryAdapter(ArchivistSourceDetailsActivity parent){
 
         mSourcesLocationEntries = ArchivistWorkspace.getSourceLocationEntries(parent);
-        this.parentArchivistSourceDetailActivity = parent;
+        this.parentArchivistSourceDetailsActivity = parent;
 
     }
 
@@ -75,7 +74,7 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 //                    parentArchivistActivity.refreshSourceExcerpts();
                     ///////////////////////////// END--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
 
-                    Utils.toast(parentArchivistSourceDetailActivity, "clicked source location entry");
+                    Utils.toast(parentArchivistSourceDetailsActivity, "clicked source location entry");
                 }
             }
         });
@@ -93,7 +92,7 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
                     ///////////////////////////// END--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
 
 
-                    Utils.toast(parentArchivistSourceDetailActivity,
+                    Utils.toast(parentArchivistSourceDetailsActivity,
                             "source location entry long press");
                 }
 
@@ -111,7 +110,7 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
         ArchivistSourceLocationEntry asle = mSourcesLocationEntries.get(position);
 
-        holder.tvName.setText(asle.getSourceShortDescription());
+        holder.tvName.setText(asle.getSourceLocationSubsetEntryName());
         holder.tvStatus.setText(asle.getStatus());
     }
 

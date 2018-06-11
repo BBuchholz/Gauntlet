@@ -539,13 +539,22 @@
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity" />
         </activity>
         <activity
-            android:name=".archivist.v5.ArchivistSourceDetailActivity"
+            android:name=".archivist.v5.ArchivistSourceDetailsActivity"
             android:label="ArchivistSourceDetailActivity"
             android:parentActivityName=".archivist.v5.ArchivistActivity"
             android:theme="@style/MaterialDesignActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity" />
+        </activity>
+        <activity
+            android:name=".archivist.v5.ArchivistAddSourceLocationEntryActivity"
+            android:label="ArchivistAddSourceLocationEntryActivity"
+            android:parentActivityName=".archivist.v5.ArchivistSourceDetailsActivity"
+            android:theme="@style/MaterialDesignActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceDetailsActivity" />
         </activity>
         <activity
             android:name=".mnemosyne.v5.MnemosyneV5ScanActivity"

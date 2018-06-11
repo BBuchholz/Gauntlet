@@ -40,6 +40,10 @@ public class Extras {
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_END_TIME";
     public static final String STRING_ARCHIVIST_SOURCE_VALUE =
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_VALUE";
+    public static final String INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID =
+            "com.nineworldsdeep.gauntlet.EXTRA_INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID";
+    public static final String STRING_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRY_NAME =
+            "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRY_NAME";
 
     public static final String STRING_ARCHIVIST_SOURCE_DESCRIPTION =
             "com.nineworldsdeep.gauntlet.EXTRA_STRING_ARCHIVIST_SOURCE_DESCRIPTION";

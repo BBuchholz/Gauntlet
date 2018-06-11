@@ -12,32 +12,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class ArchivistSourceDetailActivity extends AppCompatActivity {
+public class ArchivistSourceDetailsActivity extends AppCompatActivity {
 
 
-//    public static final int REQUEST_RESULT_SOURCE_TYPE_NAME = 1;
-//    public static final int REQUEST_RESULT_SOURCE = 2;
-//    public static final int REQUEST_RESULT_SOURCE_EXCERPT = 3;
+    public static final int REQUEST_RESULT_SOURCE_LOCATION_ENTRY = 1;
 
     private FloatingActionButton fabAddSourceLocationEntry;
-//    private FloatingActionButton fabAddSourceType;
-//    private FloatingActionButton fabAddSourceExcerpt;
 
     private ArchivistSourceDetailsFragment archivistSourceDetailsFragment;
     private ArchivistSourceLocationSubsetEntriesFragment archivistSourceLocationSubsetEntriesFragment;
-    //private ArchivistSourceExcerptsFragment archivistSourceExcerptsFragment;
 
     private int sourceDetailsTabIndex = -1;
     private int sourceLocationsTabIndex = -1;
-    //private int sourceExcerptsTabIndex = -1;
 
     private ArchivistFragmentStatePagerAdapter archivistFragmentStatePagerAdapter;
     private ViewPager viewPager;
@@ -71,10 +67,6 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
         //store fabs
         fabAddSourceLocationEntry =
                 (FloatingActionButton) findViewById(R.id.fabAddSourceLocationEntry);
-//        fabAddSourceType =
-//                (FloatingActionButton) findViewById(R.id.fabAddSourceType);
-//        fabAddSourceExcerpt =
-//                (FloatingActionButton) findViewById(R.id.fabAddSourceExcerpt);
 
         fabAddSourceLocationEntry.hide(); //hidden by default because it should only show when the second tab is selected
 
@@ -82,23 +74,22 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //Utils.toast(ArchivistActivity.this, "add source goes here");
 
-//                if(!ArchivistWorkspace.currentSourceTypeIsAllTypes()) {
-//
-//                    Intent intent =
-//                            new Intent(ArchivistSourceDetailActivity.this,
-//                                    ArchivistAddSourceActivity.class);
-//
-//                    startActivityForResult(intent, REQUEST_RESULT_SOURCE);
-//
-//                }else{
-//
-//                    Utils.toast(ArchivistSourceDetailActivity.this,
-//                            "Select a specific source type to add new sources");
-//                }
+                if(ArchivistWorkspace.getCurrentSource() != null) {
 
-                Utils.toast(ArchivistSourceDetailActivity.this, "add source location entry FAB clicked");
+                    Intent intent =
+                            new Intent(ArchivistSourceDetailsActivity.this,
+                                    ArchivistAddSourceLocationEntryActivity.class);
+
+                    startActivityForResult(intent, REQUEST_RESULT_SOURCE_LOCATION_ENTRY);
+
+                }else{
+
+                    Utils.toast(ArchivistSourceDetailsActivity.this,
+                            "a specific source must be selected to add new sources location entry");
+                }
+
+                //Utils.toast(ArchivistSourceDetailsActivity.this, "add source location entry FAB clicked");
             }
         });
 
@@ -109,7 +100,7 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 //                //Utils.toast(ArchivistActivity.this, "add source type goes here");
 //
 //                Intent intent =
-//                        new Intent(ArchivistSourceDetailActivity.this,
+//                        new Intent(ArchivistSourceDetailsActivity.this,
 //                                ArchivistAddSourceTypeActivity.class);
 //
 //                startActivityForResult(intent, REQUEST_RESULT_SOURCE_TYPE_NAME);
@@ -124,7 +115,7 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 //                //Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
 //
 //                Intent intent =
-//                        new Intent(ArchivistSourceDetailActivity.this,
+//                        new Intent(ArchivistSourceDetailsActivity.this,
 //                                ArchivistAddSourceExcerptActivity.class);
 //
 //                startActivityForResult(intent, REQUEST_RESULT_SOURCE_EXCERPT);
@@ -228,45 +219,40 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 //            }
 //        }
 //
-//        if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
-//
-//            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
-//            String sourceExcerptPages = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES);
-//            String sourceExcerptBeginTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME);
-//            String sourceExcerptEndTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME);
-//            String sourceExcerptValue = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_VALUE);
-//
-//            if(sourceId > 0){
-//
-//                if(Utils.stringIsNullOrWhitespace(sourceExcerptValue)) {
-//
-//                    Utils.toast(this, "Source Excerpt Value cannot be empty");
-//
-//                }else {
-//
-//                    NwdDb db = NwdDb.getInstance(this);
-//
-//                    ArchivistSourceExcerpt ase =
-//                            new ArchivistSourceExcerpt(
-//                                    -1,
-//                                    sourceId,
-//                                    sourceExcerptValue,
-//                                    sourceExcerptPages,
-//                                    sourceExcerptBeginTime,
-//                                    sourceExcerptEndTime
-//                            );
-//
-//                    db.insertOrIgnoreArchivistSourceExcerpt(ase);
-//                    archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
-//
-//                    Utils.toast(this, "Added excerpt");
-//                }
-//
-//            }else{
-//
-//                Utils.toast(this, "invalid source");
-//            }
-//        }
+        if(requestCode== REQUEST_RESULT_SOURCE_LOCATION_ENTRY && data != null){
+
+            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+            int sourceLocationSubsetId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID, -1);
+            String sourceLocationSubsetEntryName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRY_NAME);
+
+            if(sourceId > 0 && sourceLocationSubsetId > 0){
+
+                if(Utils.stringIsNullOrWhitespace(sourceLocationSubsetEntryName)) {
+
+                    Utils.toast(this, "source location subset entry name cannot be empty");
+
+                }else {
+
+                    NwdDb db = NwdDb.getInstance(this);
+
+                    ArchivistSourceLocationEntry asle =
+                            new ArchivistSourceLocationEntry(
+                                    sourceId,
+                                    sourceLocationSubsetId,
+                                    sourceLocationSubsetEntryName
+                            );
+
+                    //db.insertOrIgnoreArchivistSourceExcerpt(ase);
+                    //archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+
+                    Utils.toast(this, "added location entry");
+                }
+
+            }else{
+
+                Utils.toast(this, "invalid source id or source location subset id");
+            }
+        }
 
         if(requestCode== RESULT_CANCELED){
 

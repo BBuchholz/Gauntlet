@@ -1,63 +1,27 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.nineworldsdeep.gauntlet.R;
-import com.nineworldsdeep.gauntlet.Utils;
 
-public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
+public class ArchivistAddSourceLocationsAndSubsetsActivity extends AppCompatActivity {
 
 //    private int mSourceTypeId;
 //    private String mSourceTypeName;
 
     //private ArchivistSourceType mCurrentSourceType;
 
-
-    public static final int REQUEST_RESULT_SOURCE_LOCATIONS_AND_SUBSETS = 1;
-
-    private FloatingActionButton fabAddSourceLocationsAndSubsets;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_archivist_add_source_location_entry);
+        setContentView(R.layout.activity_archivist_add_source_locations_and_subsets);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
-
-        //store fabs
-        fabAddSourceLocationsAndSubsets =
-                (FloatingActionButton) findViewById(R.id.fabAddSourceLocationsAndSubsets);
-
-        fabAddSourceLocationsAndSubsets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-//                if(ArchivistWorkspace.getCurrentSource() != null) {
-//
-//                    Intent intent =
-//                            new Intent(ArchivistSourceDetailsActivity.this,
-//                                    ArchivistAddSourceLocationEntryActivity.class);
-//
-//                    startActivityForResult(intent, REQUEST_RESULT_SOURCE_LOCATION_ENTRY);
-//
-//                }else{
-//
-//                    Utils.toast(ArchivistSourceDetailsActivity.this,
-//                            "a specific source must be selected to add new sources location entry");
-//                }
-
-                Utils.toast(ArchivistAddSourceLocationEntryActivity.this, "add source locations and subsets FAB clicked");
-            }
-        });
 
         //mCurrentSourceType = ArchivistWorkspace.getCurrentSourceType();
 
@@ -81,7 +45,6 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
     }
 
     public void confirmClick(View v){
-
 
 //        Intent intent = new Intent();
 //

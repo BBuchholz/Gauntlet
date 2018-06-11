@@ -1,9 +1,6 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,9 +92,9 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
                     ArchivistSource archivistSource = mSources.get(position);
                     ArchivistWorkspace.setCurrentSource(archivistSource);
 
-                    //launch ArchivistSourceDetailActivity
+                    //launch ArchivistSourceDetailsActivity
                     NavigateActivityCommand.navigateTo(
-                            ArchivistSourceDetailActivity.class, parentArchivistActivity);
+                            ArchivistSourceDetailsActivity.class, parentArchivistActivity);
 
 //                    Utils.toast(parentArchivistActivity,
 //                            archivistSource.getShortDescription() + " long press");

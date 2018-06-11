@@ -13,14 +13,14 @@ import com.nineworldsdeep.gauntlet.R;
 
 public class ArchivistSourceLocationSubsetEntriesFragment extends Fragment {
 
-    private ArchivistSourceDetailActivity parentSourceDetailActivity;
+    private ArchivistSourceDetailsActivity parentSourceDetailActivity;
     private SourceLocationEntryAdapter sourceLocationEntryAdapter;
 
     public ArchivistSourceLocationSubsetEntriesFragment() {
         // Required empty public constructor
     }
 
-    public void setParentSourceDetailActivity(ArchivistSourceDetailActivity parent){
+    public void setParentSourceDetailActivity(ArchivistSourceDetailsActivity parent){
         this.parentSourceDetailActivity = parent;
     }
 

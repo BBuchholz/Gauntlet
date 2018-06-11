@@ -10,6 +10,8 @@ import com.nineworldsdeep.gauntlet.MultiMap;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerpt;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerptTagging;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocation;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationSubset;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -4973,6 +4975,141 @@ public class NwdDb {
         return sourceExcerptsForSourceId;
     }
 
+    public void ensureArchivistSourceLocationValue(String locationName) {
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_VALUE, new String[]{ locationName });
+    }
+
+    public ArrayList<ArchivistSourceLocation> getAllArchivistSourceLocations() {
+
+        ArrayList<ArchivistSourceLocation> allSourceLocations = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_LOCATION_ID_LOCATION_VALUE_FROM_SOURCE_LOCATION,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_LOCATION_ID,
+                            NwdContract.COLUMN_SOURCE_LOCATION_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+
+                    int sourceLocationId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_ID));
+                    String sourceLocationValue = record.get(NwdContract.COLUMN_SOURCE_LOCATION_VALUE);
+
+                    ArchivistSourceLocation asl =
+                            new ArchivistSourceLocation(
+                                    sourceLocationId,
+                                    sourceLocationValue
+                            );
+
+                    allSourceLocations.add(asl);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return allSourceLocations;
+    }
+
+    public void ensureArchivistSourceLocationSubset(int sourceLocationId, String subsetName) {
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_SUBSET_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y,
+                new String[]{Integer.toString(sourceLocationId), subsetName});
+    }
+
+    public ArrayList<ArchivistSourceLocationSubset> getArchivistSourceLocationSubsetsForLocationId(int sourceLocationId) {
+
+        ArrayList<ArchivistSourceLocationSubset> subsets = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{ Integer.toString(sourceLocationId) };
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCE_LOCATION_SUBSETS_BY_LOCATION_ID_X,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_LOCATION_ID,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    sourceLocationId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_ID));
+                    int sourceLocationSubsetId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID));
+                    String sourceLocationSubsetValue = record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_VALUE);
+
+                    ArchivistSourceLocationSubset asls =
+                            new ArchivistSourceLocationSubset(
+                                    sourceLocationSubsetId,
+                                    sourceLocationId,
+                                    sourceLocationSubsetValue
+                            );
+
+                    subsets.add(asls);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return subsets;
+    }
 
 
     //region templates

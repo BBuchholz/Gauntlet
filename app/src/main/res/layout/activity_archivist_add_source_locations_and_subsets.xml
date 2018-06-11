@@ -25,14 +25,6 @@
             android:layout_marginTop="40dp"
             android:orientation="vertical">
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:text="Source Type: [LABEL GOES HERE] "-->
-                <!--android:id="@+id/tvSourceTypeName"/>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,10 +68,10 @@
             android:layout_marginBottom="40dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -96,7 +88,7 @@
                     android:padding="5dp"
                     android:background="#fff"/>
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
 
             <LinearLayout

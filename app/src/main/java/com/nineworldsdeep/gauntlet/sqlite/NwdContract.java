@@ -1210,10 +1210,10 @@ public class NwdContract {
 
 
 
-    private static final String COLUMN_SOURCE_LOCATION_ID = "SourceLocationId";
-    private static final String COLUMN_SOURCE_LOCATION_VALUE = "SourceLocationValue";
-    private static final String COLUMN_SOURCE_LOCATION_CREATED_AT = "SourceLocationCreatedAt";
-    private static final String COLUMN_SOURCE_LOCATION_UPDATED_AT = "SourceLocationUpdatedAt";
+    static final String COLUMN_SOURCE_LOCATION_ID = "SourceLocationId";
+    static final String COLUMN_SOURCE_LOCATION_VALUE = "SourceLocationValue";
+    static final String COLUMN_SOURCE_LOCATION_CREATED_AT = "SourceLocationCreatedAt";
+    static final String COLUMN_SOURCE_LOCATION_UPDATED_AT = "SourceLocationUpdatedAt";
 
     static final String CREATE_SOURCE_LOCATION =
             "CREATE TABLE " + TABLE_SOURCE_LOCATION + " ( " +
@@ -1367,11 +1367,11 @@ public class NwdContract {
 
 
 
-    private static final String TABLE_SOURCE_LOCATION_SUBSET = "SourceLocationSubset";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ID = "SourceLocationSubsetId";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_VALUE = "SourceLocationSubsetValue";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT = "SourceLocationSubsetCreatedAt";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT = "SourceLocationSubsetUpdatedAt";
+    static final String TABLE_SOURCE_LOCATION_SUBSET = "SourceLocationSubset";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ID = "SourceLocationSubsetId";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_VALUE = "SourceLocationSubsetValue";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_CREATED_AT = "SourceLocationSubsetCreatedAt";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_UPDATED_AT = "SourceLocationSubsetUpdatedAt";
 
 
     static final String CREATE_SOURCE_LOCATION_SUBSET =
@@ -1679,4 +1679,33 @@ public class NwdContract {
             "	" + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_EXCERPT_TAGGING_UNTAGGED_AT + ", ''), ?) " +
             "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ?  " +
             "AND " + COLUMN_MEDIA_TAG_ID + " = ? ; ";
+
+    public static final String INSERT_OR_IGNORE_SOURCE_LOCATION_VALUE =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_LOCATION + " " +
+            "	(" + COLUMN_SOURCE_LOCATION_VALUE + ") " +
+            "VALUES " +
+            "	(?); ";
+
+    public static final String SELECT_LOCATION_ID_LOCATION_VALUE_FROM_SOURCE_LOCATION =
+
+            "SELECT " + COLUMN_SOURCE_LOCATION_ID + ", " +
+            "	    " + COLUMN_SOURCE_LOCATION_VALUE + " " +
+            "FROM " + TABLE_SOURCE_LOCATION + "; ";
+
+    public static final String INSERT_OR_IGNORE_SOURCE_LOCATION_SUBSET_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_LOCATION_SUBSET + "  " +
+            "	(" + COLUMN_SOURCE_LOCATION_ID + ",  " +
+            "	 " + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + ") " +
+            "VALUES  " +
+            "	(?,?); ";
+
+    public static final String SELECT_SOURCE_LOCATION_SUBSETS_BY_LOCATION_ID_X =
+
+            "SELECT " + COLUMN_SOURCE_LOCATION_SUBSET_ID + ", " +
+            "	   " + COLUMN_SOURCE_LOCATION_ID + ", " +
+            "	   " + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + " " +
+            "FROM " + TABLE_SOURCE_LOCATION_SUBSET + " " +
+            "WHERE " + COLUMN_SOURCE_LOCATION_ID + " = ? ; ";
 }

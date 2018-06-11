@@ -228,4 +228,23 @@ class ArchivistWorkspace {
     public static ArchivistSourceType getSourceTypeById(int sourceTypeId) {
         return idsToSourceTypes.get(sourceTypeId);
     }
+
+    public static ArrayList<ArchivistSourceLocation> getAllLocations(Context context) {
+
+        ArrayList<ArchivistSourceLocation> allLocations;
+
+        NwdDb db = NwdDb.getInstance(context);
+
+        return db.getAllArchivistSourceLocations();
+    }
+
+    public static ArrayList<ArchivistSourceLocationSubset> getLocationSubsets(
+            Context context, int sourceLocationId) {
+
+        ArrayList<ArchivistSourceLocationSubset> subsetsForLocation;
+
+        NwdDb db = NwdDb.getInstance(context);
+
+        return db.getArchivistSourceLocationSubsetsForLocationId(sourceLocationId);
+    }
 }

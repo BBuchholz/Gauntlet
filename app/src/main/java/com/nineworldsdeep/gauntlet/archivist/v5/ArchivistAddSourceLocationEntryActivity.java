@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+
+import java.util.ArrayList;
 
 public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 
@@ -42,10 +47,66 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
             }
         });
 
+        refreshLocations();
     }
 
-    private void refreshLocationsAndSubsets(){
-        Utils.toast(this, "locations refreshed");
+    private void refreshLocations(){
+
+        Spinner spSourceLocation = (Spinner)findViewById(R.id.spSourceLocation);
+
+        ArrayList<ArchivistSourceLocation> locations =
+                ArchivistWorkspace.getAllLocations(this);
+
+        ArrayAdapter<ArchivistSourceLocation> adapter =
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_spinner_item, locations);
+
+        spSourceLocation.setAdapter(adapter);
+
+        spSourceLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                refreshSubsets();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                refreshSubsets();
+            }
+        });
+
+        //Utils.toast(this, "locations refreshed");
+    }
+
+    private void refreshSubsets(){
+
+        Spinner spSourceLocation = (Spinner)findViewById(R.id.spSourceLocation);
+
+        if(spSourceLocation != null){
+
+            ArchivistSourceLocation asl =
+                    (ArchivistSourceLocation)spSourceLocation.getSelectedItem();
+
+            if(asl != null){
+
+                Spinner spSourceLocationSubset =
+                        (Spinner)findViewById(R.id.spSourceLocationSubset);
+
+                ArrayList<ArchivistSourceLocationSubset> subsets =
+                        ArchivistWorkspace.getLocationSubsets(
+                                this,
+                                asl.getSourceLocationId());
+
+                ArrayAdapter<ArchivistSourceLocationSubset> subsetAdapter =
+                        new ArrayAdapter<>(this,
+                                android.R.layout.simple_spinner_item,
+                                subsets);
+
+                spSourceLocationSubset.setAdapter(subsetAdapter);
+            }
+        }
     }
 
     @Override
@@ -54,7 +115,7 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 
         if(requestCode== REQUEST_RESULT_LOCATIONS_AND_SUBSETS && data != null){
 
-            refreshLocationsAndSubsets();
+            refreshLocations();
         }
 
         if(requestCode== RESULT_CANCELED){

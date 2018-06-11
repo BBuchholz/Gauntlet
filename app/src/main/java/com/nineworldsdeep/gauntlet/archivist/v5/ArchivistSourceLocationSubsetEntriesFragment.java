@@ -13,15 +13,15 @@ import com.nineworldsdeep.gauntlet.R;
 
 public class ArchivistSourceLocationSubsetEntriesFragment extends Fragment {
 
-    private ArchivistSourceExcerptDetailActivity parentSourceExcerptDetailActivity;
+    private ArchivistSourceDetailActivity parentSourceDetailActivity;
     private SourceLocationEntryAdapter sourceLocationEntryAdapter;
 
     public ArchivistSourceLocationSubsetEntriesFragment() {
         // Required empty public constructor
     }
 
-    public void setParentSourceExcerptDetailActivity(ArchivistSourceExcerptDetailActivity parent){
-        this.parentSourceExcerptDetailActivity = parent;
+    public void setParentSourceDetailActivity(ArchivistSourceDetailActivity parent){
+        this.parentSourceDetailActivity = parent;
     }
 
     @Override
@@ -31,16 +31,16 @@ public class ArchivistSourceLocationSubsetEntriesFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
 
-        sourceAdapter = new SourceAdapter(parentArchivistActivity);
-        recyclerView.setAdapter(sourceAdapter);
+        sourceLocationEntryAdapter = new SourceLocationEntryAdapter(parentSourceDetailActivity);
+        recyclerView.setAdapter(sourceLocationEntryAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return recyclerView;
     }
 
 
-    public void refreshSources(Context context) {
+    public void refreshSourceLocationEntries(Context context) {
 
-        sourceAdapter.refreshSources(context);
+        sourceLocationEntryAdapter.refreshSourceLocationEntries(context);
     }
 }

@@ -39,6 +39,13 @@ public class NavigateActivityCommand {
         navigateTo(null, activityClass, parent);
     }
 
+    /**
+     * convenience method - handles a basic activity navigation (wraps it in a single static call)
+     *
+     * @param extrasKeyToValue can be null
+     * @param activityClass activity to navigate to
+     * @param parent
+     */
     public static void navigateTo(HashMap<String, String> extrasKeyToValue, Class activityClass, Activity parent){
 
         Intent intent = new Intent(parent, activityClass);

@@ -374,14 +374,14 @@ public class ArchivistActivity extends AppCompatActivity {
 
             mFragmentList.add(fragment);
             mFragmentsToKeys.put(fragment, fragmentKey);
-            ArchivistWorkspace.setFragmentTitle(fragmentKey, fragmentTitle);
+            ArchivistWorkspace.setMainActivityFragmentTitle(fragmentKey, fragmentTitle);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
 
             Fragment fragment = mFragmentList.get(position);
-            return ArchivistWorkspace.getFragmentTitle(mFragmentsToKeys.get(fragment));
+            return ArchivistWorkspace.getMainActivityFragmentTitle(mFragmentsToKeys.get(fragment));
         }
     }
 }

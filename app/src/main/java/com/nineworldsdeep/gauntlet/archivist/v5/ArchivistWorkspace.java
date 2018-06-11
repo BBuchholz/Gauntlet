@@ -4,13 +4,10 @@ import android.content.Context;
 import android.util.SparseArray;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.thedeanda.lorem.Lorem;
-import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 
 class ArchivistWorkspace {
 
@@ -33,17 +30,17 @@ class ArchivistWorkspace {
     private static ArchivistSourceType currentSourceType;
     private static ArchivistSource currentSource;
 
-    private static HashMap<String, String> fragmentKeysToTitles;
+    private static HashMap<String, String> mainActivityFragmentKeysToTitles;
+    private static HashMap<String, String> sourceDetailActivityFragmentKeysToTitles;
 
     static {
         namesToSourceTypes = new HashMap<>();
         idsToSourceTypes = new SparseArray<>();
         //openSourceExcerpts = new ArrayList<>();
-        fragmentKeysToTitles = new HashMap<>();
+        mainActivityFragmentKeysToTitles = new HashMap<>();
+        sourceDetailActivityFragmentKeysToTitles = new HashMap<>();
         currentSourceType = null;
         currentSource = null;
-
-
     }
 
     private static void addSourceType(ArchivistSourceType sourceType){
@@ -110,6 +107,19 @@ class ArchivistWorkspace {
         }
     }
 
+    static ArrayList<ArchivistSourceLocationEntry> getSourceLocationEntries(Context context) {
+
+        ArrayList<ArchivistSourceLocationEntry> entries;
+
+        //use current source to get entries
+
+        NwdDb db = NwdDb.getInstance(context);
+
+        entries = new ArrayList<>();
+
+        return entries;
+    }
+
     static ArrayList<ArchivistSource> getSources(Context context) {
 
         ArrayList<ArchivistSource> openSources;
@@ -151,12 +161,16 @@ class ArchivistWorkspace {
 
     static void setCurrentSourceTypeByName(String typeName) {
 
-        fragmentKeysToTitles.put("Sources", typeName);
+        mainActivityFragmentKeysToTitles.put("Sources", typeName);
         currentSourceType = getSourceTypeByName(typeName);
     }
 
-    static void setFragmentTitle(String fragmentKey, String fragmentTitle){
-        fragmentKeysToTitles.put(fragmentKey, fragmentTitle);
+    static void setMainActivityFragmentTitle(String fragmentKey, String fragmentTitle){
+        mainActivityFragmentKeysToTitles.put(fragmentKey, fragmentTitle);
+    }
+
+    static void setSourceDetailActivityFragmentTitle(String fragmentKey, String fragmentTitle){
+        sourceDetailActivityFragmentKeysToTitles.put(fragmentKey, fragmentTitle);
     }
 
     static ArchivistSourceType getCurrentSourceType(){
@@ -171,10 +185,14 @@ class ArchivistWorkspace {
         currentSource = archivistSource;
     }
 
+    static String getSourceDetailActivityFragmentTitle(String fragmentKey) {
 
-    static String getFragmentTitle(String fragmentKey) {
+        return sourceDetailActivityFragmentKeysToTitles.get(fragmentKey);
+    }
 
-        return fragmentKeysToTitles.get(fragmentKey);
+    static String getMainActivityFragmentTitle(String fragmentKey) {
+
+        return mainActivityFragmentKeysToTitles.get(fragmentKey);
     }
 
     private static ArchivistSourceType getSourceTypeByName(String name) {

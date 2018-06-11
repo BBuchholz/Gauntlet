@@ -12,10 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.nineworldsdeep.gauntlet.Extras;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +31,13 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 //    private FloatingActionButton fabAddSourceType;
 //    private FloatingActionButton fabAddSourceExcerpt;
 
-    private ArchivistSourceDetailFragment archivistSourceDetailFragment;
-    private ArchivistSourcesFragment archivistSourcesFragment;
-    private ArchivistSourceExcerptsFragment archivistSourceExcerptsFragment;
+    private ArchivistSourceDetailsFragment archivistSourceDetailsFragment;
+    private ArchivistSourceLocationSubsetEntriesFragment archivistSourceLocationSubsetEntriesFragment;
+    //private ArchivistSourceExcerptsFragment archivistSourceExcerptsFragment;
 
-    private int sourceTabIndex = -1;
-    private int sourceTypesTabIndex = -1;
-    private int sourceExcerptsTabIndex = -1;
+    private int sourceDetailsTabIndex = -1;
+    private int sourceLocationsTabIndex = -1;
+    //private int sourceExcerptsTabIndex = -1;
 
     private ArchivistFragmentStatePagerAdapter archivistFragmentStatePagerAdapter;
     private ViewPager viewPager;
@@ -48,15 +46,15 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
         return archivistFragmentStatePagerAdapter;
     }
 
-    public void selectSourcesTab(){
-        if(sourceTabIndex > -1) {
-            viewPager.setCurrentItem(sourceTabIndex);
+    public void selectSourceDetailsTab(){
+        if(sourceDetailsTabIndex > -1) {
+            viewPager.setCurrentItem(sourceDetailsTabIndex);
         }
     }
 
-    public void selectSourceExcerptsTab(){
-        if(sourceTabIndex > -1){
-            viewPager.setCurrentItem(sourceExcerptsTabIndex);
+    public void selectSourceLocationsTab(){
+        if(sourceLocationsTabIndex > -1){
+            viewPager.setCurrentItem(sourceLocationsTabIndex);
         }
     }
 
@@ -72,11 +70,13 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 
         //store fabs
         fabAddSourceLocationEntry =
-                (FloatingActionButton) findViewById(R.id.fabAddSource);
+                (FloatingActionButton) findViewById(R.id.fabAddSourceLocationEntry);
 //        fabAddSourceType =
 //                (FloatingActionButton) findViewById(R.id.fabAddSourceType);
 //        fabAddSourceExcerpt =
 //                (FloatingActionButton) findViewById(R.id.fabAddSourceExcerpt);
+
+        fabAddSourceLocationEntry.hide(); //hidden by default because it should only show when the second tab is selected
 
         fabAddSourceLocationEntry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,51 +84,53 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 
                 //Utils.toast(ArchivistActivity.this, "add source goes here");
 
-                if(!ArchivistWorkspace.currentSourceTypeIsAllTypes()) {
+//                if(!ArchivistWorkspace.currentSourceTypeIsAllTypes()) {
+//
+//                    Intent intent =
+//                            new Intent(ArchivistSourceDetailActivity.this,
+//                                    ArchivistAddSourceActivity.class);
+//
+//                    startActivityForResult(intent, REQUEST_RESULT_SOURCE);
+//
+//                }else{
+//
+//                    Utils.toast(ArchivistSourceDetailActivity.this,
+//                            "Select a specific source type to add new sources");
+//                }
 
-                    Intent intent =
-                            new Intent(ArchivistSourceDetailActivity.this,
-                                    ArchivistAddSourceActivity.class);
-
-                    startActivityForResult(intent, REQUEST_RESULT_SOURCE);
-
-                }else{
-
-                    Utils.toast(ArchivistSourceDetailActivity.this,
-                            "Select a specific source type to add new sources");
-                }
+                Utils.toast(ArchivistSourceDetailActivity.this, "add source location entry FAB clicked");
             }
         });
 
-        fabAddSourceType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Utils.toast(ArchivistActivity.this, "add source type goes here");
-
-                Intent intent =
-                        new Intent(ArchivistSourceDetailActivity.this,
-                                ArchivistAddSourceTypeActivity.class);
-
-                startActivityForResult(intent, REQUEST_RESULT_SOURCE_TYPE_NAME);
-
-            }
-        });
-
-        fabAddSourceExcerpt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
-
-                Intent intent =
-                        new Intent(ArchivistSourceDetailActivity.this,
-                                ArchivistAddSourceExcerptActivity.class);
-
-                startActivityForResult(intent, REQUEST_RESULT_SOURCE_EXCERPT);
-
-            }
-        });
+//        fabAddSourceType.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //Utils.toast(ArchivistActivity.this, "add source type goes here");
+//
+//                Intent intent =
+//                        new Intent(ArchivistSourceDetailActivity.this,
+//                                ArchivistAddSourceTypeActivity.class);
+//
+//                startActivityForResult(intent, REQUEST_RESULT_SOURCE_TYPE_NAME);
+//
+//            }
+//        });
+//
+//        fabAddSourceExcerpt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
+//
+//                Intent intent =
+//                        new Intent(ArchivistSourceDetailActivity.this,
+//                                ArchivistAddSourceExcerptActivity.class);
+//
+//                startActivityForResult(intent, REQUEST_RESULT_SOURCE_EXCERPT);
+//
+//            }
+//        });
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -168,103 +170,103 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode== REQUEST_RESULT_SOURCE_TYPE_NAME && data != null)
-        {
-            String sourceTypeName =
-                    data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
-
-            if(!Utils.stringIsNullOrWhitespace(sourceTypeName)){
-
-                NwdDb db = NwdDb.getInstance(this);
-
-                db.ensureArchivistSourceTypeName(sourceTypeName);
-                archivistSourceTypesFragment.refreshSourceTypes(this);
-
-                Utils.toast(this, "added source type name: " + sourceTypeName);
-
-            }else{
-
-                Utils.toast(this, "empty name");
-
-            }
-        }
-
-        if(requestCode== REQUEST_RESULT_SOURCE && data != null){
-
-            int sourceTypeId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
-            String sourceTypeName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
-            String sourceTitle = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE);
-            String sourceAuthor = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR);
-            String sourceDirector = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR);
-            String sourceYear = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_YEAR);
-            String sourceUrl = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_URL);
-            String sourceRetrievalDate = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE);
-
-            if(sourceTypeId > 0){
-
-                NwdDb db = NwdDb.getInstance(this);
-
-                ArchivistSource archivistSource =
-                        new ArchivistSource(
-                            -1,
-                            sourceTypeId,
-                            sourceTitle,
-                            sourceAuthor,
-                            sourceDirector,
-                            sourceYear,
-                            sourceUrl,
-                            sourceRetrievalDate);
-
-                db.insertOrIgnoreArchivistSource(archivistSource);
-                archivistSourcesFragment.refreshSources(this);
-
-                Utils.toast(this, "Added new " + sourceTypeName);
-
-            }else{
-
-                Utils.toast(this, "invalid source type");
-            }
-        }
-
-        if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
-
-            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
-            String sourceExcerptPages = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES);
-            String sourceExcerptBeginTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME);
-            String sourceExcerptEndTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME);
-            String sourceExcerptValue = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_VALUE);
-
-            if(sourceId > 0){
-
-                if(Utils.stringIsNullOrWhitespace(sourceExcerptValue)) {
-
-                    Utils.toast(this, "Source Excerpt Value cannot be empty");
-
-                }else {
-
-                    NwdDb db = NwdDb.getInstance(this);
-
-                    ArchivistSourceExcerpt ase =
-                            new ArchivistSourceExcerpt(
-                                    -1,
-                                    sourceId,
-                                    sourceExcerptValue,
-                                    sourceExcerptPages,
-                                    sourceExcerptBeginTime,
-                                    sourceExcerptEndTime
-                            );
-
-                    db.insertOrIgnoreArchivistSourceExcerpt(ase);
-                    archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
-
-                    Utils.toast(this, "Added excerpt");
-                }
-
-            }else{
-
-                Utils.toast(this, "invalid source");
-            }
-        }
+//        if(requestCode== REQUEST_RESULT_SOURCE_TYPE_NAME && data != null)
+//        {
+//            String sourceTypeName =
+//                    data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+//
+//            if(!Utils.stringIsNullOrWhitespace(sourceTypeName)){
+//
+//                NwdDb db = NwdDb.getInstance(this);
+//
+//                db.ensureArchivistSourceTypeName(sourceTypeName);
+//                archivistSourceTypesFragment.refreshSourceTypes(this);
+//
+//                Utils.toast(this, "added source type name: " + sourceTypeName);
+//
+//            }else{
+//
+//                Utils.toast(this, "empty name");
+//
+//            }
+//        }
+//
+//        if(requestCode== REQUEST_RESULT_SOURCE && data != null){
+//
+//            int sourceTypeId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
+//            String sourceTypeName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
+//            String sourceTitle = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE);
+//            String sourceAuthor = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR);
+//            String sourceDirector = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR);
+//            String sourceYear = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_YEAR);
+//            String sourceUrl = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_URL);
+//            String sourceRetrievalDate = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE);
+//
+//            if(sourceTypeId > 0){
+//
+//                NwdDb db = NwdDb.getInstance(this);
+//
+//                ArchivistSource archivistSource =
+//                        new ArchivistSource(
+//                            -1,
+//                            sourceTypeId,
+//                            sourceTitle,
+//                            sourceAuthor,
+//                            sourceDirector,
+//                            sourceYear,
+//                            sourceUrl,
+//                            sourceRetrievalDate);
+//
+//                db.insertOrIgnoreArchivistSource(archivistSource);
+//                archivistSourceLocationSubsetEntriesFragment.refreshSources(this);
+//
+//                Utils.toast(this, "Added new " + sourceTypeName);
+//
+//            }else{
+//
+//                Utils.toast(this, "invalid source type");
+//            }
+//        }
+//
+//        if(requestCode== REQUEST_RESULT_SOURCE_EXCERPT && data != null){
+//
+//            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+//            String sourceExcerptPages = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_PAGES);
+//            String sourceExcerptBeginTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_BEGIN_TIME);
+//            String sourceExcerptEndTime = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_END_TIME);
+//            String sourceExcerptValue = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_VALUE);
+//
+//            if(sourceId > 0){
+//
+//                if(Utils.stringIsNullOrWhitespace(sourceExcerptValue)) {
+//
+//                    Utils.toast(this, "Source Excerpt Value cannot be empty");
+//
+//                }else {
+//
+//                    NwdDb db = NwdDb.getInstance(this);
+//
+//                    ArchivistSourceExcerpt ase =
+//                            new ArchivistSourceExcerpt(
+//                                    -1,
+//                                    sourceId,
+//                                    sourceExcerptValue,
+//                                    sourceExcerptPages,
+//                                    sourceExcerptBeginTime,
+//                                    sourceExcerptEndTime
+//                            );
+//
+//                    db.insertOrIgnoreArchivistSourceExcerpt(ase);
+//                    archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+//
+//                    Utils.toast(this, "Added excerpt");
+//                }
+//
+//            }else{
+//
+//                Utils.toast(this, "invalid source");
+//            }
+//        }
 
         if(requestCode== RESULT_CANCELED){
 
@@ -281,27 +283,21 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                fabAddSourceType.show();
+                //fabAddSourceType.show();
                 fabAddSourceLocationEntry.hide();
-                fabAddSourceExcerpt.hide();
+                //fabAddSourceExcerpt.hide();
                 break;
 
             case 1:
-                fabAddSourceType.hide();
+                //fabAddSourceType.hide();
                 fabAddSourceLocationEntry.show();
-                fabAddSourceExcerpt.hide();
-                break;
-
-            case 2:
-                fabAddSourceType.hide();
-                fabAddSourceLocationEntry.hide();
-                fabAddSourceExcerpt.show();
+                //fabAddSourceExcerpt.hide();
                 break;
 
             default:
-                fabAddSourceType.hide();
+                //fabAddSourceType.hide();
                 fabAddSourceLocationEntry.hide();
-                fabAddSourceExcerpt.hide();
+                //fabAddSourceExcerpt.hide();
                 break;
         }
     }
@@ -312,35 +308,41 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
         this.viewPager = viewPager;
         archivistFragmentStatePagerAdapter = new ArchivistFragmentStatePagerAdapter(getSupportFragmentManager());
 
-        archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
-        archivistSourceTypesFragment.setParentArchivistActivity(this);
+//        archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
+//        archivistSourceTypesFragment.setParentArchivistActivity(this);
+//
+//        archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");
+//        sourceTypesTabIndex = 0;
 
-        archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");
-        sourceTypesTabIndex = 0;
+        archivistSourceDetailsFragment = new ArchivistSourceDetailsFragment();
+        //archivistSourceDetailsFragment.setParentArchivistActivity(this);
 
-        archivistSourcesFragment = new ArchivistSourcesFragment();
-        archivistSourcesFragment.setParentArchivistActivity(this);
+        archivistFragmentStatePagerAdapter.addFragment(archivistSourceDetailsFragment, "Source Details");
+        sourceDetailsTabIndex = 0;
 
-        archivistFragmentStatePagerAdapter.addFragment(archivistSourcesFragment, "Sources");
-        sourceTabIndex = 1;
+        archivistSourceLocationSubsetEntriesFragment = new ArchivistSourceLocationSubsetEntriesFragment();
+        archivistSourceLocationSubsetEntriesFragment.setParentSourceDetailActivity(this);
 
-        archivistSourceExcerptsFragment = new ArchivistSourceExcerptsFragment();
-        archivistSourceExcerptsFragment.setParentArchivistActivity(this);
-        archivistFragmentStatePagerAdapter.addFragment(archivistSourceExcerptsFragment, "Excerpts");
-        sourceExcerptsTabIndex = 2;
+        archivistFragmentStatePagerAdapter.addFragment(archivistSourceLocationSubsetEntriesFragment, "Location Entries");
+        sourceLocationsTabIndex = 1;
+
+//        archivistSourceExcerptsFragment = new ArchivistSourceExcerptsFragment();
+//        archivistSourceExcerptsFragment.setParentArchivistActivity(this);
+//        archivistFragmentStatePagerAdapter.addFragment(archivistSourceExcerptsFragment, "Excerpts");
+//        sourceExcerptsTabIndex = 2;
 
         this.viewPager.setAdapter(archivistFragmentStatePagerAdapter);
     }
 
-    public void refreshSources() {
+    public void refreshSourceLocationsSubsetEntries() {
 
-        archivistSourcesFragment.refreshSources(this);
+        archivistSourceLocationSubsetEntriesFragment.refreshSourceLocationEntries(this);
     }
 
-    public void refreshSourceExcerpts(){
-
-        archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
-    }
+//    public void refreshSourceExcerpts(){
+//
+//        archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+//    }
 
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:
@@ -372,14 +374,14 @@ public class ArchivistSourceDetailActivity extends AppCompatActivity {
 
             mFragmentList.add(fragment);
             mFragmentsToKeys.put(fragment, fragmentKey);
-            ArchivistWorkspace.setFragmentTitle(fragmentKey, fragmentTitle);
+            ArchivistWorkspace.setSourceDetailActivityFragmentTitle(fragmentKey, fragmentTitle);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
 
             Fragment fragment = mFragmentList.get(position);
-            return ArchivistWorkspace.getFragmentTitle(mFragmentsToKeys.get(fragment));
+            return ArchivistWorkspace.getSourceDetailActivityFragmentTitle(mFragmentsToKeys.get(fragment));
         }
     }
 }

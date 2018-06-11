@@ -16,21 +16,20 @@ import java.util.ArrayList;
 
 public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocationEntryAdapter.ViewHolder> {
 
-    private ArrayList<ArchivistSourceLocationSubsetEntry> mSources;
+    private ArrayList<ArchivistSourceLocationEntry> mSourcesLocationEntries;
 
-    //private ArchivistActivity parentArchivistActivity;
+    private ArchivistSourceDetailActivity parentArchivistSourceDetailActivity;
 
-    public void refreshSources(Context context) {
+    public void refreshSourceLocationEntries(Context context) {
 
-        //mSources = ArchivistWorkspace.getSources(context);
+        mSourcesLocationEntries = ArchivistWorkspace.getSourceLocationEntries(context);
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-//        ImageView sourceTypeImage;
-//        public TextView name;
-//        public TextView description;
+        public TextView tvName;
+        public TextView tvStatus;
 
 
 
@@ -38,18 +37,16 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
             super(itemView);
 
-//            sourceTypeImage = (ImageView) itemView.findViewById(R.id.list_avatar);
-//            name = (TextView) itemView.findViewById(R.id.list_title);
-//            description = (TextView) itemView.findViewById(R.id.list_desc);
+            tvName = (TextView) itemView.findViewById(R.id.tvSourceLocationEntryName);
+            tvStatus = (TextView) itemView.findViewById(R.id.tvSourceLocationEntryStatus);
         }
     }
 
-    SourceLocationEntryAdapter(ArchivistActivity parentArchivistActivity){
+    SourceLocationEntryAdapter(ArchivistSourceDetailActivity parent){
 
-//        mSources = ArchivistWorkspace.getSources(parentArchivistActivity);
-//        this.parentArchivistActivity = parentArchivistActivity;
+        mSourcesLocationEntries = ArchivistWorkspace.getSourceLocationEntries(parent);
+        this.parentArchivistSourceDetailActivity = parent;
 
-asdf; //mod all this file
     }
 
     @Override
@@ -59,7 +56,7 @@ asdf; //mod all this file
 
 
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_archivist_sources_content, parent, false);
+                .inflate(R.layout.fragment_archivist_source_location_entries_content, parent, false);
 
         final ViewHolder holder = new ViewHolder(view);
 
@@ -67,17 +64,19 @@ asdf; //mod all this file
             @Override
             public void onClick(View view) {
                 final int position = holder.getAdapterPosition();
-//                if(position != RecyclerView.NO_POSITION){
-//
+                if(position != RecyclerView.NO_POSITION){
+
+                    ///////////////////////////// BEGIN--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
 //                    ArchivistSource archivistSource = mSources.get(position);
 //                    ArchivistWorkspace.setCurrentSource(archivistSource);
 //
 //                    parentArchivistActivity.getFragmentStatePagerAdapter().notifyDataSetChanged();
 //                    parentArchivistActivity.selectSourceExcerptsTab();
 //                    parentArchivistActivity.refreshSourceExcerpts();
-//
-//                    Utils.toast(parentArchivistActivity, archivistSource.getShortDescription() + " clicked in SourceAdapter.");
-//                }
+                    ///////////////////////////// END--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
+
+                    Utils.toast(parentArchivistSourceDetailActivity, "clicked source location entry");
+                }
             }
         });
 
@@ -85,17 +84,18 @@ asdf; //mod all this file
             @Override
             public boolean onLongClick(View view) {
 
-//                final int position = holder.getAdapterPosition();
-//                if(position != RecyclerView.NO_POSITION) {
-//
+                final int position = holder.getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION) {
+
+                    ///////////////////////////// BEGIN--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
 //                    ArchivistSource archivistSource = mSources.get(position);
 //                    ArchivistWorkspace.setCurrentSource(archivistSource);
-//
-//                    //launch ArchivistSourceDetailActivity here
-//
-//                    Utils.toast(parentArchivistActivity,
-//                            archivistSource.getShortDescription() + " long press");
-//                }
+                    ///////////////////////////// END--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
+
+
+                    Utils.toast(parentArchivistSourceDetailActivity,
+                            "source location entry long press");
+                }
 
                 //consume the long click
                 return true;
@@ -109,21 +109,14 @@ asdf; //mod all this file
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-//        ArchivistSource src = mSources.get(position);
-//
-//        holder.sourceTypeImage.setImageDrawable(
-//                parentArchivistActivity.getDrawable(
-//                        src.getSourceType().getSourcePicDrawableResourceId()
-//                )
-//        );
-//
-//        holder.name.setText(src.getSourceTitle());
-//        holder.description.setText(src.getShortDescription());
+        ArchivistSourceLocationEntry asle = mSourcesLocationEntries.get(position);
+
+        holder.tvName.setText(asle.getSourceShortDescription());
+        holder.tvStatus.setText(asle.getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
-        //return mSources.size();
+        return mSourcesLocationEntries.size();
 }
 }

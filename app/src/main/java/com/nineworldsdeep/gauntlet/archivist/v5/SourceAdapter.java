@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 
 import java.util.ArrayList;
 
@@ -94,10 +95,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
                     ArchivistSource archivistSource = mSources.get(position);
                     ArchivistWorkspace.setCurrentSource(archivistSource);
 
-                    //launch ArchivistSourceDetailActivity here
+                    //launch ArchivistSourceDetailActivity
+                    NavigateActivityCommand.navigateTo(
+                            ArchivistSourceDetailActivity.class, parentArchivistActivity);
 
-                    Utils.toast(parentArchivistActivity,
-                            archivistSource.getShortDescription() + " long press");
+//                    Utils.toast(parentArchivistActivity,
+//                            archivistSource.getShortDescription() + " long press");
                 }
 
                 //consume the long click

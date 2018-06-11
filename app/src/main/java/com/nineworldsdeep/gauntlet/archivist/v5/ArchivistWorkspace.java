@@ -1,6 +1,7 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.SparseArray;
 
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -116,6 +117,22 @@ class ArchivistWorkspace {
         NwdDb db = NwdDb.getInstance(context);
 
         entries = new ArrayList<>();
+
+        boolean useMockup = true;
+
+        if(useMockup){
+
+            for (int i = 1; i < 6; i++) {
+
+                String numString = " " + Integer.toString(i);
+                entries.add(new ArchivistSourceLocationEntry(
+                        -1,
+                        -1,
+                        "demo location" + numString,
+                        "demo subset" + numString,
+                        "demo entry name" + numString));
+            }
+        }
 
         return entries;
     }

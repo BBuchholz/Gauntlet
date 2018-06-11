@@ -557,6 +557,15 @@
                 android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceDetailsActivity" />
         </activity>
         <activity
+            android:name=".archivist.v5.ArchivistAddSourceLocationsAndSubsetsActivity"
+            android:label="ArchivistAddSourceLocationsAndSubsetsActivity"
+            android:parentActivityName=".archivist.v5.ArchivistAddSourceLocationEntryActivity"
+            android:theme="@style/MaterialDesignActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.archivist.v5.ArchivistAddSourceLocationEntryActivity" />
+        </activity>
+        <activity
             android:name=".mnemosyne.v5.MnemosyneV5ScanActivity"
             android:label="@string/title_activity_mnemosyne_v5_scan"
             android:parentActivityName=".core.HomeListActivity"

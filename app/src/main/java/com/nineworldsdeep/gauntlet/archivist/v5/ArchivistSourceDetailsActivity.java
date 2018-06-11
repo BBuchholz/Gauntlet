@@ -64,7 +64,7 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //store fabs
+        //store fab
         fabAddSourceLocationEntry =
                 (FloatingActionButton) findViewById(R.id.fabAddSourceLocationEntry);
 
@@ -93,37 +93,6 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
             }
         });
 
-//        fabAddSourceType.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //Utils.toast(ArchivistActivity.this, "add source type goes here");
-//
-//                Intent intent =
-//                        new Intent(ArchivistSourceDetailsActivity.this,
-//                                ArchivistAddSourceTypeActivity.class);
-//
-//                startActivityForResult(intent, REQUEST_RESULT_SOURCE_TYPE_NAME);
-//
-//            }
-//        });
-//
-//        fabAddSourceExcerpt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //Utils.toast(ArchivistActivity.this, "add source excerpt goes here");
-//
-//                Intent intent =
-//                        new Intent(ArchivistSourceDetailsActivity.this,
-//                                ArchivistAddSourceExcerptActivity.class);
-//
-//                startActivityForResult(intent, REQUEST_RESULT_SOURCE_EXCERPT);
-//
-//            }
-//        });
-
-        // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -161,65 +130,7 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if(requestCode== REQUEST_RESULT_SOURCE_TYPE_NAME && data != null)
-//        {
-//            String sourceTypeName =
-//                    data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
-//
-//            if(!Utils.stringIsNullOrWhitespace(sourceTypeName)){
-//
-//                NwdDb db = NwdDb.getInstance(this);
-//
-//                db.ensureArchivistSourceTypeName(sourceTypeName);
-//                archivistSourceTypesFragment.refreshSourceTypes(this);
-//
-//                Utils.toast(this, "added source type name: " + sourceTypeName);
-//
-//            }else{
-//
-//                Utils.toast(this, "empty name");
-//
-//            }
-//        }
-//
-//        if(requestCode== REQUEST_RESULT_SOURCE && data != null){
-//
-//            int sourceTypeId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, -1);
-//            String sourceTypeName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME);
-//            String sourceTitle = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE);
-//            String sourceAuthor = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR);
-//            String sourceDirector = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR);
-//            String sourceYear = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_YEAR);
-//            String sourceUrl = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_URL);
-//            String sourceRetrievalDate = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE);
-//
-//            if(sourceTypeId > 0){
-//
-//                NwdDb db = NwdDb.getInstance(this);
-//
-//                ArchivistSource archivistSource =
-//                        new ArchivistSource(
-//                            -1,
-//                            sourceTypeId,
-//                            sourceTitle,
-//                            sourceAuthor,
-//                            sourceDirector,
-//                            sourceYear,
-//                            sourceUrl,
-//                            sourceRetrievalDate);
-//
-//                db.insertOrIgnoreArchivistSource(archivistSource);
-//                archivistSourceLocationSubsetEntriesFragment.refreshSources(this);
-//
-//                Utils.toast(this, "Added new " + sourceTypeName);
-//
-//            }else{
-//
-//                Utils.toast(this, "invalid source type");
-//            }
-//        }
-//
-        if(requestCode== REQUEST_RESULT_SOURCE_LOCATION_ENTRY && data != null){
+        if(requestCode == REQUEST_RESULT_SOURCE_LOCATION_ENTRY && data != null){
 
             int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
             int sourceLocationSubsetId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID, -1);
@@ -254,13 +165,13 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
             }
         }
 
-        if(requestCode== RESULT_CANCELED){
+
+        if(requestCode == RESULT_CANCELED){
 
             //do nothing
             //it crashes on back button without this, see:
             //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
 
-            Utils.toast(this, "cancelled");
         }
     }
 
@@ -269,21 +180,15 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                //fabAddSourceType.show();
                 fabAddSourceLocationEntry.hide();
-                //fabAddSourceExcerpt.hide();
                 break;
 
             case 1:
-                //fabAddSourceType.hide();
                 fabAddSourceLocationEntry.show();
-                //fabAddSourceExcerpt.hide();
                 break;
 
             default:
-                //fabAddSourceType.hide();
                 fabAddSourceLocationEntry.hide();
-                //fabAddSourceExcerpt.hide();
                 break;
         }
     }
@@ -294,14 +199,7 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
         this.viewPager = viewPager;
         archivistFragmentStatePagerAdapter = new ArchivistFragmentStatePagerAdapter(getSupportFragmentManager());
 
-//        archivistSourceTypesFragment = new ArchivistSourceTypesFragment();
-//        archivistSourceTypesFragment.setParentArchivistActivity(this);
-//
-//        archivistFragmentStatePagerAdapter.addFragment(archivistSourceTypesFragment, "Source Types");
-//        sourceTypesTabIndex = 0;
-
         archivistSourceDetailsFragment = new ArchivistSourceDetailsFragment();
-        //archivistSourceDetailsFragment.setParentArchivistActivity(this);
 
         archivistFragmentStatePagerAdapter.addFragment(archivistSourceDetailsFragment, "Source Details");
         sourceDetailsTabIndex = 0;
@@ -312,11 +210,6 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
         archivistFragmentStatePagerAdapter.addFragment(archivistSourceLocationSubsetEntriesFragment, "Location Entries");
         sourceLocationsTabIndex = 1;
 
-//        archivistSourceExcerptsFragment = new ArchivistSourceExcerptsFragment();
-//        archivistSourceExcerptsFragment.setParentArchivistActivity(this);
-//        archivistFragmentStatePagerAdapter.addFragment(archivistSourceExcerptsFragment, "Excerpts");
-//        sourceExcerptsTabIndex = 2;
-
         this.viewPager.setAdapter(archivistFragmentStatePagerAdapter);
     }
 
@@ -324,12 +217,6 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
 
         archivistSourceLocationSubsetEntriesFragment.refreshSourceLocationEntries(this);
     }
-
-//    public void refreshSourceExcerpts(){
-//
-//        archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
-//    }
-
 
     // using FragmentStatePagerAdapter instead of FragmentPagerAdapter per:
     // https://stackoverflow.com/questions/30080045/fragmentpageradapter-notifydatasetchanged-not-working

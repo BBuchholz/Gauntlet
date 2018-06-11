@@ -14,9 +14,6 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 public class ArchivistAddSourceActivity extends AppCompatActivity {
 
-//    private int mSourceTypeId;
-//    private String mSourceTypeName;
-
     private ArchivistSourceType mCurrentSourceType;
 
     @Override
@@ -88,4 +85,5 @@ public class ArchivistAddSourceActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
         finish();
     }
+
 }

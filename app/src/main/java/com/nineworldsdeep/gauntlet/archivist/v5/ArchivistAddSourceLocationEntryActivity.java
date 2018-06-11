@@ -11,13 +11,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 
 public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 
-//    private int mSourceTypeId;
-//    private String mSourceTypeName;
-
-    //private ArchivistSourceType mCurrentSourceType;
-
-
-    public static final int REQUEST_RESULT_SOURCE_LOCATIONS_AND_SUBSETS = 1;
+    public static final int REQUEST_RESULT_LOCATIONS_AND_SUBSETS = 1;
 
     private FloatingActionButton fabAddSourceLocationsAndSubsets;
 
@@ -30,9 +24,7 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
-
-        //store fabs
+        //store fab
         fabAddSourceLocationsAndSubsets =
                 (FloatingActionButton) findViewById(R.id.fabAddSourceLocationsAndSubsets);
 
@@ -40,50 +32,46 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent =
+                        new Intent(ArchivistAddSourceLocationEntryActivity.this,
+                                ArchivistAddSourceLocationsAndSubsetsActivity.class);
 
-//                if(ArchivistWorkspace.getCurrentSource() != null) {
-//
-//                    Intent intent =
-//                            new Intent(ArchivistSourceDetailsActivity.this,
-//                                    ArchivistAddSourceLocationEntryActivity.class);
-//
-//                    startActivityForResult(intent, REQUEST_RESULT_SOURCE_LOCATION_ENTRY);
-//
-//                }else{
-//
-//                    Utils.toast(ArchivistSourceDetailsActivity.this,
-//                            "a specific source must be selected to add new sources location entry");
-//                }
+                startActivityForResult(intent, REQUEST_RESULT_LOCATIONS_AND_SUBSETS);
 
-                Utils.toast(ArchivistAddSourceLocationEntryActivity.this, "add source locations and subsets FAB clicked");
+                //Utils.toast(ArchivistAddSourceLocationEntryActivity.this, "add source locations and subsets FAB clicked");
             }
         });
 
-        //mCurrentSourceType = ArchivistWorkspace.getCurrentSourceType();
-
-//        Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
-//        TextView tvSourceTypeName = (TextView)findViewById(R.id.tvSourceTypeName);
-
-//        if(mCurrentSourceType != null && mCurrentSourceType.getSourceTypeId() > 0) {
-//
-//            if (tvSourceTypeName != null && btnConfirm != null) {
-//                tvSourceTypeName.setText(mCurrentSourceType.getSourceTypeName());
-//                btnConfirm.setEnabled(true);
-//            }
-//
-//        }else{
-//
-//            Utils.toast(this, "Invalid Source Type Info");
-//            if (btnConfirm != null) {
-//                btnConfirm.setEnabled(false);
-//            }
-//        }
     }
+
+    private void refreshLocationsAndSubsets(){
+        Utils.toast(this, "locations refreshed");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode== REQUEST_RESULT_LOCATIONS_AND_SUBSETS && data != null){
+
+            refreshLocationsAndSubsets();
+        }
+
+        if(requestCode== RESULT_CANCELED){
+
+            //do nothing
+            //it crashes on back button without this, see:
+            //http://stackoverflow.com/questions/20782619/failure-delivering-result-resultinfo
+
+            Utils.toast(this, "cancelled");
+        }
+    }
+
 
     public void confirmClick(View v){
 
 
-//        Intent intent = new Intent();
+        Intent intent = new Intent();
 //
 //        EditText etTitle = (EditText)findViewById(R.id.etSourceTitle);
 //        EditText etAuthor = (EditText)findViewById(R.id.etSourceAuthor);
@@ -108,7 +96,7 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 //        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_URL, sourceUrl);
 //        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE, sourceRetrievalDate);
 //
-//        setResult(ArchivistActivity.REQUEST_RESULT_SOURCE, intent);
+        setResult(ArchivistSourceDetailsActivity.REQUEST_RESULT_SOURCE_LOCATION_ENTRY, intent);
 
         finish();
     }
@@ -118,4 +106,5 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
         finish();
     }
+
 }

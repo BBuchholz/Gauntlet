@@ -27,15 +27,17 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView tvSourceLocation;
+        public TextView getTvSourceLocationSubset;
         public TextView tvName;
         public TextView tvStatus;
-
-
 
         public ViewHolder(final View itemView) {
 
             super(itemView);
 
+            tvSourceLocation = (TextView) itemView.findViewById(R.id.tvSourceLocation);
+            getTvSourceLocationSubset = (TextView) itemView.findViewById(R.id.tvSourceLocationSubset);
             tvName = (TextView) itemView.findViewById(R.id.tvSourceLocationEntryName);
             tvStatus = (TextView) itemView.findViewById(R.id.tvSourceLocationEntryStatus);
         }
@@ -50,8 +52,6 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
 
 
         final View view = LayoutInflater.from(parent.getContext())
@@ -110,6 +110,8 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
         ArchivistSourceLocationEntry asle = mSourcesLocationEntries.get(position);
 
+        holder.tvSourceLocation.setText(asle.getSourceLocationValue());
+        holder.getTvSourceLocationSubset.setText(asle.getSourceLocationSubsetValue());
         holder.tvName.setText(asle.getSourceLocationSubsetEntryName());
         holder.tvStatus.setText(asle.getStatus());
     }

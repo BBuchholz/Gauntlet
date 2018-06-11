@@ -37,11 +37,33 @@
         <!--android:textSize="@dimen/list_body" />-->
 
     <TextView
-        android:id="@+id/tvSourceLocationEntryName"
+        android:id="@+id/tvSourceLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="stuff goes here"
         android:textSize="@dimen/article_subheading" />
+
+    <TextView
+        android:id="@+id/tvSourceLocationSubset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSourceLocation"
+        android:textColor="@color/medium_grey"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="stuff goes here"
+        android:textSize="@dimen/list_body" />
+
+    <TextView
+        android:id="@+id/tvSourceLocationEntryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSourceLocationSubset"
+        android:textColor="@color/medium_grey"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="stuff goes here"
+        android:textSize="@dimen/list_body" />
 
     <TextView
         android:id="@+id/tvSourceLocationEntryStatus"

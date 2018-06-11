@@ -204,24 +204,29 @@ public class ArchivistActivity extends AppCompatActivity {
 
             if(sourceTypeId > 0){
 
-                NwdDb db = NwdDb.getInstance(this);
+                if(!Utils.stringIsNullOrWhitespace(sourceTitle)) {
+                    NwdDb db = NwdDb.getInstance(this);
 
-                ArchivistSource archivistSource =
-                        new ArchivistSource(
-                            -1,
-                            sourceTypeId,
-                            sourceTitle,
-                            sourceAuthor,
-                            sourceDirector,
-                            sourceYear,
-                            sourceUrl,
-                            sourceRetrievalDate);
+                    ArchivistSource archivistSource =
+                            new ArchivistSource(
+                                    -1,
+                                    sourceTypeId,
+                                    sourceTitle,
+                                    sourceAuthor,
+                                    sourceDirector,
+                                    sourceYear,
+                                    sourceUrl,
+                                    sourceRetrievalDate);
 
-                db.insertOrIgnoreArchivistSource(archivistSource);
-                archivistSourcesFragment.refreshSources(this);
+                    db.insertOrIgnoreArchivistSource(archivistSource);
+                    archivistSourcesFragment.refreshSources(this);
 
-                Utils.toast(this, "Added new " + sourceTypeName);
+                    Utils.toast(this, "Added new " + sourceTypeName);
 
+                }else{
+
+                    Utils.toast(this, "cannot add empty title");
+                }
             }else{
 
                 Utils.toast(this, "invalid source type");

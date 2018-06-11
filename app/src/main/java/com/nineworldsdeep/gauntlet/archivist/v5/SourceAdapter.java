@@ -84,6 +84,27 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
             }
         });
 
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                final int position = holder.getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION) {
+
+                    ArchivistSource archivistSource = mSources.get(position);
+                    ArchivistWorkspace.setCurrentSource(archivistSource);
+
+                    //launch ArchivistSourceDetailActivity here
+
+                    Utils.toast(parentArchivistActivity,
+                            archivistSource.getShortDescription() + " long press");
+                }
+
+                //consume the long click
+                return true;
+            }
+        });
+
 
         return holder;
     }

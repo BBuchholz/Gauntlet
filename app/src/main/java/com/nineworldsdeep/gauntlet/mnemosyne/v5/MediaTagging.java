@@ -30,11 +30,11 @@ public class MediaTagging extends TaggingBase{
         //intentionally empty constructor
     }
 
-//    public Date getTaggedAt() {
+//    public Date getVerifiedPresent() {
 //        return taggedAt;
 //    }
 //
-//    public Date getUntaggedAt() {
+//    public Date getVerifiedMissing() {
 //        return untaggedAt;
 //    }
 

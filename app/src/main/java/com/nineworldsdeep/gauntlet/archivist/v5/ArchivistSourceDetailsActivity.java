@@ -132,37 +132,39 @@ public class ArchivistSourceDetailsActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_RESULT_SOURCE_LOCATION_ENTRY && data != null){
 
-            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
-            int sourceLocationSubsetId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID, -1);
-            String sourceLocationSubsetEntryName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRY_NAME);
+            refreshSourceLocationsSubsetEntries();
 
-            if(sourceId > 0 && sourceLocationSubsetId > 0){
-
-                if(Utils.stringIsNullOrWhitespace(sourceLocationSubsetEntryName)) {
-
-                    Utils.toast(this, "source location subset entry name cannot be empty");
-
-                }else {
-
-                    NwdDb db = NwdDb.getInstance(this);
-
-                    ArchivistSourceLocationEntry asle =
-                            new ArchivistSourceLocationEntry(
-                                    sourceId,
-                                    sourceLocationSubsetId,
-                                    sourceLocationSubsetEntryName
-                            );
-
-                    //db.insertOrIgnoreArchivistSourceExcerpt(ase);
-                    //archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
-
-                    Utils.toast(this, "added location entry");
-                }
-
-            }else{
-
-                Utils.toast(this, "invalid source id or source location subset id");
-            }
+//            int sourceId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_ID, -1);
+//            int sourceLocationSubsetId = data.getIntExtra(Extras.INT_ARCHIVIST_SOURCE_LOCATION_SUBSET_ID, -1);
+//            String sourceLocationSubsetEntryName = data.getStringExtra(Extras.STRING_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRY_NAME);
+//
+//            if(sourceId > 0 && sourceLocationSubsetId > 0){
+//
+//                if(Utils.stringIsNullOrWhitespace(sourceLocationSubsetEntryName)) {
+//
+//                    Utils.toast(this, "source location subset entry name cannot be empty");
+//
+//                }else {
+//
+//                    NwdDb db = NwdDb.getInstance(this);
+//
+//                    ArchivistSourceLocationEntry asle =
+//                            new ArchivistSourceLocationEntry(
+//                                    sourceId,
+//                                    sourceLocationSubsetId,
+//                                    sourceLocationSubsetEntryName
+//                            );
+//
+//                    //db.insertOrIgnoreArchivistSourceExcerpt(ase);
+//                    //archivistSourceExcerptsFragment.refreshSourceExcerpts(this);
+//
+//                    Utils.toast(this, "added location entry");
+//                }
+//
+//            }else{
+//
+//                Utils.toast(this, "invalid source id or source location subset id");
+//            }
         }
 
 

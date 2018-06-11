@@ -7,11 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
@@ -19,6 +23,7 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
     public static final int REQUEST_RESULT_LOCATIONS_AND_SUBSETS = 1;
 
     private FloatingActionButton fabAddSourceLocationsAndSubsets;
+    private ArchivistSource currentSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,26 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
                 //Utils.toast(ArchivistAddSourceLocationEntryActivity.this, "add source locations and subsets FAB clicked");
             }
         });
+
+        ///////////////////////////////////////////
+        //other display logic in onResume()
+        ///////////////////////////////////////////
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        //display current source at top
+        TextView tvCurrentSource =
+                (TextView)findViewById(R.id.tvCurrentSourceShortDescription);
+
+        currentSource = ArchivistWorkspace.getCurrentSource();
+
+        if(tvCurrentSource != null && currentSource != null){
+
+            tvCurrentSource.setText(currentSource.getShortDescription());
+        }
 
         refreshLocations();
     }
@@ -131,35 +156,77 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 
     public void confirmClick(View v){
 
+        Spinner spSubset = (Spinner)findViewById(R.id.spSourceLocationSubset);
 
-        Intent intent = new Intent();
-//
-//        EditText etTitle = (EditText)findViewById(R.id.etSourceTitle);
-//        EditText etAuthor = (EditText)findViewById(R.id.etSourceAuthor);
-//        EditText etDirector = (EditText)findViewById(R.id.etSourceDirector);
-//        EditText etYear = (EditText)findViewById(R.id.etSourceYear);
-//        EditText etUrl = (EditText)findViewById(R.id.etSourceUrl);
-//        EditText etRetrievalDate = (EditText)findViewById(R.id.etSourceRetrievalDate);
-//
-//        String sourceTitle = etTitle != null ? etTitle.getText().toString() : null;
-//        String sourceAuthor = etAuthor != null ? etAuthor.getText().toString() : null;
-//        String sourceDirector = etDirector != null ? etDirector.getText().toString() : null;
-//        String sourceYear = etYear != null ? etYear.getText().toString() : null;
-//        String sourceUrl = etUrl != null ? etUrl.getText().toString() : null;
-//        String sourceRetrievalDate = etRetrievalDate != null ? etRetrievalDate.getText().toString() : null;
-//
-//        intent.putExtra(Extras.INT_ARCHIVIST_SOURCE_TYPE_ID, mCurrentSourceType.getSourceTypeId());
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TYPE_NAME, mCurrentSourceType.getSourceTypeName());
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_TITLE, sourceTitle);
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_AUTHOR, sourceAuthor);
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_DIRECTOR, sourceDirector);
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_YEAR, sourceYear);
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_URL, sourceUrl);
-//        intent.putExtra(Extras.STRING_ARCHIVIST_SOURCE_RETRIEVAL_DATE, sourceRetrievalDate);
-//
-        setResult(ArchivistSourceDetailsActivity.REQUEST_RESULT_SOURCE_LOCATION_ENTRY, intent);
+        if(spSubset != null){
 
-        finish();
+            ArchivistSourceLocationSubset asls =
+                    (ArchivistSourceLocationSubset)spSubset.getSelectedItem();
+
+            if(asls != null){
+
+                EditText etEntryName =
+                        (EditText)findViewById(R.id.etSourceLocationSubsetEntryName);
+
+                if(etEntryName != null){
+
+                    String entryName = etEntryName.getText().toString().trim();
+
+                    if(!Utils.stringIsNullOrWhitespace(entryName)){
+
+                        NwdDb db = NwdDb.getInstance(this);
+
+                        db.ensureArchivistSourceLocationSubsetEntry(
+                                asls.getSourceLocationsSubsetId(),
+                                currentSource.getSourceId(),
+                                entryName
+                        );
+
+                        //get back the object with the id populated
+                        int sourceLocationEntryId = -1;
+                        try {
+
+                            sourceLocationEntryId = db.getSourceLocationEntryId(
+                                    asls.getSourceLocationsSubsetId(),
+                                    currentSource.getSourceId(),
+                                    entryName);
+
+                        } catch (Exception ex) {
+
+                            Utils.toast(this, "error retrieving entry id: " + ex.getMessage());
+                        }
+
+                        //just instantiating to use the timestamp methods
+                        ArchivistSourceLocationEntry asle =
+                                new ArchivistSourceLocationEntry(
+                                        currentSource.getSourceId(),
+                                        asls.getSourceLocationsSubsetId(),
+                                        entryName);
+
+                        asle.verifyPresent();
+
+                        db.updateArchivistSourceLocationSubsetEntryTimeStamps(
+                                sourceLocationEntryId,
+                                asle.getVerifiedPresent(),
+                                asle.getVerifiedMissing()
+                        );
+
+                        Utils.toast(this, "entry ensured");
+
+                        etEntryName.setText("");
+
+                        setResult(
+                                ArchivistSourceDetailsActivity.REQUEST_RESULT_SOURCE_LOCATION_ENTRY,
+                                new Intent());
+
+                        finish();
+
+                    }else{
+                        Utils.toast(this, "entry name cannot be empty");
+                    }
+                }
+            }
+        }
     }
 
     public void cancelClick(View v){

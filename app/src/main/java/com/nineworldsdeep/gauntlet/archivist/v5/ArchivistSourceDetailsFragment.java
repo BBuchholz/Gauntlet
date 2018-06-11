@@ -24,6 +24,41 @@ public class ArchivistSourceDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        ArchivistSource currentSource = ArchivistWorkspace.getCurrentSource();
+
+        if(currentSource != null) {
+
+            TextView tvSourceTypeName = (TextView) getView().findViewById(R.id.tvSourceTypeName);
+            TextView tvTitle = (TextView) getView().findViewById(R.id.tvTitle);
+            TextView tvAuthor = (TextView) getView().findViewById(R.id.tvAuthor);
+            TextView tvDirector = (TextView) getView().findViewById(R.id.tvDirector);
+            TextView tvYear = (TextView) getView().findViewById(R.id.tvYear);
+            TextView tvUrl = (TextView) getView().findViewById(R.id.tvUrl);
+            TextView tvRetrievalDate = (TextView) getView().findViewById(R.id.tvRetrievalDate);
+
+            //TODO: this is ugly, fix it, no time right now
+            String sourceTypeName = "SourceTypeName: " + currentSource.getSourceType().getSourceTypeName();
+            String title = "Title: " + currentSource.getSourceTitle();
+            String author = "Author: " + currentSource.getSourceAuthor();
+            String director = "Director: " + currentSource.getSourceDirector();
+            String year = "Year: " + currentSource.getSourceYear();
+            String uRL = "URL: " + currentSource.getSourceUrl();
+            String retrievalDate = "RetrievalDate: " + currentSource.getSourceRetrievalDate();
+
+            tvSourceTypeName.setText(sourceTypeName);
+            tvTitle.setText(title);
+            tvAuthor.setText(author);
+            tvDirector.setText(director);
+            tvYear.setText(year);
+            tvUrl.setText(uRL);
+            tvRetrievalDate.setText(retrievalDate);
+
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

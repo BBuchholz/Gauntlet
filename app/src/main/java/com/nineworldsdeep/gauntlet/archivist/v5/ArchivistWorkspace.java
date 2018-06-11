@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.SparseArray;
 
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,17 +110,26 @@ class ArchivistWorkspace {
         }
     }
 
-    static ArrayList<ArchivistSourceLocationEntry> getSourceLocationEntries(Context context) {
-
-        ArrayList<ArchivistSourceLocationEntry> entries;
+    static ArrayList<ArchivistSourceLocationEntry> getSourceLocationEntriesForCurrentSource(Context context) {
 
         //use current source to get entries
+        int sourceId = -1;
+
+        if(getCurrentSource() != null){
+            sourceId = getCurrentSource().getSourceId();
+        }
 
         NwdDb db = NwdDb.getInstance(context);
 
-        entries = new ArrayList<>();
+        ArrayList<ArchivistSourceLocationEntry> entries =
+                null;
+        try {
+            entries = db.getArchivistSourceLocationSubsetEntriesForSourceId(sourceId);
+        } catch (Exception ex) {
+            Utils.toast(context, "Error retrieving entries: " + ex.getMessage());
+        }
 
-        boolean useMockup = true;
+        boolean useMockup = entries != null && entries.size() < 1;
 
         if(useMockup){
 
@@ -126,6 +137,7 @@ class ArchivistWorkspace {
 
                 String numString = " " + Integer.toString(i);
                 entries.add(new ArchivistSourceLocationEntry(
+                        -1,
                         -1,
                         -1,
                         "demo location" + numString,

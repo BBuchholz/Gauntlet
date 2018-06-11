@@ -11,7 +11,9 @@ import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerpt;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerptTagging;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocation;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationEntry;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationSubset;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationSubsetEntriesFragment;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -43,6 +45,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -5109,6 +5112,176 @@ public class NwdDb {
         }
 
         return subsets;
+    }
+
+    public void ensureArchivistSourceLocationSubsetEntry(
+            int sourceLocationSubsetId,
+            int sourceId,
+            String sourceLocationSubsetEntryValue
+    ) {
+
+        String[] args = new String[]{
+                Integer.toString(sourceLocationSubsetId),
+                Integer.toString(sourceId),
+                sourceLocationSubsetEntryValue
+        };
+
+        db.execSQL(
+                NwdContract.INSERT_OR_IGNORE_INTO_SOURCE_LOCATION_SUBSET_ENTRY_VALUES_SUBSET_ID_SOURCE_ID_ENTRY_VALUE_X_Y_Z,
+                args);
+    }
+
+    public ArrayList<ArchivistSourceLocationEntry> getArchivistSourceLocationSubsetEntriesForSourceId(
+            int sourceId) throws ParseException {
+
+        ArrayList<ArchivistSourceLocationEntry> entries = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{ Integer.toString(sourceId) };
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCE_LOCATION_SUBSET_ENTRIES_FOR_SOURCE_ID_X,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID,
+                            NwdContract.COLUMN_SOURCE_LOCATION_VALUE,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_VALUE,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT,
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    int sourceLocationSubsetEntryId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID));
+                    int sourceLocationSubsetId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID));
+                    String sourceLocationValue = record.get(NwdContract.COLUMN_SOURCE_LOCATION_VALUE);
+                    String sourceLocationSubsetValue = record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_VALUE);
+                    String sourceLocationSubsetEntryValue = record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE);
+                    String sourceLocationSubsetEntryVerifiedPresentAt = record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT);
+                    String sourceLocationSubsetEntryVerifiedMissingAt = record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT);
+
+                    Date verifiedPresent =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    sourceLocationSubsetEntryVerifiedPresentAt);
+
+                    Date verifiedMissing =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    sourceLocationSubsetEntryVerifiedMissingAt);
+
+
+                    ArchivistSourceLocationEntry asle =
+                            new ArchivistSourceLocationEntry(
+                                    sourceId,
+                                    sourceLocationSubsetId,
+                                    sourceLocationSubsetEntryId,
+                                    sourceLocationValue,
+                                    sourceLocationSubsetValue,
+                                    sourceLocationSubsetEntryValue
+                            );
+
+                    asle.setTimeStamps(verifiedPresent, verifiedMissing);
+
+                    entries.add(asle);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            throw ex;
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return entries;
+    }
+
+    public int getSourceLocationEntryId(
+            int sourceLocationsSubsetId,
+            int sourceId,
+            String entryName) throws ParseException {
+
+        int sourceLocationSubsetEntryId = -1;
+
+        if(sourceLocationsSubsetId > 0 &&
+                sourceId > 0 &&
+                entryName != null){
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(sourceLocationsSubsetId),
+                            Integer.toString(sourceId),
+                            entryName
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCE_LOCATION_SUBSET_ENTRY_ID_FOR_SUBSET_ID_AND_SOURCE_ID_AND_ENTRY_VALUE_X_Y_Z,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID
+                    };
+
+            if(cursor.getCount() > 0) {
+
+                cursor.moveToFirst();
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                sourceLocationSubsetEntryId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID));
+            }
+
+            cursor.close();
+
+        }
+
+        return sourceLocationSubsetEntryId;
+    }
+
+    public void updateArchivistSourceLocationSubsetEntryTimeStamps(
+            int sourceLocationSubsetEntryId,
+            Date verifiedPresentAt,
+            Date verifiedMissingAt
+    ) {
+
+        String verifiedPresent =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(verifiedPresentAt);
+
+        String verifiedMissing =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(verifiedMissingAt);
+
+        String[] args = new String[]{
+              verifiedPresent,
+              verifiedMissing,
+              Integer.toString(sourceLocationSubsetEntryId)
+        };
+
+        db.execSQL(NwdContract.UPDATE_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_VERIFIED_MISSING_FOR_ID_X_Y_Z, args);
     }
 
 

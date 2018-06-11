@@ -1404,13 +1404,13 @@ public class NwdContract {
                     "END ";
 
 
-    private static final String TABLE_SOURCE_LOCATION_SUBSET_ENTRY = "SourceLocationSubsetEntry";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID = "SourceLocationSubsetEntryId";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE = "SourceLocationSubsetEntryValue";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT = "SourceLocationSubsetEntryVerifiedPresentAt";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT = "SourceLocationSubsetEntryMissingAt";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT = "SourceLocationSubsetEntryCreatedAt";
-    private static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT = "SourceLocationSubsetEntryUpdatedAt";
+    static final String TABLE_SOURCE_LOCATION_SUBSET_ENTRY = "SourceLocationSubsetEntry";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID = "SourceLocationSubsetEntryId";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE = "SourceLocationSubsetEntryValue";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT = "SourceLocationSubsetEntryVerifiedPresentAt";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT = "SourceLocationSubsetEntryMissingAt";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_CREATED_AT = "SourceLocationSubsetEntryCreatedAt";
+    static final String COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_UPDATED_AT = "SourceLocationSubsetEntryUpdatedAt";
 
 
     static final String CREATE_SOURCE_LOCATION_SUBSET_ENTRY =
@@ -1708,4 +1708,43 @@ public class NwdContract {
             "	   " + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + " " +
             "FROM " + TABLE_SOURCE_LOCATION_SUBSET + " " +
             "WHERE " + COLUMN_SOURCE_LOCATION_ID + " = ? ; ";
+
+    public static final String INSERT_OR_IGNORE_INTO_SOURCE_LOCATION_SUBSET_ENTRY_VALUES_SUBSET_ID_SOURCE_ID_ENTRY_VALUE_X_Y_Z =
+
+            "INSERT OR IGNORE INTO " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " " +
+            "	(" + COLUMN_SOURCE_LOCATION_SUBSET_ID + ", " +
+            "	 " + COLUMN_SOURCE_ID + ", " +
+            "	 " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE + ") " +
+            " VALUES (?,?,?); ";
+
+    public static final String SELECT_SOURCE_LOCATION_SUBSET_ENTRIES_FOR_SOURCE_ID_X =
+
+            "SELECT slse." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + ", " +
+            "	   slse." + COLUMN_SOURCE_LOCATION_SUBSET_ID + ", " +
+            "	   sl." + COLUMN_SOURCE_LOCATION_VALUE + ", " +
+            "	   sls." + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + ", " +
+            "	   slse." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE + ", " +
+            "	   slse." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + ", " +
+            "	   slse." + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + "	    " +
+            "FROM " + TABLE_SOURCE_LOCATION + " sl " +
+            "JOIN " + TABLE_SOURCE_LOCATION_SUBSET + " sls " +
+            "ON sl." + COLUMN_SOURCE_LOCATION_ID + " = sls." + COLUMN_SOURCE_LOCATION_ID + " " +
+            "JOIN " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " slse " +
+            "ON sls." + COLUMN_SOURCE_LOCATION_SUBSET_ID + " = slse." + COLUMN_SOURCE_LOCATION_SUBSET_ID + " " +
+            "WHERE slse." + COLUMN_SOURCE_ID + " = ? ; ";
+
+    public static final String SELECT_SOURCE_LOCATION_SUBSET_ENTRY_ID_FOR_SUBSET_ID_AND_SOURCE_ID_AND_ENTRY_VALUE_X_Y_Z =
+
+            "SELECT " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " " +
+            "FROM " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + " " +
+            "WHERE " + COLUMN_SOURCE_LOCATION_SUBSET_ID + " = ? " +
+            "AND " + COLUMN_SOURCE_ID + " = ? " +
+            "AND " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VALUE + " = ?; ";
+
+    public static final String UPDATE_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_VERIFIED_MISSING_FOR_ID_X_Y_Z =
+
+            "UPDATE " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "  " +
+            "SET " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + ", ''), ?), " +
+            "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + ", ''), ?) " +
+            "WHERE " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " = ? ; " ;
 }

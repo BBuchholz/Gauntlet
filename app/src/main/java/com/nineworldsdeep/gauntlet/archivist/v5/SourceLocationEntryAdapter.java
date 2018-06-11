@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.sqlite.NwdContract;
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 
@@ -21,7 +23,8 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
     public void refreshSourceLocationEntries(Context context) {
 
-        mSourcesLocationEntries = ArchivistWorkspace.getSourceLocationEntries(context);
+        mSourcesLocationEntries =
+                ArchivistWorkspace.getSourceLocationEntriesForCurrentSource(context);
         notifyDataSetChanged();
     }
 
@@ -45,7 +48,8 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
 
     SourceLocationEntryAdapter(ArchivistSourceDetailsActivity parent){
 
-        mSourcesLocationEntries = ArchivistWorkspace.getSourceLocationEntries(parent);
+        mSourcesLocationEntries =
+                ArchivistWorkspace.getSourceLocationEntriesForCurrentSource(parent);
         this.parentArchivistSourceDetailsActivity = parent;
 
     }
@@ -92,8 +96,30 @@ public class SourceLocationEntryAdapter extends RecyclerView.Adapter<SourceLocat
                     ///////////////////////////// END--> LEAVE THIS HERE FOR FUTURE REFERENCE (from adaptation) WILL IMPLEMENT CLICK BEHAVIOR IN FUTURE ITERATION /////////
 
 
-                    Utils.toast(parentArchivistSourceDetailsActivity,
-                            "source location entry long press");
+                    ArchivistSourceLocationEntry asle = mSourcesLocationEntries.get(position);
+
+                    //toggle presence
+                    if(asle.isPresent()){
+
+                        asle.verifiyMissing();
+
+                    }else{
+
+                        asle.verifyPresent();
+                    }
+
+                    NwdDb db = NwdDb.getInstance(parentArchivistSourceDetailsActivity);
+
+                    db.updateArchivistSourceLocationSubsetEntryTimeStamps(
+                            asle.getSourceLocationSubsetEntryId(),
+                            asle.getVerifiedPresent(),
+                            asle.getVerifiedMissing()
+                    );
+
+                    refreshSourceLocationEntries(parentArchivistSourceDetailsActivity);
+
+//                    Utils.toast(parentArchivistSourceDetailsActivity,
+//                            "source location entry long press");
                 }
 
                 //consume the long click

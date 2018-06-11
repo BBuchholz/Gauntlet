@@ -1,8 +1,11 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
-public class ArchivistSourceLocationEntry {
+import com.nineworldsdeep.gauntlet.core.TimeStamp;
+import com.nineworldsdeep.gauntlet.core.VerifiablePresenceBase;
 
-    private int sourceId, sourceLocationSubsetId;
+public class ArchivistSourceLocationEntry extends VerifiablePresenceBase {
+
+    private int sourceId, sourceLocationSubsetId, sourceLocationSubsetEntryId;
     private String sourceLocationSubsetEntryName, sourceLocationValue, sourceLocationSubsetValue;
 
     public ArchivistSourceLocationEntry(int sourceId, int sourceLocationSubsetId, String sourceLocationSubsetEntryName) {
@@ -14,12 +17,14 @@ public class ArchivistSourceLocationEntry {
 
     public ArchivistSourceLocationEntry(int sourceId,
                                         int sourceLocationSubsetId,
+                                        int sourceLocationSubsetEntryId,
                                         String sourceLocationValue,
                                         String sourceLocationSubsetValue,
                                         String sourceLocationSubsetEntryName) {
 
         this(sourceId,sourceLocationSubsetId,sourceLocationSubsetEntryName);
 
+        this.sourceLocationSubsetEntryId = sourceLocationSubsetEntryId;
         this.sourceLocationValue = sourceLocationValue;
         this.sourceLocationSubsetValue = sourceLocationSubsetValue;
     }
@@ -45,6 +50,24 @@ public class ArchivistSourceLocationEntry {
     }
 
     public String getStatus() {
-        return "ArchivistSourceLocationEntry status goes here";
+
+        String status;
+
+        if(isPresent()){
+
+            status = "verified present: " +
+                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(getVerifiedPresent());
+
+        }else{
+
+            status = "verified missing: " +
+                    TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(getVerifiedMissing());
+        }
+
+        return status;
+    }
+
+    public int getSourceLocationSubsetEntryId() {
+        return sourceLocationSubsetEntryId;
     }
 }

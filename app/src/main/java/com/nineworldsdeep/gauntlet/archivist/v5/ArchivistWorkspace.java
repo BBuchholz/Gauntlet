@@ -46,6 +46,8 @@ class ArchivistWorkspace {
         currentSource = null;
     }
 
+    private static ArchivistActivity archivistMainActivity;
+
     private static void addSourceType(ArchivistSourceType sourceType){
 
         namesToSourceTypes.put(sourceType.getSourceTypeName(), sourceType);
@@ -258,5 +260,14 @@ class ArchivistWorkspace {
         NwdDb db = NwdDb.getInstance(context);
 
         return db.getArchivistSourceLocationSubsetsForLocationId(sourceLocationId);
+    }
+
+    public static void refreshMainActivity() {
+        archivistMainActivity.refreshSources();
+        archivistMainActivity.refreshSourceExcerpts();
+    }
+
+    public static void setArchivistMainActivity(ArchivistActivity archivistMainActivity) {
+        ArchivistWorkspace.archivistMainActivity = archivistMainActivity;
     }
 }

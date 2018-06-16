@@ -6,10 +6,10 @@ package com.nineworldsdeep.gauntlet.core;
 
 public abstract class AsyncCommand {
 
-    protected IStatusActivity statusActivity;
+    protected IStatusResponsive statusActivity;
     protected String commandText;
 
-    public AsyncCommand(IStatusActivity statusActivity, String commandText){
+    public AsyncCommand(IStatusResponsive statusActivity, String commandText){
         this.statusActivity = statusActivity;
         this.commandText = commandText;
     }

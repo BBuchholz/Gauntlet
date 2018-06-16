@@ -6,7 +6,7 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 
 public class AsyncOperationImportMnemosyneV4toV5 extends AsyncOperation {
 
-    public AsyncOperationImportMnemosyneV4toV5(IStatusActivity statusActivity) {
+    public AsyncOperationImportMnemosyneV4toV5(IStatusResponsive statusActivity) {
         super(statusActivity, "Importing Mnemosyne V4");
     }
 

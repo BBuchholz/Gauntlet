@@ -1,11 +1,11 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.core.AsyncCommand;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 
 public class AsyncCommandExportDb extends AsyncCommand {
 
-    public AsyncCommandExportDb(IStatusActivity statusEnabledActivity) {
+    public AsyncCommandExportDb(IStatusResponsive statusEnabledActivity) {
         super(statusEnabledActivity, "Export DB");
     }
 

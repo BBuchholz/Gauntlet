@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v2.ListEntry;
@@ -21,7 +21,7 @@ import java.io.File;
 
 public class AsyncOperationExportSynergyV5ToXml extends AsyncOperation {
 
-    public AsyncOperationExportSynergyV5ToXml(IStatusActivity statusActivity) {
+    public AsyncOperationExportSynergyV5ToXml(IStatusResponsive statusActivity) {
         super(statusActivity, "Exporting Synergy V5 to XML");
     }
 

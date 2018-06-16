@@ -4,7 +4,7 @@ import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import org.apache.commons.io.FileUtils;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class AsyncOperationImportMnemosyneV3toV4 extends AsyncOperation {
 
-    public AsyncOperationImportMnemosyneV3toV4(IStatusActivity statusActivity) {
+    public AsyncOperationImportMnemosyneV3toV4(IStatusResponsive statusActivity) {
         super(statusActivity, "Importing Hash Tag Indexes");
     }
 

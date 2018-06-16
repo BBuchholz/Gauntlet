@@ -5284,6 +5284,41 @@ public class NwdDb {
         db.execSQL(NwdContract.UPDATE_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_VERIFIED_MISSING_FOR_ID_X_Y_Z, args);
     }
 
+    public void deleteArchivistSourceExcerptAnnotationsByExcerptId(int excerptId) {
+
+        String[] args = {Integer.toString(excerptId)};
+
+        db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_EXCERPT_ANNOTATIONS_FOR_EXID, args);
+    }
+
+    public void deleteArchivistSourceExcerptTaggingsByExcerptId(int excerptId) {
+
+        String[] args = {Integer.toString(excerptId)};
+
+        db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_EXCERPT_TAGGINGS_FOR_EXID, args);
+    }
+
+    public void deleteArchivistSourceExcerptsBySourceId(int sourceId) {
+
+        String[] args = {Integer.toString(sourceId)};
+
+        db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_EXCERPTS_FOR_SOURCE_ID, args);
+    }
+
+    public void deleteArchivistSourceLocationSubsetEntriesBySourceId(int sourceId) {
+
+        String[] args = {Integer.toString(sourceId)};
+
+        db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRIES_FOR_SOURCE_ID, args);
+    }
+
+    public void deleteArchivistSourceBySourceId(int sourceId) {
+
+        String[] args = {Integer.toString(sourceId)};
+
+        db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_FOR_SOURCE_ID, args);
+    }
+
 
     //region templates
 

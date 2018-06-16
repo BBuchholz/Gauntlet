@@ -5,7 +5,6 @@ import android.os.Build;
 
 import com.nineworldsdeep.gauntlet.MultiMapString;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -15,11 +14,11 @@ import java.util.concurrent.ExecutionException;
 public abstract class AsyncMultiMapStringOperation
         extends AsyncTask<Void, String, MultiMapString> {
 
-    protected IStatusActivity statusEnabledActivity;
+    protected IStatusResponsive statusEnabledActivity;
     protected String operationVerb;
 //    protected String commandText;
 
-    public AsyncMultiMapStringOperation(IStatusActivity statusActivity,
+    public AsyncMultiMapStringOperation(IStatusResponsive statusActivity,
                                         String operationVerb){
 
         this.statusEnabledActivity = statusActivity;

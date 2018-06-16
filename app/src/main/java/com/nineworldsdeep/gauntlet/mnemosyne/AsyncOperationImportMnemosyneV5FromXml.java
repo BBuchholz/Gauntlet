@@ -5,26 +5,19 @@ import android.util.Log;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
-import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 import com.nineworldsdeep.gauntlet.xml.XmlImporter;
 
-import org.apache.commons.io.FilenameUtils;
-import org.xml.sax.SAXException;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 public class AsyncOperationImportMnemosyneV5FromXml extends AsyncOperation {
 
-    public AsyncOperationImportMnemosyneV5FromXml(IStatusActivity statusActivity) {
+    public AsyncOperationImportMnemosyneV5FromXml(IStatusResponsive statusActivity) {
         super(statusActivity, "Importing Mnemosyne V5 from XML");
     }
 

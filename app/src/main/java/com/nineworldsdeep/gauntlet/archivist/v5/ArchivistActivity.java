@@ -163,6 +163,8 @@ public class ArchivistActivity extends AppCompatActivity {
                 }
             });
         }
+
+        ArchivistWorkspace.setArchivistMainActivity(this);
     }
 
 

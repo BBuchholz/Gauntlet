@@ -3,15 +3,13 @@ package com.nineworldsdeep.gauntlet.mnemosyne.v5.async;
 import com.nineworldsdeep.gauntlet.MultiMapString;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.AsyncMultiMapStringOperation;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Created by brent on 2/6/17.
@@ -22,7 +20,7 @@ public class AsyncOpGetFileSystemExtensionEntries
 
     private File mediaRoot;
 
-    public AsyncOpGetFileSystemExtensionEntries(IStatusActivity statusActivity,
+    public AsyncOpGetFileSystemExtensionEntries(IStatusResponsive statusActivity,
                                                 File mediaRootDir) {
         super(statusActivity, "Retrieving Extension Entries");
 

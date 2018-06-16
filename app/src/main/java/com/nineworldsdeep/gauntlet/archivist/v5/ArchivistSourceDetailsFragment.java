@@ -1,6 +1,6 @@
 package com.nineworldsdeep.gauntlet.archivist.v5;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
+import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArchivistSourceDetailsFragment extends Fragment {
+public class ArchivistSourceDetailsFragment extends Fragment implements IStatusResponsive {
 
 
     public ArchivistSourceDetailsFragment() {
@@ -69,6 +71,8 @@ public class ArchivistSourceDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_archivist_source_details, container, false);
 
+        final ArchivistSourceDetailsFragment thisFragment = this;
+
         Button button = (Button) view.findViewById(R.id.btnPurge);
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -79,10 +83,24 @@ public class ArchivistSourceDetailsFragment extends Fragment {
                 LayoutInflater li = LayoutInflater.from(getActivity());
                 View promptsView = li.inflate(R.layout.prompt, null);
 
-                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
-                tv.setText("WARNING! This is irreversible and will PERMANENTLY remove all excerpts " +
+                final ArchivistSource source = ArchivistWorkspace.getCurrentSource();
+
+                if(source == null){
+
+                    Utils.toast(getActivity(), "source null");
+
+                    return;
+                }
+
+                String sourceDetails = source.getShortDescription() + "(id:" + Integer.toString(source.getSourceId()) + ")";
+
+                String promptMsg = "Purge: " + sourceDetails + " WARNING! This is irreversible " +
+                        "and will PERMANENTLY remove all excerpts " +
                         "as well as the source itself from the database. " +
-                        "To confirm, type the phrase \"yes i am sure\"");
+                        "To confirm, type the phrase \"yes i am sure\"";
+
+                TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+                tv.setText(promptMsg);
 
                 android.app.AlertDialog.Builder alertDialogBuilder =
                         new android.app.AlertDialog.Builder(getActivity());
@@ -105,7 +123,18 @@ public class ArchivistSourceDetailsFragment extends Fragment {
 
                                         if(verificationPhrase.equalsIgnoreCase("yes I am sure")){
 
-                                            Utils.toast(getActivity(),"purge source here");
+
+                                            if(source != null) {
+
+                                                AsyncOperationArchivistPurgeSource op =
+                                                        new AsyncOperationArchivistPurgeSource(thisFragment, source);
+
+                                                op.executeAsync();
+
+                                            }else{
+
+                                                Utils.toast(getActivity(), "source null");
+                                            }
 
                                         }else{
 
@@ -133,4 +162,23 @@ public class ArchivistSourceDetailsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void updateStatus(String status) {
+
+        TextView tv = (TextView)getView().findViewById(R.id.tvStatus);
+        tv.setText(status);
+    }
+
+    @Override
+    public Activity getAsActivity() {
+        return getActivity();
+    }
+
+    @Override
+    public void onPostExecute() {
+
+        ArchivistWorkspace.setCurrentSource(null);
+        ArchivistWorkspace.refreshMainActivity();
+        NavigateActivityCommand.navigateTo(ArchivistActivity.class, getAsActivity());
+    }
 }

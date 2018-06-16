@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.xml.Xml;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AsyncOperationHiveImportSynergyV5FromXml extends AsyncOperation {
 
-    public AsyncOperationHiveImportSynergyV5FromXml(IStatusActivity statusActivity) {
+    public AsyncOperationHiveImportSynergyV5FromXml(IStatusResponsive statusActivity) {
         super(statusActivity, "Importing Synergy V5 from Hive XML");
     }
 

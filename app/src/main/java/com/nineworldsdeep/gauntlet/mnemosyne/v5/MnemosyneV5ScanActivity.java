@@ -11,20 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionBarOverlayLayout;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,7 +29,7 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.async.AsyncOpGetFileSystemExtensionEntries;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -42,12 +37,9 @@ import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
-public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatusActivity {
+public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatusResponsive {
 
     private static final int SELECT_DIRECTORY_CODE = 1;
     private MultiMapString extensionsToPaths;
@@ -761,5 +753,10 @@ public class MnemosyneV5ScanActivity extends AppCompatActivity implements IStatu
     @Override
     public Activity getAsActivity() {
         return this;
+    }
+
+    @Override
+    public void onPostExecute() {
+
     }
 }

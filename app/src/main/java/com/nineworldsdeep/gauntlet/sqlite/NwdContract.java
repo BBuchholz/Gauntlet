@@ -1747,4 +1747,29 @@ public class NwdContract {
             "SET " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_AT + ", ''), ?), " +
             "	" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + " = MAX(IFNULL(" + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_MISSING_AT + ", ''), ?) " +
             "WHERE " + COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID + " = ? ; " ;
+
+    public static final String DELETE_ARCHIVIST_SOURCE_EXCERPT_ANNOTATIONS_FOR_EXID =
+
+            "DELETE FROM " + TABLE_SOURCE_EXCERPT_ANNOTATION + "  " +
+            "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ? ; ";
+
+    public static final String DELETE_ARCHIVIST_SOURCE_EXCERPT_TAGGINGS_FOR_EXID =
+
+            "DELETE FROM " + TABLE_SOURCE_EXCERPT_TAGGING + "  " +
+                    "WHERE " + COLUMN_SOURCE_EXCERPT_ID + " = ? ; ";
+
+    public static final String DELETE_ARCHIVIST_SOURCE_EXCERPTS_FOR_SOURCE_ID =
+
+            "DELETE FROM " + TABLE_SOURCE_EXCERPT + "  " +
+                    "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
+
+    public static final String DELETE_ARCHIVIST_SOURCE_LOCATION_SUBSET_ENTRIES_FOR_SOURCE_ID =
+
+            "DELETE FROM " + TABLE_SOURCE_LOCATION_SUBSET_ENTRY + "  " +
+                    "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
+
+    public static final String DELETE_ARCHIVIST_SOURCE_FOR_SOURCE_ID =
+
+            "DELETE FROM " + TABLE_SOURCE + "  " +
+                    "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
 }

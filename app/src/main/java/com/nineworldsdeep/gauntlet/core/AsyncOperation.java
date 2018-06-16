@@ -10,11 +10,11 @@ import android.os.Build;
 public abstract class AsyncOperation
         extends AsyncTask<Void, String, String> {
 
-    protected IStatusActivity statusEnabledActivity;
+    protected IStatusResponsive statusEnabledActivity;
     protected String operationVerb;
 //    protected String commandText;
 
-    public AsyncOperation(IStatusActivity statusActivity,
+    public AsyncOperation(IStatusResponsive statusActivity,
                           String operationVerb){
 
         this.statusEnabledActivity = statusActivity;
@@ -73,6 +73,7 @@ public abstract class AsyncOperation
         if(result != null) {
 
             statusEnabledActivity.updateStatus(result);
+            statusEnabledActivity.onPostExecute();
         }
     }
 

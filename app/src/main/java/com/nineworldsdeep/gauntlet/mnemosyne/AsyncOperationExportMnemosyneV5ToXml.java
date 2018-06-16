@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class AsyncOperationExportMnemosyneV5ToXml extends AsyncOperation {
 
-    public AsyncOperationExportMnemosyneV5ToXml(IStatusActivity statusActivity) {
+    public AsyncOperationExportMnemosyneV5ToXml(IStatusResponsive statusActivity) {
         super(statusActivity, "Exporting Mnemosyne V5 to XML");
     }
 

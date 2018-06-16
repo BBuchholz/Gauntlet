@@ -6,8 +6,9 @@ import android.app.Activity;
  * Created by brent on 10/5/16.
  */
 
-public interface IStatusActivity {
+public interface IStatusResponsive {
 
     void updateStatus(String status);
     Activity getAsActivity();
+    void onPostExecute();
 }

@@ -1,11 +1,11 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.core.AsyncCommand;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 
 public class AsyncCommandImportMnemosyneV4toV5 extends AsyncCommand {
 
-    public AsyncCommandImportMnemosyneV4toV5(IStatusActivity statusEnabledActivity) {
+    public AsyncCommandImportMnemosyneV4toV5(IStatusResponsive statusEnabledActivity) {
         super(statusEnabledActivity, "Import Mnemosyne V4");
     }
 

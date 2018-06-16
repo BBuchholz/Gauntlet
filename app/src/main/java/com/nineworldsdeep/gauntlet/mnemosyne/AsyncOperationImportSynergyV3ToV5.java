@@ -1,7 +1,7 @@
 package com.nineworldsdeep.gauntlet.mnemosyne;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListFile;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyListItem;
@@ -14,7 +14,7 @@ import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
  */
 public class AsyncOperationImportSynergyV3ToV5 extends AsyncOperation {
 
-    public AsyncOperationImportSynergyV3ToV5(IStatusActivity statusActivity){
+    public AsyncOperationImportSynergyV3ToV5(IStatusResponsive statusActivity){
         super(statusActivity, "Importing Synergy V3 to V5");
     }
 

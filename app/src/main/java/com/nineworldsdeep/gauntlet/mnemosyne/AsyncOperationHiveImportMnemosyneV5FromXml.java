@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
-import com.nineworldsdeep.gauntlet.core.IStatusActivity;
+import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.xml.Xml;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AsyncOperationHiveImportMnemosyneV5FromXml extends AsyncOperation {
 
-    public AsyncOperationHiveImportMnemosyneV5FromXml(IStatusActivity statusActivity) {
+    public AsyncOperationHiveImportMnemosyneV5FromXml(IStatusResponsive statusActivity) {
         super(statusActivity, "Importing Mnemosyne V5 from Hive XML");
     }
 

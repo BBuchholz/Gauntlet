@@ -6,4 +6,4 @@ NineWorldsDeep is a node based ecosystem created with the intent of practicing a
 
 It aims to achieve this through facilitating the storage and retrieval of "linkable", "taggable", "hashable" elements of creative and investigative works in progress.
 
-Gauntlet allows the user to tag and link hashable media and related textual information from any compatible android device. It is intended to be used in conjunction with the [NineWorldsDeep](https://github.com/BBuchholz/NineWorldsDeep) desktop application.
+Gauntlet allows the user to tag and link hashable media and related textual information from any compatible android device. It is intended to be used in conjunction with the NineWorldsDeep desktop application (Portal).

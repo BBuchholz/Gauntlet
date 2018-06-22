@@ -33,13 +33,41 @@ public class Xml {
 
     public static final String TAG_SYNERGY_SUBSET = "synergySubset";
     public static final String TAG_MNEMOSYNE_SUBSET = "mnemosyneSubset";
+    public static final String TAG_ARCHIVIST_SUBSET = "archivistSubset";
+
+    public static final String TAG_SOURCE = "source";
+    public static final String TAG_SOURCE_LOCATION_SUBSET_ENTRY = "sourceLocationSubsetEntry";
+    public static final String TAG_SOURCE_EXCERPT_ = "sourceExcerpt";
+    public static final String TAG_SOURCE_EXCERPT_VALUE = "sourceExcerptValue";
+    public static final String TAG_SOURCE_EXCERPT_ANNOTATION = "sourceExcerptAnnotation";
+    public static final String TAG_SOURCE_EXCERPT_ANNOTATION_VALUE = "sourceExcerptAnnotationValue";
+    public static final String TAG_TAG = "tag";
+
+    public static String ATTR_TYPE = "type";
+    public static String ATTR_AUTHOR = "author";
+    public static String ATTR_DIRECTOR = "director";
+    public static String ATTR_TITLE = "title";
+    public static String ATTR_YEAR = "year";
+    public static String ATTR_URL = "url";
+    public static String ATTR_RETRIEVAL_DATE = "retrievalDate";
+    public static String ATTR_TAG = "tag";
+    public static String ATTR_LOCATION = "location";
+    public static String ATTR_LOCATION_SUBSET = "locationSubset";
+    public static String ATTR_LOCATION_SUBSET_ENTRY = "locationSubsetEntry";
+    public static String ATTR_VERIFIED_PRESENT = "verifiedPresent";
+    public static String ATTR_VERIFIED_MISSING = "verifiedMissing";
+    public static String ATTR_PAGES = "pages";
+    public static String ATTR_BEGINTIME = "beginTime";
+    public static String ATTR_ENDTIME = "endTime";
+    public static String ATTR_TAGVALUE = "tagValue";
+    public static String ATTR_TAGGED_AT = "taggedAt";
+    public static String ATTR_UNTAGGED_AT = "untaggedAt";
 
     public static final String TAG_SYNERGY_LIST = "synergyList";
     public static final String TAG_SYNERGY_ITEM = "synergyItem";
     public static final String TAG_ITEM_VALUE = "itemValue";
     public static final String TAG_TO_DO = "toDo";
     public static final String TAG_MEDIA = "media";
-    public static final String TAG_TAG = "tag";
     public static final String TAG_MEDIA_DEVICE = "mediaDevice";
     public static final String TAG_PATH = "path";
 
@@ -52,15 +80,12 @@ public class Xml {
     public static final String ATTR_SHA1_HASH = "sha1Hash";
     public static final String ATTR_FILE_NAME = "fileName";
     public static final String ATTR_DESCRIPTION = "description";
-    public static final String ATTR_VERIFIED_MISSING = "verifiedMissing";
-    public static final String ATTR_VERIFIED_PRESENT = "verifiedPresent";
     public static final String ATTR_VALUE = "value";
-    public static final String ATTR_UNTAGGED_AT = "untaggedAt";
-    public static final String ATTR_TAGGED_AT = "taggedAt";
     public static final String ATTR_TAG_VALUE = "tagValue";
 
     public static final String FILE_NAME_SYNERGY_V5 = "nwd-synergy-v5";
     public static final String FILE_NAME_MNEMOSYNE_V5 = "nwd-mnemosyne-v5";
+    public static final String FILE_NAME_ARCHIVIST_V5 = "nwd-archivist-v5";
 
     public static void exportFromDb(Context context,
                                     List<LocalConfigNode> config,

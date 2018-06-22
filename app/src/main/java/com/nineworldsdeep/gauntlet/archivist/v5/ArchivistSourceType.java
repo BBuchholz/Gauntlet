@@ -39,11 +39,11 @@ public class ArchivistSourceType implements Comparable<ArchivistSourceType> {
 
     }
 
-    String getSourceTypeName() {
+    public String getSourceTypeName() {
         return sourceTypeName;
     }
 
-    int getSourceTypeId() { return sourceTypeId; }
+    public int getSourceTypeId() { return sourceTypeId; }
 
     int getSourcePicDrawableResourceId() {
         return sourcePicDrawableResourceId;

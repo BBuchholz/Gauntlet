@@ -142,4 +142,5 @@
 \n\nIn interdum eros in ullamcorper tristique. Sed elit elit, viverra eget elit eu, rutrum hendrerit tortor. Fusce eget arcu eu quam tincidunt placerat. Sed nec tincidunt dolor. Donec sodales, ex id sollicitudin molestie, diam elit dictum diam, eget mollis elit diam a sapien. In hac habitasse platea dictumst. Vivamus eu risus sed mauris malesuada condimentum. Vestibulum molestie odio et ipsum cursus mollis. Integer vel vehicula urna, eget scelerisque nulla. Donec a ex nibh. Integer vel tellus in quam porttitor gravida nec sed lacus. In quis ultricies justo, ut lobortis sem. Etiam felis urna, molestie vitae dui placerat, viverra consequat velit.
     </string>
     <string name="tags_go_here_dev_placeholder">tags go here (dev placeholder)</string>
+    <string name="xml_ops">XML Ops</string>
 </resources>

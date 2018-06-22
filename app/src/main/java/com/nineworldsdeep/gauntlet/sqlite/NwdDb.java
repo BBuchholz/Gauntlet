@@ -4673,7 +4673,7 @@ public class NwdDb {
         cursor.close();
     }
 
-    public ArrayList<ArchivistSourceType> getArchivistSourceTypes(Context context) {
+    public ArrayList<ArchivistSourceType> getArchivistSourceTypes() {
 
         ArrayList<ArchivistSourceType> allSourceTypes = new ArrayList<>();
 
@@ -4736,7 +4736,7 @@ public class NwdDb {
     }
 
 
-    public ArrayList<ArchivistSource> getAllArchivistSources(Context context) {
+    public ArrayList<ArchivistSource> getAllArchivistSources() {
 
         ArrayList<ArchivistSource> allSources = new ArrayList<>();
 
@@ -4815,7 +4815,7 @@ public class NwdDb {
         return allSources;
     }
 
-    public ArrayList<ArchivistSource> getArchivistSourcesForTypeId(Context context, int sourceTypeId) {
+    public ArrayList<ArchivistSource> getArchivistSourcesForTypeId(int sourceTypeId) {
 
 
         ArrayList<ArchivistSource> sourcesForTypeId = new ArrayList<>();
@@ -4897,7 +4897,7 @@ public class NwdDb {
         return sourcesForTypeId;
     }
 
-    public ArrayList<ArchivistSourceExcerpt> getArchivistSourceExcerptsForSourceId(Context context, int sourceId) {
+    public ArrayList<ArchivistSourceExcerpt> getArchivistSourceExcerptsForSourceId(int sourceId) {
 
         ArrayList<ArchivistSourceExcerpt> sourceExcerptsForSourceId = new ArrayList<>();
 

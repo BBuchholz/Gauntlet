@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.archivist.v5.async.AsyncCommandHiveExportArchivistV5ToXml;
 import com.nineworldsdeep.gauntlet.core.AsyncListBasedActivity;
 import com.nineworldsdeep.gauntlet.core.AsyncCommand;
 import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
@@ -81,6 +82,7 @@ public class TransferActivity extends AsyncListBasedActivity
 
         cmds.add(new AsyncCommandHiveExportSynergyV5ToXml(this));
         cmds.add(new AsyncCommandHiveExportMnemosyneV5ToXml(this));
+        cmds.add(new AsyncCommandHiveExportArchivistV5ToXml(this));
 
         return new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, cmds);

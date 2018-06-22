@@ -104,7 +104,7 @@ class ArchivistWorkspace {
 
         NwdDb db = NwdDb.getInstance(context);
 
-        ArrayList<ArchivistSourceType> allTypes = db.getArchivistSourceTypes(context);
+        ArrayList<ArchivistSourceType> allTypes = db.getArchivistSourceTypes();
 
         for(ArchivistSourceType sourceType : allTypes){
 
@@ -159,11 +159,10 @@ class ArchivistWorkspace {
 
         if(currentSourceTypeIsAllTypes()){
             //return all sources
-            openSources = db.getAllArchivistSources(context);
+            openSources = db.getAllArchivistSources();
         }else{
             //return for current source type (where clause using source type id)
-            openSources = db.getArchivistSourcesForTypeId(context,
-                    currentSourceType.getSourceTypeId());
+            openSources = db.getArchivistSourcesForTypeId(currentSourceType.getSourceTypeId());
         }
 
         return openSources;
@@ -181,7 +180,6 @@ class ArchivistWorkspace {
 
             openSourceExcerpts =
                     db.getArchivistSourceExcerptsForSourceId(
-                            context,
                             currentSource.getSourceId());
 
             db.populateArchivistSourceExcerptTaggings(openSourceExcerpts);

@@ -105,7 +105,7 @@ public class ArchivistSource {
         this.sourceRetrievalDate = sourceRetrievalDate;
     }
 
-    String getShortDescription() {
+    public String getShortDescription() {
 
         if(!Utils.stringIsNullOrWhitespace(sourceTitle)){
 

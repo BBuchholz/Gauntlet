@@ -31,7 +31,7 @@ public class AsyncOperationArchivistPurgeSource extends AsyncOperation {
 
 
         ArrayList<ArchivistSourceExcerpt> sourceExcerpts =
-                db.getArchivistSourceExcerptsForSourceId(ctx, source.getSourceId());
+                db.getArchivistSourceExcerptsForSourceId(source.getSourceId());
 
         try {
 

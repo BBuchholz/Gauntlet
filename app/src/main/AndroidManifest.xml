@@ -684,6 +684,9 @@
         <activity
             android:name=".archivist.v5.ArchivistSourceExcerptDetailActivity"
             android:label="@string/title_activity_archivist_source_excerpt_detail" />
+        <activity android:name=".lab.dbind.ui.DataBindingBasicExampleActivity" />
+        <activity android:name=".lab.dbind.ui.ObservableFieldActivity" />
+        <activity android:name=".lab.dbind.ui.ViewModelActivity"></activity>
     </application>
 
 </manifest>

@@ -14,18 +14,18 @@ import android.widget.TextView;
 import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity;
-import com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity;
 import com.nineworldsdeep.gauntlet.hive.HiveRootsActivity;
+import com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.playerService.MediaPlayerServiceActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageGridV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.SynergyDrawerActivity;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
@@ -35,7 +35,7 @@ import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeListActivity extends ListBaseActivity {
+public class LabListActivity extends ListBaseActivity {
 
     private List<NavigateActivityCommand> cmds = new ArrayList<>();
 
@@ -46,8 +46,6 @@ public class HomeListActivity extends ListBaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //prompt for device name if not set
-        checkAndPromptForDeviceName();
     }
 
     @Override
@@ -61,24 +59,15 @@ public class HomeListActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        addNavigateActivityCommand("Synergy V5", SynergyV5MainActivity.class);
-        addNavigateActivityCommand("Images V5", ImageListV5Activity.class);
-        addNavigateActivityCommand("Audio V5", AudioListV5Activity.class);
-        addNavigateActivityCommand("Audio Player V5", AudioDisplayV5Activity.class);
-        addNavigateActivityCommand("PDFs", PdfListActivity.class);
-        addNavigateActivityCommand("Transfers", TransferActivity.class);
-        addNavigateActivityCommand("Hive", HiveRootsActivity.class);
-        addNavigateActivityCommand("Archivist", ArchivistActivity.class);
-        addNavigateActivityCommand("Lab", LabListActivity.class);
-
-
-//        addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
-//        addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
-//        addNavigateActivityCommand("Hive Hierarchy Exp.", HiveRootListActivity.class);
-//        addNavigateActivityCommand("Synergy Drawer", SynergyDrawerActivity.class);
-//        addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
-//        addNavigateActivityCommand("Muse", MuseMainActivity.class);
-//        addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
+        addNavigateActivityCommand("Home List", HomeListActivity.class);
+        addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
+        addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
+        addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
+        addNavigateActivityCommand("Hive Hierarchy Exp.", HiveRootListActivity.class);
+        addNavigateActivityCommand("Synergy Drawer", SynergyDrawerActivity.class);
+        addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
+        addNavigateActivityCommand("Muse", MuseMainActivity.class);
+        addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
 
     }
 
@@ -146,11 +135,11 @@ public class HomeListActivity extends ListBaseActivity {
                                         f.setDeviceName(name);
                                         f.save();
 
-                                        Utils.toast(HomeListActivity.this,
+                                        Utils.toast(LabListActivity.this,
                                                 "device name stored");
                                     }else{
 
-                                        Utils.toast(HomeListActivity.this,
+                                        Utils.toast(LabListActivity.this,
                                                 "invalid device name");
                                     }
                                 }
@@ -160,7 +149,7 @@ public class HomeListActivity extends ListBaseActivity {
                                 public void onClick(DialogInterface dialog,
                                                     int id) {
 
-                                    Utils.toast(HomeListActivity.this, "cancelled");
+                                    Utils.toast(LabListActivity.this, "cancelled");
 
                                     dialog.cancel();
                                 }

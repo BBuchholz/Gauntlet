@@ -503,6 +503,15 @@
                 android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity" />
         </activity>
         <activity
+            android:name=".core.LabListActivity"
+            android:label="LabListActivity"
+            android:parentActivityName=".core.HomeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nineworldsdeep.gauntlet.core.HomeListActivity" />
+        </activity>
+        <activity
             android:name=".mnemosyne.ImageGridActivity"
             android:label="@string/title_activity_image_grid"
             android:parentActivityName=".mnemosyne.ImageListV2Activity"

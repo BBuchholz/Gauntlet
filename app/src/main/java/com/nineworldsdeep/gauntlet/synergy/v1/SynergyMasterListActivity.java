@@ -1,8 +1,9 @@
 package com.nineworldsdeep.gauntlet.synergy.v1;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.nineworldsdeep.gauntlet.R;
 import java.util.List;
 
 @Deprecated
-public class SynergyMasterListActivity extends ActionBarActivity {
+public class SynergyMasterListActivity extends AppCompatActivity {
 
     public static final String EXTRA_LISTNAME = "com.nineworldsdeep.gauntlet.SYNERGY_LISTNAME";
     private List<String> items;

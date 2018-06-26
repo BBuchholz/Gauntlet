@@ -16,6 +16,7 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistActivity;
 import com.nineworldsdeep.gauntlet.hive.HiveRootsActivity;
 import com.nineworldsdeep.gauntlet.hive.experimental.HiveRootListActivity;
+import com.nineworldsdeep.gauntlet.lab.dbind.ui.DataBindingBasicExampleActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.PdfListActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.TransferActivity;
@@ -60,6 +61,7 @@ public class LabListActivity extends ListBaseActivity {
         cmds.clear();
 
         addNavigateActivityCommand("Home List", HomeListActivity.class);
+        addNavigateActivityCommand("Kotlin Data Binding", DataBindingBasicExampleActivity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
         addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
         addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);

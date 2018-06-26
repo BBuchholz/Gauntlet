@@ -16,6 +16,15 @@
         android:theme="@style/AppTheme">
         <service android:name=".mnemosyne.playerService.MediaPlayerService" />
 
+        <provider
+            android:name=".core.GenericFileProvider"
+            android:authorities="${applicationId}.com.nineworldsdeep.gauntlet.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

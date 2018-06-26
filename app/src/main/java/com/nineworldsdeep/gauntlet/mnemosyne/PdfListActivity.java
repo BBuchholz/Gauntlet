@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -336,9 +337,17 @@ public class PdfListActivity extends AppCompatActivity {
 
         if(f.exists() && f.isFile()){
 
+            //previous version (api < 24)
+//            Intent target = new Intent(Intent.ACTION_VIEW);
+//            target.setDataAndType(Uri.fromFile(f),"application/pdf");
+//            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            //updating for api >= 24
             Intent target = new Intent(Intent.ACTION_VIEW);
-            target.setDataAndType(Uri.fromFile(f),"application/pdf");
+            Uri pdfUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".com.nineworldsdeep.gauntlet.provider", f);
+            target.setDataAndType(pdfUri,"application/pdf");
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             try{
 

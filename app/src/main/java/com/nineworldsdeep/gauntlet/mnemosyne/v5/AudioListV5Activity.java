@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -728,13 +729,25 @@ public class AudioListV5Activity extends AppCompatActivity {
 
         if(f.exists() && f.isFile()){
 
+            //previous version (api < 24)
+//            Intent target = new Intent(Intent.ACTION_VIEW);
+//
+//            String mimeType = UtilsMnemosyneV5.getMimeType(f);
+//
+//            //target.setDataAndType(Uri.fromFile(f),"*/*");
+//            target.setDataAndType(Uri.fromFile(f), mimeType);
+//            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            //updating for api >= 24
             Intent target = new Intent(Intent.ACTION_VIEW);
 
             String mimeType = UtilsMnemosyneV5.getMimeType(f);
 
-            //target.setDataAndType(Uri.fromFile(f),"*/*");
-            target.setDataAndType(Uri.fromFile(f), mimeType);
+            Uri audioUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".com.nineworldsdeep.gauntlet.provider", f);
+
+            target.setDataAndType(audioUri, mimeType);
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             try{
 

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -190,10 +191,19 @@ public class ImageDisplayV5Activity extends AppCompatActivity {
                     @Override
                     public boolean onLongClick(View v) {
 
-                        //from:http://stackoverflow.com/questions/19422075/open-a-selected-file-image-pdf-programmatically-from-my-android-applicat
-                        Uri uri = Uri.fromFile(new File(path));
+
+//                        //previous version (api < 24)
+//                        Uri uri = Uri.fromFile(new File(path));
+//                        Intent imageIntent = new Intent(Intent.ACTION_VIEW);
+//                        imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        imageIntent.setDataAndType(uri, "image/*");
+
+                        //updating for api >= 24
+                        File f = new File(path);
+                        Uri uri = FileProvider.getUriForFile(ImageDisplayV5Activity.this, getApplicationContext().getPackageName() + ".com.nineworldsdeep.gauntlet.provider", f);
                         Intent imageIntent = new Intent(Intent.ACTION_VIEW);
                         imageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        imageIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         imageIntent.setDataAndType(uri, "image/*");
 
                         try {

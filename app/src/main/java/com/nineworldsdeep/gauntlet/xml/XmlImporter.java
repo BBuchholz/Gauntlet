@@ -3,6 +3,7 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
@@ -14,6 +15,10 @@ import com.nineworldsdeep.gauntlet.model.TagNode;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ToDo;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlLocationEntry;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSource;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSourceExcerpt;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlTag;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -246,6 +251,58 @@ public class XmlImporter {
     private Element getFirst(Element parentEl, String childName){
 
         return (Element) parentEl.getElementsByTagName(childName).item(0);
+    }
+
+    public ArrayList<ArchivistXmlSource> getArchivistV5TestSources() throws Exception {
+
+        //mock
+        ArrayList<ArchivistXmlSource> allSources = new ArrayList<>();
+        String testSourceName = "test Source: " + TimeStamp.now().toString();
+        ArchivistXmlSource testSource = new ArchivistXmlSource();
+        testSource.setSourceType("Book");
+        testSource.setTitle(testSourceName);
+
+        ArchivistXmlLocationEntry axle = new ArchivistXmlLocationEntry();
+        axle.setLocation("Test Location");
+        axle.setLocationSubset("Test Subset");
+        axle.setLocationSubsetEntry(testSourceName + ".pdf");
+
+        testSource.add(axle);
+
+        ArchivistXmlSourceExcerpt axse1 = new ArchivistXmlSourceExcerpt();
+        axse1.setBeginTime("5:00");
+        axse1.setEndTime("6:00");
+        axse1.setExcerptValue("test val 1: " + TimeStamp.now().toString());
+
+        ArchivistXmlSourceExcerpt axse2 = new ArchivistXmlSourceExcerpt();
+        axse2.setPages("10-15");
+        axse2.setExcerptValue("test val 2: " + TimeStamp.now().toString());
+
+        ArchivistXmlTag axt1 = new ArchivistXmlTag();
+        axt1.setTagValue("Test");
+        axt1.setTaggedAt("2018-06-22 16:45:58");
+
+        ArchivistXmlTag axt2 = new ArchivistXmlTag();
+        axt2.setTagValue("Testing");
+        axt2.setTaggedAt("2018-06-22 16:45:58");
+        axt2.setUntaggedAt("2018-06-22 16:50:58");
+
+        axse1.add(axt1);
+        axse1.add(axt2);
+        axse2.add(axt1);
+
+        testSource.add(axse1);
+        testSource.add(axse2);
+
+        allSources.add(testSource);
+
+        return allSources;
+    }
+
+    public ArrayList<ArchivistXmlSource> getArchivistV5Sources() throws Exception {
+
+        //testing
+        return getArchivistV5TestSources();
     }
 
     public ArrayList<Media> getMnemosyneV5Media() throws Exception {

@@ -40,6 +40,10 @@ import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5List;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ListItem;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5ToDo;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlLocationEntry;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSource;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSourceExcerpt;
+import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlTag;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -4461,6 +4465,25 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z, args);
     }
 
+    public void insertOrIgnoreArchivistSourceExcerpt(int sourceId,
+                                                     String excerptValue,
+                                                     String beginTime,
+                                                     String endTime,
+                                                     String pages,
+                                                     SQLiteDatabase db){
+
+        String[] args = new String[]{
+
+                Integer.toString(sourceId),
+                excerptValue,
+                beginTime,
+                endTime,
+                pages
+        };
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z, args);
+    }
+
     public void ensureArchivistSourceExcerptTaggings(
             ArchivistSourceExcerpt ase)
             throws Exception {
@@ -4507,6 +4530,53 @@ public class NwdDb {
             insertOrIgnoreArchivistExcerptTagging(aset, db);
             updateOrIgnoreArchivistSourceExcerptTagging(aset, db);
         }
+    }
+
+    private void insertOrIgnoreArchivistExcerptTagging(
+            int sourceExcerptId,
+            int mediaTagId,
+            SQLiteDatabase db) {
+
+        String[] args = new String[]{
+
+                Integer.toString(sourceExcerptId),
+                Integer.toString(mediaTagId)
+        };
+
+        //should mirror INSERT_OR_IGNORE_MEDIA_TAGGING_X_Y
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_EXCERPT_TAGGING_X_Y, args);
+    }
+
+    private void updateOrIgnoreArchivistSourceExcerptTagging(
+            String taggedAt,
+            String untaggedAt,
+            int excerptId,
+            int mediaTagId,
+            SQLiteDatabase db) {
+
+        String excerptIdString = Integer.toString(excerptId);
+
+        String mediaTagIdString = Integer.toString(mediaTagId);
+
+        //should mirror UPDATE_MEDIA_TAGGING_TAGGED_UNTAGGED_WHERE_MEDIA_ID_AND_TAG_ID_W_X_Y_Z
+        SQLiteStatement updateStatement = db.compileStatement(
+                NwdContract.UPDATE_EXCERPT_TAGGING_TAGGED_UNTAGGED_WHERE_EXID_AND_TGID_W_X_Y_Z
+        );
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(taggedAt)){
+            updateStatement.bindString(1, taggedAt);
+        }
+
+        //will bind null by default (desired behavior for timestamp comparisons)
+        if(!Utils.stringIsNullOrWhitespace(untaggedAt)){
+            updateStatement.bindString(2, untaggedAt);
+        }
+
+        updateStatement.bindString(3, excerptIdString);
+        updateStatement.bindString(4, mediaTagIdString);
+
+        updateStatement.execute();
     }
 
     private void insertOrIgnoreArchivistExcerptTagging(
@@ -4982,6 +5052,61 @@ public class NwdDb {
         db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_VALUE, new String[]{ locationName });
     }
 
+    public int ensureArchivistSourceLocationValue(String locationName, SQLiteDatabase db) {
+
+        int id = getIdForArchivistSourceLocationValue(locationName, db);
+
+        if(id < 1){
+            insertOrIgnoreArchivistSourceLocationValue(locationName, db);
+            id = getIdForArchivistSourceLocationValue(locationName, db);
+        }
+
+        return id;
+    }
+
+    private int getIdForArchivistSourceLocationValue(String locationName, SQLiteDatabase db) {
+
+        int id = -1;
+
+        String[] args =
+                new String[]{
+                        locationName
+                };
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_SOURCE_LOCATION_ID_FOR_VALUE_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_SOURCE_LOCATION_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                id = Integer.parseInt(
+                        record.get(NwdContract.COLUMN_SOURCE_LOCATION_ID));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    public void insertOrIgnoreArchivistSourceLocationValue(String locationName, SQLiteDatabase db){
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_VALUE, new String[]{ locationName });
+    }
+
     public ArrayList<ArchivistSourceLocation> getAllArchivistSourceLocations() {
 
         ArrayList<ArchivistSourceLocation> allSourceLocations = new ArrayList<>();
@@ -5045,6 +5170,59 @@ public class NwdDb {
     }
 
     public void ensureArchivistSourceLocationSubset(int sourceLocationId, String subsetName) {
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_SUBSET_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y,
+                new String[]{Integer.toString(sourceLocationId), subsetName});
+    }
+
+    public int ensureArchivistSourceLocationSubset(int sourceLocationId, String subsetName, SQLiteDatabase db) {
+
+        int id = getIdForArchivistSourceLocationSubset(sourceLocationId, subsetName, db);
+
+        if(id < 1){
+            insertOrIgnoreArchivistSourceLocationSubset(sourceLocationId, subsetName, db);
+            id = getIdForArchivistSourceLocationSubset(sourceLocationId, subsetName, db);
+        }
+
+        return id;
+    }
+
+    private int getIdForArchivistSourceLocationSubset(int sourceLocationId, String subsetName, SQLiteDatabase db) {
+
+        int id = -1;
+
+        String[] args =
+                new String[]{
+                        Integer.toString(sourceLocationId),
+                        subsetName
+                };
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_SOURCE_LOCATION_SUBSET_ID_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+            id = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ID));
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    public void insertOrIgnoreArchivistSourceLocationSubset(int sourceLocationId, String subsetName, SQLiteDatabase db) {
 
         db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_LOCATION_SUBSET_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y,
                 new String[]{Integer.toString(sourceLocationId), subsetName});
@@ -5118,6 +5296,24 @@ public class NwdDb {
             int sourceLocationSubsetId,
             int sourceId,
             String sourceLocationSubsetEntryValue
+    ) {
+
+        String[] args = new String[]{
+                Integer.toString(sourceLocationSubsetId),
+                Integer.toString(sourceId),
+                sourceLocationSubsetEntryValue
+        };
+
+        db.execSQL(
+                NwdContract.INSERT_OR_IGNORE_INTO_SOURCE_LOCATION_SUBSET_ENTRY_VALUES_SUBSET_ID_SOURCE_ID_ENTRY_VALUE_X_Y_Z,
+                args);
+    }
+
+    public void ensureArchivistSourceLocationSubsetEntry(
+            int sourceLocationSubsetId,
+            int sourceId,
+            String sourceLocationSubsetEntryValue,
+            SQLiteDatabase db
     ) {
 
         String[] args = new String[]{
@@ -5319,6 +5515,270 @@ public class NwdDb {
         db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_FOR_SOURCE_ID, args);
     }
 
+    public void save(ArchivistXmlSource axs, SQLiteDatabase db) {
+
+        //mimic sync(Media media, db);
+        int sourceTypeId = ensureArchivistSourceTypeName(axs.getSourceType(), db);
+
+        int sourceId = ensureArchivistXmlSource(sourceTypeId, axs, db);
+
+        for(ArchivistXmlLocationEntry axle : axs.getLocationEntries()){
+
+            int locationId = ensureArchivistSourceLocationValue(axle.getLocation(), db);
+
+            int subsetId = ensureArchivistSourceLocationSubset(
+                    locationId, axle.getLocationSubset(), db);
+
+            ensureArchivistSourceLocationSubsetEntry(
+                    subsetId, sourceId, axle.getLocationSubsetEntry(), db);
+        }
+
+        for(ArchivistXmlSourceExcerpt axse : axs.getExcerpts()){
+
+            //ensure excerpt
+            int excerptId =
+                    ensureArchivistSourceExcerpt(
+                            sourceId,
+                            axse.getExcerptValue(),
+                            axse.getBeginTime(),
+                            axse.getEndTime(),
+                            axse.getPages(),
+                            db
+                    );
+
+            for(ArchivistXmlTag axt : axse.getTags()){
+
+                int tagId = ensureMediaTag(axt.getTagValue(), db);
+
+                //upsert excerpt tagging
+                insertOrIgnoreArchivistExcerptTagging(excerptId, tagId, db);
+                updateOrIgnoreArchivistSourceExcerptTagging(
+                        axt.getTaggedAt(), axt.getUntaggedAt(), excerptId, tagId, db);
+            }
+        }
+    }
+
+    private int ensureArchivistSourceExcerpt(int sourceId,
+                                             String excerptValue,
+                                             String beginTime,
+                                             String endTime,
+                                             String pages,
+                                             SQLiteDatabase db) {
+
+        int id = getIdForArchivistSourceExcerpt(sourceId,
+                                                excerptValue,
+                                                beginTime,
+                                                endTime,
+                                                pages,
+                                                db);
+
+        if(id < 1){
+
+            insertOrIgnoreArchivistSourceExcerpt(sourceId,
+                                                 excerptValue,
+                                                 beginTime,
+                                                 endTime,
+                                                 pages,
+                                                 db);
+
+            id = getIdForArchivistSourceExcerpt(sourceId,
+                                                excerptValue,
+                                                beginTime,
+                                                endTime,
+                                                pages,
+                                                db);
+        }
+
+        return id;
+    }
+
+    private int getIdForArchivistSourceExcerpt(int sourceId,
+                                               String excerptValue,
+                                               String beginTime,
+                                               String endTime,
+                                               String pages,
+                                               SQLiteDatabase db) {
+
+        int id = -1;
+
+        String[] args =
+                new String[]{
+                        Integer.toString(sourceId),
+                        excerptValue,
+                        beginTime,
+                        endTime,
+                        pages
+                };
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_SOURCE_EXCERPT_ID_FOR_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_SOURCE_EXCERPT_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            Map<String, String> record =
+                    cursorToRecord(cursor, columnNames);
+
+            id = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_EXCERPT_ID));
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    private int ensureArchivistXmlSource(int sourceTypeId, ArchivistXmlSource axs, SQLiteDatabase db) {
+
+        int id = getIdForArchivistXmlSource(sourceTypeId, axs, db);
+
+        if(id < 1){
+            insertOrIgnoreArchivistXmlSource(sourceTypeId, axs, db);
+            id = getIdForArchivistXmlSource(sourceTypeId, axs, db);
+        }
+
+        return id;
+    }
+
+    private int getIdForArchivistXmlSource(int sourceTypeId, ArchivistXmlSource axs, SQLiteDatabase db) {
+
+        int sourceId = -1;
+
+        String[] args =
+                new String[]{
+                        Integer.toString(sourceTypeId),
+                        axs.getTitle(),
+                        axs.getAuthor(),
+                        axs.getDirector(),
+                        axs.getYear(),
+                        axs.getUrl(),
+                        axs.getRetrievalDate(),
+                        axs.getSourceTag()
+                };
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_SOURCE_FOR_TID_TTL_AUT_DIR_YR_URL_RDT_TG,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_SOURCE_ID
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                sourceId = Integer.parseInt(
+                        record.get(NwdContract.COLUMN_SOURCE_ID));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return sourceId;
+    }
+
+    public void insertOrIgnoreArchivistXmlSource(int sourceTypeId,
+                                              ArchivistXmlSource axs,
+                                              SQLiteDatabase db) {
+
+        String[] args = new String[]{
+
+                Integer.toString(sourceTypeId),
+                axs.getTitle(),
+                axs.getAuthor(),
+                axs.getDirector(),
+                axs.getYear(),
+                axs.getUrl(),
+                axs.getRetrievalDate()
+        };
+
+        db.execSQL(NwdContract.INSERT_SOURCE_T_U_V_W_X_Y_Z, args);
+    }
+
+    private void insertOrIgnoreSourceTypeValue(String sourceTypeName,
+                                               SQLiteDatabase db){
+
+        db.execSQL(NwdContract.INSERT_OR_IGNORE_SOURCE_TYPE_VALUE,
+                   new String[]{sourceTypeName});
+    }
+
+    private int getIdForSourceTypeValue(String sourceTypeValue,
+                                        SQLiteDatabase db){
+
+        int id = -1;
+
+        String[] args =
+                new String[]{};
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_TYPE_ID_TYPE_VALUE_FROM_SOURCE_TYPE,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_SOURCE_TYPE_ID,
+                        NwdContract.COLUMN_SOURCE_TYPE_VALUE
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                int sourceTypeId =
+                        Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_TYPE_ID));
+
+                String sourceTypeValueForRow =
+                        record.get(NwdContract.COLUMN_SOURCE_TYPE_VALUE);
+
+
+                if(sourceTypeValue.equalsIgnoreCase(sourceTypeValueForRow)){
+
+                    id = sourceTypeId;
+                }
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    private int ensureArchivistSourceTypeName(String sourceTypeName, SQLiteDatabase db) {
+
+        int id = getIdForSourceTypeValue(sourceTypeName, db);
+
+        if(id < 1){
+
+            insertOrIgnoreSourceTypeValue(sourceTypeName, db);
+            id = getIdForSourceTypeValue(sourceTypeName, db);
+        }
+
+        return id;
+    }
+
 
     //region templates
 
@@ -5326,6 +5786,7 @@ public class NwdDb {
 //
 //        ArrayList<Object> lst = new ArrayList<>();
 //
+
 //        db.beginTransaction();
 //
 //        try{

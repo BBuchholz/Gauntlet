@@ -1595,7 +1595,8 @@ public class NwdContract {
 
     static final String INSERT_OR_IGNORE_SOURCE_EXCERPT_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z =
 
-            "INSERT OR IGNORE INTO " + TABLE_SOURCE_EXCERPT + " " +
+//            "INSERT OR IGNORE INTO " + TABLE_SOURCE_EXCERPT + " " + //testing
+            "INSERT INTO " + TABLE_SOURCE_EXCERPT + " " +
             "	(" +
                     COLUMN_SOURCE_ID + ", " +
                     COLUMN_SOURCE_EXCERPT_VALUE + ", " +
@@ -1772,4 +1773,48 @@ public class NwdContract {
 
             "DELETE FROM " + TABLE_SOURCE + "  " +
                     "WHERE " + COLUMN_SOURCE_ID + " = ? ; ";
+
+    public static final String SELECT_SOURCE_FOR_TID_TTL_AUT_DIR_YR_URL_RDT_TG =
+
+            "SELECT " + COLUMN_SOURCE_ID + ", " +
+            "       " + COLUMN_SOURCE_TYPE_ID + ", " +
+            "       " + COLUMN_SOURCE_TITLE + ", " +
+            "       " + COLUMN_SOURCE_AUTHOR + ", " +
+            "       " + COLUMN_SOURCE_DIRECTOR + ", " +
+            "       " + COLUMN_SOURCE_YEAR + ", " +
+            "       " + COLUMN_SOURCE_URL + ", " +
+            "       " + COLUMN_SOURCE_RETRIEVAL_DATE + ", " +
+            "       " + COLUMN_SOURCE_TAG + " " +
+            "FROM " + TABLE_SOURCE + "  " +
+            "WHERE " + COLUMN_SOURCE_TYPE_ID + " = ?  " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_TITLE + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_AUTHOR + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_DIRECTOR + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_YEAR + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_URL + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_RETRIEVAL_DATE + ", '')) = TRIM(IFNULL(?, '')) " +
+            "AND TRIM(IFNULL(" + COLUMN_SOURCE_TAG + ", '')) = TRIM(IFNULL(?, '')); ";
+
+    public static final String SELECT_SOURCE_LOCATION_ID_FOR_VALUE_X =
+
+            "SELECT " + COLUMN_SOURCE_LOCATION_ID + " " +
+            "FROM " + TABLE_SOURCE_LOCATION + " " +
+            "WHERE " + COLUMN_SOURCE_LOCATION_VALUE + " = ? ; ";
+
+    public static final String SELECT_SOURCE_LOCATION_SUBSET_ID_FOR_LOCATION_ID_AND_SUBSET_VALUE_X_Y =
+
+            "SELECT " + COLUMN_SOURCE_LOCATION_SUBSET_ID + " " +
+            "FROM " + TABLE_SOURCE_LOCATION_SUBSET + " " +
+            "WHERE " + COLUMN_SOURCE_LOCATION_ID + " = ?  " +
+            "AND " + COLUMN_SOURCE_LOCATION_SUBSET_VALUE + " = ? ; ";
+
+    public static final String SELECT_SOURCE_EXCERPT_ID_FOR_SRCID_EXVAL_BTIME_ETIME_PGS_V_W_X_Y_Z =
+
+            "SELECT " + COLUMN_SOURCE_EXCERPT_ID + " " +
+            "FROM " + TABLE_SOURCE_EXCERPT + " " +
+            "WHERE " + COLUMN_SOURCE_ID + " = ? " +
+            "AND " + COLUMN_SOURCE_EXCERPT_VALUE + " = ?  " +
+            "AND " + COLUMN_SOURCE_EXCERPT_BEGIN_TIME + " = ? " +
+            "AND " + COLUMN_SOURCE_EXCERPT_END_TIME + " = ? " +
+            "AND " + COLUMN_SOURCE_EXCERPT_PAGES + " = ? ; ";
 }

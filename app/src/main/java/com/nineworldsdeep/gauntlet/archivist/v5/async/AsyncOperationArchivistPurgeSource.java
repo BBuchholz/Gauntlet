@@ -1,8 +1,10 @@
-package com.nineworldsdeep.gauntlet.archivist.v5;
+package com.nineworldsdeep.gauntlet.archivist.v5.async;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerpt;
 import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;

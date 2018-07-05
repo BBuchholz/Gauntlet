@@ -299,12 +299,6 @@ public class XmlImporter {
         return allSources;
     }
 
-    public ArrayList<ArchivistXmlSource> getArchivistV5Sources() throws Exception {
-
-        //testing
-        return getArchivistV5TestSources();
-    }
-
     public ArrayList<Media> getMnemosyneV5Media() throws Exception {
 
         ArrayList<Media> v5Media = new ArrayList<>();
@@ -398,4 +392,114 @@ public class XmlImporter {
 
         return v5Media;
     }
+
+    public ArrayList<ArchivistXmlSource> getArchivistV5Sources() throws Exception {
+
+        ////testing
+        //return getArchivistV5TestSources();
+
+        ArrayList<ArchivistXmlSource> v5Sources = new ArrayList<>();
+
+        NodeList sourceEls = doc.getElementsByTagName(Xml.TAG_SOURCE);
+
+        for(int i = 0; i < sourceEls.getLength(); i++){
+
+            Element sourceEl = (Element) sourceEls.item(i);
+
+            String type = sourceEl.getAttribute(Xml.ATTR_TYPE);
+            String author = sourceEl.getAttribute(Xml.ATTR_AUTHOR);
+            String director = sourceEl.getAttribute(Xml.ATTR_DIRECTOR);
+            String title = sourceEl.getAttribute(Xml.ATTR_TITLE);
+            String year = sourceEl.getAttribute(Xml.ATTR_YEAR);
+            String url = sourceEl.getAttribute(Xml.ATTR_URL);
+            String retrievalDate = sourceEl.getAttribute(Xml.ATTR_RETRIEVAL_DATE);
+
+            asdf;
+
+            Media media = new Media();
+            media.setMediaHash(sha1Hash);
+            media.setMediaFileName(fileName);
+            media.setMediaDescription(description);
+
+            NodeList tagEls = mediaEl.getElementsByTagName(Xml.TAG_TAG);
+
+            for(int j = 0; j < tagEls.getLength(); j++){
+
+                Element tagEl = (Element) tagEls.item(j);
+
+                String tagValue = tagEl.getAttribute(Xml.ATTR_TAG_VALUE);
+                String taggedAtString = tagEl.getAttribute(Xml.ATTR_TAGGED_AT);
+                String untaggedAtString =
+                        tagEl.getAttribute(Xml.ATTR_UNTAGGED_AT);
+
+                Date taggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                taggedAtString
+                        );
+
+                Date untaggedAt =
+                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                untaggedAtString
+                        );
+
+                MediaTagging mt = new MediaTagging(tagValue);
+                mt.setTimeStamps(taggedAt, untaggedAt);
+
+                media.add(mt);
+            }
+
+            NodeList deviceEls =
+                    mediaEl.getElementsByTagName(Xml.TAG_MEDIA_DEVICE);
+
+            for(int j = 0; j < deviceEls.getLength(); j++){
+
+                Element deviceEl = (Element) deviceEls.item(j);
+
+                String deviceName = deviceEl.getAttribute(Xml.ATTR_DESCRIPTION);
+
+                NodeList pathEls =
+                        mediaEl.getElementsByTagName(Xml.TAG_PATH);
+
+                for(int k = 0; k < pathEls.getLength(); k++) {
+
+                    Element pathEl = (Element) pathEls.item(k);
+
+                    String pathValue =
+                            pathEl.getAttribute(Xml.ATTR_VALUE);
+
+                    String verifiedPresentString =
+                            pathEl.getAttribute(Xml.ATTR_VERIFIED_PRESENT);
+
+                    String verifiedMissingString =
+                            pathEl.getAttribute(Xml.ATTR_VERIFIED_MISSING);
+
+                    Date verifiedPresent =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    verifiedPresentString
+                            );
+
+                    Date verifiedMissing =
+                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                                    verifiedMissingString
+                            );
+
+                    DevicePath dp = new DevicePath(deviceName, pathValue);
+                    dp.setTimeStamps(verifiedPresent, verifiedMissing);
+
+                    media.add(dp);
+                }
+            }
+
+            v5Media.add(media);
+
+        }
+
+
+
+
+        asdf; //above code is copied from mnemosyne import, uncomment and return when
+        asdf; //it has been fully adapted
+        asdf; //return v5Sources;
+    }
+
 }

@@ -46,6 +46,12 @@ public class ArchivistXmlSource {
         excerpts.add(axse);
     }
 
+
+    asdf; //all of these set methods need to check for null parameters
+    //and set to "" if they are
+    //go through entire archivist xml package and do this for all
+    //model objects
+
     public String getSourceType() {
         return sourceType;
     }

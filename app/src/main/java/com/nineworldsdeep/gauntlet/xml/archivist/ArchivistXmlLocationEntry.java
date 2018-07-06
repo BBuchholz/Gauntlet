@@ -19,6 +19,12 @@ public class ArchivistXmlLocationEntry {
     }
 
     public void setLocation(String location) {
+
+        if(location == null){
+
+            location = "";
+        }
+
         this.location = location;
     }
 
@@ -27,6 +33,12 @@ public class ArchivistXmlLocationEntry {
     }
 
     public void setLocationSubset(String locationSubset) {
+
+        if(locationSubset == null){
+
+            locationSubset = "";
+        }
+
         this.locationSubset = locationSubset;
     }
 
@@ -35,6 +47,12 @@ public class ArchivistXmlLocationEntry {
     }
 
     public void setLocationSubsetEntry(String locationSubsetEntry) {
+
+        if(locationSubsetEntry == null){
+
+            locationSubsetEntry = "";
+        }
+
         this.locationSubsetEntry = locationSubsetEntry;
     }
 
@@ -43,6 +61,12 @@ public class ArchivistXmlLocationEntry {
     }
 
     public void setVerifiedPresent(String verifiedPresent) {
+
+        if(verifiedPresent == null){
+
+            verifiedPresent = "";
+        }
+
         this.verifiedPresent = verifiedPresent;
     }
 
@@ -51,6 +75,12 @@ public class ArchivistXmlLocationEntry {
     }
 
     public void setVerifiedMissing(String verifiedMissing) {
+
+        if(verifiedMissing == null){
+
+            verifiedMissing = "";
+        }
+
         this.verifiedMissing = verifiedMissing;
     }
 }

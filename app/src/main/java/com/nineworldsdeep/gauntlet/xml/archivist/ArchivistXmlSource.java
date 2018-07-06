@@ -46,17 +46,16 @@ public class ArchivistXmlSource {
         excerpts.add(axse);
     }
 
-
-    asdf; //all of these set methods need to check for null parameters
-    //and set to "" if they are
-    //go through entire archivist xml package and do this for all
-    //model objects
-
     public String getSourceType() {
         return sourceType;
     }
 
     public void setSourceType(String sourceType) {
+
+        if(sourceType == null){
+            sourceType = "";
+        }
+
         this.sourceType = sourceType;
     }
 
@@ -65,6 +64,11 @@ public class ArchivistXmlSource {
     }
 
     public void setAuthor(String author) {
+
+        if(author == null){
+            author = "";
+        }
+
         this.author = author;
     }
 
@@ -73,6 +77,11 @@ public class ArchivistXmlSource {
     }
 
     public void setDirector(String director) {
+
+        if(director == null){
+            director = "";
+        }
+
         this.director = director;
     }
 
@@ -81,6 +90,11 @@ public class ArchivistXmlSource {
     }
 
     public void setTitle(String title) {
+
+        if(title == null){
+            title = "";
+        }
+
         this.title = title;
     }
 
@@ -89,6 +103,11 @@ public class ArchivistXmlSource {
     }
 
     public void setYear(String year) {
+
+        if(year == null){
+            year = "";
+        }
+
         this.year = year;
     }
 
@@ -97,6 +116,11 @@ public class ArchivistXmlSource {
     }
 
     public void setUrl(String url) {
+
+        if(url == null){
+            url = "";
+        }
+
         this.url = url;
     }
 
@@ -105,6 +129,11 @@ public class ArchivistXmlSource {
     }
 
     public void setRetrievalDate(String retrievalDate) {
+
+        if(retrievalDate == null){
+            retrievalDate = "";
+        }
+
         this.retrievalDate = retrievalDate;
     }
 
@@ -113,6 +142,11 @@ public class ArchivistXmlSource {
     }
 
     public void setSourceTag(String sourceTag) {
+
+        if(sourceTag == null){
+            sourceTag = "";
+        }
+
         this.sourceTag = sourceTag;
     }
 }

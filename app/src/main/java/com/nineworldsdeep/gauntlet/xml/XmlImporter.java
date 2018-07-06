@@ -3,7 +3,7 @@ package com.nineworldsdeep.gauntlet.xml;
 import android.content.Context;
 
 import com.nineworldsdeep.gauntlet.Utils;
-import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSource;
+import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerptTagging;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
@@ -414,92 +414,101 @@ public class XmlImporter {
             String url = sourceEl.getAttribute(Xml.ATTR_URL);
             String retrievalDate = sourceEl.getAttribute(Xml.ATTR_RETRIEVAL_DATE);
 
-            asdf;
 
-            Media media = new Media();
-            media.setMediaHash(sha1Hash);
-            media.setMediaFileName(fileName);
-            media.setMediaDescription(description);
+            ArchivistXmlSource axs = new ArchivistXmlSource();
+            axs.setSourceType(type);
+            axs.setAuthor(author);
+            axs.setDirector(director);
+            axs.setTitle(title);
+            axs.setYear(year);
+            axs.setUrl(url);
+            axs.setRetrievalDate(retrievalDate);
 
-            NodeList tagEls = mediaEl.getElementsByTagName(Xml.TAG_TAG);
 
-            for(int j = 0; j < tagEls.getLength(); j++){
+            NodeList sourceLocationEntryEls =
+                    sourceEl.getElementsByTagName(Xml.TAG_SOURCE_LOCATION_SUBSET_ENTRY);
 
-                Element tagEl = (Element) tagEls.item(j);
+            for(int j = 0; j < sourceLocationEntryEls.getLength(); j++){
 
-                String tagValue = tagEl.getAttribute(Xml.ATTR_TAG_VALUE);
-                String taggedAtString = tagEl.getAttribute(Xml.ATTR_TAGGED_AT);
-                String untaggedAtString =
-                        tagEl.getAttribute(Xml.ATTR_UNTAGGED_AT);
+                Element srcLocEntEl = (Element) sourceLocationEntryEls.item(j);
 
-                Date taggedAt =
-                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
-                                taggedAtString
-                        );
+                String location = srcLocEntEl.getAttribute(Xml.ATTR_LOCATION);
+                String locSub =
+                        srcLocEntEl.getAttribute(Xml.ATTR_LOCATION_SUBSET);
+                String locSubEnt =
+                        srcLocEntEl.getAttribute(Xml.ATTR_LOCATION_SUBSET_ENTRY);
+                String verifiedPresent =
+                        srcLocEntEl.getAttribute(Xml.ATTR_VERIFIED_PRESENT);
+                String verifiedMissing =
+                        srcLocEntEl.getAttribute(Xml.ATTR_VERIFIED_MISSING);
 
-                Date untaggedAt =
-                        TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
-                                untaggedAtString
-                        );
+                ArchivistXmlLocationEntry axle =
+                        new ArchivistXmlLocationEntry();
+                axle.setLocation(location);
+                axle.setLocationSubset(locSub);
+                axle.setLocationSubsetEntry(locSubEnt);
+                axle.setVerifiedPresent(verifiedPresent);
+                axle.setVerifiedMissing(verifiedMissing);
 
-                MediaTagging mt = new MediaTagging(tagValue);
-                mt.setTimeStamps(taggedAt, untaggedAt);
-
-                media.add(mt);
+                axs.add(axle);
             }
 
-            NodeList deviceEls =
-                    mediaEl.getElementsByTagName(Xml.TAG_MEDIA_DEVICE);
+            NodeList excerptEls =
+                    sourceEl.getElementsByTagName(Xml.TAG_SOURCE_EXCERPT);
 
-            for(int j = 0; j < deviceEls.getLength(); j++){
+            for(int j = 0; j < excerptEls.getLength(); j++){
 
-                Element deviceEl = (Element) deviceEls.item(j);
+                Element excerptEl = (Element) excerptEls.item(j);
 
-                String deviceName = deviceEl.getAttribute(Xml.ATTR_DESCRIPTION);
 
-                NodeList pathEls =
-                        mediaEl.getElementsByTagName(Xml.TAG_PATH);
+                String pages = excerptEl.getAttribute(Xml.ATTR_PAGES);
+                String beginTime =
+                        excerptEl.getAttribute(Xml.ATTR_BEGINTIME);
+                String endTime =
+                        excerptEl.getAttribute(Xml.ATTR_ENDTIME);
 
-                for(int k = 0; k < pathEls.getLength(); k++) {
+                String excerptValue =
+                        getValueForFirst(excerptEl, Xml.TAG_SOURCE_EXCERPT_VALUE);
 
-                    Element pathEl = (Element) pathEls.item(k);
+                ArchivistXmlSourceExcerpt axse =
+                        new ArchivistXmlSourceExcerpt();
+                axse.setPages(pages);
+                axse.setBeginTime(beginTime);
+                axse.setEndTime(endTime);
+                axse.setExcerptValue(excerptValue);
 
-                    String pathValue =
-                            pathEl.getAttribute(Xml.ATTR_VALUE);
+                //////////////////////////////tags/////////////////////
+                NodeList tagEls =
+                        excerptEl.getElementsByTagName(Xml.TAG_TAG);
 
-                    String verifiedPresentString =
-                            pathEl.getAttribute(Xml.ATTR_VERIFIED_PRESENT);
+                for(int k = 0; k < tagEls.getLength(); k++){
 
-                    String verifiedMissingString =
-                            pathEl.getAttribute(Xml.ATTR_VERIFIED_MISSING);
+                    Element tagEl = (Element) tagEls.item(k);
 
-                    Date verifiedPresent =
-                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
-                                    verifiedPresentString
-                            );
+                    String tagValue = tagEl.getAttribute(Xml.ATTR_TAG_VALUE);
 
-                    Date verifiedMissing =
-                            TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
-                                    verifiedMissingString
-                            );
+                    String taggedAt =
+                            tagEl.getAttribute(Xml.ATTR_TAGGED_AT);
+                    String untaggedAt =
+                            tagEl.getAttribute(Xml.ATTR_UNTAGGED_AT);
 
-                    DevicePath dp = new DevicePath(deviceName, pathValue);
-                    dp.setTimeStamps(verifiedPresent, verifiedMissing);
 
-                    media.add(dp);
+                    ArchivistXmlTag tag =
+                            new ArchivistXmlTag();
+                    tag.setTagValue(tagValue);
+                    tag.setTaggedAt(taggedAt);
+                    tag.setUntaggedAt(untaggedAt);
+
+                    axse.add(tag);
                 }
+
+                axs.add(axse);
             }
 
-            v5Media.add(media);
-
+            v5Sources.add(axs);
         }
 
-
-
-
-        asdf; //above code is copied from mnemosyne import, uncomment and return when
-        asdf; //it has been fully adapted
-        asdf; //return v5Sources;
+        return v5Sources;
     }
 
 }

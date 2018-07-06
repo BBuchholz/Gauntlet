@@ -31,6 +31,11 @@ public class ArchivistXmlSourceExcerpt {
     }
 
     public void setPages(String pages) {
+
+        if(pages == null){
+            pages = "";
+        }
+
         this.pages = pages;
     }
 
@@ -39,6 +44,11 @@ public class ArchivistXmlSourceExcerpt {
     }
 
     public void setBeginTime(String beginTime) {
+
+        if(beginTime == null){
+            beginTime = "";
+        }
+
         this.beginTime = beginTime;
     }
 
@@ -47,6 +57,11 @@ public class ArchivistXmlSourceExcerpt {
     }
 
     public void setEndTime(String endTime) {
+
+        if(endTime == null){
+            endTime = "";
+        }
+
         this.endTime = endTime;
     }
 
@@ -55,6 +70,11 @@ public class ArchivistXmlSourceExcerpt {
     }
 
     public void setExcerptValue(String excerptValue) {
+
+        if(excerptValue == null){
+            excerptValue = "";
+        }
+
         this.excerptValue = excerptValue;
     }
 }

@@ -37,7 +37,7 @@ public class Xml {
 
     public static final String TAG_SOURCE = "source";
     public static final String TAG_SOURCE_LOCATION_SUBSET_ENTRY = "sourceLocationSubsetEntry";
-    public static final String TAG_SOURCE_EXCERPT_ = "sourceExcerpt";
+    public static final String TAG_SOURCE_EXCERPT = "sourceExcerpt";
     public static final String TAG_SOURCE_EXCERPT_VALUE = "sourceExcerptValue";
     public static final String TAG_SOURCE_EXCERPT_ANNOTATION = "sourceExcerptAnnotation";
     public static final String TAG_SOURCE_EXCERPT_ANNOTATION_VALUE = "sourceExcerptAnnotationValue";

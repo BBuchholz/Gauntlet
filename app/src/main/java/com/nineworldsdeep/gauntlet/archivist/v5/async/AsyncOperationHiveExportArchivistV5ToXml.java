@@ -12,9 +12,6 @@ import com.nineworldsdeep.gauntlet.core.AsyncOperation;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.IStatusResponsive;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
-import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 
@@ -187,7 +184,7 @@ public class AsyncOperationHiveExportArchivistV5ToXml extends AsyncOperation {
             for(ArchivistSourceExcerpt ase : excerpts){
 
                 Element excerptEl =
-                        doc.createElement(Xml.TAG_SOURCE_EXCERPT_);
+                        doc.createElement(Xml.TAG_SOURCE_EXCERPT);
 
 
                 Xml.setAttributeIfNotNullOrWhitespace(

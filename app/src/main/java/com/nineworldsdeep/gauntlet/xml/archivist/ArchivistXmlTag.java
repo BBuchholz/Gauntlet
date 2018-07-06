@@ -17,6 +17,12 @@ public class ArchivistXmlTag {
     }
 
     public void setTagValue(String tagValue) {
+
+        if(tagValue == null){
+
+            tagValue = "";
+        }
+
         this.tagValue = tagValue;
     }
 
@@ -25,6 +31,12 @@ public class ArchivistXmlTag {
     }
 
     public void setTaggedAt(String taggedAt) {
+
+        if(taggedAt == null){
+
+            taggedAt = "";
+        }
+
         this.taggedAt = taggedAt;
     }
 
@@ -33,6 +45,12 @@ public class ArchivistXmlTag {
     }
 
     public void setUntaggedAt(String untaggedAt) {
+
+        if(untaggedAt == null){
+
+            untaggedAt = "";
+        }
+
         this.untaggedAt = untaggedAt;
     }
 }

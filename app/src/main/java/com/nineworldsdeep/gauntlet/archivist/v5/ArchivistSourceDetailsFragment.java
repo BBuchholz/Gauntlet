@@ -122,7 +122,11 @@ public class ArchivistSourceDetailsFragment extends Fragment implements IStatusR
 
                                         String verificationPhrase = userInput.getText().toString();
 
-                                        if(verificationPhrase.equalsIgnoreCase("yes I am sure")){
+                                        boolean verified =
+                                                verificationPhrase.equalsIgnoreCase(
+                                                        "yes I am sure");
+
+                                        if(verified){
 
 
                                             if(source != null) {

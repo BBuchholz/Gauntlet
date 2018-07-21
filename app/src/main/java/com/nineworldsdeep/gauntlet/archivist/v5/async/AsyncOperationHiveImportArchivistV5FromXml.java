@@ -94,7 +94,6 @@ public class AsyncOperationHiveImportArchivistV5FromXml extends AsyncOperation {
             try {
 
                 publishProgress("just testing, no files deleted");
-                Thread.sleep(1000);
 
             }catch (Exception ex){
 
@@ -102,16 +101,13 @@ public class AsyncOperationHiveImportArchivistV5FromXml extends AsyncOperation {
 
             }
 
-////////////////uncomment when testing is finished
-//
-//            boolean successful = f.delete();
-//
-//            if(!successful){
-//
-//                publishProgress(("error deleting file: " +
-//                        f.getAbsolutePath()));
-//            }
-//////////////
+            boolean successful = f.delete();
+
+            if(!successful){
+
+                publishProgress(("error deleting file: " +
+                        f.getAbsolutePath()));
+            }
 
         }
     }

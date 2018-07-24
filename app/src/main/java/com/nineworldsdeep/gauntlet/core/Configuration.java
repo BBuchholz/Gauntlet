@@ -636,17 +636,24 @@ public class Configuration {
 
         for(HiveRoot hr : db.getActiveHiveRoots(ctx)){
 
-            for(File folder :
-                    Configuration.getHiveRootOutgoingXmlFolderPaths(hr)){
+            if(!isHiveRoot(hr)) {
 
-                if(folder.exists()){
+                for (File folder :
+                        Configuration.getHiveRootOutgoingXmlFolderPaths(hr)) {
 
-                    files.add(new File(folder, fileName));
+                    if (folder.exists()) {
+
+                        files.add(new File(folder, fileName));
+                    }
                 }
             }
         }
 
         return files;
+    }
+
+    private static boolean isHiveRoot(HiveRoot hr){
+        return hr.getHiveRootName().equalsIgnoreCase("staging");
     }
 
     public static ArrayList<File> getHiveRootOutgoingXmlFolderPaths(HiveRoot hr) {

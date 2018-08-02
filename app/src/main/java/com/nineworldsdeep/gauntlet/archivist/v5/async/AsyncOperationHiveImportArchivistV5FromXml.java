@@ -91,15 +91,15 @@ public class AsyncOperationHiveImportArchivistV5FromXml extends AsyncOperation {
 
         for(File f : archivistV5XmlFiles){
 
-            try {
-
-                publishProgress("just testing, no files deleted");
-
-            }catch (Exception ex){
-
-                Log.e("ImportArchivistXml", Log.getStackTraceString(ex));
-
-            }
+//            try {
+//
+//                publishProgress("just testing, no files deleted");
+//
+//            }catch (Exception ex){
+//
+//                Log.e("ImportArchivistXml", Log.getStackTraceString(ex));
+//
+//            }
 
             boolean successful = f.delete();
 

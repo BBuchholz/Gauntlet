@@ -13,7 +13,6 @@ import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceExcerptTagging;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocation;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationEntry;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationSubset;
-import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceLocationSubsetEntriesFragment;
 import com.nineworldsdeep.gauntlet.archivist.v5.ArchivistSourceType;
 import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.MultiMapString;
@@ -5292,7 +5291,7 @@ public class NwdDb {
         return subsets;
     }
 
-    public void ensureArchivistSourceLocationSubsetEntry(
+    public void insertOrIgnoreArchivistSourceLocationSubsetEntry(
             int sourceLocationSubsetId,
             int sourceId,
             String sourceLocationSubsetEntryValue
@@ -5309,7 +5308,7 @@ public class NwdDb {
                 args);
     }
 
-    public void ensureArchivistSourceLocationSubsetEntry(
+    public void insertOrIgnoreArchivistSourceLocationSubsetEntry(
             int sourceLocationSubsetId,
             int sourceId,
             String sourceLocationSubsetEntryValue,
@@ -5325,6 +5324,40 @@ public class NwdDb {
         db.execSQL(
                 NwdContract.INSERT_OR_IGNORE_INTO_SOURCE_LOCATION_SUBSET_ENTRY_VALUES_SUBSET_ID_SOURCE_ID_ENTRY_VALUE_X_Y_Z,
                 args);
+    }
+
+    private int ensureArchivistSourceLocationSubsetEntry(
+            int sourceLocationSubsetId,
+            int sourceId,
+            String sourceLocationSubsetEntryValue,
+            SQLiteDatabase db
+    ) throws ParseException {
+
+        int entryId =
+                getSourceLocationEntryId(
+                        sourceLocationSubsetId,
+                        sourceId,
+                        sourceLocationSubsetEntryValue,
+                        db);
+
+        if(entryId < 1){
+
+            insertOrIgnoreArchivistSourceLocationSubsetEntry(
+                    sourceLocationSubsetId,
+                    sourceId,
+                    sourceLocationSubsetEntryValue,
+                    db
+            );
+        }
+
+        entryId = getSourceLocationEntryId(
+                sourceLocationSubsetId,
+                sourceId,
+                sourceLocationSubsetEntryValue,
+                db
+        );
+
+        return entryId;
     }
 
     public ArrayList<ArchivistSourceLocationEntry> getArchivistSourceLocationSubsetEntriesForSourceId(
@@ -5459,6 +5492,53 @@ public class NwdDb {
         return sourceLocationSubsetEntryId;
     }
 
+    private int getSourceLocationEntryId(
+            int sourceLocationsSubsetId,
+            int sourceId,
+            String entryName,
+            SQLiteDatabase db) throws ParseException {
+
+        int sourceLocationSubsetEntryId = -1;
+
+        if(sourceLocationsSubsetId > 0 &&
+                sourceId > 0 &&
+                entryName != null){
+
+            String[] args =
+                    new String[]{
+                            Integer.toString(sourceLocationsSubsetId),
+                            Integer.toString(sourceId),
+                            entryName
+                    };
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_SOURCE_LOCATION_SUBSET_ENTRY_ID_FOR_SUBSET_ID_AND_SOURCE_ID_AND_ENTRY_VALUE_X_Y_Z,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID
+                    };
+
+            if(cursor.getCount() > 0) {
+
+                cursor.moveToFirst();
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                sourceLocationSubsetEntryId = Integer.parseInt(record.get(NwdContract.COLUMN_SOURCE_LOCATION_SUBSET_ENTRY_ID));
+            }
+
+            cursor.close();
+
+        }
+
+        return sourceLocationSubsetEntryId;
+    }
+
+
     public void updateArchivistSourceLocationSubsetEntryTimeStamps(
             int sourceLocationSubsetEntryId,
             Date verifiedPresentAt,
@@ -5475,6 +5555,28 @@ public class NwdDb {
               verifiedPresent,
               verifiedMissing,
               Integer.toString(sourceLocationSubsetEntryId)
+        };
+
+        db.execSQL(NwdContract.UPDATE_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_VERIFIED_MISSING_FOR_ID_X_Y_Z, args);
+    }
+
+    private void updateArchivistSourceLocationSubsetEntryTimeStamps(
+            int sourceLocationSubsetEntryId,
+            Date verifiedPresentAt,
+            Date verifiedMissingAt,
+            SQLiteDatabase db
+    ) {
+
+        String verifiedPresent =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(verifiedPresentAt);
+
+        String verifiedMissing =
+                TimeStamp.to_UTC_Yyyy_MM_dd_hh_mm_ss(verifiedMissingAt);
+
+        String[] args = new String[]{
+                verifiedPresent,
+                verifiedMissing,
+                Integer.toString(sourceLocationSubsetEntryId)
         };
 
         db.execSQL(NwdContract.UPDATE_SOURCE_LOCATION_SUBSET_ENTRY_VERIFIED_PRESENT_VERIFIED_MISSING_FOR_ID_X_Y_Z, args);
@@ -5515,7 +5617,7 @@ public class NwdDb {
         db.execSQL(NwdContract.DELETE_ARCHIVIST_SOURCE_FOR_SOURCE_ID, args);
     }
 
-    public void save(ArchivistXmlSource axs, SQLiteDatabase db) {
+    public void save(ArchivistXmlSource axs, SQLiteDatabase db) throws ParseException {
 
         //mimic sync(Media media, db);
         int sourceTypeId = ensureArchivistSourceTypeName(axs.getSourceType(), db);
@@ -5529,8 +5631,24 @@ public class NwdDb {
             int subsetId = ensureArchivistSourceLocationSubset(
                     locationId, axle.getLocationSubset(), db);
 
-            ensureArchivistSourceLocationSubsetEntry(
+            int entryId = ensureArchivistSourceLocationSubsetEntry(
                     subsetId, sourceId, axle.getLocationSubsetEntry(), db);
+
+            Date verifiedPresentAt =
+                    TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                            axle.getVerifiedPresent());
+
+            Date verifiedMissingAt =
+                    TimeStamp.yyyy_MM_dd_hh_mm_ss_UTC_ToDate(
+                            axle.getVerifiedMissing()
+                    );
+
+            updateArchivistSourceLocationSubsetEntryTimeStamps(
+                    entryId,
+                    verifiedPresentAt,
+                    verifiedMissingAt,
+                    db
+            );
         }
 
         for(ArchivistXmlSourceExcerpt axse : axs.getExcerpts()){

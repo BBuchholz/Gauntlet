@@ -15,7 +15,6 @@ import com.nineworldsdeep.gauntlet.R;
 import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
@@ -176,7 +175,7 @@ public class ArchivistAddSourceLocationEntryActivity extends AppCompatActivity {
 
                         NwdDb db = NwdDb.getInstance(this);
 
-                        db.ensureArchivistSourceLocationSubsetEntry(
+                        db.insertOrIgnoreArchivistSourceLocationSubsetEntry(
                                 asls.getSourceLocationsSubsetId(),
                                 currentSource.getSourceId(),
                                 entryName

@@ -22,10 +22,12 @@ import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.hive.UtilsHive;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.UtilsMnemosyneV5;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
 import com.nineworldsdeep.gauntlet.synergy.v3.SynergyV3MainActivity;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5Utils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -45,6 +47,7 @@ public class PdfListActivity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS = 4;
     private static final int MENU_CONTEXT_COPY_TO_STAGING = 5;
     private static final int MENU_CONTEXT_MOVE_TO_STAGING = 6;
+    private static final int MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD = 7;
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -267,8 +270,25 @@ public class PdfListActivity extends AppCompatActivity {
             //menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNALLY, Menu.NONE, "Open externally");
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD, Menu.NONE, "Copy File Name");
         }
 
+    }
+
+    private void copyFileNameToClipboard(int position) {
+
+        FileListItem fli = mFileListItems.get(position);
+
+        if(fli == null){
+            Utils.toast(this, "File List Item null");
+            return;
+        }
+
+        String fileName = fli.getFile().getName();
+        SynergyV5Utils.copyToClipboard(this, "pdf-file-name", fileName);
+
+        Utils.toast(this, "copied");
     }
 
     @Override
@@ -307,11 +327,11 @@ public class PdfListActivity extends AppCompatActivity {
 
                 return true;
 
-//            case MENU_CONTEXT_OPEN_EXTERNALLY:
-//
-//                openExternally(info.position);
-//
-//                return true;
+            case MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD:
+
+                copyFileNameToClipboard(info.position);
+
+                return true;
 
             default:
                 return super.onContextItemSelected(item);

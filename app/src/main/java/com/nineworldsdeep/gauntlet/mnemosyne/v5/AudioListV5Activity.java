@@ -35,6 +35,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.sqlite.FileHashDbIndex;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.nineworldsdeep.gauntlet.sqlite.TagDbIndex;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5Utils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -65,6 +66,8 @@ public class AudioListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES = 11;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS = 12;
     private static final int MENU_CONTEXT_OPEN_EXTERNAL = 13;
+    private static final int MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD = 14;
+    private static final int MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD = 15;
 
 
     /**
@@ -610,6 +613,9 @@ public class AudioListV5Activity extends AppCompatActivity {
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL, Menu.NONE, "Open External");
+
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD, Menu.NONE, "Copy Hash");
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD, Menu.NONE, "Copy File Name");
         }
 
     }
@@ -717,9 +723,31 @@ public class AudioListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD:
+
+                copyHashToClipboard(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD:
+
+                copyFileNameToClipboard(info.position);
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void copyFileNameToClipboard(int position) {
+
+        UtilsMnemosyneV5.copyFileNameToClipboard(this, getItem(position));
+    }
+
+    private void copyHashToClipboard(int position) {
+
+        UtilsMnemosyneV5.copyHashToClipboard(this, getItem(position));
     }
 
     private void openExternal(int position) {

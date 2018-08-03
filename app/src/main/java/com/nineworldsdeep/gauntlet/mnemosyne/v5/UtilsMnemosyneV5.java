@@ -9,6 +9,7 @@ import com.nineworldsdeep.gauntlet.core.Configuration;
 import com.nineworldsdeep.gauntlet.core.TimeStamp;
 import com.nineworldsdeep.gauntlet.mnemosyne.ImageGridItem;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
+import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5Utils;
 import com.nineworldsdeep.gauntlet.xml.Xml;
 
 import org.apache.commons.io.FilenameUtils;
@@ -28,6 +29,44 @@ public class UtilsMnemosyneV5 {
     private static String[] imageExts = {"png", "jpg", "jpeg", "gif"};
     private static String[] audioExts = {"mp3", "wav"};
     private static String[] documentExts = {"pdf"};
+
+    public static void copyFileNameToClipboard(Context context, MediaListItem mli){
+
+        if(mli == null){
+            Utils.toast(context, "Media List Item null");
+            return;
+        }
+
+        String fileName = mli.getFile().getName();
+        SynergyV5Utils.copyToClipboard(context, "media-file-name", fileName);
+
+        Utils.toast(context, "copied");
+    }
+
+    public static void copyHashToClipboard(Context context, MediaListItem mli){
+
+        if(mli == null){
+            Utils.toast(context, "Media List Item null");
+            return;
+        }
+
+        if(mli.getHash() == null){
+
+            try {
+
+                mli.hashMedia();
+
+            } catch (Exception e) {
+
+                Utils.toast(context, "error hashing media: " + e.getMessage());
+            }
+        }
+
+        String hash = mli.getHash();
+        SynergyV5Utils.copyToClipboard(context, "media-hash", hash);
+
+        Utils.toast(context, "copied");
+    }
 
     public static String getMimeType(File file) {
 

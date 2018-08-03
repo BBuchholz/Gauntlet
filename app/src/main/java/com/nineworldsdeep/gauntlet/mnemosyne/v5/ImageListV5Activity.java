@@ -58,6 +58,9 @@ public class ImageListV5Activity extends AppCompatActivity {
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS = 10;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_STUDY = 11;
     private static final int MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS = 12;
+    private static final int MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD = 13;
+    private static final int MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD = 14;
+
 
     public static final String EXTRA_CURRENT_PATH =
             "com.nineworldsdeep.gauntlet.IMAGELIST_CURRENT_PATH";
@@ -508,7 +511,8 @@ public class ImageListV5Activity extends AppCompatActivity {
 
             menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
             menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
-
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD, Menu.NONE, "Copy Hash");
+            menu.add(Menu.NONE, MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD, Menu.NONE, "Copy File Name");
         }
 
     }
@@ -610,10 +614,32 @@ public class ImageListV5Activity extends AppCompatActivity {
 
                 return true;
 
+            case MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD:
+
+                copyHashToClipboard(info.position);
+
+                return true;
+
+            case MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD:
+
+                copyFileNameToClipboard(info.position);
+
+                return true;
+
             default:
 
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void copyFileNameToClipboard(int position) {
+
+        UtilsMnemosyneV5.copyFileNameToClipboard(this, getItem(position));
+    }
+
+    private void copyHashToClipboard(int position) {
+
+        UtilsMnemosyneV5.copyHashToClipboard(this, getItem(position));
     }
 
     private void moveToStaging(int position) {

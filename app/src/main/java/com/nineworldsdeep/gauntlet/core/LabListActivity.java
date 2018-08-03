@@ -64,7 +64,16 @@ public class LabListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Kotlin Data Binding", DataBindingBasicExampleActivity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
         addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
-        addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
+
+        //// DON'T USE THIS, TUTORIAL SERVICE IMPLEMENTATION BROKEN WITH
+        //// NEW UPDATES, AUDIO WON'T STOP WITHOUT DEVICE RESTART
+        //// WILL BE DOING A NEW IMPLEMENTATION FROM SCRATCH FOR V6
+        //
+        //addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
+        //
+        ////
+
+
         addNavigateActivityCommand("Hive Hierarchy Exp.", HiveRootListActivity.class);
         addNavigateActivityCommand("Synergy Drawer", SynergyDrawerActivity.class);
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);

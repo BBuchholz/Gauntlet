@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,9 +65,23 @@ public class ArchivistSourceExcerptDetailActivity extends Activity {
         }
 
         TextView tvTagString = (TextView)findViewById(R.id.tvTagString);
-        TextView tvExcerptValue = (TextView)findViewById(R.id.tvExcerptValue);
+        final TextView tvExcerptValue = (TextView)findViewById(R.id.tvExcerptValue);
 
         tvTagString.setText(tagString);
         tvExcerptValue.setText(excerptValue);
+
+        tvExcerptValue.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View view) {
+
+                Utils.copyToClipboard(ArchivistSourceExcerptDetailActivity.this,
+                        "archivist-excerpt-value", tvExcerptValue.getText().toString());
+
+                Utils.toast(ArchivistSourceExcerptDetailActivity.this, "copied");
+
+                return true;
+            }
+        });
     }
 }

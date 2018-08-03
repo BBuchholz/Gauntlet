@@ -1,5 +1,7 @@
 package com.nineworldsdeep.gauntlet;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -50,6 +52,16 @@ public class Utils {
 
             toast(c, "error logged in: " + logName);
         }
+    }
+
+    public static void copyToClipboard(Context ctx,
+                                       String stringLabel,
+                                       String stringToCopy) {
+
+        ClipboardManager clipboard =
+                (ClipboardManager) ctx.getSystemService(ctx.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(stringLabel, stringToCopy);
+        clipboard.setPrimaryClip(clip);
     }
 
     /**

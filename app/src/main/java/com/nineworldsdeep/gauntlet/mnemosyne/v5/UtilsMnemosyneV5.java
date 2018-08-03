@@ -38,7 +38,7 @@ public class UtilsMnemosyneV5 {
         }
 
         String fileName = mli.getFile().getName();
-        SynergyV5Utils.copyToClipboard(context, "media-file-name", fileName);
+        Utils.copyToClipboard(context, "media-file-name", fileName);
 
         Utils.toast(context, "copied");
     }
@@ -63,7 +63,7 @@ public class UtilsMnemosyneV5 {
         }
 
         String hash = mli.getHash();
-        SynergyV5Utils.copyToClipboard(context, "media-hash", hash);
+        Utils.copyToClipboard(context, "media-hash", hash);
 
         Utils.toast(context, "copied");
     }

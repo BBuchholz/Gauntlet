@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -29,6 +30,7 @@ import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.mnemosyne.MnemoSyneUtils;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaPlayerSingletonV5;
@@ -454,17 +456,26 @@ public class HiveSporesActivity extends AppCompatActivity {
 
         if(f.exists() && f.isFile()){
 
-            Intent target = new Intent(Intent.ACTION_VIEW);
+//            //previous version (api < 24)
+//            Intent target = new Intent(Intent.ACTION_VIEW);
+//
+//            String mimeType = UtilsMnemosyneV5.getMimeType(f);
+//
+//            //target.setDataAndType(Uri.fromFile(f),"*/*");
+//            target.setDataAndType(Uri.fromFile(f), mimeType);
+//            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+            //updating for api >= 24
+            Uri uri = FileProvider.getUriForFile(HiveSporesActivity.this, getApplicationContext().getPackageName() + ".com.nineworldsdeep.gauntlet.provider", f);
+            Intent fileIntent = new Intent(Intent.ACTION_VIEW);
+            fileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             String mimeType = UtilsMnemosyneV5.getMimeType(f);
-
-            //target.setDataAndType(Uri.fromFile(f),"*/*");
-            target.setDataAndType(Uri.fromFile(f), mimeType);
-            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            fileIntent.setDataAndType(uri, mimeType);
 
             try{
 
-                startActivity(target);
+                startActivity(fileIntent);
 
             }catch (ActivityNotFoundException ex){
 

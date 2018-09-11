@@ -43,6 +43,19 @@ public class UtilsMnemosyneV5 {
         Utils.toast(context, "copied");
     }
 
+    public static void copyFileNameToClipboard(Context context, TagBrowserFileItem tagBrowserFileItem){
+
+        if(tagBrowserFileItem == null){
+            Utils.toast(context, "Media List Item null");
+            return;
+        }
+
+        String fileName = tagBrowserFileItem.getFilename();
+        Utils.copyToClipboard(context, "media-file-name", fileName);
+
+        Utils.toast(context, "copied");
+    }
+
     public static void copyHashToClipboard(Context context, MediaListItem mli){
 
         if(mli == null){

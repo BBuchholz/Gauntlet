@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!--<ImageView-->
+        <!--android:id="@+id/img"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:padding="10px"-->
+        <!--/>-->
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:paddingLeft="10px"-->
+        <!--android:layout_weight="1"-->
+        <!--&gt;-->
+
+        <!--<TextView android:id="@+id/display_name"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+
+        <!--<TextView android:id="@+id/tags"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--/>-->
+
+    <!--</LinearLayout>-->
+
+    <TextView android:id="@+id/tvTagName"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        />
+
+    <TextView android:id="@+id/tvTaggedCount"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        />
+
+</LinearLayout>

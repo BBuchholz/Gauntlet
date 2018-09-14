@@ -5,13 +5,15 @@ import java.util.ArrayList;
 public class TagBrowserTagItem {
 
     private ArrayList<TagBrowserFileItem> fileItems;
+    private String tagName;
 
-    public TagBrowserTagItem(){
+    public TagBrowserTagItem(String tagName){
+        this.tagName = tagName;
         fileItems = new ArrayList<>();
     }
 
     public String getTagName() {
-        return "tag name goes here";
+        return tagName;
     }
 
     public int getTaggedCount() {

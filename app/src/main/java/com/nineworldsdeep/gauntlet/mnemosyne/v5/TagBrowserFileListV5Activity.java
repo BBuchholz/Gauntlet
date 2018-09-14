@@ -80,6 +80,8 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
     private void refreshLayout() {
 
+
+
         setListAdapter(new ArrayAdapter<TagBrowserFileItem>(
                             this,
                             android.R.layout.simple_list_item_1,
@@ -238,7 +240,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... tagFilters) {
 
-            asdf; //tenatively, I think we should do this:
+            //asdf; //tenatively, I think we should do this:
             /*
                 lets just pass the tag filter to this activity (eg. "right hand, cere"
                 which would match tags like "right hand path", "ceremonial",
@@ -257,7 +259,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
                 db.open();
 
-                asdf; //tenatively, I think we should do this:
+                //asdf; //tenatively, I think we should do this:
                 /*
                     lets just pass the tag filter to this activity (eg. "right hand, cere"
                     which would match tags like "right hand path", "ceremonial",
@@ -265,27 +267,26 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
                     using this filter as a parameter
                  */
 
-                ArrayList<MediaListItem> items =
-                        UtilsMnemosyneV5.getMediaListItemsAudio(
-                                directories[0]);
+                ArrayList<TagBrowserFileItem> tagBrowserFileItems =
+                        TagBrowserV5Repository.getFileItems(mCurrentTagFilter);
 
-                total = items.size();
+                total = tagBrowserFileItems.size();
 
-                for (MediaListItem mli : items) {
+                for (TagBrowserFileItem tagBrowserFileItem : tagBrowserFileItems) {
 
                     count++;
 
-                    if(mli.isFile()) {
-
-                        MnemosyneRegistry.register(mli);
-                        MnemosyneRegistry.sync(mli, db);
-                        //db.sync(tagBrowserFileItem.getMedia());
-                    }
+//                    if(mli.isFile()) {
+//
+//                        MnemosyneRegistry.register(mli);
+//                        MnemosyneRegistry.sync(mli, db);
+//                        //db.sync(tagBrowserFileItem.getMedia());
+//                    }
 
 
                     String msg = "Still loading... (" + count + " of " + total + " items loaded)";
 
-                    publishProgress(new ProgressWrapper(mli, msg));
+                    publishProgress(new ProgressWrapper(tagBrowserFileItem, msg));
                 }
 
             }catch (Exception ex){

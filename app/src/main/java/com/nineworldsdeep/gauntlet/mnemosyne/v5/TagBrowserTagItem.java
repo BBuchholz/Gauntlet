@@ -1,12 +1,33 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import java.util.ArrayList;
+
 public class TagBrowserTagItem {
+
+    private ArrayList<TagBrowserFileItem> fileItems;
+
+    public TagBrowserTagItem(){
+        fileItems = new ArrayList<>();
+    }
 
     public String getTagName() {
         return "tag name goes here";
     }
 
-    public String getTaggedCount() {
-        return "(156)";
+    public int getTaggedCount() {
+        return fileItems.size();
+    }
+
+    public boolean isLoaded() {
+        //we will be lazy loading tag items, this will
+        //return true if the file items have been loaded from the
+        //database and the item hasn't been added to (needs refresh)
+
+        return true;
+    }
+
+    public String getTagDisplayName() {
+
+        return getTagName() + " (" + Integer.toString(getTaggedCount()) + ")";
     }
 }

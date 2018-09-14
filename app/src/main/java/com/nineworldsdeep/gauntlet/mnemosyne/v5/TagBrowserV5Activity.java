@@ -105,13 +105,13 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                     convertView=vi.inflate(R.layout.tag_browser_v5_tag_list_item, null);
                 }
 
-                TextView tvTagName = (TextView)convertView.findViewById(R.id.tvTagName);
-                TextView tvTaggedCount = (TextView)convertView.findViewById(R.id.tvTaggedCount);
+                TextView tvTagDisplayName = (TextView)convertView.findViewById(R.id.tvTagDisplayName);
+                //TextView tvTaggedCount = (TextView)convertView.findViewById(R.id.tvTaggedCount);
 
                 TagBrowserTagItem tagBrowserTagItem = getItem(pos);
 
-                tvTagName.setText(tagBrowserTagItem.getTagName());
-                tvTaggedCount.setText(tagBrowserTagItem.getTaggedCount());
+                tvTagDisplayName.setText(tagBrowserTagItem.getTagDisplayName());
+                //tvTaggedCount.setText(String.valueOf(tagBrowserTagItem.getTaggedCount()));
 
                 return convertView;
             }
@@ -252,7 +252,7 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... nothings) {
 
-            asdf; //tenatively, I think we should do this:
+            //asdf; //tenatively, I think we should do this:
             /*
                 use the repository to get the tag list populating with
                 tag counts as necessary (so they only get loaded once)
@@ -272,7 +272,7 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                 db.open();
 
-                asdf; //tenatively, I think we should do this:
+                //asdf; //tenatively, I think we should do this:
                 /*
                     use the repository to get the tag list populating with
                     tag counts as necessary (so they only get loaded once)
@@ -281,27 +281,30 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                     do this
                  */
 
-                ArrayList<MediaListItem> items =
-                        UtilsMnemosyneV5.getMediaListItemsAudio(
-                                directories[0]);
+                /////////////////////////////////start new implementation
 
-                total = items.size();
+                //have the repository lazy load tag browser tag items
 
-                for (MediaListItem mli : items) {
+
+                ////////////////////////////////end new implementation
+
+                ArrayList<TagBrowserTagItem> tagBrowserTagItems =
+                        TagBrowserV5Repository.getTagItems();
+
+                total = tagBrowserTagItems.size();
+
+                for (TagBrowserTagItem tagBrowserTagItem : tagBrowserTagItems) {
 
                     count++;
 
-                    if(mli.isFile()) {
+                    if(!tagBrowserTagItem.isLoaded()) {
 
-                        MnemosyneRegistry.register(mli);
-                        MnemosyneRegistry.sync(mli, db);
-                        //db.sync(tagBrowserTagItem.getMedia());
+                        TagBrowserV5Repository.loadFileItems(tagBrowserTagItem);
                     }
-
 
                     String msg = "Still loading... (" + count + " of " + total + " items loaded)";
 
-                    publishProgress(new ProgressWrapper(mli, msg));
+                    publishProgress(new ProgressWrapper(tagBrowserTagItem, msg));
                 }
 
             }catch (Exception ex){
@@ -362,15 +365,15 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 //
 //        if(f.exists() && f.isFile()){
 //
-//            Intent intent = new Intent(view.getContext(),
-//                    AudioDisplayV5Activity.class);
-//
-//            intent.putExtra(
-//                    AudioDisplayV5Activity.EXTRA_AUDIO_PATH,
-//                    f.getAbsolutePath()
-//            );
-//
-//            startActivity(intent);
+            Intent intent = new Intent(view.getContext(),
+                    TagBrowserFileListV5Activity.class);
+
+            intent.putExtra(
+                    TagBrowserFileListV5Activity.EXTRA_CURRENT_TAG_FILTER,
+                    tagBrowserTagItem.getTagName()
+            );
+
+            startActivity(intent);
 //
 //        }else if(f.exists() && f.isDirectory()){
 //

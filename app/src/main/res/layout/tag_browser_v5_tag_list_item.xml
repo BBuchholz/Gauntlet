@@ -36,14 +36,17 @@
 
     <!--</LinearLayout>-->
 
-    <TextView android:id="@+id/tvTagName"
+    <TextView android:id="@+id/tvTagDisplayName"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="16sp"
         />
 
-    <TextView android:id="@+id/tvTaggedCount"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        />
+    <!--<TextView android:id="@+id/tvTaggedCount"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--/>-->
 
 </LinearLayout>

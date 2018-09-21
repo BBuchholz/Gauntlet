@@ -31,13 +31,25 @@ public class TagBrowserV5Repository {
         }
     }
 
-    public static ArrayList<TagBrowserTagItem> getTagItems() {
+    public static ArrayList<TagBrowserTagItem> getTagItems(String tagFilter) {
 
-        return tagItems;
+        ArrayList<TagBrowserTagItem> filteredItems =
+                new ArrayList<>();
+
+        for(TagBrowserTagItem tagBrowserTagItem : tagItems){
+
+            if(tagBrowserTagItem.getTagName().toLowerCase().contains(tagFilter.toLowerCase())){
+                filteredItems.add(tagBrowserTagItem);
+            }
+        }
+
+        return filteredItems;
     }
 
     public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem) {
 
+        //lazy load file items here, just mocking this at the moment
+        tagBrowserTagItem.setLoaded(true);
     }
 
     public static ArrayList<TagBrowserFileItem> getFileItems(String tagFilter) {

@@ -6,10 +6,12 @@ public class TagBrowserTagItem {
 
     private ArrayList<TagBrowserFileItem> fileItems;
     private String tagName;
+    private boolean loaded;
 
     public TagBrowserTagItem(String tagName){
         this.tagName = tagName;
         fileItems = new ArrayList<>();
+        loaded = false;
     }
 
     public String getTagName() {
@@ -25,7 +27,11 @@ public class TagBrowserTagItem {
         //return true if the file items have been loaded from the
         //database and the item hasn't been added to (needs refresh)
 
-        return true;
+        return loaded;
+    }
+
+    public void setLoaded(boolean loadedValue){
+        this.loaded = loadedValue;
     }
 
     public String getTagDisplayName() {

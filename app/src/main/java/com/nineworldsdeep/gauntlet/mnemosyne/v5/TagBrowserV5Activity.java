@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -90,7 +91,12 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 //        refreshLayout();
     }
 
-    private void refreshLayout() {
+    public void onTagFilterButtonClick(View view){
+
+        refreshLayout();
+    }
+
+    public void refreshLayout() {
 
         setListAdapter(new ArrayAdapter<TagBrowserTagItem>(
                             this,
@@ -220,6 +226,10 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         return mList;
     }
 
+    private EditText getEditTextForTagFilter(){
+        return findViewById(R.id.etFilter);
+    }
+
     class ProgressWrapper{
 
         private TagBrowserTagItem tagBrowserTagItem;
@@ -288,8 +298,10 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                 ////////////////////////////////end new implementation
 
+                String tagFilter = getEditTextForTagFilter().getText().toString();
+
                 ArrayList<TagBrowserTagItem> tagBrowserTagItems =
-                        TagBrowserV5Repository.getTagItems();
+                        TagBrowserV5Repository.getTagItems(tagFilter);
 
                 total = tagBrowserTagItems.size();
 
@@ -298,6 +310,14 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                     count++;
 
                     if(!tagBrowserTagItem.isLoaded()) {
+
+                        //////////////////////////////////begin - just for mockup
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        //////////////////////////////////end - just for mockup
 
                         TagBrowserV5Repository.loadFileItems(tagBrowserTagItem);
                     }

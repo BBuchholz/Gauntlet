@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -208,6 +209,10 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
         return mList;
     }
 
+    private EditText getEditTextForFileFilter(){
+        return findViewById(R.id.etFilter);
+    }
+
     class ProgressWrapper{
 
         private TagBrowserFileItem tagBrowserFileItem;
@@ -267,8 +272,11 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
                     using this filter as a parameter
                  */
 
+
+                String fileFilter = getEditTextForFileFilter().getText().toString();
+
                 ArrayList<TagBrowserFileItem> tagBrowserFileItems =
-                        TagBrowserV5Repository.getFileItems(mCurrentTagFilter);
+                        TagBrowserV5Repository.getFileItems(mCurrentTagFilter, fileFilter);
 
                 total = tagBrowserFileItems.size();
 
@@ -282,6 +290,8 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 //                        MnemosyneRegistry.sync(mli, db);
 //                        //db.sync(tagBrowserFileItem.getMedia());
 //                    }
+
+
 
 
                     String msg = "Still loading... (" + count + " of " + total + " items loaded)";
@@ -385,6 +395,11 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
             onListItemClick((ListView)parent, v, position, id);
         }
     };
+
+    public void onFileFilterButtonClick(View view){
+
+        refreshLayout();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -583,6 +598,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 //        }
 
     }
+
 
     @Override
     public void onContextMenuClosed(Menu menu){

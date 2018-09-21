@@ -52,14 +52,31 @@ public class TagBrowserV5Repository {
         tagBrowserTagItem.setLoaded(true);
     }
 
-    public static ArrayList<TagBrowserFileItem> getFileItems(String tagFilter) {
+    public static ArrayList<TagBrowserFileItem> getFileItems(String tagFilter, String fileFilter) {
 
+
+        /////////////////////////////begin - just for mock
         ArrayList<TagBrowserFileItem> mockItems = new ArrayList<>();
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 10; i++) {
 
-        mockItems.add(new TagBrowserFileItem(tagFilter + " file " + Integer.toString(i)));
+            TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(tagFilter + " file " + Integer.toString(i));
 
-        return mockItems;
+            mockItems.add(tagBrowserFileItem);
+        }
+        ////////////////////////////end - just for mock
+
+        ArrayList<TagBrowserFileItem> filteredItems = new ArrayList<>();
+
+        for(TagBrowserFileItem tagBrowserFileItem : mockItems){
+
+            if(tagBrowserFileItem.getFilename().toLowerCase().contains(
+                    fileFilter.toLowerCase())){
+                filteredItems.add(tagBrowserFileItem);
+            }
+        }
+
+
+        return filteredItems;
     }
 }

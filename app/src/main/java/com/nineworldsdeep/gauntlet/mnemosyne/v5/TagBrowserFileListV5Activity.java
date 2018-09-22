@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class TagBrowserFileListV5Activity extends AppCompatActivity {

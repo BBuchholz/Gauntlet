@@ -28,6 +28,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.TagBrowserFileItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.TagBrowserTagItem;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
@@ -4184,6 +4185,69 @@ public class NwdDb {
 
         db.endTransaction();
     }
+
+    public ArrayList<TagBrowserFileItem> getTagBrowserFileItemsForTagId(int tagName, Context c) {
+
+        ArrayList<TagBrowserFileItem> tagBrowserFileItems = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{ NwdContract.COLUMN_MEDIA_TAG_ID };
+
+            //using query from desktop, only one column actually used
+            //THIS USES JOINS, AND WE CAN MODIFY IF ITS SLOW, JUST BEING QUICK
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_MEDIA_WITH_DEVICE_PATHS_FOR_TAG_ID_X,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_PATH_VALUE,
+                            NwdContract.COLUMN_MEDIA_HASH,
+                            NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(
+                            record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE)
+                    );
+
+                    tagBrowserFileItems.add(tagBrowserFileItem);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+            //ex.printStackTrace();
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return tagBrowserFileItems;
+    }
+
 
     public ArrayList<TagBrowserTagItem> getAllTagBrowserTagItems(Context c) {
 

@@ -60,36 +60,64 @@ public class TagBrowserV5Repository {
         return filteredItems;
     }
 
-    public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem) {
+    public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem, NwdDb db, Context context) {
 
-        //lazy load file items here, just mocking this at the moment
-        tagBrowserTagItem.setLoaded(true);
+        if(!tagBrowserTagItem.isLoaded()) {
+
+            for (TagBrowserFileItem tagBrowserFileItem :
+                    db.getTagBrowserFileItemsForTagId(
+                            tagBrowserTagItem.getTagId(), context)) {
+
+                tagBrowserTagItem.addFileItem(tagBrowserFileItem);
+            }
+
+            tagBrowserTagItem.setLoaded(true);
+        }
     }
 
     public static ArrayList<TagBrowserFileItem> getFileItems(String tagFilter, String fileFilter) {
 
-
-        /////////////////////////////begin - just for mock
-        ArrayList<TagBrowserFileItem> mockItems = new ArrayList<>();
-
-        for(int i = 0; i < 10; i++) {
-
-            TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(tagFilter + " file " + Integer.toString(i));
-
-            mockItems.add(tagBrowserFileItem);
-        }
-        ////////////////////////////end - just for mock
-
         ArrayList<TagBrowserFileItem> filteredItems = new ArrayList<>();
 
-        for(TagBrowserFileItem tagBrowserFileItem : mockItems){
 
-            if(tagBrowserFileItem.getFilename().toLowerCase().contains(
-                    fileFilter.toLowerCase())){
-                filteredItems.add(tagBrowserFileItem);
+//        /////////////////////////////begin - just for mock
+//        ArrayList<TagBrowserFileItem> mockItems = new ArrayList<>();
+//
+//        for(int i = 0; i < 10; i++) {
+//
+//            TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(tagFilter + " file " + Integer.toString(i));
+//
+//            mockItems.add(tagBrowserFileItem);
+//        }
+//
+//
+//        for(TagBrowserFileItem tagBrowserFileItem : mockItems){
+//
+//            if(tagBrowserFileItem.getFilename().toLowerCase().contains(
+//                    fileFilter.toLowerCase())){
+//                filteredItems.add(tagBrowserFileItem);
+//            }
+//        }
+//
+//        ////////////////////////////end - just for mock
+
+
+
+
+        // this supports a single tag (treats the tag filter as a single string)
+        // will be updated to support multi tag filter before implementation
+        // is complete, this is just an intermediate implementation
+
+        for(TagBrowserTagItem tagBrowserTagItem : getTagItems(tagFilter)) {
+
+            for (TagBrowserFileItem tagBrowserFileItem : tagBrowserTagItem.getFileItems()) {
+
+                if (tagBrowserFileItem.getFilename().toLowerCase().contains(
+                        fileFilter.toLowerCase())) {
+                    filteredItems.add(tagBrowserFileItem);
+                }
             }
         }
-
 
         return filteredItems;
     }

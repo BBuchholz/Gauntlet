@@ -45,4 +45,18 @@ public class TagBrowserTagItem {
 
         return getTagName() + " (" + Integer.toString(getTaggedCount()) + ")";
     }
+
+    public ArrayList<TagBrowserFileItem> getFileItems() {
+
+        return fileItems;
+    }
+
+    public void addFileItem(TagBrowserFileItem tagBrowserFileItem) {
+
+        fileItems.add(tagBrowserFileItem);
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
 }

@@ -324,7 +324,8 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 //                        }
 //                        //////////////////////////////////end - just for mockup
 
-                        TagBrowserV5Repository.loadFileItems(tagBrowserTagItem);
+                        TagBrowserV5Repository.loadFileItems(tagBrowserTagItem, db,
+                                TagBrowserV5Activity.this);
                     }
 
                     String msg = "Still loading... (" + count + " of " + total + " items loaded)";

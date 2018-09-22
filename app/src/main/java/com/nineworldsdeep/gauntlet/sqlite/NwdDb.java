@@ -4201,14 +4201,12 @@ public class NwdDb {
             //THIS USES JOINS, AND WE CAN MODIFY IF ITS SLOW, JUST BEING QUICK
             Cursor cursor =
                     db.rawQuery(
-                            NwdContract.SELECT_MEDIA_WITH_DEVICE_PATHS_FOR_TAG_ID_X,
+                            NwdContract.SELECT_MEDIA_PATH_FOR_TAG_ID_X,
                             args);
 
             String[] columnNames =
                     new String[]{
-                            NwdContract.COLUMN_MEDIA_PATH_VALUE,
-                            NwdContract.COLUMN_MEDIA_HASH,
-                            NwdContract.COLUMN_MEDIA_DEVICE_DESCRIPTION
+                            NwdContract.COLUMN_MEDIA_PATH_VALUE
                     };
 
             if(cursor.getCount() > 0){
@@ -4221,15 +4219,17 @@ public class NwdDb {
                             cursorToRecord(cursor, columnNames);
 
                     TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(
-                            record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE)
+                            record.get(NwdContract.COLUMN_MEDIA_PATH_VALUE)
                     );
 
                     tagBrowserFileItems.add(tagBrowserFileItem);
 
                 } while (cursor.moveToNext());
 
-                cursor.close();
+//                cursor.close();
             }
+
+            cursor.close();
 
             db.setTransactionSuccessful();
 

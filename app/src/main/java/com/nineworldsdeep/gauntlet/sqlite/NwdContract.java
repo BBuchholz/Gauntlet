@@ -1818,7 +1818,21 @@ public class NwdContract {
             "AND " + COLUMN_SOURCE_EXCERPT_END_TIME + " = ? " +
             "AND " + COLUMN_SOURCE_EXCERPT_PAGES + " = ? ; ";
 
-    public static final String SELECT_MEDIA_WITH_DEVICE_PATHS_FOR_TAG_ID_X =
+    public static final String SELECT_MEDIA_PATH_FOR_TAG_ID_X =
+
+            "SELECT mp." + COLUMN_MEDIA_PATH_VALUE + "   " +
+                    "FROM " + TABLE_MEDIA_TAGGING + " mtg " +
+                    "JOIN " + TABLE_MEDIA_TAG + " mt " +
+                    "ON mt." + COLUMN_MEDIA_TAG_ID + " = mtg." + COLUMN_MEDIA_TAG_ID + " " +
+                    "JOIN " + TABLE_MEDIA + " m " +
+                    "ON mtg." + COLUMN_MEDIA_ID + " = m." + COLUMN_MEDIA_ID + " " +
+                    "JOIN " + TABLE_MEDIA_DEVICE_PATH + " mdp " +
+                    "ON mdp." + COLUMN_MEDIA_ID + " = m." + COLUMN_MEDIA_ID + " " +
+                    "JOIN " + TABLE_MEDIA_PATH + " mp  " +
+                    "ON mp." + COLUMN_MEDIA_PATH_ID + " = mdp." + COLUMN_MEDIA_PATH_ID + " " +
+                    "WHERE mt." + COLUMN_MEDIA_TAG_ID + " = ?  ";
+
+    public static final String SELECT_MEDIA_WITH_DEVICE_PATHS_FOR_TAG_ID_X_ORIGINAL_FROM_DESKTOP =
 
             "SELECT m." + COLUMN_MEDIA_HASH + ", " +
             "	   md." + COLUMN_MEDIA_DEVICE_DESCRIPTION + ", " +

@@ -282,6 +282,11 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                 db.open();
 
+                if(!TagBrowserV5Repository.isLoaded()){
+                    TagBrowserV5Repository.loadTagItems(db,
+                            TagBrowserV5Activity.this);
+                }
+
                 //asdf; //tenatively, I think we should do this:
                 /*
                     use the repository to get the tag list populating with
@@ -311,13 +316,13 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                     if(!tagBrowserTagItem.isLoaded()) {
 
-                        //////////////////////////////////begin - just for mockup
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        //////////////////////////////////end - just for mockup
+//                        //////////////////////////////////begin - just for mockup
+//                        try {
+//                            Thread.sleep(500);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        //////////////////////////////////end - just for mockup
 
                         TagBrowserV5Repository.loadFileItems(tagBrowserTagItem);
                     }

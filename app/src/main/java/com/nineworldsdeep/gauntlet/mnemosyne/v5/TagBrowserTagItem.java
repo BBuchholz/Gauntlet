@@ -6,12 +6,19 @@ public class TagBrowserTagItem {
 
     private ArrayList<TagBrowserFileItem> fileItems;
     private String tagName;
+    private int tagId;
     private boolean loaded;
 
     public TagBrowserTagItem(String tagName){
         this.tagName = tagName;
         fileItems = new ArrayList<>();
         loaded = false;
+    }
+
+    public TagBrowserTagItem(int tagId, String tagName){
+        this(tagName); //chained constructor
+
+        this.tagId = tagId;
     }
 
     public String getTagName() {

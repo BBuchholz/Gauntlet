@@ -28,6 +28,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.TagBrowserTagItem;
 import com.nineworldsdeep.gauntlet.model.FileNode;
 import com.nineworldsdeep.gauntlet.model.FileTagModelItem;
 import com.nineworldsdeep.gauntlet.model.HashNode;
@@ -4182,6 +4183,68 @@ public class NwdDb {
     public void endTransaction() {
 
         db.endTransaction();
+    }
+
+    public ArrayList<TagBrowserTagItem> getAllTagBrowserTagItems(Context c) {
+
+        ArrayList<TagBrowserTagItem> tagBrowserTagItems = new ArrayList<>();
+
+        db.beginTransaction();
+
+        try{
+
+            String[] args =
+                    new String[]{};
+
+            Cursor cursor =
+                    db.rawQuery(
+                            NwdContract.SELECT_MEDIA_TAG_ID_VALUE,
+                            args);
+
+            String[] columnNames =
+                    new String[]{
+                            NwdContract.COLUMN_MEDIA_TAG_ID,
+                            NwdContract.COLUMN_MEDIA_TAG_VALUE
+                    };
+
+            if(cursor.getCount() > 0){
+
+                cursor.moveToFirst();
+
+                do {
+
+                    Map<String, String> record =
+                            cursorToRecord(cursor, columnNames);
+
+                    TagBrowserTagItem tagBrowserTagItem = new TagBrowserTagItem(
+                            Integer.parseInt(record.get(NwdContract.COLUMN_MEDIA_TAG_ID)),
+                            record.get(NwdContract.COLUMN_MEDIA_TAG_VALUE)
+                    );
+
+
+
+                    tagBrowserTagItems.add(tagBrowserTagItem);
+
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+            db.setTransactionSuccessful();
+
+        }catch (Exception ex){
+
+            Utils.toast(c, "Exception: " +
+                    ex.getMessage());
+
+            //ex.printStackTrace();
+
+        }finally {
+
+            db.endTransaction();
+        }
+
+        return tagBrowserTagItems;
     }
 
     public ArrayList<HiveRoot> getAllHiveRoots(Context c) {

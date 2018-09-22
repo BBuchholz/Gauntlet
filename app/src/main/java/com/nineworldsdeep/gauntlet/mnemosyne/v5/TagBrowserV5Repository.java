@@ -1,5 +1,8 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.content.Context;
+
+import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
 
@@ -8,12 +11,23 @@ import java.util.ArrayList;
 public class TagBrowserV5Repository {
 
     private static ArrayList<TagBrowserTagItem> tagItems;
+    private static boolean loaded;
 
     static {
 
         tagItems = new ArrayList<>();
+        loaded = false;
 
-        loadMockItems();
+        //loadMockItems();
+    }
+
+    public static void loadTagItems(NwdDb db, Context context){
+
+        for(TagBrowserTagItem tagBrowserTagItem : db.getAllTagBrowserTagItems(context)){
+            tagItems.add(tagBrowserTagItem);
+        }
+
+        loaded = true;
     }
 
     private static void loadMockItems(){
@@ -78,5 +92,9 @@ public class TagBrowserV5Repository {
 
 
         return filteredItems;
+    }
+
+    public static boolean isLoaded() {
+        return loaded;
     }
 }

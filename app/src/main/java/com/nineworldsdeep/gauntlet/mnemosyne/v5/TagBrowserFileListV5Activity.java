@@ -75,6 +75,9 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
         if(intent.hasExtra(EXTRA_CURRENT_TAG_FILTER)) {
             mCurrentTagFilter = intent.getStringExtra(EXTRA_CURRENT_TAG_FILTER);
+            if(mCurrentTagFilter != null){
+                setTitle(mCurrentTagFilter);
+            }
         }
 
     }

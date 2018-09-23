@@ -252,7 +252,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
     class AsyncLoadItems extends AsyncTask<Void, ProgressWrapper, String> {
 
-
         @Override
         protected void onPreExecute(){
 

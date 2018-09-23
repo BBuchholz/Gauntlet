@@ -51,10 +51,15 @@ public class TagBrowserV5Repository {
         ArrayList<TagBrowserTagItem> filteredItems =
                 new ArrayList<>();
 
+        String[] tagSubFilters = tagFilter.split(",");
+
         for(TagBrowserTagItem tagBrowserTagItem : tagItems){
 
-            if(tagBrowserTagItem.getTagName().toLowerCase().contains(tagFilter.toLowerCase())){
-                filteredItems.add(tagBrowserTagItem);
+            for(String tagSubFilter : tagSubFilters) {
+
+                if (tagBrowserTagItem.getTagName().toLowerCase().contains(tagSubFilter.trim().toLowerCase())) {
+                    filteredItems.add(tagBrowserTagItem);
+                }
             }
         }
 

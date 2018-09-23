@@ -314,7 +314,9 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                     count++;
 
-                    if(!tagBrowserTagItem.isLoaded()) {
+                    // only load if filter is entered, open filter
+                    // is WAY TOO MANY tags to preload
+                    if(tagFilter.trim().length() > 0 && !tagBrowserTagItem.isLoaded()) {
 
 //                        //////////////////////////////////begin - just for mockup
 //                        try {

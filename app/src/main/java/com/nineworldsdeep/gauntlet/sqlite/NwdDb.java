@@ -4186,7 +4186,7 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public ArrayList<TagBrowserFileItem> getTagBrowserFileItemsForTagId(int tagName, Context c) {
+    public ArrayList<TagBrowserFileItem> getTagBrowserFileItemsForTagId(int tagId, Context c) {
 
         ArrayList<TagBrowserFileItem> tagBrowserFileItems = new ArrayList<>();
 
@@ -4195,7 +4195,7 @@ public class NwdDb {
         try{
 
             String[] args =
-                    new String[]{ NwdContract.COLUMN_MEDIA_TAG_ID };
+                    new String[]{ Integer.toString(tagId) };
 
             //using query from desktop, only one column actually used
             //THIS USES JOINS, AND WE CAN MODIFY IF ITS SLOW, JUST BEING QUICK

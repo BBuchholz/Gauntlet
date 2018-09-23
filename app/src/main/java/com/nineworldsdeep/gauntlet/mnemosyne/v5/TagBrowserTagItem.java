@@ -43,7 +43,14 @@ public class TagBrowserTagItem {
 
     public String getTagDisplayName() {
 
-        return getTagName() + " (" + Integer.toString(getTaggedCount()) + ")";
+        if(getTaggedCount() > 0) {
+
+            return getTagName() + " (" + Integer.toString(getTaggedCount()) + ")";
+
+        }else{
+
+            return getTagName();
+        }
     }
 
     public ArrayList<TagBrowserFileItem> getFileItems() {

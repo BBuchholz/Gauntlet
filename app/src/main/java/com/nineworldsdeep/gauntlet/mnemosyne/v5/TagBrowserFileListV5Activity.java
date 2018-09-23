@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nineworldsdeep.gauntlet.R;
+import com.nineworldsdeep.gauntlet.Utils;
 import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
@@ -354,6 +355,15 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
     protected void onListItemClick(ListView l, View view, int idx, long id) {
 
         TagBrowserFileItem tagBrowserFileItem = getItem(idx);
+
+        String filename = tagBrowserFileItem.getFilename();
+
+        Utils.copyToClipboard(TagBrowserFileListV5Activity.this,
+                "tag-browser-file-item-name", filename);
+
+        String msg = "[" + filename + "] copied to clipboard";
+
+        Utils.toast(TagBrowserFileListV5Activity.this, msg);
 
 //        File f = tagBrowserFileItem.getFile();
 //

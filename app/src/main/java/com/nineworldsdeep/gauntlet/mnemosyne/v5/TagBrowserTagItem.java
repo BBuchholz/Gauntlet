@@ -1,17 +1,18 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TagBrowserTagItem {
 
-    private ArrayList<TagBrowserFileItem> fileItems;
+    private HashSet<TagBrowserFileItem> fileItems;
     private String tagName;
     private int tagId;
     private boolean loaded;
 
     public TagBrowserTagItem(String tagName){
         this.tagName = tagName;
-        fileItems = new ArrayList<>();
+        fileItems = new HashSet<>();
         loaded = false;
     }
 
@@ -53,7 +54,7 @@ public class TagBrowserTagItem {
         }
     }
 
-    public ArrayList<TagBrowserFileItem> getFileItems() {
+    public HashSet<TagBrowserFileItem> getFileItems() {
 
         return fileItems;
     }

@@ -389,19 +389,33 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
         TagBrowserTagItem tagBrowserTagItem = getItem(idx);
 
+        // file items are not preloaded until filter is applied
+        // this check is required in case a filter was never
+        // applied for a given tag item
+        if(!tagBrowserTagItem.isLoaded()){
+
+            NwdDb db = NwdDb.getInstance(TagBrowserV5Activity.this);
+
+            db.open();
+
+            TagBrowserV5Repository.loadFileItems(tagBrowserTagItem, db,
+                    TagBrowserV5Activity.this);
+        }
+
+
 //        File f = tagBrowserTagItem.getFile();
 //
 //        if(f.exists() && f.isFile()){
 //
-            Intent intent = new Intent(view.getContext(),
-                    TagBrowserFileListV5Activity.class);
+        Intent intent = new Intent(view.getContext(),
+                TagBrowserFileListV5Activity.class);
 
-            intent.putExtra(
-                    TagBrowserFileListV5Activity.EXTRA_CURRENT_TAG_FILTER,
-                    tagBrowserTagItem.getTagName()
-            );
+        intent.putExtra(
+                TagBrowserFileListV5Activity.EXTRA_CURRENT_TAG_FILTER,
+                tagBrowserTagItem.getTagName()
+        );
 
-            startActivity(intent);
+        startActivity(intent);
 //
 //        }else if(f.exists() && f.isDirectory()){
 //

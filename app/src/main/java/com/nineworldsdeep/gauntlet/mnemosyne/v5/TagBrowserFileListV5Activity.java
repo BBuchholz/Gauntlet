@@ -26,11 +26,12 @@ import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
     //private File mCurrentDir;
-    private String mCurrentTagFilter;
+    private String mCurrentTag;
 
     //for submenus, holds current info between menus (trust me, otherwise it's null for the submenu)
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
@@ -72,9 +73,9 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if(intent.hasExtra(EXTRA_CURRENT_TAG_FILTER)) {
-            mCurrentTagFilter = intent.getStringExtra(EXTRA_CURRENT_TAG_FILTER);
-            if(mCurrentTagFilter != null){
-                setTitle(mCurrentTagFilter);
+            mCurrentTag = intent.getStringExtra(EXTRA_CURRENT_TAG_FILTER);
+            if(mCurrentTag != null){
+                setTitle(mCurrentTag);
             }
         }
 
@@ -107,7 +108,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
             }
         });
 
-        new AsyncLoadItems().execute(mCurrentTagFilter);
+        new AsyncLoadItems().execute(mCurrentTag);
     }
 
     /**
@@ -276,8 +277,8 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
                 String fileFilter = getEditTextForFileFilter().getText().toString();
 
-                ArrayList<TagBrowserFileItem> tagBrowserFileItems =
-                        TagBrowserV5Repository.getFileItems(mCurrentTagFilter, fileFilter);
+                HashSet<TagBrowserFileItem> tagBrowserFileItems =
+                        TagBrowserV5Repository.getFileItems(mCurrentTag, fileFilter);
 
                 total = tagBrowserFileItems.size();
 

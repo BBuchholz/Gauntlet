@@ -7,6 +7,7 @@ import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TagBrowserV5Repository {
 
@@ -60,6 +61,20 @@ public class TagBrowserV5Repository {
         return filteredItems;
     }
 
+    public static TagBrowserTagItem getTagItemForTagName(String tagName) {
+
+        TagBrowserTagItem foundTagBrowserTagItem = null;
+
+        for(TagBrowserTagItem tagBrowserTagItem : tagItems){
+
+            if(tagBrowserTagItem.getTagName().equalsIgnoreCase(tagName)){
+                foundTagBrowserTagItem = tagBrowserTagItem;
+            }
+        }
+
+        return foundTagBrowserTagItem;
+    }
+
     public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem, NwdDb db, Context context) {
 
         if(!tagBrowserTagItem.isLoaded()) {
@@ -75,9 +90,9 @@ public class TagBrowserV5Repository {
         }
     }
 
-    public static ArrayList<TagBrowserFileItem> getFileItems(String tagFilter, String fileFilter) {
+    public static HashSet<TagBrowserFileItem> getFileItems(String tagName, String fileFilter) {
 
-        ArrayList<TagBrowserFileItem> filteredItems = new ArrayList<>();
+        HashSet<TagBrowserFileItem> filteredItems = new HashSet<>();
 
 
 //        /////////////////////////////begin - just for mock
@@ -108,16 +123,16 @@ public class TagBrowserV5Repository {
         // will be updated to support multi tag filter before implementation
         // is complete, this is just an intermediate implementation
 
-        for(TagBrowserTagItem tagBrowserTagItem : getTagItems(tagFilter)) {
+        TagBrowserTagItem tagBrowserTagItem = getTagItemForTagName(tagName);
 
-            for (TagBrowserFileItem tagBrowserFileItem : tagBrowserTagItem.getFileItems()) {
+        for (TagBrowserFileItem tagBrowserFileItem : tagBrowserTagItem.getFileItems()) {
 
-                if (tagBrowserFileItem.getFilename().toLowerCase().contains(
-                        fileFilter.toLowerCase())) {
-                    filteredItems.add(tagBrowserFileItem);
-                }
+            if (tagBrowserFileItem.getFilename().toLowerCase().contains(
+                    fileFilter.toLowerCase())) {
+                filteredItems.add(tagBrowserFileItem);
             }
         }
+
 
         return filteredItems;
     }

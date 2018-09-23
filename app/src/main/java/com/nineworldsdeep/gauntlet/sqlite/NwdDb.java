@@ -46,6 +46,8 @@ import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSource;
 import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlSourceExcerpt;
 import com.nineworldsdeep.gauntlet.xml.archivist.ArchivistXmlTag;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -4218,9 +4220,11 @@ public class NwdDb {
                     Map<String, String> record =
                             cursorToRecord(cursor, columnNames);
 
-                    TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(
-                            record.get(NwdContract.COLUMN_MEDIA_PATH_VALUE)
-                    );
+                    String path = record.get(NwdContract.COLUMN_MEDIA_PATH_VALUE);
+                    String fileNameFromPath = FilenameUtils.getName(path);
+
+                    TagBrowserFileItem tagBrowserFileItem =
+                            new TagBrowserFileItem(fileNameFromPath);
 
                     tagBrowserFileItems.add(tagBrowserFileItem);
 

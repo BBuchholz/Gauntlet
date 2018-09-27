@@ -1821,6 +1821,7 @@ public class NwdContract {
     public static final String SELECT_MEDIA_PATH_FOR_TAG_ID_X =
 
             "SELECT mp." + COLUMN_MEDIA_PATH_VALUE + "   " +
+                    "m." + COLUMN_MEDIA_HASH + " " +
                     "FROM " + TABLE_MEDIA_TAGGING + " mtg " +
                     "JOIN " + TABLE_MEDIA_TAG + " mt " +
                     "ON mt." + COLUMN_MEDIA_TAG_ID + " = mtg." + COLUMN_MEDIA_TAG_ID + " " +

@@ -4208,7 +4208,8 @@ public class NwdDb {
 
             String[] columnNames =
                     new String[]{
-                            NwdContract.COLUMN_MEDIA_PATH_VALUE
+                            NwdContract.COLUMN_MEDIA_PATH_VALUE,
+                            NwdContract.COLUMN_MEDIA_HASH
                     };
 
             if(cursor.getCount() > 0){
@@ -4221,10 +4222,14 @@ public class NwdDb {
                             cursorToRecord(cursor, columnNames);
 
                     String path = record.get(NwdContract.COLUMN_MEDIA_PATH_VALUE);
+                    String hash = record.get(NwdContract.COLUMN_MEDIA_HASH);
+
                     String fileNameFromPath = FilenameUtils.getName(path);
 
                     TagBrowserFileItem tagBrowserFileItem =
                             new TagBrowserFileItem(fileNameFromPath);
+
+                    tagBrowserFileItem.setHash(hash);
 
                     tagBrowserFileItems.add(tagBrowserFileItem);
 

@@ -4188,7 +4188,7 @@ public class NwdDb {
         db.endTransaction();
     }
 
-    public ArrayList<TagBrowserFileItem> getTagBrowserFileItemsForTagId(int tagId, Context c) {
+    public ArrayList<TagBrowserFileItem> getTagBrowserFileItemsForTagId(int tagId) {
 
         ArrayList<TagBrowserFileItem> tagBrowserFileItems = new ArrayList<>();
 
@@ -4244,10 +4244,7 @@ public class NwdDb {
 
         }catch (Exception ex){
 
-            Utils.toast(c, "Exception: " +
-                    ex.getMessage());
-
-            //ex.printStackTrace();
+            throw ex;
 
         }finally {
 

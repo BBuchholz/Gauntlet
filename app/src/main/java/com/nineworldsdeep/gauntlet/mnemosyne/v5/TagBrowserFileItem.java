@@ -1,8 +1,10 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.support.annotation.NonNull;
+
 import java.util.Objects;
 
-public class TagBrowserFileItem {
+public class TagBrowserFileItem implements Comparable<TagBrowserFileItem> {
 
     private String fileName;
     private String hash;
@@ -51,5 +53,11 @@ public class TagBrowserFileItem {
 
     public String getHash() {
         return hash;
+    }
+
+    @Override
+    public int compareTo(@NonNull TagBrowserFileItem tagBrowserFileItem) {
+
+        return this.fileName.compareTo(tagBrowserFileItem.fileName);
     }
 }

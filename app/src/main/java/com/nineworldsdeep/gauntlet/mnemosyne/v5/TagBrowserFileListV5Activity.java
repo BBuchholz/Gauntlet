@@ -28,6 +28,7 @@ import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
@@ -278,7 +279,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
                 String fileFilter = getEditTextForFileFilter().getText().toString();
 
-                HashSet<TagBrowserFileItem> tagBrowserFileItems =
+                TreeSet<TagBrowserFileItem> tagBrowserFileItems =
                         TagBrowserV5Repository.getFileItems(mCurrentTag, fileFilter);
 
                 total = tagBrowserFileItems.size();

@@ -8,6 +8,7 @@ import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class TagBrowserV5Repository {
 
@@ -80,13 +81,13 @@ public class TagBrowserV5Repository {
         return foundTagBrowserTagItem;
     }
 
-    public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem, NwdDb db, Context context) {
+    public static void loadFileItems(TagBrowserTagItem tagBrowserTagItem, NwdDb db) {
 
         if(!tagBrowserTagItem.isLoaded()) {
 
             for (TagBrowserFileItem tagBrowserFileItem :
                     db.getTagBrowserFileItemsForTagId(
-                            tagBrowserTagItem.getTagId(), context)) {
+                            tagBrowserTagItem.getTagId())) {
 
                 tagBrowserTagItem.addFileItem(tagBrowserFileItem);
             }
@@ -95,9 +96,9 @@ public class TagBrowserV5Repository {
         }
     }
 
-    public static HashSet<TagBrowserFileItem> getFileItems(String tagName, String fileFilter) {
+    public static TreeSet<TagBrowserFileItem> getFileItems(String tagName, String fileFilter) {
 
-        HashSet<TagBrowserFileItem> filteredItems = new HashSet<>();
+        TreeSet<TagBrowserFileItem> filteredItems = new TreeSet<>();
 
 
 //        /////////////////////////////begin - just for mock
@@ -137,6 +138,8 @@ public class TagBrowserV5Repository {
                 filteredItems.add(tagBrowserFileItem);
             }
         }
+
+
 
 
         return filteredItems;

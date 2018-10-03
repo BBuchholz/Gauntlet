@@ -23,7 +23,9 @@ public class TagBrowserV5Repository {
         //loadMockItems();
     }
 
-    public static void loadTagItems(NwdDb db, Context context){
+    public static void refreshTagItems(NwdDb db, Context context){
+
+        tagItems.clear();
 
         for(TagBrowserTagItem tagBrowserTagItem : db.getAllTagBrowserTagItems(context)){
             tagItems.add(tagBrowserTagItem);

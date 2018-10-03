@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import com.nineworldsdeep.gauntlet.core.HomeListActivity;
 import com.nineworldsdeep.gauntlet.core.NavigateActivityCommand;
 import com.nineworldsdeep.gauntlet.sqlite.NwdDb;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class TagBrowserV5Activity extends AppCompatActivity {
@@ -282,7 +280,7 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                 db.open();
 
                 if(!TagBrowserV5Repository.isLoaded()){
-                    TagBrowserV5Repository.loadTagItems(db,
+                    TagBrowserV5Repository.refreshTagItems(db,
                             TagBrowserV5Activity.this);
                 }
 
@@ -470,6 +468,19 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                 NavigateActivityCommand.navigateTo(
                         HomeListActivity.class, this
                 );
+
+                return true;
+
+            case R.id.action_refresh_tag_repository:
+
+                NwdDb db = NwdDb.getInstance(TagBrowserV5Activity.this);
+
+                db.open();
+
+                TagBrowserV5Repository.refreshTagItems(db,
+                        TagBrowserV5Activity.this);
+
+                refreshLayout();
 
                 return true;
 

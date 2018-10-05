@@ -1831,7 +1831,9 @@ public class NwdContract {
                     "ON mdp." + COLUMN_MEDIA_ID + " = m." + COLUMN_MEDIA_ID + " " +
                     "JOIN " + TABLE_MEDIA_PATH + " mp  " +
                     "ON mp." + COLUMN_MEDIA_PATH_ID + " = mdp." + COLUMN_MEDIA_PATH_ID + " " +
-                    "WHERE mt." + COLUMN_MEDIA_TAG_ID + " = ?  ";
+                    "WHERE mt." + COLUMN_MEDIA_TAG_ID + " = ?  " +
+                    "AND mtg." + COLUMN_MEDIA_TAGGING_TAGGED_AT +
+                    " >= mtg." + COLUMN_MEDIA_TAGGING_UNTAGGED_AT;
 
     public static final String SELECT_MEDIA_WITH_DEVICE_PATHS_FOR_TAG_ID_X_ORIGINAL_FROM_DESKTOP =
 

@@ -1,6 +1,8 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
             "com.nineworldsdeep.gauntlet.TAG_BROWSER_CURRENT_TAG_FILTER";
 
     private static final int MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD = 1;
+    private static final int MENU_CONTEXT_MARK_NOT_FOUND_IN_CLOUD = 2;
 
 
     /**
@@ -573,8 +576,14 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        //holding for submenus
+        // holding for submenus
         lastMenuInfo = info;
+
+        menu.add(Menu.NONE, MENU_CONTEXT_MARK_NOT_FOUND_IN_CLOUD,
+                Menu.NONE, "Missing From Cloud");
+
+
+
 
 //        boolean isDirectory = getItem(info.position).getFile().isDirectory();
 //
@@ -631,6 +640,8 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
         }
 
         switch (item.getItemId()) {
+
+
 
 //            case MENU_CONTEXT_COPY_TO_STAGING:
 //
@@ -722,6 +733,13 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 //
 //                return true;
 
+
+            case MENU_CONTEXT_MARK_NOT_FOUND_IN_CLOUD:
+
+                markNotFoundInCloud(info.position);
+
+                return true;
+
             case MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD:
 
                 copyFileNameToClipboard(info.position);
@@ -732,6 +750,110 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
+
+    private void markNotFoundInCloud(int position) {
+
+        final TagBrowserFileItem tagBrowserFileItem = getItem(position);
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+
+        final String verificationText = "missing in cloud";
+
+        String promptMsg = "about to remove all tags and " +
+                "mark this [not found in the cloud] this " +
+                "should only be done if the media isn't " +
+                "available anywhere in the cloud, as it will " +
+                "remove the tags across the entire ecosystem. " +
+                "To confirm this action, type the phrase \"" + verificationText + "\"";
+
+        TextView tv = (TextView) promptsView.findViewById(R.id.textView1);
+        tv.setText(promptMsg);
+
+        android.app.AlertDialog.Builder alertDialogBuilder =
+                new android.app.AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+
+                                String verificationPhrase = userInput.getText().toString();
+
+                                boolean verified =
+                                        verificationPhrase.equalsIgnoreCase(
+                                                verificationText);
+
+                                if(verified){
+
+                                    NwdDb db =
+                                        NwdDb.getInstance(TagBrowserFileListV5Activity.this);
+
+                                    Media fileItemMedia = new Media();
+                                    fileItemMedia.setMediaHash(tagBrowserFileItem.getHash());
+
+                                    try {
+
+                                        db.sync(fileItemMedia);
+
+                                        for(MediaTagging mediaTagging : fileItemMedia.getMediaTaggings()){
+
+                                            mediaTagging.untag();
+                                        }
+
+                                        fileItemMedia.getTag("not found in the cloud").tag();
+
+                                        db.sync(fileItemMedia);
+
+                                        ArrayList<Media> lst = new ArrayList<>();
+                                        lst.add(fileItemMedia);
+
+                                        UtilsMnemosyneV5.hiveExportToXml(lst, db,
+                                                TagBrowserFileListV5Activity.this);
+
+                                    } catch (Exception e) {
+
+                                        Utils.toast(TagBrowserFileListV5Activity.this,
+                                                "error syncing media by hash: " + e.getMessage());
+                                    }
+
+
+                                }else{
+
+                                    Utils.toast(
+                                    TagBrowserFileListV5Activity.this,
+                                            "mark missing cancelled");
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                Utils.toast(
+                                    TagBrowserFileListV5Activity.this,
+                                        "mark missing cancelled");
+
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
 
     private void copyFileNameToClipboard(int position) {
 

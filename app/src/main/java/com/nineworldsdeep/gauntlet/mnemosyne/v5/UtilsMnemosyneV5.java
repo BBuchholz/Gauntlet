@@ -513,14 +513,14 @@ public class UtilsMnemosyneV5 {
 
     public static void hiveExportToXml(ArrayList<Media> mediaList,
                                        NwdDb db,
-                                       Context ctx)
+                                       Context context)
             throws Exception {
 
         Document doc = getDocument(mediaList, db);
 
         for(File outputFile :
             Configuration.getOutgoingHiveXmlFiles_yyyyMMddHHmmss(
-                    ctx,
+                    context,
                     db,
                     Xml.FILE_NAME_MNEMOSYNE_V5)) {
 

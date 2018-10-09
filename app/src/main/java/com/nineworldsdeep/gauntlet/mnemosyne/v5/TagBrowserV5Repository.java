@@ -20,7 +20,6 @@ public class TagBrowserV5Repository {
         tagItems = new ArrayList<>();
         loaded = false;
 
-        //loadMockItems();
     }
 
     public static void refreshTagItems(NwdDb db, Context context){
@@ -34,20 +33,6 @@ public class TagBrowserV5Repository {
         loaded = true;
     }
 
-    private static void loadMockItems(){
-
-        ArrayList<TagBrowserTagItem> mockItems = new ArrayList<>();
-
-
-        Lorem lorem = LoremIpsum.getInstance();
-
-        for(int i = 1; i <= 10; i++) {
-
-            String loremValue = lorem.getWords(1, 3);
-
-            tagItems.add(new TagBrowserTagItem(loremValue));
-        }
-    }
 
     public static ArrayList<TagBrowserTagItem> getTagItems(String tagFilter) {
 
@@ -101,35 +86,6 @@ public class TagBrowserV5Repository {
     public static TreeSet<TagBrowserFileItem> getFileItems(String tagName, String fileFilter) {
 
         TreeSet<TagBrowserFileItem> filteredItems = new TreeSet<>();
-
-
-//        /////////////////////////////begin - just for mock
-//        ArrayList<TagBrowserFileItem> mockItems = new ArrayList<>();
-//
-//        for(int i = 0; i < 10; i++) {
-//
-//            TagBrowserFileItem tagBrowserFileItem = new TagBrowserFileItem(tagFilter + " file " + Integer.toString(i));
-//
-//            mockItems.add(tagBrowserFileItem);
-//        }
-//
-//
-//        for(TagBrowserFileItem tagBrowserFileItem : mockItems){
-//
-//            if(tagBrowserFileItem.getFilename().toLowerCase().contains(
-//                    fileFilter.toLowerCase())){
-//                filteredItems.add(tagBrowserFileItem);
-//            }
-//        }
-//
-//        ////////////////////////////end - just for mock
-
-
-
-
-        // this supports a single tag (treats the tag filter as a single string)
-        // will be updated to support multi tag filter before implementation
-        // is complete, this is just an intermediate implementation
 
         TagBrowserTagItem tagBrowserTagItem = getTagItemForTagName(tagName);
 

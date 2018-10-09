@@ -67,26 +67,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        Intent intent = getIntent();
-//        String currentPathString = null;
-//
-//        if(intent.hasExtra(EXTRA_CURRENT_PATH)) {
-//            currentPathString = intent.getStringExtra(EXTRA_CURRENT_PATH);
-//        }
-//
-//        mCurrentDir = null;
-//
-//        if(currentPathString != null){
-//
-//            mCurrentDir = new File(currentPathString);
-//
-//            if(!mCurrentDir.exists()){
-//
-//                mCurrentDir = null;
-//            }
-//        }
-
-//        refreshLayout();
     }
 
     public void onTagFilterButtonClick(View view){
@@ -259,14 +239,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... nothings) {
 
-            //asdf; //tenatively, I think we should do this:
-            /*
-                use the repository to get the tag list populating with
-                tag counts as necessary (so they only get loaded once)
-
-                refer to media hash repository implementation for how to
-                do this
-             */
 
             int count = 0;
             int total = 0;
@@ -284,22 +256,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                             TagBrowserV5Activity.this);
                 }
 
-                //asdf; //tenatively, I think we should do this:
-                /*
-                    use the repository to get the tag list populating with
-                    tag counts as necessary (so they only get loaded once)
-
-                    refer to media hash repository implementation for how to
-                    do this
-                 */
-
-                /////////////////////////////////start new implementation
-
-                //have the repository lazy load tag browser tag items
-
-
-                ////////////////////////////////end new implementation
-
                 String tagFilter = getEditTextForTagFilter().getText().toString();
 
                 ArrayList<TagBrowserTagItem> tagBrowserTagItems =
@@ -314,14 +270,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
                     // only load if filter is entered, open filter
                     // is WAY TOO MANY tags to preload
                     if(tagFilter.trim().length() > 0 && !tagBrowserTagItem.isLoaded()) {
-
-//                        //////////////////////////////////begin - just for mockup
-//                        try {
-//                            Thread.sleep(500);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        //////////////////////////////////end - just for mockup
 
                         TagBrowserV5Repository.loadFileItems(tagBrowserTagItem, db);
                     }
@@ -398,10 +346,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         }
 
 
-//        File f = tagBrowserTagItem.getFile();
-//
-//        if(f.exists() && f.isFile()){
-//
         Intent intent = new Intent(view.getContext(),
                 TagBrowserFileListV5Activity.class);
 
@@ -411,22 +355,7 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         );
 
         startActivity(intent);
-//
-//        }else if(f.exists() && f.isDirectory()){
-//
-//            Intent intent = new Intent(view.getContext(),
-//                    TagBrowserV5Activity.class);
-//            intent.putExtra(
-//                    TagBrowserV5Activity.EXTRA_CURRENT_PATH,
-//                    f.getAbsolutePath()
-//            );
-//
-//            startActivity(intent);
-//
-//        }else{
-//
-//            Utils.toast(view.getContext(), f.getAbsolutePath());
-//        }
+
     }
 
     private TagBrowserTagItem getItem(int idx) {
@@ -453,16 +382,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
         switch (item.getItemId()){
 
-//            case R.id.action_copy_all_to_staging:
-//
-//                copyAllToStaging();
-//                return true;
-//
-//            case R.id.action_move_all_to_staging:
-//
-//                moveAllToStaging();
-//                return true;
-
             case R.id.action_go_to_home_screen:
 
                 NavigateActivityCommand.navigateTo(
@@ -484,56 +403,11 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
                 return true;
 
-//            case R.id.action_queue_folder_to_playlist:
-//
-//                MediaPlayerSingletonV5 player =
-//                        MediaPlayerSingletonV5.getInstance();
-//
-//                ArrayAdapter<MediaListItem> adapter =
-//                        (ArrayAdapter<MediaListItem>)getListAdapter();
-//
-//                ArrayList<MediaListItem> lst = new ArrayList<>();
-//
-//                for(int i = 0; i < adapter.getCount(); i++){
-//
-//                    lst.add(adapter.getItem(i));
-//                }
-//
-//                player.queue(lst);
-//
-//                NavigateActivityCommand.navigateTo(
-//                        AudioDisplayV5Activity.class, this);
-//
-//                return true;
-//
-////            //disabling old xml handling methods
-////            case R.id.action_export_all_to_xml:
-////
-////                exportAllToXml();
-////                return true;
-//
-//            case R.id.action_hive_export_all_to_xml:
-//
-//                hiveExportAllToXml();
-//                return true;
-
             default:
 
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    private void copyAllToStaging() {
-//
-//        UtilsHive.copyToStaging(this, getListItemsFiles());
-//        refreshLayout();
-//    }
-//
-//    private void moveAllToStaging() {
-//
-//        UtilsHive.moveToStaging(this, getListItemsFiles());
-//        refreshLayout();
-//    }
 
     @Override
     protected void onResume() {
@@ -542,67 +416,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
         NwdDb.getInstance(this).open();
         refreshLayout();
     }
-
-//    private void exportAllToXml() {
-//
-//        NwdDb db = NwdDb.getInstance(this);
-//        db.open();
-//
-//        ArrayList<Media> lst = getListItemsMedia();
-//
-//        try {
-//
-//            UtilsMnemosyneV5.exportToXml(lst, db);
-//
-//        }catch (Exception ex){
-//
-//            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
-//        }
-//
-//        Utils.toast(this, "exported");
-//    }
-
-//    @NonNull
-//    private ArrayList<Media> getListItemsMedia() {
-//        ArrayList<Media> lst = new ArrayList<>();
-//
-//        ArrayAdapter<MediaListItem> itemsAdapter =
-//                (ArrayAdapter<MediaListItem>)getListAdapter();
-//
-//        for(int i = 0; i < itemsAdapter.getCount(); i++){
-//
-//            MediaListItem tagBrowserTagItem = itemsAdapter.getItem(i);
-//
-//            File f = tagBrowserTagItem.getFile();
-//
-//            if(f.exists() && f.isFile()){
-//
-//                lst.add(tagBrowserTagItem.getMedia());
-//            }
-//        }
-//        return lst;
-//    }
-//
-//    @NonNull
-//    private ArrayList<File> getListItemsFiles() {
-//        ArrayList<File> lst = new ArrayList<>();
-//
-//        ArrayAdapter<MediaListItem> itemsAdapter =
-//                (ArrayAdapter<MediaListItem>)getListAdapter();
-//
-//        for(int i = 0; i < itemsAdapter.getCount(); i++){
-//
-//            MediaListItem tagBrowserTagItem = itemsAdapter.getItem(i);
-//
-//            File f = tagBrowserTagItem.getFile();
-//
-//            if(f.exists() && f.isFile()){
-//
-//                lst.add(f);
-//            }
-//        }
-//        return lst;
-//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu,
@@ -615,40 +428,6 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
         //holding for submenus
         lastMenuInfo = info;
-
-//        boolean isDirectory = getItem(info.position).getFile().isDirectory();
-//
-//        menu.add(Menu.NONE, MENU_CONTEXT_SHA1_HASH_ID, Menu.NONE, "SHA1 Hash");
-//
-//        if(!isDirectory) {
-//
-//            menu.add(Menu.NONE, MENU_CONTEXT_EXPORT_HIVE_XML, Menu.NONE, "Export to Hive XML");
-//
-////            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
-////            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
-////            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
-////            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
-////
-//
-//            SubMenu moveMenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE,"Move To...");
-//
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO, Menu.NONE, "Move to audio");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS, Menu.NONE, "Move to voicememos");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS, Menu.NONE, "Move to Downloads");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS, Menu.NONE, "Move to refTracks");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS, Menu.NONE, "Move to praxis");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS, Menu.NONE, "Move to projects");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_STUDY, Menu.NONE, "Move to study");
-//            moveMenu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES, Menu.NONE, "Move to canvases");
-//
-//
-//            menu.add(Menu.NONE, MENU_CONTEXT_COPY_TO_STAGING, Menu.NONE, "Copy to staging");
-//            menu.add(Menu.NONE, MENU_CONTEXT_MOVE_TO_STAGING, Menu.NONE, "Move to staging");
-//            menu.add(Menu.NONE, MENU_CONTEXT_OPEN_EXTERNAL, Menu.NONE, "Open External");
-//
-//            menu.add(Menu.NONE, MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD, Menu.NONE, "Copy Hash");
-//            menu.add(Menu.NONE, MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD, Menu.NONE, "Copy File Name");
-//        }
 
     }
 
@@ -671,358 +450,9 @@ public class TagBrowserV5Activity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-//            case MENU_CONTEXT_COPY_TO_STAGING:
-//
-//                copyToStaging(info.position);
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_STAGING:
-//
-//                moveToStaging(info.position);
-//                return true;
-//
-//            case MENU_CONTEXT_EXPORT_HIVE_XML:
-//
-//                try {
-//
-//                    exportHiveXml(info.position);
-//                    Utils.toast(this, "exported");
-//
-//                }catch(Exception ex){
-//
-//                    Utils.toast(this, "error exporting xml: " + ex.toString());
-//                }
-//
-//                return true;
-//
-//            case MENU_CONTEXT_SHA1_HASH_ID:
-//
-//                computeSHA1Hash(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_AUDIO:
-//
-//                moveToAudio(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_VOICEMEMOS:
-//
-//                moveToVoiceMemos(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_DOWNLOADS:
-//
-//                moveToDownloads(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_REF_TRACKS:
-//
-//                moveToRefTracks(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_PRAXIS:
-//
-//                moveToPraxis(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_PROJECTS:
-//
-//                moveToProjects(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_STUDY:
-//
-//                moveToStudy(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_MOVE_TO_FOLDER_CANVASES:
-//
-//                moveToCanvases(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_OPEN_EXTERNAL:
-//
-//                openExternal(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_COPY_HASH_TO_CLIPBOARD:
-//
-//                copyHashToClipboard(info.position);
-//
-//                return true;
-//
-//            case MENU_CONTEXT_COPY_FILE_NAME_TO_CLIPBOARD:
-//
-//                copyFileNameToClipboard(info.position);
-//
-//                return true;
-
             default:
                 return super.onContextItemSelected(item);
         }
     }
-
-//    private void copyFileNameToClipboard(int position) {
-//
-//        UtilsMnemosyneV5.copyFileNameToClipboard(this, getItem(position));
-//    }
-//
-//    private void copyHashToClipboard(int position) {
-//
-//        UtilsMnemosyneV5.copyHashToClipboard(this, getItem(position));
-//    }
-//
-//    private void openExternal(int position) {
-//
-//        MediaListItem tagBrowserTagItem = getItem(position);
-//        File f = tagBrowserTagItem.getFile();
-//
-//        if(f.exists() && f.isFile()){
-//
-//            //previous version (api < 24)
-////            Intent target = new Intent(Intent.ACTION_VIEW);
-////
-////            String mimeType = UtilsMnemosyneV5.getMimeType(f);
-////
-////            //target.setDataAndType(Uri.fromFile(f),"*/*");
-////            target.setDataAndType(Uri.fromFile(f), mimeType);
-////            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//
-//            //updating for api >= 24
-//            Intent target = new Intent(Intent.ACTION_VIEW);
-//
-//            String mimeType = UtilsMnemosyneV5.getMimeType(f);
-//
-//            Uri audioUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".com.nineworldsdeep.gauntlet.provider", f);
-//
-//            target.setDataAndType(audioUri, mimeType);
-//            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//            try{
-//
-//                startActivity(target);
-//
-//            }catch (ActivityNotFoundException ex){
-//
-//                Utils.toast(TagBrowserV5Activity.this,
-//                        "error opening file: " +
-//                                f.getAbsolutePath());
-//            }
-//
-//        }
-//    }
-//
-//    private void moveToStaging(int position) {
-//
-//        UtilsHive.moveToStaging(this, getItem(position).getFile());
-//        refreshLayout();
-//    }
-//
-//    private void copyToStaging(int position) {
-//
-//        UtilsHive.copyToStaging(this, getItem(position).getFile());
-//        refreshLayout();
-//    }
-//
-//    private void exportHiveXml(int position) throws Exception {
-//
-//        MediaListItem tagBrowserTagItem = getItem(position);
-//        Media media = tagBrowserTagItem.getMedia();
-//
-//        NwdDb db = NwdDb.getInstance(this);
-//        db.open();
-//
-//        ArrayList<Media> lst = new ArrayList<>();
-//        lst.add(media);
-//
-//        //UtilsMnemosyneV5.exportToXml(lst, db);
-//
-//        UtilsMnemosyneV5.hiveExportToXml(lst, db, this);
-//    }
-//
-//    private void hiveExportAllToXml(){
-//
-//        NwdDb db = NwdDb.getInstance(this);
-//        db.open();
-//
-//        ArrayList<Media> lst = getListItemsMedia();
-//
-//        try {
-//
-//            UtilsMnemosyneV5.hiveExportToXml(lst, db, this);
-//
-//        }catch (Exception ex){
-//
-//            Utils.toast(this, "Error exporting all to xml: " + ex.toString());
-//        }
-//
-//        Utils.toast(this, "exported");
-//    }
-//
-//    private void moveToDownloads(int position){
-//
-//        moveFile(position, Configuration.getDownloadDirectory());
-//    }
-//
-//    private void moveToRefTracks(int position){
-//
-//        moveFile(position, Configuration.getRefTracksDirectory());
-//    }
-//
-//    private void moveToPraxis(int position){
-//
-//        moveFile(position, Configuration.getPraxisAudioDirectory());
-//    }
-//
-//    private void moveToStudy(int position){
-//
-//        moveFile(position, Configuration.getStudyAudioDirectory());
-//    }
-//
-//    private void moveToProjects(int position){
-//
-//        moveFile(position, Configuration.getProjectsAudioDirectory());
-//    }
-//
-//    private void moveToCanvases(int position){
-//
-//        moveFile(position, Configuration.getCanvasesDirectory());
-//    }
-//
-//    private void moveToVoiceMemos(int position) {
-//
-//        moveFile(position, Configuration.getVoicememosDirectory());
-//    }
-//
-//    private void moveToAudio(int position) {
-//
-//        moveFile(position, Configuration.getAudioDirectory());
-//    }
-//
-//    private void moveFile(int position, File destinationDirectory){
-//
-//        MediaListItem tagBrowserTagItem = getItem(position);
-//        File f = tagBrowserTagItem.getFile();
-//
-//        //translate to midi file name
-//        String fileNameWithoutPathOrExtension =
-//                FilenameUtils.getBaseName(f.getAbsolutePath());
-//
-//        String midiFileName = fileNameWithoutPathOrExtension + ".mid";
-//
-//        File possibleMidiFile =
-//                new File(mCurrentDir, midiFileName);
-//
-//        String msg = "";
-//
-//        if(f.exists()){
-//
-//            try{
-//
-//                File destination =
-//                        new File(destinationDirectory,
-//                                FilenameUtils.getName(f.getAbsolutePath()));
-//
-//                File destMidi =
-//                        new File(Configuration.getMidiDirectory(),
-//                                 midiFileName);
-//
-//                NwdDb db = NwdDb.getInstance(this);
-//
-//                HashMap<String,String> dbPathToTagsMap =
-//                    TagDbIndex.importExportPathToTagStringMap(db);
-//
-//                MnemoSyneUtils.copyTags(f.getAbsolutePath(),
-//                        destination.getAbsolutePath(), dbPathToTagsMap, db);
-//
-//                MnemoSyneUtils.copyDisplayName(f.getAbsolutePath(),
-//                        destination.getAbsolutePath(), dbPathToTagsMap, db);
-//
-//                f.renameTo(destination);
-//
-//                if(possibleMidiFile.exists()){
-//
-//                    possibleMidiFile.renameTo(destMidi);
-//
-//                    Utils.toast(this, "found and moved midi file");
-//                }
-//
-//                msg = "file moved";
-//
-//            }catch (Exception ex){
-//
-//                msg = "Error moving file: " + ex.getMessage();
-//            }
-//
-//        }else{
-//
-//            msg = "non existant path: " + f.getAbsolutePath();
-//        }
-//
-//        Utils.toast(this, msg);
-//        refreshLayout();
-//    }
-//
-//    /**
-//     * Computes and stores SHA1 hash for selected item if item is a file.
-//     * If item is a directory, computes and stores hashes for
-//     * all files within selected directory and all subfolders of the selected directory
-//     * @param position
-//     */
-//    private void computeSHA1Hash(int position) {
-//
-//        MediaListItem tagBrowserTagItem = getItem(position);
-//        File f = tagBrowserTagItem.getFile();
-//
-//        String msg = "";
-//
-//        if(f.exists()){
-//
-//            //FileHashIndex fhi = FileHashIndex.getInstance();
-//
-//            try{
-//
-//                NwdDb db = NwdDb.getInstance(this);
-//
-//                //we call the count and store version that
-//                //ignores previously hashed files as
-//                //our audio files are not likely to change
-//                //and many in number (800+ with mp3's on my
-//                //test device), so this is a costly operation
-//                int count = //fhi.countAndStoreSHA1Hashes(f, 0, true);
-//                        FileHashDbIndex.countAndStoreSHA1Hashes(f, true, db);
-//
-//                if(count != 1){
-//
-//                    msg = count + " hashes stored";
-//
-//                }else{
-//
-//                    msg = count + " hash stored";
-//                }
-//
-//            }catch(Exception ex){
-//
-//                msg = ex.getMessage();
-//            }
-//
-//        }else{
-//
-//            msg = "NonExistantPath: " + f.getAbsolutePath();
-//        }
-//
-//        Utils.toast(this, msg);
-//    }
 
 }

@@ -17,21 +17,6 @@ public class TagBrowserFileItem implements Comparable<TagBrowserFileItem> {
         return fileName;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        TagBrowserFileItem that = (TagBrowserFileItem) o;
-//        return Objects.equals(fileName, that.fileName);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//
-//        return Objects.hash(fileName);
-//    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

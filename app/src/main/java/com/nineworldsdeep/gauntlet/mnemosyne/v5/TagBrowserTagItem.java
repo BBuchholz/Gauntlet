@@ -1,6 +1,5 @@
 package com.nineworldsdeep.gauntlet.mnemosyne.v5;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class TagBrowserTagItem {

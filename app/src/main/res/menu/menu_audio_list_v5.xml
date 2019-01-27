@@ -21,4 +21,7 @@
     <item android:id="@+id/action_move_all_to_staging"
           android:title="@string/move_all_to_staging"
           app:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/action_move_all_tagged_to_staging"
+        android:title="Move All Tagged To Staging"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

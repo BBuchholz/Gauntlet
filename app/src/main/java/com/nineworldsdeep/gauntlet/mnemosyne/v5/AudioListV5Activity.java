@@ -444,6 +444,10 @@ public class AudioListV5Activity extends AppCompatActivity {
                 moveAllToStaging();
                 return true;
 
+            case R.id.action_move_all_tagged_to_staging:
+                moveAllTaggedToStaging();
+                return true;
+
             case R.id.action_go_to_home_screen:
 
                 NavigateActivityCommand.navigateTo(
@@ -500,6 +504,12 @@ public class AudioListV5Activity extends AppCompatActivity {
     private void moveAllToStaging() {
 
         UtilsHive.moveToStaging(this, getListItemsFiles());
+        refreshLayout();
+    }
+
+    private void moveAllTaggedToStaging() {
+
+        UtilsHive.moveToStaging(this, getTaggedListItemsFiles());
         refreshLayout();
     }
 
@@ -571,6 +581,32 @@ public class AudioListV5Activity extends AppCompatActivity {
         }
         return lst;
     }
+
+
+    @NonNull
+    private ArrayList<File> getTaggedListItemsFiles() {
+        ArrayList<File> lst = new ArrayList<>();
+
+        ArrayAdapter<MediaListItem> itemsAdapter =
+                (ArrayAdapter<MediaListItem>)getListAdapter();
+
+        for(int i = 0; i < itemsAdapter.getCount(); i++){
+
+            MediaListItem mli = itemsAdapter.getItem(i);
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                if(!Utils.stringIsNullOrWhitespace(mli.getTags().trim())) {
+
+                    lst.add(f);
+                }
+            }
+        }
+        return lst;
+    }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu,

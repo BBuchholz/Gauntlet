@@ -442,6 +442,11 @@ public class ImageListV5Activity extends AppCompatActivity {
                 moveAllToStaging();
                 return true;
 
+            case R.id.action_move_all_tagged_to_staging:
+
+                moveAllTaggedToStaging();
+                return true;
+
             case R.id.action_go_to_home_screen:
 
                 NavigateActivityCommand.navigateTo(
@@ -700,6 +705,12 @@ public class ImageListV5Activity extends AppCompatActivity {
         refreshLayout();
     }
 
+    private void moveAllTaggedToStaging() {
+
+        UtilsHive.moveToStaging(this, getTaggedListItemsFiles());
+        refreshLayout();
+    }
+
 //    private void exportAllToXml() {
 //
 //        NwdDb db = NwdDb.getInstance(this);
@@ -756,6 +767,30 @@ public class ImageListV5Activity extends AppCompatActivity {
             if(f.exists() && f.isFile()){
 
                 lst.add(f);
+            }
+        }
+        return lst;
+    }
+
+    @NonNull
+    private ArrayList<File> getTaggedListItemsFiles() {
+        ArrayList<File> lst = new ArrayList<>();
+
+        ArrayAdapter<MediaListItem> itemsAdapter =
+                (ArrayAdapter<MediaListItem>)getListAdapter();
+
+        for(int i = 0; i < itemsAdapter.getCount(); i++){
+
+            MediaListItem mli = itemsAdapter.getItem(i);
+
+            File f = mli.getFile();
+
+            if(f.exists() && f.isFile()){
+
+                if(!Utils.stringIsNullOrWhitespace(mli.getTags().trim())) {
+
+                    lst.add(f);
+                }
             }
         }
         return lst;

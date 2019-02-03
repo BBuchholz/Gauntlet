@@ -73,7 +73,6 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Tag Browser V5", TagBrowserV5Activity.class);
         addNavigateActivityCommand("Lab", LabListActivity.class);
 
-
 //        addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
 //        addNavigateActivityCommand("MediaPlayerService", MediaPlayerServiceActivity.class);
 //        addNavigateActivityCommand("Hive Hierarchy Exp.", HiveRootListActivity.class);

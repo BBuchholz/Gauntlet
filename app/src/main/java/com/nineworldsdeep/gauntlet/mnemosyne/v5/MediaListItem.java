@@ -38,6 +38,10 @@ public class MediaListItem {
         addPath(path);
     }
 
+    public MediaListItem(Media media){
+        this.media = media;
+    }
+
     public Media getMedia() {
         return media;
     }

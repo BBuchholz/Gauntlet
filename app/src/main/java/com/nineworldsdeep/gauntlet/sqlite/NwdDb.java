@@ -25,6 +25,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v4.PathTagLink;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.DevicePath;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Media;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaDevice;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaListItem;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaRoot;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MediaTagging;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.Tag;
@@ -3942,7 +3943,26 @@ public class NwdDb {
 
         String hash = getHashForFirstFoundFilename(tagBrowserFileItem.getFilename(), db);
 
-        tagBrowserFileItem.setTagString(hash);
+        String tagString = "unable to load tag string";
+
+        if(!Utils.stringIsNullOrWhitespace(hash)) {
+
+            Media tempMedia = new Media();
+            tempMedia.setMediaHash(hash);
+
+            try {
+
+                sync(tempMedia);
+                MediaListItem tempMediaListItem = new MediaListItem(tempMedia);
+                tagString = tempMediaListItem.getTags();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        tagBrowserFileItem.setTagString(tagString);
     }
 
     public String getHashForFirstFoundFilename(String filename, SQLiteDatabase db){

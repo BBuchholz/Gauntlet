@@ -24,6 +24,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioDisplayV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageGridV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.ImageListV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.MnemosyneV5ScanActivity;
+import com.nineworldsdeep.gauntlet.mnemosyne.v5.TagBrowserV5Activity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
 import com.nineworldsdeep.gauntlet.mnemosyne.v5.AudioListV5Activity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
@@ -69,6 +70,7 @@ public class HomeListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Transfers", TransferActivity.class);
         addNavigateActivityCommand("Hive", HiveRootsActivity.class);
         addNavigateActivityCommand("Archivist", ArchivistActivity.class);
+        addNavigateActivityCommand("Tag Browser V5", TagBrowserV5Activity.class);
         addNavigateActivityCommand("Lab", LabListActivity.class);
 
 

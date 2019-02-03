@@ -61,7 +61,7 @@ public class LabListActivity extends ListBaseActivity {
 
         cmds.clear();
 
-        addNavigateActivityCommand("Tag Browser V5", TagBrowserV5Activity.class);
+        //addNavigateActivityCommand("Tag Browser V5", TagBrowserV5Activity.class);
         addNavigateActivityCommand("Home List", HomeListActivity.class);
         addNavigateActivityCommand("Kotlin Data Binding", DataBindingBasicExampleActivity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);

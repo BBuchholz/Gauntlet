@@ -102,10 +102,12 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
                 }
 
                 TextView tvFilename = (TextView)convertView.findViewById(R.id.tvFilename);
+                TextView tvTags = (TextView)convertView.findViewById(R.id.tvTags);
 
                 TagBrowserFileItem tagBrowserFileItem = getItem(pos);
 
                 tvFilename.setText(tagBrowserFileItem.getFilename());
+                tvTags.setText(tagBrowserFileItem.getTagString());
 
                 return convertView;
             }

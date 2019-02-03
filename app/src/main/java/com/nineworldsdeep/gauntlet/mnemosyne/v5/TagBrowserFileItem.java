@@ -8,14 +8,17 @@ public class TagBrowserFileItem implements Comparable<TagBrowserFileItem> {
 
     private String fileName;
     private String hash;
+    private String tagString;
 
     public TagBrowserFileItem(String fileName){
         this.fileName = fileName;
+        this.tagString = "tag string goes here";
     }
 
     public String getFilename() {
         return fileName;
     }
+    public String getTagString() {return tagString; }
 
     @Override
     public boolean equals(Object o) {

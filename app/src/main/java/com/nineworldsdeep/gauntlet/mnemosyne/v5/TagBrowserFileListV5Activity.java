@@ -276,7 +276,7 @@ public class TagBrowserFileListV5Activity extends AppCompatActivity {
 
                     count++;
 
-
+                    db.populateTagStringForFirstFoundFilename(tagBrowserFileItem);
 
                     String msg = "Still loading... (" + count + " of " + total + " items loaded)";
 

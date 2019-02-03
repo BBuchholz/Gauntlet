@@ -3938,6 +3938,50 @@ public class NwdDb {
         }
     }
 
+    public void populateTagStringForFirstFoundFilename(TagBrowserFileItem tagBrowserFileItem){
+
+        String hash = getHashForFirstFoundFilename(tagBrowserFileItem.getFilename(), db);
+
+        tagBrowserFileItem.setTagString(hash);
+    }
+
+    public String getHashForFirstFoundFilename(String filename, SQLiteDatabase db){
+
+        String hash = "";
+
+        String[] args =
+                new String[]{ "%" + filename };
+
+        Cursor cursor =
+                db.rawQuery(
+                        NwdContract.SELECT_MEDIA_PATH_AND_HASH_WHERE_PATH_ENDS_WITH_X,
+                        args);
+
+        String[] columnNames =
+                new String[]{
+                        NwdContract.COLUMN_MEDIA_PATH_VALUE,
+                        NwdContract.COLUMN_MEDIA_HASH
+                };
+
+        if(cursor.getCount() > 0){
+
+            cursor.moveToFirst();
+
+            do {
+
+                Map<String, String> record =
+                        cursorToRecord(cursor, columnNames);
+
+                hash = record.get(NwdContract.COLUMN_MEDIA_HASH);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return hash;
+    }
+
     public void sync(Media media, SQLiteDatabase db) throws Exception {
 
         if(Utils.stringIsNullOrWhitespace(media.getMediaHash())){

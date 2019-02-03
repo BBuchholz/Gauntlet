@@ -20,6 +20,10 @@ public class TagBrowserFileItem implements Comparable<TagBrowserFileItem> {
     }
     public String getTagString() {return tagString; }
 
+    public void setTagString(String tagString) {
+        this.tagString = tagString;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

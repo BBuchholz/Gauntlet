@@ -22,4 +22,11 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="item_width">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="small_padding">6dp</dimen>
+    <dimen name="big_padding">16dp</dimen>
+    <dimen name="synergy_item_value_text_size">16sp</dimen>
+    <dimen name="synergy_item_type_text_size">10sp</dimen>
+    <dimen name="synergy_item_type_padding_vertical">3sp</dimen>
+    <dimen name="synergy_item_type_padding_horizontal">8sp</dimen>
+    <dimen name="synergy_item_meta_text_size">8sp</dimen>
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:title="Main" />
+        <item
+            android:id="@+id/nav_another"
+            android:title="Another" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_group_two_first"
+            android:title="Group Two First" />
+        <item
+            android:id="@+id/nav_group_two_second"
+            android:title="Group Two Second" />
+    </group>
+</menu>

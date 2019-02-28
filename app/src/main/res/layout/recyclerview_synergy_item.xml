@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/synergy_item_border"
+    android:layout_margin="@dimen/small_padding">
+
+    <TextView
+        android:id="@+id/tvItemValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding"
+        android:textStyle="bold"
+        android:textSize="@dimen/synergy_item_value_text_size"/>
+
+    <TextView
+        android:id="@+id/tvItemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/synergy_item_type_text_size"
+        android:textStyle="italic"
+        android:paddingTop="@dimen/synergy_item_type_padding_vertical"
+        android:paddingBottom="@dimen/synergy_item_type_padding_vertical"
+        android:paddingLeft="@dimen/synergy_item_type_padding_horizontal"
+        android:paddingRight="@dimen/synergy_item_type_padding_horizontal"
+        android:textColor="@color/synergyItemTypeText"
+        android:background="@drawable/synergy_item_type_border"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvItemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/small_padding"
+            android:textSize="@dimen/synergy_item_meta_text_size"/>
+
+        <TextView
+            android:id="@+id/tvItemLastModified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/small_padding"
+            android:textSize="@dimen/synergy_item_meta_text_size"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

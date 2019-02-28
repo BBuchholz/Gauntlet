@@ -31,6 +31,7 @@ import com.nineworldsdeep.gauntlet.mnemosyne.v5.demo.ImageBrowserActivity;
 import com.nineworldsdeep.gauntlet.muse.MuseMainActivity;
 import com.nineworldsdeep.gauntlet.synergy.SynergyDrawerActivity;
 import com.nineworldsdeep.gauntlet.synergy.v5.SynergyV5MainActivity;
+import com.nineworldsdeep.gauntlet.synergy.v6.SynergyV6Activity;
 import com.nineworldsdeep.gauntlet.tapestry.v1.ConfigFile;
 import com.nineworldsdeep.gauntlet.tapestry.v1.TapestryUtils;
 
@@ -63,6 +64,7 @@ public class LabListActivity extends ListBaseActivity {
 
         //addNavigateActivityCommand("Tag Browser V5", TagBrowserV5Activity.class);
         addNavigateActivityCommand("Home List", HomeListActivity.class);
+        addNavigateActivityCommand("SynergyV6", SynergyV6Activity.class);
         addNavigateActivityCommand("Kotlin Data Binding", DataBindingBasicExampleActivity.class);
         addNavigateActivityCommand("Mnemosyne V5 Scan", MnemosyneV5ScanActivity.class);
         addNavigateActivityCommand("Image Grid V5", ImageGridV5Activity.class);
@@ -81,6 +83,7 @@ public class LabListActivity extends ListBaseActivity {
         addNavigateActivityCommand("Image Grid", ImageGridActivity.class);
         addNavigateActivityCommand("Muse", MuseMainActivity.class);
         addNavigateActivityCommand("Image Browser", ImageBrowserActivity.class);
+
 
     }
 

@@ -107,12 +107,12 @@ public class MediaTagging extends TaggingBase{
 //
 //    public void tag(){
 //
-//        taggedAt = TimeStamp.now();
+//        taggedAt = TimeStampV6.now();
 //    }
 //
 //    public void untag(){
 //
-//        untaggedAt = TimeStamp.now();
+//        untaggedAt = TimeStampV6.now();
 //    }
 //
 //    /**

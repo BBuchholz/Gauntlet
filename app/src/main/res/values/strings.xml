@@ -157,4 +157,8 @@
     <string name="viewmodel_activity_label_text">Uses a ViewModel to hold data and handle user actions, using better alternatives</string>
     <string name="see_readme">See README.md for details</string>
     <string name="refresh">Refresh</string>
+    <string name="hint_word">Word…</string>
+    <string name="button_done">Done</string>
+    <string name="empty_item_value_discarded">Empty item value… discarded.</string>
+    <string name="enter_synergy_item_value_required">Enter synergy item value… (REQUIRED)</string>
 </resources>
